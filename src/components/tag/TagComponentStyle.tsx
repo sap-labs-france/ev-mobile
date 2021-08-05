@@ -26,7 +26,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginBottom: '8@s'
     },
     selected: {
-      opacity: 0.5
+      backgroundColor: commonColor.listItemSelected
+    },
+    unselected: {
+      backgroundColor: commonColor.listHeaderBgColor
     },
     tagContent: {
       width: '100%',
@@ -73,6 +76,29 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingVertical: '5@s',
       marginLeft: '5@s',
       flex: 1
+    },
+    rightContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between',
+      width: '90@s',
+      height: '100%'
+    },
+    statusIndicator: {
+      height: '100%',
+      width: '5@s'
+    },
+    statusInactive: {
+      backgroundColor: commonColor.brandDanger
+    },
+    statusActive: {
+      backgroundColor: commonColor.brandSuccess
+    },
+    userConstainer: {
+      marginTop: '3@s'
+    },
+    tagVisualIDContainer: {
+      marginTop: '3@s'
     },
     tagDescriptionContainer: {
       flexDirection: 'row'

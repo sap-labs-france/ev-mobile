@@ -1,26 +1,26 @@
 import { DrawerActions } from '@react-navigation/native';
-import i18n from 'i18n-js';
+import i18n, { default as I18n } from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
+import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import TagComponent from '../../components/tag/TagComponent';
-import I18nManager from '../../I18n/I18nManager';
-import BaseScreen from '../../screens/base-screen/BaseScreen';
-import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Tag from '../../types/Tag';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from '../transactions/TransactionsStyles';
+import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 
-export interface Props extends BaseProps {}
+export interface Props extends SelectableProps<Tag> {
+  userIDs?: string[];
+}
 
-interface State {
+interface State extends SelectableState<Tag>{
   tags?: Tag[];
   projectedFields?: string[];
   skip?: number;
@@ -30,13 +30,16 @@ interface State {
   loading?: boolean;
 }
 
-export default class Tags extends BaseScreen<Props, State> {
+export default class Tags extends SelectableList<Tag> {
   public state: State;
   public props: Props;
   private searchText: string;
 
   public constructor(props: Props) {
     super(props);
+    this.title = I18n.t('tags.tags');
+    this.selectMultipleTitle = 'tags.selectTags';
+    this.selectSingleTitle = 'tags.selectTag';
     this.state = {
       projectedFields: [],
       tags: [],
@@ -44,7 +47,8 @@ export default class Tags extends BaseScreen<Props, State> {
       limit: Constants.PAGING_SIZE,
       count: 0,
       refreshing: false,
-      loading: true
+      loading: true,
+      selectedItems: []
     };
   }
 
@@ -64,7 +68,8 @@ export default class Tags extends BaseScreen<Props, State> {
     try {
       const params = {
         Search: searchText,
-        WithUser: true
+        WithUser: true,
+        UserID: this.props.userIDs?.join('|')
       };
       // Get the Tags
       const tags = await this.centralServerProvider.getTags(params, { skip, limit }, ['-createdOn']);
@@ -135,20 +140,18 @@ export default class Tags extends BaseScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { tags, count, skip, limit, refreshing, loading, projectedFields } = this.state;
-    const { navigation } = this.props;
+    const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={i18n.t('sidebar.badges')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${i18n.t('tags.tags')}` : null}
+          title={this.buildHeaderTitle()}
+          subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
+          leftAction={isModal ? null : this.onBack}
+          displayTenantLogo={false}
+          leftActionIcon={isModal ? null : 'navigate-before'}
+          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightActionIcon={isModal ? null : 'menu'}
         />
         <View style={style.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
@@ -160,6 +163,8 @@ export default class Tags extends BaseScreen<Props, State> {
             <ItemsList<Tag>
               data={tags}
               navigation={navigation}
+              onSelect={this.onItemsSelected.bind(this)}
+              selectionMode={selectionMode}
               count={count}
               limit={limit}
               skip={skip}

@@ -65,4 +65,17 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
         return count > 0 && `${I18nManager.formatNumber(count)} ${this.title}`;
     }
   }
+
+  protected async refresh() {
+    console.warn('BaseAutoRefreshScreen: Refresh not implemented!!!');
+  }
+
+  protected manualRefresh = async () => {
+    // Display spinner
+    this.setState({ refreshing: true });
+    // Refresh
+    await this.refresh();
+    // Hide spinner
+    this.setState({ refreshing: false });
+  };
 }

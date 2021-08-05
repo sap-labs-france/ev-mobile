@@ -121,7 +121,22 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     selectUserCarBadgeContainer: {
       marginTop: '10@s',
       flexDirection: 'column',
-      justifyContent: 'flex-start',
+      justifyContent: 'space-around',
+      flex: 1
+    },
+    selectUserCarBadgeTitleContainer: {
+      width: '100%',
+      borderBottomColor: commonColor.textColor,
+      borderBottomWidth: 0.2,
+      marginBottom: '25@s'
+    },
+    selectUserCarBadgeTitle: {
+      fontSize: '20@s',
+      color: commonColor.textColor,
+      textAlign: 'left',
+      fontWeight: 'bold',
+      paddingLeft: '2@s',
+      paddingVertical: 0
     },
     scrollViewContainer: {
       flexDirection: 'column',
@@ -223,6 +238,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     errorMessage: {
       color: commonColor.danger,
       textAlign: 'center'
+    },
+    inputContainer: {
+      marginBottom: '7@s'
     }
   });
   const portraitStyles = {};
