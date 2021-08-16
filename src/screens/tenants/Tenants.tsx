@@ -15,6 +15,7 @@ import BaseScreen from '../base-screen/BaseScreen';
 import CreateTenantDialog from './CreateTenantDialog';
 import CreateTenantQrCode from './TenantQrCode';
 import computeTenantStyleSheet from './TenantsStyle';
+import DialogModal from '../../components/modal/DialogModal';
 
 export interface Props extends BaseProps {}
 
@@ -22,6 +23,7 @@ interface State {
   tenants?: TenantConnection[];
   createTenantVisible?: boolean;
   createQrCodeTenantVisible?: boolean;
+  showCreateTenantDialog?: boolean;
 }
 
 export default class Tenants extends BaseScreen<Props, State> {
@@ -32,7 +34,8 @@ export default class Tenants extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       createQrCodeTenantVisible: false,
-      createTenantVisible: false
+      createTenantVisible: false,
+      showCreateTenantDialog: false
     };
   }
 
@@ -53,30 +56,37 @@ export default class Tenants extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public createTenant() {
-    Alert.alert(I18n.t('authentication.createTenantTitle'), I18n.t('authentication.createTenantText'), [
-      {
-        text: I18n.t('qrCode.qrCode'),
-        onPress: () => {
-          this.setState({ createQrCodeTenantVisible: true });
-        }
-      },
-      {
-        text: I18n.t('general.manually'),
-        onPress: () => {
-          this.setState({ createTenantVisible: true });
-        }
-      },
-      { text: I18n.t('general.close'), style: 'cancel' }
-    ]);
-  }
-
   public render() {
     const navigation = this.props.navigation;
-    const { tenants, createTenantVisible, createQrCodeTenantVisible } = this.state;
+    const { tenants, createTenantVisible, createQrCodeTenantVisible, showCreateTenantDialog } = this.state;
     const style = computeTenantStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     return (
       <View style={{ flex: 1 }}>
+        {showCreateTenantDialog && (
+          <DialogModal
+            title={I18n.t('authentication.createTenantTitle')}
+            renderIcon={(iconStyle) => <Icon style={iconStyle} type={'MaterialIcons'} name={'business'} />}
+            description={I18n.t('authentication.createTenantText')}
+            close={() => this.setState({ showCreateTenantDialog: false })}
+            withCancel={true}
+            withCloseButton={true}
+            buttons={[
+              {
+                text: I18n.t('qrCode.qrCode'),
+                action: () => this.setState({ createQrCodeTenantVisible: true, showCreateTenantDialog: false }),
+                buttonTextStyle: { color: commonColor.light },
+                buttonStyle: { backgroundColor: commonColor.primary, borderColor: commonColor.primary }
+              },
+              {
+                text: I18n.t('general.manually'),
+                action: () => this.setState({ createTenantVisible: true, showCreateTenantDialog: false }),
+                buttonTextStyle: { color: commonColor.light },
+                buttonStyle: { backgroundColor: commonColor.primary, borderColor: commonColor.primary }
+              }
+            ]}
+          />
+        )}
         {createQrCodeTenantVisible ? (
           <CreateTenantQrCode
             tenants={Utils.cloneObject(this.state.tenants)}
@@ -102,7 +112,7 @@ export default class Tenants extends BaseScreen<Props, State> {
             />
             <View>
               <View style={style.toolBar}>
-                <TouchableOpacity style={style.createTenantButton} onPress={() => this.createTenant()}>
+                <TouchableOpacity style={style.createTenantButton} onPress={() => this.setState({ showCreateTenantDialog: true})}>
                   <Icon style={style.icon} type={'MaterialIcons'} name="add" />
                 </TouchableOpacity>
                 {createTenantVisible && (

@@ -63,7 +63,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     verticalButton: {
       width: '100%',
-      marginBottom: '5@s'
+      marginBottom: '7@s'
     },
     cancelButtonText: {
       color: commonColor.textColor
