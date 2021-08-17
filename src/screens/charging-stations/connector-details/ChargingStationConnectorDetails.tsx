@@ -308,7 +308,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public startTransaction = async () => {
-    const { chargingStation, connector } = this.state;
+    const { chargingStation, connector, selectedTag, selectedCar, selectedUser } = this.state;
     try {
       // Check Tag ID
       const userInfo = this.centralServerProvider.getUserInfo();
@@ -325,9 +325,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       this.setState({ buttonDisabled: true });
       // Start the Transaction
       const response = await this.centralServerProvider.startTransaction(
-        chargingStation.id as string,
+        chargingStation.id,
         connector.connectorId,
-        userInfo.tagIDs[0]
+        selectedTag?.id as string,
+        selectedCar?.id as string,
+        selectedUser?.id as string
       );
       if (response?.status === 'Accepted') {
         // Show message
