@@ -4,14 +4,15 @@ import React from 'react';
 import { Alert } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 
-import Configuration from '../../config/Configuration';
-import BaseProps from '../../types/BaseProps';
-import { EndpointCloud, TenantConnection } from '../../types/Tenant';
-import SecuredStorage from '../../utils/SecuredStorage';
-import Utils from '../../utils/Utils';
-import DialogModal from '../../components/modal/DialogModal';
+import Configuration from '../../../config/Configuration';
+import BaseProps from '../../../types/BaseProps';
+import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
+import SecuredStorage from '../../../utils/SecuredStorage';
+import Utils from '../../../utils/Utils';
+import DialogModal from '../DialogModal';
 import { Input } from 'react-native-elements';
-import computeStyleSheet from './CreateTenantDialogStyle';
+import computeStyleSheet from './AddTenantManuallyDialogStyle';
+import Message from '../../../utils/Message';
 
 export interface Props extends BaseProps {
   tenants: TenantConnection[];
@@ -28,7 +29,7 @@ interface State {
   errorNewTenantSubDomain?: Record<string, unknown>[];
 }
 
-export default class CreateTenantDialog extends React.Component<Props, State> {
+export default class AddTenantManuallyDialog extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   public tenantEndpointClouds: EndpointCloud[];
@@ -67,17 +68,19 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const commonColor = Utils.getCurrentCommonColor();
-    const { newTenantSubDomain, newTenantName, newTenantEndpointCloud, tenantEndpointClouds } = this.state;
+    const { newTenantSubDomain, newTenantName, newTenantEndpointCloud } = this.state;
+    const { goBack } = this.props;
 
     return (
       <DialogModal
-        renderIcon={(iconStyle) => <Icon style={iconStyle} type={'MaterialIcons'} name={'business'} />}
+        renderIcon={(iconStyle) => <Icon style={iconStyle} type={'MaterialIcons'} name={'add-business'} />}
         animationIn={'fadeInLeft'}
         animationOut={'fadeOutRight'}
         close={() => this.props.close?.()}
         title={I18n.t('authentication.addTenantManuallyTitle')}
         withCloseButton={true}
+        onBackButtonPressed={() => goBack?.()}
+        onBackDropPress={() => {}}
         buttons={[
           {
             text: I18n.t('general.create'),
@@ -91,7 +94,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
             text: I18n.t('general.back'),
             buttonTextStyle: style.backButton,
             buttonStyle: style.backButton,
-            action: () => this.props.goBack?.()
+            action: () => goBack?.()
           }
         ]}
         renderControls={() => this.renderControls(style)}
@@ -132,7 +135,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
           onChangeText={(value: string) => this.setState({ newTenantName: value })}
         />
         <Input
-          label={I18n.t('authentication.tenantEndpoint') + ' Endpoint'}
+          label={I18n.t('authentication.tenantEndpoint')}
           labelStyle={[style.inputLabel, style.selectLabel]}
           containerStyle={style.inputContainer}
           inputStyle={style.inputText}

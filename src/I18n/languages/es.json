@@ -39,6 +39,8 @@
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
     "registerToNewTenantTitle": "Sign up",
     "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
+    "newTenantAddedDialogTitle": "The organization '{{organizationName}}' has been added",
+    "newTenantAddedDialogDescription": "What would you like to do?",
     "noRecordFound": "Ningún registro fue encontrado",
     "day": "d",
     "hour": "h",
@@ -64,7 +66,8 @@
     "scanQrCodeSuccess": "El código QR se ha escaneado correctamente",
     "default": "Default",
     "save": "Save",
-    "update": "Update"
+    "update": "Update",
+    "close": "Close"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -147,7 +150,7 @@
     "tenantSubdomainPlaceholder": "Organization subdomain",
     "tenantName": "Nombre",
     "tenantNamePlaceholder": "Organization name",
-    "tenantEndpoint": "Cloud",
+    "tenantEndpoint": "Cloud Endpoint",
     "phone": "Teléfono",
     "mandatoryPhone": "El número de teléfono es obligatorio",
     "mandatoryErrorTitle": "El título del error es obligatorio",

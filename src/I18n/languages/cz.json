@@ -10,8 +10,10 @@
       "restoreTenantsConfirm":"Chcete opravdu obnovit původní seznam organizací?",
       "restoreTenantsSuccess":"Seznam organizací byl obnoven",
       "createTenantSuccess":"Nový nájemce '{{tenantName}}' byl registrován",
-      "registerToNewTenantTitle":"Zaregistrovat se",
-      "registerToNewTenant":"Chcete se opravdu registrovat v nové organizaci '{{tenantName}}'?",
+      "registerToNewTenantTitle": "Zaregistrovat se",
+      "registerToNewTenant": "Chcete se opravdu registrovat v nové organizaci '{{tenantName}}'?",
+      "newTenantAddedDialogTitle": "The organization '{{organizationName}}' has been added",
+      "newTenantAddedDialogDescription": "What would you like to do?",
       "noRecordFound":"Žádný záznam nenalezen",
       "day":"d",
       "hour":"h",
@@ -36,7 +38,8 @@
       "errorDescription":"Popis",
       "scanQrCodeSuccess":"QR kód byl úspěšně oskenován",
       "default":"Výchozí",
-      "save":"Uložit"
+      "save":"Uložit",
+      "close": "Close"
    },
    "sidebar":{
       "home":"Domovská stránka",
@@ -119,7 +122,7 @@
       "tenantSubdomainPlaceholder": "Organization subdomain",
       "tenantName":"Název",
       "tenantNamePlaceholder": "Organization name",
-      "tenantEndpoint":"Cloud",
+      "tenantEndpoint": "Cloud Endpoint",
       "phone":"Telefon",
       "mandatoryPhone":"Telefonní číslo je povinné",
       "mandatoryErrorTitle":"Záhlaví je povinné",

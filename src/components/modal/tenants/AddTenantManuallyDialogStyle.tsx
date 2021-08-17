@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
-import Utils from '../../utils/Utils';
+import Utils from '../../../utils/Utils';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -26,7 +26,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.dangerLight
     },
     inputLabel: {
-      fontSize: 16,
+      fontSize: '16@s',
       color: commonColor.textColor
     },
     inputContainer: {
@@ -40,7 +40,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     inputText: {
       color: commonColor.textColor,
       paddingBottom: 0,
-      fontSize: 14
+      fontSize: '14@s'
     },
     selectField: {
       width: '100%',
@@ -49,7 +49,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     selectFieldText: {
       color: commonColor.textColor,
       textAlign: 'left',
-      fontSize: 14,
+      fontSize: '14@s',
       marginLeft: 0
     },
     selectDropdown: {
@@ -59,7 +59,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomWidth: 0
     },
     selectDropdownRowText: {
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      fontSize: '14@s'
     },
     selectLabel: {
       marginBottom: '10@s'

@@ -55,6 +55,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     trashIcon: {
       color: 'white',
       fontSize: '20@s'
+    },
+    modalPrimaryButton: {
+      backgroundColor: commonColor.primary,
+      borderColor: commonColor.primary,
+      color: commonColor.light
+    },
+    modalOutlinedButton: {
+      backgroundColor: commonColor.modalBackgroundColor,
+      borderColor: commonColor.textColor,
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

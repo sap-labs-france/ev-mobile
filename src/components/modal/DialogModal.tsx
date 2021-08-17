@@ -18,18 +18,20 @@ export interface Props {
   renderIcon?: (style: any) => React.ReactElement;
   buttons?: DialogModalButton[];
   withCancel?: boolean;
+  cancelButtonText?: string;
   title: string;
   description?: string;
   withCloseButton?: boolean;
   close?: () => void;
   animationIn?: Animation;
   animationOut?: Animation;
+  onBackButtonPressed?: () => void;
+  onBackDropPress?: () => void;
 }
 
 interface State {}
 
 export default class DialogModal extends React.Component<Props, State> {
-
   public props: Props;
   public state: State;
 
@@ -41,14 +43,34 @@ export default class DialogModal extends React.Component<Props, State> {
   }
 
   public render() {
-    const { title, withCancel, buttons, description, renderIcon, withCloseButton, close, renderControls, animationIn, animationOut } =
-      this.props;
+    const {
+      title,
+      withCancel,
+      buttons,
+      description,
+      renderIcon,
+      withCloseButton,
+      close,
+      renderControls,
+      animationIn,
+      animationOut,
+      onBackButtonPressed,
+      cancelButtonText,
+      onBackDropPress
+    } = this.props;
     const style = computeStyleSheet();
     const buttonsContainerStyle = this.computeButtonsContainerStyle(style);
     const buttonCommonStyle = this.computeButtonCommonStyle(style);
     const iconStyle = style.icon;
     return (
-      <Modal animationIn={animationIn ?? 'fadeIn'} animationOut={animationOut ?? 'fadeOut'} animationInTiming={600} isVisible>
+      <Modal
+        animationIn={animationIn ?? 'fadeIn'}
+        animationOut={animationOut ?? 'fadeOut'}
+        animationInTiming={600}
+        animationOutTiming={600}
+        isVisible
+        onBackdropPress={() => (onBackDropPress ? onBackDropPress() : close?.())}
+        onBackButtonPress={() => (onBackButtonPressed ? onBackButtonPressed() : close?.())}>
         <View style={style.modalContainer}>
           {withCloseButton && (
             <TouchableOpacity onPress={() => close?.()} style={style.closeButtonContainer}>
@@ -67,7 +89,7 @@ export default class DialogModal extends React.Component<Props, State> {
             ))}
             {withCancel && (
               <TouchableOpacity style={[buttonCommonStyle, style.cancelButton]} onPress={() => close?.()}>
-                <Text style={[style.buttonText, style.cancelButtonText]}>{I18n.t('general.cancel').toUpperCase()}</Text>
+                <Text style={[style.buttonText, style.cancelButtonText]}>{(cancelButtonText ?? I18n.t('general.cancel')).toUpperCase()}</Text>
               </TouchableOpacity>
             )}
           </View>
