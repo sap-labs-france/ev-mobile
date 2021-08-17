@@ -65,9 +65,10 @@ export default class Tenants extends BaseScreen<Props, State> {
       <View style={{ flex: 1 }}>
         {showCreateTenantDialog && (
           <DialogModal
-            title={I18n.t('authentication.createTenantTitle')}
+            animationIn={'fadeInLeft'}
+            title={I18n.t('authentication.addTenantTitle')}
             renderIcon={(iconStyle) => <Icon style={iconStyle} type={'MaterialIcons'} name={'business'} />}
-            description={I18n.t('authentication.createTenantText')}
+            description={I18n.t('authentication.addTenantText')}
             close={() => this.setState({ showCreateTenantDialog: false })}
             withCancel={true}
             withCloseButton={true}
@@ -119,6 +120,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                   <CreateTenantDialog
                     navigation={navigation}
                     tenants={Utils.cloneObject(this.state.tenants)}
+                    goBack={() => this.setState({ createTenantVisible: false, showCreateTenantDialog: true })}
                     close={(newTenant: TenantConnection) => {
                       this.tenantCreated(newTenant);
                     }}

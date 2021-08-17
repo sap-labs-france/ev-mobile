@@ -9,7 +9,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     modalContainer: {
-      backgroundColor: commonColor.listHeaderBgColor, //'#383838',
+      backgroundColor: commonColor.modalBackgroundColor,
       paddingTop: '5@s',
       padding: '10@s',
       paddingVertical: '20@s',
@@ -17,14 +17,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     closeButtonContainer: {
-      width: '100%'
+      width: '100%',
+      marginBottom: '10@s'
     },
     closeButton: {
       alignSelf: 'flex-end',
-      fontSize: '19@s'
+      fontSize: '25@s'
     },
     title: {
-      fontSize: '16@s'
+      fontSize: '14@s',
+      color: commonColor.textColor
     },
     text: {
       color: commonColor.textColor,
@@ -63,7 +65,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     verticalButton: {
       width: '100%',
-      marginBottom: '7@s'
+      marginBottom: '10@s'
     },
     cancelButtonText: {
       color: commonColor.textColor
