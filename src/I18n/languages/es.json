@@ -17,7 +17,7 @@
     "ok": "Ok",
     "yes": "Sí",
     "no": "No",
-    "manually": "Manually",
+    "manually": "A mano",
     "filters": "Filtros",
     "create": "Crear",
     "clear": "Borrar",
@@ -62,9 +62,9 @@
     "errorTitle": "Titulo del error",
     "errorDescription": "Descripción del error",
     "scanQrCodeSuccess": "El código QR se ha escaneado correctamente",
-    "default": "Default",
-    "save": "Save",
-    "update": "Update"
+    "default": "Por defecto",
+    "save": "Guardar",
+    "update": "Actualizar"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -74,9 +74,9 @@
     "transactionsInProgress": "Sesiones en progreso",
     "statistics": "Estadísticas",
     "reportError": "Reportar error",
-    "users": "Users",
-    "badges": "Badges",
-    "cars": "Cars",
+    "users": "Usuarios",
+    "badges": "Insignias",
+    "cars": "vehículos",
     "invoices": "Facturas",
     "paymentMethods": "Métodos de pago"
   },
@@ -152,14 +152,14 @@
     "reportErrorFailed": "No se puede informar el error"
   },
   "qrCode": {
-    "qrCode": "QR Code",
+    "qrCode": "Código QR",
     "browseScan&Charge": "Scan & Charge",
     "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
     "wrongOrganizationTitle": "Change Organization",
     "wrongOrganizationMessage": "The charging Station you are trying to access is not in this organization, do you want to switch to '{{tenantName}}'?",
-    "invalidQRCode": "Invalid QR Code",
-    "unknownQRCode": "Unknown QR Code",
-    "unknownEndpoint": "Unknown cloud '{{endpoint}}'",
+    "invalidQRCode": "Código QR inválido",
+    "unknownQRCode": "Código QR desconocido",
+    "unknownEndpoint": "Cloud '{{endpoint}}' desconocido",
     "unknownOrganizationTitle": "Unknown Organization",
     "unknownOrganizationMessage": "You scanned an unknown organization '{{tenantName}}', do you want to create it and log into it?",
     "newOrganizationTitle": "New Organization",
@@ -204,17 +204,17 @@
     "unknown": "Unknown"
   },
   "userStatuses": {
-    "active": "Active",
-    "inactive": "Inactive",
-    "locked": "Locked",
-    "suspended": "Suspended",
-    "pending": "Pending",
-    "unknown": "Unknown"
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "locked": "bloqueado",
+    "suspended": "suspendido",
+    "pending": "Pendiente",
+    "unknown": "Desconocido"
   },
   "cars": {
-    "noCars": "No cars",
+    "noCars": "Nigún vehículo",
     "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)"
+    "cars": "Vehículo(s)"
   },
   "invoices": {
     "noInvoices": "No Invoices",
@@ -227,12 +227,12 @@
     "downloadInvoiceSubtitle": "Download the invoice of {{user}} from {{invoiceDate}}?"
   },
   "invoiceStatus": {
-    "paid": "Paid",
-    "draft": "Draft",
-    "unpaid": "Unpaid",
-    "deleted": "Deleted",
-    "uncollectible": "Uncollectible",
-    "void": "Cancelled"
+    "paid": "Pagada",
+    "draft": "Borrador",
+    "unpaid": "No pagada",
+    "deleted": "Eliminada",
+    "uncollectible": "Irrecuperable",
+    "void": "Cancelada"
   },
   "transactions": {
     "transaction": "Sesión",
@@ -267,12 +267,12 @@
     "noOngoingSessions": "Ninguna sesión en progreso",
     "ongoingSessionsNote": "Navegar a las Sesiones en progreso",
     "statistics": "Estadísticas",
-    "tags": "Badges",
-    "tagsNote": "Badge list",
-    "users": "Users",
-    "usersNote": "User list",
-    "cars": "Cars",
-    "carsNote": "Cars List",
+    "tags": "Insignias",
+    "tagsNote": "Lista de insignias",
+    "users": "Usuarios",
+    "usersNote": "Lista de usuarios",
+    "cars": "Vehículos",
+    "carsNote": "Lista de vehículos",
     "numberOfSessions": "{{nbrSessions}} sesiones",
     "noSessions": "Ninguna sesión encontrada",
     "numberOfSessionsNote": "Número total de sesiones",
@@ -292,14 +292,14 @@
     "occupied": "Ocupado",
     "noSites": "Sitio no encontrado",
     "siteUnexpectedError": "No se ha podido cargar el sitio",
-    "sites": "Site(s)"
+    "sites": "Sitio(s)"
   },
   "siteAreas": {
     "title": "Zona",
     "noChargers": "Esta zona no tiene cargadores",
     "noSiteAreas": "Zona no encontrada",
     "siteAreaUnexpectedError": "No se ha podido cargar la zona",
-    "siteAreas": "Site Area(s)"
+    "siteAreas": "Zona(s)"
   },
   "chargers": {
     "title": "Estaciones de carga",
@@ -352,10 +352,10 @@
   },
   "tags": {
     "visualID": "Visual ID",
-    "noTags": "No badges",
-    "tags": "Badge(s)",
-    "active": "Active",
-    "inactive": "Inactive"
+    "noTags": "No insignia",
+    "tags": "Insignia(s)",
+    "active": "Activa",
+    "inactive": "Inactiva"
   },
   "details": {
     "connector": "Connector",
