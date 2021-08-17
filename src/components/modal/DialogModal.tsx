@@ -4,6 +4,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'native-base';
 import I18n from 'i18n-js';
 import computeStyleSheet from './DialogModalStyle';
+import { Animation } from 'react-native-animatable';
 
 export interface DialogModalButton {
   text: string;
@@ -21,6 +22,8 @@ export interface Props {
   description?: string;
   withCloseButton?: boolean;
   close?: () => void;
+  animationIn?: Animation;
+  animationOut?: Animation;
 }
 
 interface State {}
@@ -38,13 +41,14 @@ export default class DialogModal extends React.Component<Props, State> {
   }
 
   public render() {
-    const { title, withCancel, buttons, description, renderIcon, withCloseButton, close } = this.props;
+    const { title, withCancel, buttons, description, renderIcon, withCloseButton, close, renderControls, animationIn, animationOut } =
+      this.props;
     const style = computeStyleSheet();
     const buttonsContainerStyle = this.computeButtonsContainerStyle(style);
     const buttonCommonStyle = this.computeButtonCommonStyle(style);
     const iconStyle = style.icon;
     return (
-      <Modal animationIn={'zoomInDown'} animationInTiming={600} isVisible>
+      <Modal animationIn={animationIn ?? 'fadeIn'} animationOut={animationOut ?? 'fadeOut'} animationInTiming={600} isVisible>
         <View style={style.modalContainer}>
           {withCloseButton && (
             <TouchableOpacity onPress={() => close?.()} style={style.closeButtonContainer}>
@@ -52,8 +56,9 @@ export default class DialogModal extends React.Component<Props, State> {
             </TouchableOpacity>
           )}
           {renderIcon?.(iconStyle)}
-          <Text style={[style.text, style.title]}>{title}</Text>
+          <Text style={[style.text, style.title]}>{title?.toUpperCase()}</Text>
           <Text style={[style.text, style.description]}>{description}</Text>
+          {renderControls?.()}
           <View style={[style.buttonsContainer, buttonsContainerStyle]}>
             {buttons?.map((button: DialogModalButton, index) => (
               <TouchableOpacity onPress={button.action} style={[button.buttonStyle, buttonCommonStyle]} key={index}>

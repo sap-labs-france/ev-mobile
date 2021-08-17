@@ -82,7 +82,14 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => ({
   buttonWarningBg: currentTheme.warning,
   buttonInfoBg: currentTheme.info,
   buttonSuccessBg: currentTheme.success,
-  buttonDisabledBg: palette.disabledDark
+  buttonDisabledBg: palette.disabledDark,
+
+  // Modal style
+  modalBackgroundColor: currentTheme.modalBackgroundColor,
+
+  // Select dropdown
+  selectFieldBackgroundColor: currentTheme.selectFieldBackgroundColor,
+  selectDropdownBackgroundColor: currentTheme.selectDropdownBackgroundColor
 });
 
 const themeManager = ThemeManager.getInstance();

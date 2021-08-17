@@ -13,7 +13,7 @@ const dangerLight = color(palette.dangerLight).desaturate(0.2).hex();
 const warning = color(palette.warning).desaturate(0.2).hex();
 const warningLight = color(palette.warningLight).desaturate(0.2).hex();
 const warningDark = color(palette.warningDark).desaturate(0.2).hex();
-const primary = color(palette.primary).desaturate(0.2).hex();
+const primary = color(palette.primary).desaturate(0.5).hex();
 const primaryDark = color(palette.primaryDark).desaturate(0.2).hex();
 const primaryLight = color(palette.primaryLight).desaturate(0.2).hex();
 const info = color(palette.info).desaturate(0.2).hex();
@@ -42,7 +42,8 @@ export default {
   darkLight,
   lightDark,
   backgroundHeader: dark,
-  listBackgroundHeader: '#383838',
+  modalBackgroundColor: '#262626',
+  listBackgroundHeader: '#262626',
   background: dark,
   borderColor: light,
   textColor: light,
@@ -50,5 +51,7 @@ export default {
   inverseTextColor: dark,
   subTextColor: palette.disabledDark,
   buttonBg: darkLight,
-  touchableBackgroundColor: 'rgba(255,255,255,0.1)'
+  touchableBackgroundColor: 'rgba(255,255,255,0.1)',
+  selectFieldBackgroundColor: palette.dark,
+  selectDropdownBackgroundColor: palette.dark
 };
