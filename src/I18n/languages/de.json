@@ -56,6 +56,7 @@
     "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
     "tenantMissing": "The organization is missing",
     "tenantExists": "Die Organisation '{{tenantName}}' existiert bereits.",
+    "subdomainAlreadyUsed": "This subdomain is already used in the organization '{{tenantName}}'",
     "createdOn": "Erstellt am",
     "createdBy": "Erstellt von",
     "lastChangedOn": "Letzte Änderung am",

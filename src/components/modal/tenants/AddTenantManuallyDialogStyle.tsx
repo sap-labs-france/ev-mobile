@@ -10,10 +10,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     modalControlsContainer: {
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      width: '100%'
     },
     inputError: {
-      color: commonColor.dangerLight
+      color: commonColor.dangerLight,
+      width: '100%'
     },
     inputLabel: {
       fontSize: '16@s',

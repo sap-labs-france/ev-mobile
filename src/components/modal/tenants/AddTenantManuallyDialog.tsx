@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Icon, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Alert } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -25,6 +25,8 @@ interface State {
   newTenantEndpointCloud?: EndpointCloud;
   errorNewTenantName?: Record<string, unknown>[];
   errorNewTenantSubDomain?: Record<string, unknown>[];
+  tenantNameWithSameSubdomain?: TenantConnection;
+  showSubdomainAlreadyUsedError: boolean;
 }
 
 export default class AddTenantManuallyDialog extends React.Component<Props, State> {
@@ -60,7 +62,8 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
       newTenantSubDomain: null,
       newTenantName: null,
       tenantEndpointClouds,
-      newTenantEndpointCloud: Configuration.ENDPOINT_CLOUDS?.[0]
+      newTenantEndpointCloud: Configuration.ENDPOINT_CLOUDS?.[0],
+      showSubdomainAlreadyUsedError: false
     };
   }
 
@@ -102,7 +105,7 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
   }
 
   private renderControls(style: any) {
-    const { tenantEndpointClouds, newTenantEndpointCloud } = this.state;
+    const { tenantEndpointClouds, newTenantEndpointCloud, tenantNameWithSameSubdomain, showSubdomainAlreadyUsedError } = this.state;
     const commonColor = Utils.getCurrentCommonColor();
     return (
       <View style={style.modalControlsContainer}>
@@ -155,6 +158,9 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
             />
           )}
         />
+        {showSubdomainAlreadyUsedError && (
+          <Text style={style.inputError}>{I18n.t('general.subdomainAlreadyUsed', { tenantName: tenantNameWithSameSubdomain })}</Text>
+        )}
       </View>
     );
   }
@@ -172,12 +178,7 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
       const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain);
       // Already exists
       if (foundTenant) {
-        Alert.alert(
-          I18n.t('general.error'),
-          I18n.t('general.tenantExists', { tenantName: foundTenant.name }),
-          [{ text: I18n.t('general.ok'), style: 'cancel' }],
-          { cancelable: false }
-        );
+        this.setState({ tenantNameWithSameSubdomain: foundTenant.name, showSubdomainAlreadyUsedError: true });
         // Add new Tenant and Save
       } else {
         // Save

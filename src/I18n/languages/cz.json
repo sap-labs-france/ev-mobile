@@ -29,6 +29,7 @@
       "mustLoggedToTenant":"Musíte být přihlášen k organizaci '{{tenantName}}'",
       "tenantMissing":"Organizace chybí",
       "tenantExists":"Organizace '{{tenantName}}' již existuje",
+      "subdomainAlreadyUsed": "This subdomain is already used in the organization '{{tenantName}}'",
       "createdOn":"Vytvořeno dne",
       "createdBy":"Vytvořeno uživatelem",
       "lastChangedOn":"Poslední změna provedena dne",
