@@ -57,7 +57,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     modalPickerGroup: {
       height: '35@s',
-      width: '90%',
+      width: '100%',
       flexDirection: 'row',
       justifyContent: 'flex-start',
       marginTop: '10@s',
@@ -81,7 +81,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     modalInputField: {
-      width: '65%',
+      width: '100%',
       fontSize: '14@s',
       color: commonColor.textColor
     },
@@ -94,10 +94,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.placeholderTextColor
     },
     modalPickerModal: {
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.listBackgroundHeader
     },
     modalPickerText: {
-      color: commonColor.textColor
+      color: 'red'
     },
     modalButtonsContainer: {
       flexDirection: 'row',

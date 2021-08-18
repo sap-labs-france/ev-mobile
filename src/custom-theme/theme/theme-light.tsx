@@ -19,6 +19,7 @@ export default {
   darkLight: palette.darkLight,
   disabled: palette.disabled,
   backgroundHeader: palette.light,
+  modalBackgroundColor: palette.light,
   listBackgroundHeader: palette.disabled,
   background: palette.light,
   borderColor: palette.dark,
@@ -27,5 +28,7 @@ export default {
   inverseTextColor: palette.light,
   subTextColor: palette.disabledDark,
   buttonBg: palette.disabled,
-  touchableBackgroundColor: 'rgba(0,0,0,0.4)'
+  touchableBackgroundColor: 'rgba(0,0,0,0.4)',
+  selectFieldBackgroundColor: '#eeeeee',
+  selectDropdownBackgroundColor: '#eeeeee'
 };
