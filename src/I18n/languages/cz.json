@@ -40,7 +40,8 @@
       "scanQrCodeSuccess":"QR kód byl úspěšně oskenován",
       "default":"Výchozí",
       "save":"Uložit",
-      "close": "Close"
+      "close": "Close",
+      "tenants": "Organizations"
    },
    "sidebar":{
       "home":"Domovská stránka",
@@ -147,7 +148,7 @@
       "newOrganizationMessage":"Chcete uložit novou organizaci '{{tenantName}}'?",
       "unknownChargingStation":"Neznámá nabíjecí stanice '{{chargingStationID}}'",
       "unknownConnector":"Neznámé ID konektoru '{{connectorID}}' ",
-      "scanTenantQrCodeTitle":"Naskenovat nájemce",
+      "scanTenantQrCodeTitle": "Scan Organization",
       "scanTenantQrCodeSuccess":"Organizace '{{tenantName}}' byla úspěšně uložena",
       "scanChargingStationQrCodeTitle":"Naskenovat nabíjecí stanici"
    },

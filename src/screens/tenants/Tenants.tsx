@@ -82,7 +82,7 @@ export default class Tenants extends BaseScreen<Props, State> {
           <View style={style.container}>
             <HeaderComponent
               navigation={this.props.navigation}
-              title={I18n.t('authentication.tenant')}
+              title={I18n.t('general.tenants')}
               rightActionIcon={null}
               hideHomeAction
               leftActionIcon="navigate-before"

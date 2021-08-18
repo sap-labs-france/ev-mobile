@@ -68,7 +68,8 @@
     "default": "Par défaut",
     "save": "Sauvegarder",
     "update": "Mettre à jour",
-    "close": "Fermer"
+    "close": "Fermer",
+    "tenants": "Organisations"
   },
   "sidebar": {
     "home": "Home",

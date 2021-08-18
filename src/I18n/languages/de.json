@@ -68,7 +68,8 @@
     "default": "Default",
     "save": "Save",
     "update": "Update",
-    "close": "Close"
+    "close": "Close",
+    "tenants": "Organizations"
   },
   "sidebar": {
     "home": "Home",
@@ -175,7 +176,7 @@
     "newOrganizationMessage": "Möchten Sie die neue Organisation '{{tenantName}}' speichern??",
     "unknownChargingStation": "Unbekannte Ladestation '{{chargingStationID}}'",
     "unknownConnector": "Unbekannter Anschluss: '{{connectorID}}'",
-    "scanTenantQrCodeTitle": "Tenant scannen",
+    "scanTenantQrCodeTitle": "Organisation scannen",
     "scanTenantQrCodeSuccess": "Die Organisation '{{tenantName}}' wurde erfolgreich gespeichert",
     "scanChargingStationQrCodeTitle": "Ladestation scannen"
   },

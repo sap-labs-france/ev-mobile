@@ -68,7 +68,8 @@
     "default": "Por defecto",
     "save": "Guardar",
     "update": "Actualizar",
-    "close": "Close"
+    "close": "Close",
+    "tenants": "Organizations"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -175,7 +176,7 @@
     "newOrganizationMessage": "Do you want to save the new organization '{{tenantName}}'?",
     "unknownChargingStation": "Unknown Charging Station '{{chargingStationID}}'",
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
-    "scanTenantQrCodeTitle": "Scan Tenant",
+    "scanTenantQrCodeTitle": "Scan Organization",
     "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has saved",
     "scanChargingStationQrCodeTitle": "Scan Charging Station"
   },

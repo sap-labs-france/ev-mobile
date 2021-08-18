@@ -13,7 +13,9 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
 import ExitAppDialog from '../../../components/modal/exit-app/ExitAppDialog';
+import DialogModal from '../../../components/modal/DialogModal';
 
 export interface Props extends BaseProps {}
 
@@ -35,6 +37,7 @@ interface State {
   errorNewTenantName?: Record<string, unknown>[];
   errorNewTenantSubDomain?: Record<string, unknown>[];
   showExitAppDialog: boolean;
+  showNoTenantFoundDialog: boolean;
 }
 
 export default class Login extends BaseScreen<Props, State> {
@@ -88,7 +91,8 @@ export default class Login extends BaseScreen<Props, State> {
       loading: false,
       initialLoading: true,
       hidePassword: true,
-      showExitAppDialog: false
+      showExitAppDialog: false,
+      showNoTenantFoundDialog: false
     };
   }
 
@@ -107,15 +111,7 @@ export default class Login extends BaseScreen<Props, State> {
     // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
     if (Utils.isEmptyArray(this.tenants)) {
-      Alert.alert(I18n.t('authentication.noTenantFoundTitle'), I18n.t('authentication.noTenantFoundMessage'), [
-        {
-          text: I18n.t('general.yes'),
-          onPress: () => {
-            this.goToTenants(true);
-          }
-        },
-        { text: I18n.t('general.no'), style: 'cancel' }
-      ]);
+      this.setState({ showNoTenantFoundDialog: true });
     }
     // Check if sub-domain is provided
     if (!this.state.tenantSubDomain) {
@@ -350,12 +346,13 @@ export default class Login extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { tenantLogo, eula, loading, initialLoading, hidePassword, showExitAppDialog } = this.state;
+    const { tenantLogo, eula, loading, initialLoading, hidePassword, showExitAppDialog, showNoTenantFoundDialog } = this.state;
     // Render
     return initialLoading ? (
       <Spinner style={formStyle.spinner} color="grey" />
     ) : (
       <View style={style.container}>
+        {showNoTenantFoundDialog && this.renderNoTenantFoundDialog()}
         {showExitAppDialog && this.renderExitAppDialog()}
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
@@ -481,6 +478,23 @@ export default class Login extends BaseScreen<Props, State> {
   }
 
   private renderNoTenantFoundDialog() {
-
+    const modalCommonStyle = computeModalCommonStyle();
+    return (
+      <DialogModal
+        title={I18n.t('authentication.noTenantFoundTitle')}
+        description={I18n.t('authentication.noTenantFoundMessage')}
+        withCancel={true}
+        close={() => this.setState({ showNoTenantFoundDialog: false })}
+        withCloseButton={true}
+        buttons={[
+          {
+            text: I18n.t('general.yes'),
+            action: () => this.setState({ showNoTenantFoundDialog: false }, () => this.goToTenants(true)),
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonStyle: modalCommonStyle.primaryButton
+          }
+        ]}
+      />
+    );
   }
 }
