@@ -39,7 +39,7 @@
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
     "registerToNewTenantTitle": "S'enregistrer",
     "registerToNewTenant": "Voulez-vous vous enregistrer dans la nouvelle organisation '{{tenantName}}' ?",
-    "newTenantAddedDialogTitle": "L'organisation '{{organizationName}}' a été créée",
+    "newTenantAddedDialogTitle": "L'organisation '{{organizationName}}' a été ajoutée",
     "newTenantAddedDialogDescription": "Que souhaitez-vous faire?",
     "noRecordFound": "Pas d'enregistrement trouvé",
     "day": "j",
