@@ -9,15 +9,13 @@ import BaseProps from '../../../types/BaseProps';
 import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
-import DialogModal from '../DialogModal';
+import DialogModal, { DialogCommonProps } from '../DialogModal';
 import { Input } from 'react-native-elements';
 import computeStyleSheet from './AddTenantManuallyDialogStyle';
-import Message from '../../../utils/Message';
+import computeModalCommonStyle from '../ModalCommonStyle';
 
-export interface Props extends BaseProps {
+export interface Props extends BaseProps, DialogCommonProps {
   tenants: TenantConnection[];
-  close: (newTenant?: TenantConnection) => void;
-  goBack?: () => void;
 }
 
 interface State {
@@ -68,8 +66,9 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
 
   public render() {
     const style = computeStyleSheet();
+    const modalCommonStyle = computeModalCommonStyle();
     const { newTenantSubDomain, newTenantName, newTenantEndpointCloud } = this.state;
-    const { goBack } = this.props;
+    const { back } = this.props;
 
     return (
       <DialogModal
@@ -79,22 +78,22 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
         close={() => this.props.close?.()}
         title={I18n.t('authentication.addTenantManuallyTitle')}
         withCloseButton={true}
-        onBackButtonPressed={() => goBack?.()}
+        onBackButtonPressed={() => back?.()}
         onBackDropPress={() => {}}
         buttons={[
           {
             text: I18n.t('general.create'),
-            buttonTextStyle: style.createButton,
-            buttonStyle: style.createButton,
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonStyle: modalCommonStyle.primaryButton,
             action: () => {
               this.createTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
             }
           },
           {
             text: I18n.t('general.back'),
-            buttonTextStyle: style.backButton,
-            buttonStyle: style.backButton,
-            action: () => goBack?.()
+            buttonTextStyle: modalCommonStyle.outlinedButton,
+            buttonStyle: modalCommonStyle.outlinedButton,
+            action: () => back?.()
           }
         ]}
         renderControls={() => this.renderControls(style)}

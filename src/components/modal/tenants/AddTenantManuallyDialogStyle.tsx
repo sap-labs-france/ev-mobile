@@ -8,16 +8,6 @@ import Utils from '../../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    createButton: {
-      backgroundColor: commonColor.primary,
-      borderColor: commonColor.primary,
-      color: commonColor.light
-    },
-    backButton: {
-      color: commonColor.textColor,
-      backgroundColor: commonColor.listBackgroundHeader,
-      borderColor: commonColor.textColor
-    },
     modalControlsContainer: {
       alignItems: 'center',
       justifyContent: 'center'

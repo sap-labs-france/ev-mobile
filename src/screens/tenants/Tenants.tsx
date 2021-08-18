@@ -101,7 +101,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                   <AddTenantManuallyDialog
                     navigation={navigation}
                     tenants={Utils.cloneObject(this.state.tenants)}
-                    goBack={() => this.setState({ showAddTenantManuallyDialog: false, showAddTenantDialog: true })}
+                    back={() => this.setState({ showAddTenantManuallyDialog: false, showAddTenantDialog: true })}
                     close={(newTenantCreated: TenantConnection) => {
                       this.tenantCreated(newTenantCreated);
                     }}

@@ -7,7 +7,7 @@ import { Image, ImageStyle, TouchableOpacity } from 'react-native';
 import { CheckVersionResponse, checkVersion } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
-import AppUpdateModal from '../../components/modal/app-update/AppUpdateModal';
+import AppUpdateDialog from '../../components/modal/app-update/AppUpdateDialog';
 import UserAvatar from '../../components/user/avatar/UserAvatar';
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
@@ -127,7 +127,7 @@ export default class SideBar extends BaseScreen<Props, State> {
               </View>
             )}
           </TouchableOpacity>
-          {showAppUpdateDialog && <AppUpdateModal appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
+          {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
         </Header>
         <Content style={style.drawerContent}>
           <View style={style.linkContainer}>

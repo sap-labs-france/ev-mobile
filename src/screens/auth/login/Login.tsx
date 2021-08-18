@@ -13,6 +13,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import ExitAppDialog from '../../../components/modal/exit-app/ExitAppDialog';
 
 export interface Props extends BaseProps {}
 
@@ -33,6 +34,7 @@ interface State {
   errorEmail?: Record<string, unknown>[];
   errorNewTenantName?: Record<string, unknown>[];
   errorNewTenantSubDomain?: Record<string, unknown>[];
+  showExitAppDialog: boolean;
 }
 
 export default class Login extends BaseScreen<Props, State> {
@@ -85,7 +87,8 @@ export default class Login extends BaseScreen<Props, State> {
       tenantName: I18n.t('authentication.tenant'),
       loading: false,
       initialLoading: true,
-      hidePassword: true
+      hidePassword: true,
+      showExitAppDialog: false
     };
   }
 
@@ -193,6 +196,7 @@ export default class Login extends BaseScreen<Props, State> {
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
     // Check if user can be logged
     if (
+      !__DEV__ &&
       !this.centralServerProvider.hasAutoLoginDisabled() &&
       !Utils.isNullOrEmptyString(tenant?.subdomain) &&
       !Utils.isNullOrEmptyString(email) &&
@@ -261,20 +265,10 @@ export default class Login extends BaseScreen<Props, State> {
     }
   };
 
-  public onBack = () => {
-    // Exit?
-    Alert.alert(
-      I18n.t('general.exitApp'),
-      I18n.t('general.exitAppConfirm'),
-      [
-        { text: I18n.t('general.no'), style: 'cancel' },
-        { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }
-      ],
-      { cancelable: false }
-    );
-    // Do not bubble up
+  public onBack(): boolean {
+    this.setState({ showExitAppDialog: true });
     return true;
-  };
+  }
 
   public navigateToApp() {
     // Navigate to App
@@ -356,12 +350,13 @@ export default class Login extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { tenantLogo, eula, loading, initialLoading, hidePassword } = this.state;
+    const { tenantLogo, eula, loading, initialLoading, hidePassword, showExitAppDialog } = this.state;
     // Render
     return initialLoading ? (
       <Spinner style={formStyle.spinner} color="grey" />
     ) : (
       <View style={style.container}>
+        {showExitAppDialog && this.renderExitAppDialog()}
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
@@ -479,5 +474,13 @@ export default class Login extends BaseScreen<Props, State> {
       key: `${Utils.randomNumber()}`,
       openQRCode
     });
+  }
+
+  private renderExitAppDialog() {
+    return <ExitAppDialog close={() => this.setState({ showExitAppDialog: false })} />;
+  }
+
+  private renderNoTenantFoundDialog() {
+
   }
 }

@@ -47,7 +47,7 @@ import BaseProps from './types/BaseProps';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
 import { checkVersion } from 'react-native-check-version';
-import AppUpdateModal from './components/modal/app-update/AppUpdateModal';
+import AppUpdateDialog from './components/modal/app-update/AppUpdateDialog';
 
 // Init i18n
 I18nManager.initialize();
@@ -551,7 +551,7 @@ export default class App extends React.Component<Props, State> {
     return (
       this.state.isNavigationStateLoaded && (
         <RootSiblingParent>
-          {showAppUpdateDialog && <AppUpdateModal close={() => this.setState({ showAppUpdateDialog: false })} />}
+          {showAppUpdateDialog && <AppUpdateDialog close={() => this.setState({ showAppUpdateDialog: false })} />}
           <StatusBar hidden />
           {createRootNavigator(this, this.state.navigationState)}
         </RootSiblingParent>

@@ -11,6 +11,7 @@ export interface DialogModalButton {
   action?: () => any;
   buttonStyle?: any;
   buttonTextStyle?: any;
+  renderIcon?: () => Icon;
 }
 
 export interface Props {
@@ -27,6 +28,11 @@ export interface Props {
   animationOut?: Animation;
   onBackButtonPressed?: () => void;
   onBackDropPress?: () => void;
+}
+
+export interface DialogCommonProps {
+  close: (...args: any[]) => void;
+  back?: (...args: any[]) => void;
 }
 
 interface State {}
@@ -84,6 +90,7 @@ export default class DialogModal extends React.Component<Props, State> {
           <View style={[style.buttonsContainer, buttonsContainerStyle]}>
             {buttons?.map((button: DialogModalButton, index) => (
               <TouchableOpacity onPress={button.action} style={[button.buttonStyle, buttonCommonStyle]} key={index}>
+                {button.renderIcon?.()}
                 <Text style={{ ...style.buttonText, ...button.buttonTextStyle }}>{button.text?.toUpperCase()}</Text>
               </TouchableOpacity>
             ))}
