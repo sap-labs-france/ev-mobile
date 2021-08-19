@@ -37,8 +37,14 @@ export default function StripePaymentMethodCreationForm(props: Props) {
     const csProvider = await ProviderFactory.getProvider();
     setProvider(csProvider);
     // Billing
-    const billingSettings: BillingSettings = await csProvider.getBillingSettings();
-    await initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
+    const billingSettings: BillingSettings = Utils.getParamFromNavigation(
+      props.route,
+      'billingSettings',
+      null
+    ) as unknown as BillingSettings;
+    if (billingSettings?.stripe?.publicKey) {
+      await initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
+    }
   }
 
   async function addPaymentMethod(): Promise<void> {
