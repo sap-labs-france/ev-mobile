@@ -187,6 +187,7 @@ export default class Tenants extends BaseScreen<Props, State> {
         description={I18n.t('general.newTenantAddedDialogDescription', { tenantName: newTenant?.name })}
         withCloseButton={true}
         withCancel={true}
+        animationIn={'fadeInLeft'}
         cancelButtonText={I18n.t('general.close')}
         close={() => this.setState({ showNewTenantAddedDialog: false })}
         buttons={[

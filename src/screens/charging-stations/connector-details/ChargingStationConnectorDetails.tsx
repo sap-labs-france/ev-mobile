@@ -20,6 +20,8 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
+import DialogModal from '../../../components/modal/DialogModal';
+import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -44,6 +46,7 @@ interface State {
   buttonDisabled?: boolean;
   refreshing?: boolean;
   userDefaultTagCar?: UserDefaultTagCar;
+  showStartTransactionDialog: boolean;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -71,7 +74,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       inactivityFormatted: '-',
       startTransactionNbTrial: 0,
       isPricingActive: false,
-      refreshing: false
+      refreshing: false,
+      showStartTransactionDialog: false
     };
   }
 
@@ -274,11 +278,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public startTransactionConfirm = () => {
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
-    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStationID }), [
-      { text: I18n.t('general.yes'), onPress: async () => this.startTransaction() },
-      { text: I18n.t('general.no') }
-    ]);
+    this.setState({ showStartTransactionDialog: true });
   };
 
   public startTransaction = async () => {
@@ -691,12 +691,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { connector, canStopTransaction, canStartTransaction, chargingStation, loading, siteImage, isPricingActive } = this.state;
+    const { connector, canStopTransaction, canStartTransaction, chargingStation, loading, siteImage, isPricingActive, showStartTransactionDialog } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return loading ? (
       <Spinner style={style.spinner} color="grey" />
     ) : (
       <Container style={style.container}>
+        {showStartTransactionDialog && this.renderStartTransactionDialog()}
         <HeaderComponent
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : '-'}
@@ -787,5 +788,33 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         break;
     }
     return <Text style={style.errorMessage}>{errorMessage}</Text>;
+  }
+
+  private renderStartTransactionDialog() {
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    const modalCommonStyle = computeModalCommonStyle();
+    return (
+      <DialogModal
+        title={I18n.t('details.startTransaction')}
+        withCloseButton={true}
+        close={() => this.setState({ showStartTransactionDialog: false })}
+        renderIcon={(style) => <Icon style={style} type={'MaterialIcons'} name={'play-circle-outline'} />}
+        description={I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStationID })}
+        buttons={[
+          {
+            text: I18n.t('general.yes'),
+            action: () => this.setState({ showStartTransactionDialog: false }, async () => this.startTransaction()),
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonStyle: modalCommonStyle.primaryButton
+          },
+          {
+            text: I18n.t('general.no'),
+            action: () => this.setState({ showStartTransactionDialog: false }),
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonStyle: modalCommonStyle.primaryButton
+          }
+        ]}
+      />
+    );
   }
 }
