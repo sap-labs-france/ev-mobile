@@ -12,10 +12,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      alignSelf: 'center',
+      width: '98%',
       height: '40@s',
       paddingLeft: '5@s',
       paddingRight: '5@s',
-      borderRadius: '10@s',
+      borderRadius: '18@s',
       backgroundColor: commonColor.listHeaderBgColor
     },
     inputField: {
