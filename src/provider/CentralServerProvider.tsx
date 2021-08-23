@@ -570,13 +570,16 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async startTransaction(chargingStationID: string, connectorId: number, tagID: string): Promise<ActionResponse> {
+  // eslint-disable-next-line max-len
+  public async startTransaction(chargingStationID: string, connectorId: number, tagID: string, carID: string, userID: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_REMOTE_START, { id: chargingStationID });
     // Call
     const result = await this.axiosInstance.put(
       url,
       {
+        carID,
+        userID,
         args: {
           connectorId,
           tagID
