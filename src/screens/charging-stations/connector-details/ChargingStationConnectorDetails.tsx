@@ -99,10 +99,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public async componentDidMount() {
     await super.componentDidMount(false);
-    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
-    if (startTransaction) {
-      this.startTransactionConfirm();
-    }
+    await this.refresh();
     this.currentUser = this.centralServerProvider.getUserInfo();
     if (this.currentUser) {
       this.setState(
@@ -232,6 +229,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     let transaction = null;
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
     const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
+    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null) as boolean;
     // Get Charger
     const chargingStation = await this.getChargingStation(chargingStationID);
     const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;
@@ -250,6 +248,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // // Compute Duration
     const durationInfos = this.getDurationInfos(transaction, connector);
     // Set
+    if (startTransaction && userDefaultTagCar && !startStopTransactionButtonStatus.buttonDisabled) {
+      this.props.navigation.setParams({ startTransaction: null });
+      this.startTransactionConfirm();
+    }
     this.setState({
       chargingStation,
       connector: chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null,
@@ -412,7 +414,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   ): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
     const { startTransactionNbTrial } = this.state;
     // Check if error codes
-    if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
+    if (!userDefaultTagCar || !Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
       return {
         buttonDisabled: true
       };

@@ -162,6 +162,7 @@ export default class Tags extends SelectableList<Tag> {
           <View style={style.content}>
             <ItemsList<Tag>
               data={tags}
+              ref={this.itemsListRef}
               navigation={navigation}
               onSelect={this.onItemsSelected.bind(this)}
               selectionMode={selectionMode}

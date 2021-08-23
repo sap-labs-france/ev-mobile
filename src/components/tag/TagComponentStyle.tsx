@@ -77,13 +77,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginLeft: '5@s',
       flex: 1
     },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'space-between',
-      width: '90@s',
-      height: '100%'
-    },
     statusIndicator: {
       height: '100%',
       width: '5@s'
@@ -117,10 +110,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     fullName: {
       fontSize: '12@s',
       alignSelf: 'flex-start'
-    },
-    tagVisualIDContainer: {
-      marginTop: '3@s',
-      width: '100%'
     },
     tagVisualID: {
       fontSize: '11@s',

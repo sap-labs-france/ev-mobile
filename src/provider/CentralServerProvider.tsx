@@ -922,20 +922,28 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Call
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHODS, { userID: params.currentUserID });
-    const result = await this.axiosInstance.get(url, {
-      headers: this.buildSecuredHeaders()
-    });
-    return result.data as DataResult<BillingPaymentMethod>;
+    try{
+      const result = await this.axiosInstance.get(url, {
+        headers: this.buildSecuredHeaders()
+      });
+      return result?.data as DataResult<BillingPaymentMethod>;
+    } catch (e) {
+      return null;
+    }
   }
 
   public async getBillingSettings(): Promise<BillingSettings> {
     // Build the URL
     const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_SETTING}`;
     // Execute the REST Service
-    const result = await this.axiosInstance.get<BillingSettings>(url, {
-      headers: this.buildSecuredHeaders()
-    });
-    return result.data;
+    try {
+      const result = await this.axiosInstance.get<BillingSettings>(url, {
+        headers: this.buildSecuredHeaders()
+      });
+      return result.data;
+    } catch (error) {
+      return null;
+    }
   }
 
   /* eslint-disable @typescript-eslint/indent */

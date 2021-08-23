@@ -1,11 +1,10 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
+import { Container, Content, Icon, Spinner } from 'native-base';
 import React from 'react';
 
-import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
-import I18nManager from '../../I18n/I18nManager';
+import I18nManager, { NumberFormatCompactStyleEnum, NumberFormatNotationEnum, NumberFormatStyleEnum } from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseScreen from '../../screens/base-screen/BaseScreen';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
@@ -17,6 +16,8 @@ import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './StatisticsStyles';
+import { View } from 'react-native';
+import StatisticsComponent from '../../components/statistics/StatisticsComponent';
 
 export interface Props extends BaseProps {}
 
@@ -153,8 +154,8 @@ export default class Statistics extends BaseScreen<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
-    const cardStyle = computeCardStyleSheet();
     const { navigation } = this.props;
+    const commonColors = Utils.getCurrentCommonColor();
     const {
       loading,
       totalNumberOfSession,
@@ -167,6 +168,29 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalPrice,
       isPricingActive
     } = this.state;
+    const totalConsumption = I18nManager.formatNumberWithCompacts(totalConsumptionWattHours, {
+      notation: NumberFormatNotationEnum.COMPACT,
+      compactStyle: NumberFormatCompactStyleEnum.METRIC,
+      compactDisplay: 'short',
+      maximumFractionDigits: 1,
+      minimumFractionDigits: 1
+    });
+    const totalSessions = I18nManager.formatNumberWithCompacts(totalNumberOfSession, {
+      notation: NumberFormatNotationEnum.COMPACT,
+      compactStyle: NumberFormatCompactStyleEnum.FINANCE,
+      compactDisplay: 'long',
+      compactThreshold: 1000000
+    });
+    const totalCost = I18nManager.formatNumberWithCompacts(totalPrice, {
+      notation: NumberFormatNotationEnum.COMPACT,
+      compactStyle: NumberFormatCompactStyleEnum.FINANCE,
+      compactDisplay: 'short',
+      compactThreshold: 1000000,
+      style: NumberFormatStyleEnum.CURRENCY,
+      currency: priceCurrency,
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 2
+    });
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -193,90 +217,54 @@ export default class Statistics extends BaseScreen<Props, State> {
               }
               ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters)}
             />
-            <Content style={cardStyle.cards}>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="history" />
-                    <Body>
-                      <Text style={cardStyle.cardText}>
-                        {I18n.t('home.numberOfSessions', { nbrSessions: I18nManager.formatNumber(totalNumberOfSession) })}
-                      </Text>
-                      <Text note style={cardStyle.cardNote}>
-                        {I18n.t('home.numberOfSessionsNote')}
-                      </Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type="FontAwesome" name="bolt" />
-                    <Body>
-                      <Text style={cardStyle.cardText}>
-                        {I18n.t('home.totalConsumptiom', {
-                          totalConsumptiom: I18nManager.formatNumber(Math.round(totalConsumptionWattHours / 1000))
-                        })}
-                      </Text>
-                      <Text note style={cardStyle.cardNote}>
-                        {I18n.t('home.totalConsumptiomNote')}
-                      </Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="timer" />
-                    <Body>
-                      <Text style={cardStyle.cardText}>
-                        {I18n.t('home.totalDuration', { totalDuration: Utils.formatDuration(totalDurationSecs) })}
-                      </Text>
-                      <Text note style={cardStyle.cardNote}>
-                        {I18n.t('home.totalDurationNote')}
-                      </Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="timer-off" />
-                    <Body>
-                      <Text style={cardStyle.cardText}>
-                        {I18n.t('home.totalInactivity', {
-                          totalInactivity: Utils.formatDuration(totalInactivitySecs),
-                          totalInactivityPercent: I18nManager.formatPercentage(totalInactivitySecs / totalDurationSecs)
-                        })}
-                      </Text>
-                      <Text note style={cardStyle.cardNote}>
-                        {I18n.t('home.totalInactivityNote')}
-                      </Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
+            <View style={style.boxContainer}>
+              <StatisticsComponent
+                backgroundColor={style.sessions.backgroundColor.toString()}
+                textColor={commonColors.light}
+                value={totalSessions?.value}
+                secondLine={I18n.t('transactions.transactions')}
+                renderIcon={(iconStyle) => <Icon style={iconStyle} type="MaterialIcons" name="history" />}
+                description={I18n.t('home.numberOfSessionsNote')}
+                prefix={totalSessions?.compact}
+              />
+              <StatisticsComponent
+                backgroundColor={style.energy.backgroundColor.toString()}
+                textColor={commonColors.light}
+                value={totalConsumption?.value}
+                secondLine={'W.h'}
+                renderIcon={(iconStyle) => <Icon name={'bolt'} type={'FontAwesome'} style={iconStyle} />}
+                description={I18n.t('home.totalConsumptionNote')}
+                prefix={totalConsumption?.compact}
+                prefixWithSecondLine={true}
+              />
+              <StatisticsComponent
+                backgroundColor={style.duration.backgroundColor.toString()}
+                textColor={commonColors.light}
+                value={Utils.formatDuration(totalDurationSecs)}
+                renderIcon={(iconStyle) => <Icon style={iconStyle} type="MaterialIcons" name="timer" />}
+                description={I18n.t('home.totalDurationNote')}
+              />
+              <StatisticsComponent
+                backgroundColor={style.inactivity.backgroundColor.toString()}
+                textColor={commonColors.light}
+                secondLine={I18nManager.formatPercentage(totalInactivitySecs / totalDurationSecs)}
+                value={Utils.formatDuration(totalInactivitySecs)}
+                renderIcon={(iconStyle) => <Icon style={iconStyle} type="MaterialIcons" name="timer-off" />}
+                description={I18n.t('home.totalInactivityNote')}
+              />
               {isPricingActive && (
-                <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem}>
-                    <Left>
-                      <Icon style={cardStyle.cardIcon} type="FontAwesome" name="money" />
-                      <Body>
-                        <Text style={cardStyle.cardText}>
-                          {I18n.t('home.totalPrice', { totalPrice: I18nManager.formatCurrency(totalPrice, priceCurrency) })}
-                        </Text>
-                        <Text note style={cardStyle.cardNote}>
-                          {I18n.t('home.totalPriceNote')}
-                        </Text>
-                      </Body>
-                    </Left>
-                  </CardItem>
-                </Card>
+                <StatisticsComponent
+                  backgroundColor={style.cost.backgroundColor.toString()}
+                  textColor={commonColors.light}
+                  secondLine={totalCost?.currency}
+                  value={totalCost?.value}
+                  prefix={totalCost?.compact}
+                  prefixWithSecondLine={true}
+                  renderIcon={(iconStyle) => <Icon style={iconStyle} type="FontAwesome" name="money" />}
+                  description={I18n.t('home.totalPriceNote')}
+                />
               )}
-            </Content>
+            </View>
           </Content>
         )}
       </Container>

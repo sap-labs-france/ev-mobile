@@ -1,26 +1,29 @@
 import I18n from 'i18n-js';
-import { Button, Item, Picker, Text, View } from 'native-base';
+import { Icon, View } from 'native-base';
 import React from 'react';
-import { Alert, TextInput } from 'react-native';
-import Modal from 'react-native-modal';
+import { Alert } from 'react-native';
+import SelectDropdown from 'react-native-select-dropdown';
 
 import Configuration from '../../config/Configuration';
-import computeModalStyleSheet from '../../ModalStyles';
 import BaseProps from '../../types/BaseProps';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
+import DialogModal from '../../components/modal/DialogModal';
+import { Input } from 'react-native-elements';
+import computeStyleSheet from './CreateTenantDialogStyle';
 
 export interface Props extends BaseProps {
   tenants: TenantConnection[];
   close: (newTenant?: TenantConnection) => void;
+  goBack?: () => void;
 }
 
 interface State {
   newTenantSubDomain?: string;
   newTenantName?: string;
   tenantEndpointClouds: EndpointCloud[];
-  newTenantEndpointCloudId?: string;
+  newTenantEndpointCloud?: EndpointCloud;
   errorNewTenantName?: Record<string, unknown>[];
   errorNewTenantSubDomain?: Record<string, unknown>[];
 }
@@ -58,116 +61,99 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
       newTenantSubDomain: null,
       newTenantName: null,
       tenantEndpointClouds,
-      newTenantEndpointCloudId: Configuration.DEFAULT_ENDPOINT_CLOUD_ID
+      newTenantEndpointCloud: Configuration.ENDPOINT_CLOUDS?.[0]
     };
   }
 
   public render() {
-    const modalStyle = computeModalStyleSheet();
+    const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const pickerItems = this.state.tenantEndpointClouds.map((tenantEndpointCloud) => (
-      <Picker.Item key={tenantEndpointCloud.id} value={tenantEndpointCloud.id} label={tenantEndpointCloud.name} />
-    ));
-    // Render
+    const { newTenantSubDomain, newTenantName, newTenantEndpointCloud, tenantEndpointClouds } = this.state;
+
     return (
-      <Modal style={modalStyle.modal} isVisible onBackdropPress={() => this.props.close()}>
-        <View style={modalStyle.modalContainer}>
-          <View style={modalStyle.modalHeaderContainer}>
-            <Text style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</Text>
-          </View>
-          <View style={modalStyle.modalContentContainer}>
-            <View style={modalStyle.modalRow}>
-              <Item inlineLabel style={modalStyle.modalInputGroup}>
-                <TextInput
-                  autoFocus
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  placeholder={I18n.t('authentication.tenantSubdomain')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
-                  style={modalStyle.modalInputField}
-                  onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
-                />
-              </Item>
-            </View>
-            <View style={modalStyle.modalRowError}>
-              {this.state.errorNewTenantSubDomain &&
-                this.state.errorNewTenantSubDomain.map((errorMessage, index) => (
-                  <Text style={modalStyle.modalErrorText} key={index}>
-                    {errorMessage}
-                  </Text>
-                ))}
-            </View>
-            <View style={modalStyle.modalRow}>
-              <Item inlineLabel style={modalStyle.modalInputGroup}>
-                <TextInput
-                  placeholder={I18n.t('authentication.tenantName')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
-                  autoCorrect={false}
-                  style={modalStyle.modalInputField}
-                  onChangeText={(value) => this.setState({ newTenantName: value })}
-                />
-              </Item>
-            </View>
-            <View style={modalStyle.modalRowError}>
-              {this.state.errorNewTenantName &&
-                this.state.errorNewTenantName.map((errorMessage, index) => (
-                  <Text style={modalStyle.modalErrorText} key={index}>
-                    {errorMessage}
-                  </Text>
-                ))}
-            </View>
-            <View style={modalStyle.modalRow}>
-              <View style={modalStyle.modalPickerGroup}>
-                <Picker
-                  mode="dialog"
-                  style={modalStyle.modalPickerField}
-                  placeholder={I18n.t('authentication.tenantEndpoint')}
-                  headerBackButtonText={I18n.t('general.back')}
-                  iosHeader={I18n.t('authentication.tenantEndpoint')}
-                  placeholderStyle={modalStyle.modalPickerPlaceHolder}
-                  headerStyle={modalStyle.modalPickerModal}
-                  headerTitleStyle={modalStyle.modalPickerText}
-                  headerBackButtonTextStyle={modalStyle.modalPickerText}
-                  textStyle={modalStyle.modalPickerText}
-                  itemTextStyle={modalStyle.modalPickerText}
-                  itemStyle={modalStyle.modalPickerModal}
-                  modalStyle={modalStyle.modalPickerModal}
-                  selectedValue={this.state.newTenantEndpointCloudId}
-                  onValueChange={(value) => this.setState({ newTenantEndpointCloudId: value })}>
-                  {pickerItems}
-                </Picker>
-              </View>
-            </View>
-          </View>
-          <View style={modalStyle.modalButtonsContainer}>
-            <Button
-              style={[modalStyle.modalButton]}
-              full
-              danger
-              onPress={() => {
-                const selectedTenantEndpointCloud = this.state.tenantEndpointClouds.find(
-                  (tenantEndpointCloud) => tenantEndpointCloud.id === this.state.newTenantEndpointCloudId
-                );
-                this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName, selectedTenantEndpointCloud);
-              }}>
-              <Text style={modalStyle.modalTextButton} uppercase={false}>
-                {I18n.t('general.create')}
-              </Text>
-            </Button>
-            <Button
-              style={[modalStyle.modalButton]}
-              full
-              light
-              onPress={() => {
-                this.props.close();
-              }}>
-              <Text style={modalStyle.modalTextButton} uppercase={false}>
-                {I18n.t('general.cancel')}
-              </Text>
-            </Button>
-          </View>
-        </View>
-      </Modal>
+      <DialogModal
+        renderIcon={(iconStyle) => <Icon style={iconStyle} type={'MaterialIcons'} name={'business'} />}
+        animationIn={'fadeInLeft'}
+        animationOut={'fadeOutRight'}
+        close={() => this.props.close?.()}
+        title={I18n.t('authentication.addTenantManuallyTitle')}
+        withCloseButton={true}
+        buttons={[
+          {
+            text: I18n.t('general.create'),
+            buttonTextStyle: style.createButton,
+            buttonStyle: style.createButton,
+            action: () => {
+              this.createTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
+            }
+          },
+          {
+            text: I18n.t('general.back'),
+            buttonTextStyle: style.backButton,
+            buttonStyle: style.backButton,
+            action: () => this.props.goBack?.()
+          }
+        ]}
+        renderControls={() => this.renderControls(style)}
+      />
+    );
+  }
+
+  private renderControls(style: any) {
+    const { tenantEndpointClouds, newTenantEndpointCloud } = this.state;
+    const commonColor = Utils.getCurrentCommonColor();
+    return (
+      <View style={style.modalControlsContainer}>
+        <Input
+          autoCorrect={false}
+          autoCapitalize={'none'}
+          placeholder={I18n.t('authentication.tenantSubdomainPlaceholder')}
+          placeholderTextColor={commonColor.placeholderTextColor}
+          errorMessage={this.state.errorNewTenantSubDomain?.join(' ')}
+          errorStyle={style.inputError}
+          label={I18n.t('authentication.tenantSubdomain')}
+          labelStyle={style.inputLabel}
+          containerStyle={style.inputContainer}
+          inputContainerStyle={style.inputInnerContainer}
+          inputStyle={style.inputText}
+          onChangeText={(value: string) => this.setState({ newTenantSubDomain: value?.toLowerCase() })}
+        />
+        <Input
+          autoCorrect={false}
+          placeholder={I18n.t('authentication.tenantNamePlaceholder')}
+          placeholderTextColor={commonColor.placeholderTextColor}
+          errorMessage={this.state.errorNewTenantName?.join(' ')}
+          errorStyle={style.inputError}
+          label={I18n.t('authentication.tenantName')}
+          labelStyle={style.inputLabel}
+          containerStyle={style.inputContainer}
+          inputContainerStyle={style.inputInnerContainer}
+          inputStyle={style.inputText}
+          onChangeText={(value: string) => this.setState({ newTenantName: value })}
+        />
+        <Input
+          label={I18n.t('authentication.tenantEndpoint') + ' Endpoint'}
+          labelStyle={[style.inputLabel, style.selectLabel]}
+          containerStyle={style.inputContainer}
+          inputStyle={style.inputText}
+          inputContainerStyle={style.inputInnerContainer}
+          InputComponent={() => (
+            <SelectDropdown
+              data={tenantEndpointClouds}
+              defaultButtonText={newTenantEndpointCloud?.name}
+              buttonTextAfterSelection={(selectedItem: EndpointCloud) => selectedItem.name}
+              rowTextForSelection={(item: EndpointCloud) => item.name}
+              buttonStyle={style.selectField}
+              buttonTextStyle={style.selectFieldText}
+              dropdownStyle={style.selectDropdown}
+              rowStyle={style.selectDropdownRow}
+              rowTextStyle={style.selectDropdownRowText}
+              renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
+              onSelect={(endpointCloud: EndpointCloud) => this.setState({ newTenantEndpointCloud: endpointCloud })}
+            />
+          )}
+        />
+      </View>
     );
   }
 

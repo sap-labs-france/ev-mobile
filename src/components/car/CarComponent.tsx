@@ -33,11 +33,8 @@ export default class CarComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { car, navigation, selected } = this.props;
-    const carUsers = car?.carUsers ?? [];
-    const defaultCarUser = carUsers.find((carUser) => carUser.default);
-    const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
-    const otherUserCount = Math.max(carUsers.length - 1, 0);
+    const { car, selected, navigation } = this.props;
+    const userName = Utils.buildUserName(car?.user);
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
     return (
       <Card style={style.container}>
@@ -60,13 +57,12 @@ export default class CarComponent extends React.Component<Props, State> {
             <View style={style.carInfos}>
               <View style={style.userContainer}>
                 <View style={[style.avatarContainer]}>
-                  <UserAvatar size={35} user={defaultCarUser?.user} navigation={navigation} />
+                  <UserAvatar size={35} user={car?.user} navigation={navigation} />
                 </View>
                 <View style={[style.userNameContainer]}>
                   <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.userName]}>
-                    {defaultCarUserName}
+                    {userName}
                   </Text>
-                  {otherUserCount > 0 && <Text style={style.text}>(+{I18nManager.formatNumber(otherUserCount)})</Text>}
                 </View>
               </View>
               <View style={style.powerDetailsContainer}>

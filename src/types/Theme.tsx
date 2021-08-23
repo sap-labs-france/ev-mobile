@@ -30,4 +30,7 @@ export default interface ThemeDefinition {
   disabledLight: string;
   disabledDark: string;
   touchableBackgroundColor: string;
+  modalBackgroundColor: string;
+  selectFieldBackgroundColor: string;
+  selectDropdownBackgroundColor: string;
 }

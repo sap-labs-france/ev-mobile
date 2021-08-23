@@ -58,8 +58,8 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
               <Spinner style={style.spinner} color={commonColors.textColor} />
             ) : (
               <Text ellipsizeMode={'tail'} style={[style.buttonText, style.selectText]} uppercase={false}>
-                {buildItemName(Utils.isEmptyArray(selectedItems) ? defaultItem : selectedItems[0])}{' '}
-                {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
+                {buildItemName(defaultItem)}{' '}
+                {selectedItemsCount > 1 && `(+${selectedItemsCount - 1})`}
               </Text>
             )}
           </View>
@@ -121,7 +121,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     const { onItemsSelected } = this.props;
     const selectedItems = this.itemsListRef?.current?.state.selectedItems;
     if (!Utils.isEmptyArray(selectedItems)) {
-      this.setState({ selectedItems, isVisible: false, selectedItemsCount: 0 }, () => onItemsSelected(selectedItems));
+      this.setState({ isVisible: false, selectedItemsCount: 0 }, () => onItemsSelected(selectedItems));
     }
   }
 
@@ -131,7 +131,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
       // We only need the items count to handle the activation of the 'validate' button
       this.setState({ selectedItemsCount: selectedItems.length });
     } else if (selectionMode === ItemSelectionMode.SINGLE && !Utils.isEmptyArray(selectedItems)) {
-      this.setState({ selectedItems, isVisible: false }, () => onItemsSelected(selectedItems));
+      this.setState({ isVisible: false }, () => onItemsSelected(selectedItems));
     }
   }
 }

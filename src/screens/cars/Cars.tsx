@@ -65,7 +65,7 @@ export default class Cars extends SelectableList<Car> {
     try {
       const params = {
         Search: searchText,
-        WithUsers: true,
+        WithUser: true,
         UserID: this.props.userIDs?.join('|')
       };
       const cars = await this.centralServerProvider.getCars(params, { skip, limit });
@@ -157,6 +157,7 @@ export default class Cars extends SelectableList<Car> {
           <View style={style.content}>
             <ItemsList<Car>
               data={cars}
+              ref={this.itemsListRef}
               navigation={navigation}
               count={count}
               limit={limit}
