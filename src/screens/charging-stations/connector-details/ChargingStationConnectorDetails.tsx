@@ -421,7 +421,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         buttonDisabled: true
       };
     }
-    if (!this.state.userDefaultTagCar?.tag) {
+    if (!userDefaultTagCar?.tag) {
       return {
         buttonDisabled: true
       };
