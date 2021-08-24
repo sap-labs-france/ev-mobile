@@ -882,7 +882,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <View style={style.selectUserCarBadgeTitleContainer}>
-          <Text style={style.selectUserCarBadgeTitle}>{I18n.t('transactions.selectEV')}</Text>
+          <Text style={style.selectUserCarBadgeTitle}>{I18n.t('transactions.selectEV')} ({I18n.t('general.optional')})</Text>
         </View>
         <ModalSelect<Car>
           ref={this.carModalRef}

@@ -68,7 +68,8 @@
     "update": "Actualizar",
     "reset": "Reset",
     "selected": "Selected",
-    "results": "Result(s)"
+    "results": "Result(s)",
+    "optional": "Optional"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -266,7 +267,7 @@
     "transactionStopUnexpectedError": "No se puede detener la sesión",
     "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
     "startTransactionDisabled": "Service temporarily unavailable, please contact the support.",
-    "noBadgeError": "No charge card registered",
+    "noBadgeError": "Service unavailable, no charge card registered",
     "selectUser": "Select User",
     "selectEV": "Select EV",
     "selectChargeCard": "Select Charge Card"

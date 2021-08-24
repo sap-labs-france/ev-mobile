@@ -68,7 +68,8 @@
     "update": "Mettre à jour",
     "reset": "Réinitialiser",
     "selected": "Sélectionné(s)",
-    "results": "Résultat(s)"
+    "results": "Résultat(s)",
+    "optional": "Optionnel"
   },
   "sidebar": {
     "home": "Home",
@@ -266,7 +267,7 @@
     "transactionStopUnexpectedError": "Impossible de stopper la session",
     "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistré.",
     "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support.",
-    "noBadgeError": "Aucune carte de recharge enregistrée",
+    "noBadgeError": "Service indisponible, aucune carte de recharge enregistrée",
     "selectUser": "Sélectionnez l'utilisateur",
     "selectEV": "Sélectionnez le véhicule",
     "selectChargeCard": "Sélectionnez la carte de recharge"
