@@ -2,12 +2,20 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  Alert,
+  Image,
+  ImageStyle,
+  RefreshControl,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native';
 
 import noSite from '../../../../assets/no-site.png';
-import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
+import ConnectorStatusComponent
+  from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import { ItemSelectionMode } from '../../../components/list/ItemsList';
+import ItemsList, { ItemSelectionMode } from '../../../components/list/ItemsList';
 import ModalSelect from '../../../components/modal/ModalSelect';
 import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
@@ -61,6 +69,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public state: State;
   public props: Props;
   private currentUser: UserToken;
+  private carModalRef = React.createRef<ModalSelect<Car>>();
+  private tagModalRef = React.createRef<ModalSelect<Tag>>();
 
   public constructor(props: Props) {
     super(props);
@@ -329,7 +339,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       const response = await this.centralServerProvider.startTransaction(
         chargingStation.id,
         connector.connectorId,
-        selectedTag?.id as string,
+        selectedTag?.visualID,
         selectedCar?.id as string,
         selectedUser?.id as string
       );
@@ -415,6 +425,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { startTransactionNbTrial } = this.state;
     // Check if error codes
     if (!userDefaultTagCar || !Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
+      return {
+        buttonDisabled: true
+      };
+    }
+    if (!this.state.userDefaultTagCar?.tag) {
       return {
         buttonDisabled: true
       };
@@ -761,7 +776,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         {/* Error message */}
         {this.renderErrorMessages(style)}
         {/* Details */}
-        {connector?.status === ChargePointStatus.AVAILABLE ? (
+        {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
           <View style={style.selectUserCarBadgeContainer}>
             {/* User */}
             {isAdmin && this.renderUserSelection(style)}
@@ -865,13 +880,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={style.selectUserCarBadgeTitle}>Select EV</Text>
         </View>
         <ModalSelect<Car>
+          ref={this.carModalRef}
           renderIcon={(iconStyle: any) => <Icon name={'car-electric'} type={'MaterialCommunityIcons'} style={iconStyle} />}
           defaultItem={selectedCar}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedCars: Car[]) => this.setState({ selectedCar: selectedCars?.[0] })}
           buildItemName={(car: Car) => Utils.buildCarCatalogName(car?.carCatalog)}
           navigation={navigation}
-          selectionMode={ItemSelectionMode.SINGLE}>
+          selectionMode={ItemSelectionMode.MULTI}>
           <Cars userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
       </View>
@@ -887,13 +903,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={style.selectUserCarBadgeTitle}>Select Charge Card</Text>
         </View>
         <ModalSelect<Tag>
+          ref={this.tagModalRef}
           renderIcon={(iconStyle: any) => <Icon name={'credit-card'} type={'MaterialCommunityIcons'} style={iconStyle} />}
           defaultItem={selectedTag}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedTags: Tag[]) => this.setState({ selectedTag: selectedTags?.[0] })}
           buildItemName={(tag: Tag) => tag?.description ?? '-'}
           navigation={navigation}
-          selectionMode={ItemSelectionMode.SINGLE}>
+          selectionMode={ItemSelectionMode.MULTI}>
           <Tags userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
       </View>
@@ -909,6 +926,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private async loadSelectedUserDefaultTagAndCar(): Promise<void> {
     this.setState({ tagCarLoading: true });
+    this.carModalRef.current?.clearInput();
+    this.tagModalRef.current?.clearInput();
     const userDefaultTagCar = await this.getUserDefaultTagAndCar();
     this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
   }

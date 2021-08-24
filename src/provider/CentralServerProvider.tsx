@@ -571,7 +571,7 @@ export default class CentralServerProvider {
   }
 
   // eslint-disable-next-line max-len
-  public async startTransaction(chargingStationID: string, connectorId: number, tagID: string, carID: string, userID: string): Promise<ActionResponse> {
+  public async startTransaction(chargingStationID: string, connectorId: number, visualTagID: string, carID: string, userID: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_REMOTE_START, { id: chargingStationID });
     // Call
@@ -582,7 +582,7 @@ export default class CentralServerProvider {
         userID,
         args: {
           connectorId,
-          tagID
+          visualTagID
         }
       },
       {

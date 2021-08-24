@@ -39,11 +39,15 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     };
   }
 
+  public clearInput() {
+    this.setState({ selectedItems: [] });
+  }
+
   public render() {
     const style = computeStyleSheet();
     const commonColors = Utils.getCurrentCommonColor();
     const { buildItemName, selectionMode, defaultItemLoading, defaultItem, renderIcon } = this.props;
-    const { isVisible, selectedItemsCount, selectedItems } = this.state;
+    const { isVisible, selectedItems } = this.state;
     const itemsList = React.Children.only(this.props.children);
     return (
       <View style={style.container}>
@@ -57,9 +61,9 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
             {defaultItemLoading ? (
               <Spinner style={style.spinner} color={commonColors.textColor} />
             ) : (
-              <Text ellipsizeMode={'tail'} style={[style.buttonText, style.selectText]} uppercase={false}>
-                {buildItemName(defaultItem)}{' '}
-                {selectedItemsCount > 1 && `(+${selectedItemsCount - 1})`}
+              <Text adjustsFontSizeToFit={true} style={[style.buttonText, style.selectText]} uppercase={false}>
+                {buildItemName(selectedItems.length > 0 ? selectedItems[0] : defaultItem)}{' '}
+                {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
               </Text>
             )}
           </View>
@@ -98,10 +102,10 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
                   <Text style={style.buttonText}>{I18n.t('general.reset')}</Text>
                 </Button>
                 <Button
-                  disabled={selectedItemsCount <= 0}
+                  disabled={selectedItems.length <= 0}
                   block
                   light
-                  style={[style.modalButton, selectedItemsCount > 0 ? style.buttonEnabled : style.buttonDisabled]}
+                  style={[style.modalButton, selectedItems.length > 0 ? style.buttonEnabled : style.buttonDisabled]}
                   onPress={() => this.validateSelection()}>
                   <Text style={style.buttonText}>{I18n.t('general.validate')}</Text>
                 </Button>
@@ -121,17 +125,16 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     const { onItemsSelected } = this.props;
     const selectedItems = this.itemsListRef?.current?.state.selectedItems;
     if (!Utils.isEmptyArray(selectedItems)) {
-      this.setState({ isVisible: false, selectedItemsCount: 0 }, () => onItemsSelected(selectedItems));
+      this.setState({ isVisible: false }, () => onItemsSelected(selectedItems));
     }
   }
 
   private onItemSelected(selectedItems: T[]): void {
     const { selectionMode, onItemsSelected } = this.props;
     if (selectionMode === ItemSelectionMode.MULTI) {
-      // We only need the items count to handle the activation of the 'validate' button
-      this.setState({ selectedItemsCount: selectedItems.length });
+      this.setState({ selectedItems });
     } else if (selectionMode === ItemSelectionMode.SINGLE && !Utils.isEmptyArray(selectedItems)) {
-      this.setState({ isVisible: false }, () => onItemsSelected(selectedItems));
+      this.setState({ selectedItems, isVisible: false }, () => onItemsSelected(selectedItems));
     }
   }
 }
