@@ -264,8 +264,12 @@
     "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
     "connectorNotAvailable": "Le connecteur de cette borne n'est pas disponible",
     "transactionStopUnexpectedError": "Impossible de stopper la session",
-    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistrée.",
-    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support."
+    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistré.",
+    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support.",
+    "noBadgeError": "Aucune carte de recharge enregistrée",
+    "selectUser": "Sélectionnez l'utilisateur",
+    "selectEV": "Sélectionnez le véhicule",
+    "selectChargeCard": "Sélectionnez la carte de recharge"
   },
   "home": {
     "browseSites": "Sites",

@@ -2,20 +2,12 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import {
-  Alert,
-  Image,
-  ImageStyle,
-  RefreshControl,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native';
+import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
 import noSite from '../../../../assets/no-site.png';
-import ConnectorStatusComponent
-  from '../../../components/connector-status/ConnectorStatusComponent';
+import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList, { ItemSelectionMode } from '../../../components/list/ItemsList';
+import { ItemSelectionMode } from '../../../components/list/ItemsList';
 import ModalSelect from '../../../components/modal/ModalSelect';
 import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
@@ -389,14 +381,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       this.setState({ buttonDisabled: true });
       // Remote Stop the Transaction
       if (connector.status !== ChargePointStatus.AVAILABLE) {
-        const response = await this.centralServerProvider.stopTransaction(chargingStation.id as string, connector.currentTransactionID);
+        const response = await this.centralServerProvider.stopTransaction(chargingStation.id, connector.currentTransactionID);
         if (response?.status === 'Accepted') {
           Message.showSuccess(I18n.t('details.accepted'));
           await this.refresh();
         } else {
           Message.showError(I18n.t('details.denied'));
         }
-      // Soft Stop Transaction
+        // Soft Stop Transaction
       } else {
         const response = await this.centralServerProvider.softStopstopTransaction(connector.currentTransactionID);
         if (response?.status === 'Invalid') {
@@ -773,17 +765,20 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         ) : (
           <View style={style.noButtonStopTransaction} />
         )}
-        {/* Error message */}
-        {this.renderErrorMessages(style)}
         {/* Details */}
         {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
           <View style={style.selectUserCarBadgeContainer}>
-            {/* User */}
-            {isAdmin && this.renderUserSelection(style)}
-            {/* Car */}
-            {this.renderCarSelection(style)}
-            {/* Badge */}
-            {this.renderTagSelection(style)}
+            {/* Error messages */}
+            {this.renderErrorMessages(style)}
+            <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
+            <View>
+              {/* User */}
+              {isAdmin && this.renderUserSelection(style)}
+              {/* Car */}
+              {this.renderCarSelection(style)}
+              {/* Badge */}
+              {this.renderTagSelection(style)}
+            </View>
           </View>
         ) : (
           <ScrollView
@@ -832,22 +827,32 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderErrorMessages(style: any) {
     const { userDefaultTagCar } = this.state;
-    // No error
-    if (Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
-      return null;
+    const errorMessages: string[] = [];
+
+    if (userDefaultTagCar && !userDefaultTagCar.tag) {
+      errorMessages.push(I18n.t('transactions.noBadgeError'));
     }
-    // Check the error code
-    const errorCode = userDefaultTagCar.errorCodes[0];
-    let errorMessage: string;
-    switch (errorCode) {
-      case StartTransactionErrorCode.BILLING_NO_PAYMENT_METHOD:
-        errorMessage = I18n.t('transactions.noPaymentMethodError');
-        break;
-      default:
-        errorMessage = I18n.t('transactions.startTransactionDisabled');
-        break;
+    if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
+      // Check the error code
+      const errorCode = userDefaultTagCar.errorCodes[0];
+      switch (errorCode) {
+        case StartTransactionErrorCode.BILLING_NO_PAYMENT_METHOD:
+          errorMessages.push(I18n.t('transactions.noPaymentMethodError'));
+          break;
+        default:
+          errorMessages.push(I18n.t('transactions.startTransactionDisabled'));
+          break;
+      }
     }
-    return <Text style={style.errorMessage}>{errorMessage}</Text>;
+    return (
+      <View>
+        {errorMessages.map((errorMessage, index) => (
+          <Text key={index} style={style.errorMessage}>
+            {errorMessage}
+          </Text>
+        ))}
+      </View>
+    );
   }
 
   private renderUserSelection(style: any) {
@@ -856,7 +861,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <View style={style.selectUserCarBadgeTitleContainer}>
-          <Text style={style.selectUserCarBadgeTitle}>Select User</Text>
+          <Text style={style.selectUserCarBadgeTitle}>{I18n.t('transactions.selectUser')}</Text>
         </View>
         <ModalSelect<User>
           renderIcon={(iconStyle: any) => <Icon name={'person'} type={'MaterialIcons'} style={iconStyle} />}
@@ -877,7 +882,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <View style={style.selectUserCarBadgeTitleContainer}>
-          <Text style={style.selectUserCarBadgeTitle}>Select EV</Text>
+          <Text style={style.selectUserCarBadgeTitle}>{I18n.t('transactions.selectEV')}</Text>
         </View>
         <ModalSelect<Car>
           ref={this.carModalRef}
@@ -900,7 +905,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <View style={style.selectUserCarBadgeTitleContainer}>
-          <Text style={style.selectUserCarBadgeTitle}>Select Charge Card</Text>
+          <Text style={style.selectUserCarBadgeTitle}>{I18n.t('transactions.selectChargeCard')}</Text>
         </View>
         <ModalSelect<Tag>
           ref={this.tagModalRef}
@@ -920,15 +925,18 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private onUserSelected(selectedUsers: User[]): void {
     const selectedUser = selectedUsers?.[0];
     if (selectedUser.id !== this.state.selectedUser?.id) {
+      this.carModalRef.current?.clearInput();
+      this.tagModalRef.current?.clearInput();
       this.setState({ selectedUser }, this.loadSelectedUserDefaultTagAndCar.bind(this));
     }
   }
 
   private async loadSelectedUserDefaultTagAndCar(): Promise<void> {
     this.setState({ tagCarLoading: true });
-    this.carModalRef.current?.clearInput();
-    this.tagModalRef.current?.clearInput();
     const userDefaultTagCar = await this.getUserDefaultTagAndCar();
+    if (!userDefaultTagCar) {
+      this.setState({});
+    }
     this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
   }
 }

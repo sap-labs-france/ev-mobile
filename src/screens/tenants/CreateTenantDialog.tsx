@@ -131,6 +131,8 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
           inputStyle={style.inputText}
           onChangeText={(value: string) => this.setState({ newTenantName: value })}
         />
+
+        {/* TODO style arrow icon */}
         <Input
           label={I18n.t('authentication.tenantEndpoint') + ' Endpoint'}
           labelStyle={[style.inputLabel, style.selectLabel]}

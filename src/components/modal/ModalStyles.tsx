@@ -12,10 +12,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     button: {
-      width: '90%',
+      width: '95%',
       alignSelf: 'center',
       height: '40@s',
-      marginBottom: '10@s',
       backgroundColor: commonColor.buttonBg
     },
     buttonDisabled: {
@@ -29,14 +28,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       alignItems: 'center'
     },
-    iconContainer: {
+    inputIcon: {
+      fontSize: '25@s',
+      color: commonColor.textColor,
       paddingHorizontal: '5@s'
     },
-    inputIcon: {
-      fontSize: '25@s'
+    rightIcon: {
+      textAlign: 'right'
     },
     spinner: {
       alignSelf: 'flex-start',
+      flex: 1,
       paddingLeft: '7@s'
     },
     selectText: {

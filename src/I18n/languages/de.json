@@ -265,7 +265,11 @@
     "connectorNotAvailable": "Der Anschluss der Ladestation ist nicht verfügbar",
     "transactionStopUnexpectedError": "Ladevorgang konnte nicht beendet werden",
     "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
-    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support.",
+    "noBadgeError": "No charge card registered",
+    "selectUser": "Select User",
+    "selectEV": "Select EV",
+    "selectChargeCard": "Select Charge Card"
   },
   "home": {
     "browseSites": "Standorte",

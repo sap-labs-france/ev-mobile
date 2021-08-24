@@ -57,7 +57,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           style={[style.button, !defaultItem ? style.buttonDisabled : style.buttonEnabled]}
           onPress={() => this.setState({ isVisible: true })}>
           <View style={style.selectionContainer}>
-            {renderIcon && <View style={style.iconContainer}>{renderIcon(style.inputIcon)}</View>}
+            {renderIcon && renderIcon(style.inputIcon)}
             {defaultItemLoading ? (
               <Spinner style={style.spinner} color={commonColors.textColor} />
             ) : (
@@ -66,6 +66,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
                 {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
               </Text>
             )}
+            <Icon type={'MaterialIcons'} style={[style.inputIcon, style.rightIcon]} name={'arrow-drop-down'} />
           </View>
         </Button>
         <Modal

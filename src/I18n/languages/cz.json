@@ -209,7 +209,11 @@
       "transactionStartUnexpectedError":"Nelze zahájit relaci",
       "carNotConnectedError":"Váš elektromobil není připojen k nabíjecí stanici",
       "connectorNotAvailable":"Konektor nabíjecí stanice není k dispozici",
-      "transactionStopUnexpectedError":"Nelze ukončit relaci"
+      "transactionStopUnexpectedError":"Nelze ukončit relaci",
+      "noBadgeError": "No charge card registered",
+      "selectUser": "Select User",
+      "selectEV": "Select EV",
+      "selectChargeCard": "Select Charge Card"
    },
    "home":{
       "browseSites":"Parkoviště",
