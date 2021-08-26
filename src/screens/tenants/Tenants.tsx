@@ -62,7 +62,7 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   public render() {
     const navigation = this.props.navigation;
-    const { tenants, showAddTenantManuallyDialog, showAddTenantWithQRCode, showAddTenantDialog, showNewTenantAddedDialog, newTenant } =
+    const { tenants, showAddTenantManuallyDialog, showAddTenantWithQRCode, showAddTenantDialog, showNewTenantAddedDialog } =
       this.state;
     const style = computeTenantStyleSheet();
     return (
