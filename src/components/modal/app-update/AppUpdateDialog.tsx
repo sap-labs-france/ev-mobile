@@ -2,24 +2,23 @@ import React from 'react';
 import { Linking } from 'react-native';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
-import DialogModal from '../DialogModal';
-import Utils from '../../../utils/Utils';
+import DialogModal, { DialogCommonProps } from '../DialogModal';
 import { CheckVersionResponse } from 'react-native-check-version';
+import computeStyleSheet from '../ModalCommonStyle';
 
-export interface Props {
-  close?: () => void;
+export interface Props extends DialogCommonProps {
   appVersion?: CheckVersionResponse;
 }
 
 interface State {}
 
-export default class AppUpdateModal extends React.Component<Props, State> {
+export default class AppUpdateDialog extends React.Component<Props, State> {
   public static defaultProps: { isVisible: false };
   public state: State;
   public props: Props;
 
   public render() {
-    const commonColor = Utils.getCurrentCommonColor();
+    const modalCommonStyle = computeStyleSheet();
     const { close, appVersion } = this.props;
     return (
       <DialogModal
@@ -33,8 +32,8 @@ export default class AppUpdateModal extends React.Component<Props, State> {
           {
             text: I18n.t('general.update'),
             action: async () => Linking.openURL(appVersion?.url),
-            buttonTextStyle: { color: commonColor.light },
-            buttonStyle: { backgroundColor: commonColor.primary, borderColor: commonColor.primary }
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonStyle: modalCommonStyle.primaryButton
           }
         ]}
       />

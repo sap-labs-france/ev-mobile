@@ -45,7 +45,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    tabHeader: {}
+    tabHeader: {},
+    modalPrimaryButton: {
+      backgroundColor: commonColor.primary,
+      borderColor: commonColor.primary,
+      color: commonColor.light
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {

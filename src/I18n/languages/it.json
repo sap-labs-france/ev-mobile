@@ -39,6 +39,8 @@
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
     "registerToNewTenantTitle": "Sign up",
     "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
+    "newTenantAddedDialogTitle": "L'organisation '{{organizationName}}' a été créée",
+    "newTenantAddedDialogDescription": "Que souhaitez-vous faire?",
     "noRecordFound": "Nessun record trovato",
     "day": "g",
     "hour": "h",
@@ -54,6 +56,7 @@
     "mustLoggedToTenant": "Devi essere registrato nell'organizzazione '{{tenantName}}'",
     "tenantMissing": "Manca l'organizzazione",
     "tenantExists": "Organizzazione '{{tenantName}}' già esistente.",
+    "subdomainAlreadyUsed": "This subdomain is already used in the organization '{{tenantName}}'",
     "createdOn": "Creato Il",
     "createdBy": "Creato Da",
     "lastChangedOn": "Ultima Modifica Il",
@@ -64,7 +67,9 @@
     "scanQrCodeSuccess": "Il codice QR è stato scansionato con successo",
     "default": "Default",
     "save": "Save",
-    "update": "Update"
+    "update": "Update",
+    "close": "Close",
+    "tenants": "Organizations"
   },
   "sidebar": {
     "home": "Home",
@@ -147,7 +152,7 @@
     "tenantSubdomainPlaceholder": "Organization subdomain",
     "tenantName": "Nome",
     "tenantNamePlaceholder": "Organization name",
-    "tenantEndpoint": "Cloud",
+    "tenantEndpoint": "Cloud Endpoint",
     "phone" : "Telefono",
     "mandatoryPhone": "Il numero di telefono è obbligatorio",
     "mandatoryErrorTitle": "Il titolo è obbligatorio",
@@ -171,7 +176,7 @@
     "newOrganizationMessage": "Vuoi salvare la nuova organizzazione '{{tenantName}}'?",
     "unknownChargingStation": "Stazione di Ricarica '{{chargingStationID}}' Sconosciuta",
     "unknownConnector": "ID Presa '{{connectorID}}' sconosciuto",
-    "scanTenantQrCodeTitle": "Scansiona Tenant",
+    "scanTenantQrCodeTitle": "Scansiona Organizzazione",
     "scanTenantQrCodeSuccess": "L'organizzazione '{{tenantName}}' è stata scansionata con successo",
     "scanChargingStationQrCodeTitle": "Scansiona Stazione di Ricarica"
   },
