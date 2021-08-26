@@ -39,6 +39,8 @@
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
     "registerToNewTenantTitle": "Sign up",
     "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
+    "newTenantAddedDialogTitle": "The organization '{{organizationName}}' has been added",
+    "newTenantAddedDialogDescription": "What would you like to do?",
     "noRecordFound": "No record found",
     "day": "d",
     "hour": "h",
@@ -54,6 +56,7 @@
     "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
     "tenantMissing": "The organization is missing",
     "tenantExists": "The organization '{{tenantName}}' already exists",
+    "subdomainAlreadyUsed": "This subdomain is already used in the organization '{{tenantName}}'",
     "createdOn": "Created On",
     "createdBy": "Created By",
     "lastChangedOn": "Last Changed On",
@@ -64,7 +67,9 @@
     "scanQrCodeSuccess": "The QR code has been scanned successfully",
     "default": "Default",
     "save": "Save",
-    "update": "Update"
+    "update": "Update",
+    "close": "Close",
+    "tenants": "Organizations"
   },
   "sidebar": {
     "home": "Home",
@@ -147,7 +152,7 @@
     "tenantSubdomainPlaceholder": "Organization subdomain",
     "tenantName": "Name",
     "tenantNamePlaceholder": "Organization name",
-    "tenantEndpoint": "Cloud",
+    "tenantEndpoint": "Cloud Endpoint",
     "phone": "Phone",
     "mandatoryPhone": "The phone number is mandatory",
     "mandatoryErrorTitle": "The title is mandatory",
@@ -171,7 +176,7 @@
     "newOrganizationMessage": "Do you want to save the new organization '{{tenantName}}'?",
     "unknownChargingStation": "Unknown Charging Station '{{chargingStationID}}'",
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
-    "scanTenantQrCodeTitle": "Scan Tenant",
+    "scanTenantQrCodeTitle": "Scan Organization",
     "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has been saved successfully",
     "scanChargingStationQrCodeTitle": "Scan Charging Station"
   },
