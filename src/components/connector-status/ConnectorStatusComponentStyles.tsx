@@ -12,8 +12,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '60@s',
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      alignItems: 'center',
-      flex: 1
+      alignItems: 'center'
     },
     containerWithNoDescription: {
       height: '55@s',

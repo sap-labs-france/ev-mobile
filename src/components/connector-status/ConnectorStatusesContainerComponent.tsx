@@ -34,19 +34,31 @@ export default class ConnectorStatusesContainerComponent extends React.Component
     const { connectorStats, navigation } = this.props;
     return (
       <View style={style.container}>
-        <ConnectorStatusComponent navigation={navigation} value={connectorStats.availableConnectors} status={ChargePointStatus.AVAILABLE} />
-        <ConnectorStatusComponent
-          navigation={navigation}
-          value={connectorStats.unavailableConnectors + connectorStats.faultedConnectors}
-          status={ChargePointStatus.UNAVAILABLE}
-        />
-        <ConnectorStatusComponent navigation={navigation} value={connectorStats.chargingConnectors} status={ChargePointStatus.CHARGING} />
-        <ConnectorStatusComponent
-          navigation={navigation}
-          value={connectorStats.suspendedConnectors + connectorStats.finishingConnectors + connectorStats.preparingConnectors}
-          text={'connector.notCharging'}
-          status={ChargePointStatus.SUSPENDED_EVSE}
-        />
+        <View style={{ flex: 1 }}>
+          <ConnectorStatusComponent
+            navigation={navigation}
+            value={connectorStats.availableConnectors}
+            status={ChargePointStatus.AVAILABLE}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <ConnectorStatusComponent
+            navigation={navigation}
+            value={connectorStats.unavailableConnectors + connectorStats.faultedConnectors}
+            status={ChargePointStatus.UNAVAILABLE}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <ConnectorStatusComponent navigation={navigation} value={connectorStats.chargingConnectors} status={ChargePointStatus.CHARGING} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <ConnectorStatusComponent
+            navigation={navigation}
+            value={connectorStats.suspendedConnectors + connectorStats.finishingConnectors + connectorStats.preparingConnectors}
+            text={'connector.notCharging'}
+            status={ChargePointStatus.SUSPENDED_EVSE}
+          />
+        </View>
       </View>
     );
   }
