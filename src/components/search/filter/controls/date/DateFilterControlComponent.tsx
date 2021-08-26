@@ -50,7 +50,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     const value = this.getValue() as Date;
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
-        <Text style={internalStyle.textFilter}>{label}</Text>
+        <Text style={[internalStyle.textFilter, internalStyle.label]}>{label}</Text>
         {value ? (
           <View>
             <TouchableOpacity onPress={() => this.openDatePicker(true)}>

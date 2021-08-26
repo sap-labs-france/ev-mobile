@@ -11,6 +11,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     rowFilterContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      width: '100%',
       height: '35@s',
       paddingLeft: '15@s',
       paddingRight: '15@s',
@@ -29,6 +30,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     textFilter: {
       fontSize: '15@s',
       color: commonColor.textColor
+    },
+    label: {
+      fontWeight: 'bold'
     },
     filterValue: {
       fontSize: '15@s',

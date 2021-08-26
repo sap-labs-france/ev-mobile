@@ -188,24 +188,16 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     const isAndroid = Platform.OS === 'android';
     return (
       <View style={connectorText ? style.containerWithDescription : style.containerWithNoDescription}>
-        {isAndroid ? (
-          <View>
-            <View style={connectorStyles.container}>
-              <Text style={connectorStyles.value}>{value}</Text>
-            </View>
+        <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+          <View style={connectorStyles.container}>
+            <Animated.Text
+              style={
+                isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
+              }>
+              {value}
+            </Animated.Text>
           </View>
-        ) : (
-          <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
-            <View style={connectorStyles.container}>
-              <Animated.Text
-                style={
-                  isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
-                }>
-                {value}
-              </Animated.Text>
-            </View>
-          </Animated.View>
-        )}
+        </Animated.View>
         {connectorText && <Text style={connectorStyles.description}>{connectorText}</Text>}
       </View>
     );
