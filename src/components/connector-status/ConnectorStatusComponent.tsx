@@ -206,7 +206,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
             </View>
           </Animated.View>
         )}
-        {connectorText && <Text style={connectorStyles.description}>{connectorText}</Text>}
+        {connectorText && <Text numberOfLines={1} adjustsFontSizeToFit={true} style={connectorStyles.description}>{connectorText}</Text>}
       </View>
     );
   }

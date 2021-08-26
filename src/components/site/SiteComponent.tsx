@@ -66,15 +66,10 @@ export default class SiteComponent extends React.Component<Props, State> {
                 </Text>
               </View>
               <View style={style.subTitleContainer}>
-                <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
-                  {Utils.formatAddress(site.address)}
+                <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>
+                  {Utils.formatAddress(site.address)} {Utils.formatAddress2(site.address)}
                 </Text>
-                {site.distanceMeters > 0 && <Text>{Utils.formatDistance(site.distanceMeters)}</Text>}
-              </View>
-              <View style={style.subTitleContainer}>
-                <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
-                  {Utils.formatAddress2(site.address)}
-                </Text>
+                {site.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(site.distanceMeters)}</Text>}
               </View>
               <View style={style.connectorContent}>
                 <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={site.connectorStats} />
