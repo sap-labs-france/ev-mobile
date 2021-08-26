@@ -25,7 +25,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     header: {
       flexDirection: 'column',
       backgroundColor: commonColor.containerBgColor,
-      borderColor: commonColor.listBorderColor,
+      borderBottomColor: commonColor.listBorderColor,
       borderBottomWidth: 1,
       height: '150@s',
       marginTop: Platform.OS === 'ios' ? '-5@s' : '5@s'

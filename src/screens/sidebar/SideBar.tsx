@@ -7,7 +7,7 @@ import { Image, ImageStyle, TouchableOpacity } from 'react-native';
 import { CheckVersionResponse, checkVersion } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
-import AppUpdateModal from '../../components/modal/app-update/AppUpdateModal';
+import AppUpdateDialog from '../../components/modal/app-update/AppUpdateDialog';
 import UserAvatar from '../../components/user/avatar/UserAvatar';
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
@@ -127,7 +127,7 @@ export default class SideBar extends BaseScreen<Props, State> {
               </View>
             )}
           </TouchableOpacity>
-          {showAppUpdateDialog && <AppUpdateModal appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
+          {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
         </Header>
         <Content style={style.drawerContent}>
           <View style={style.linkContainer}>
@@ -204,8 +204,8 @@ export default class SideBar extends BaseScreen<Props, State> {
               button={true}
               iconLeft={true}
               onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-              <Icon style={[style.linkIcon, { color: commonColor.danger }]} type="MaterialIcons" name="error-outline" />
-              <Text style={[style.linkText, { color: commonColor.danger }]}>{I18n.t('sidebar.reportError')}</Text>
+              <Icon style={[style.linkIcon, { color: commonColor.dangerLight }]} type="MaterialIcons" name="error-outline" />
+              <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate('Settings')} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />

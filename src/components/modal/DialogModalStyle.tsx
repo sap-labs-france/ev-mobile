@@ -17,14 +17,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     closeButtonContainer: {
-      width: '100%',
-      marginBottom: '10@s'
+      width: '100%'
     },
     closeButton: {
       alignSelf: 'flex-end',
       fontSize: '25@s'
     },
     title: {
+      marginTop: '10@s',
       fontSize: '14@s',
       color: commonColor.textColor
     },

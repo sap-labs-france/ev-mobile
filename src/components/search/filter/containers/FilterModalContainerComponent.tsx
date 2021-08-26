@@ -1,10 +1,11 @@
 import I18n from 'i18n-js';
-import { Button, Text, View } from 'native-base';
+import {View } from 'native-base';
 import React from 'react';
-import Modal from 'react-native-modal';
 
 import computeStyleSheet from '../../../../ModalStyles';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
+import DialogModal from '../../../modal/DialogModal';
+import computeModalCommonStyle from '../../../modal/ModalCommonStyle';
 
 export interface Props extends FilterContainerComponentProps {}
 
@@ -55,25 +56,33 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
   };
 
   public render = () => {
-    const style = computeStyleSheet();
+    const modalCommonStyle = computeModalCommonStyle();
     const { visible } = this.state;
     return (
-      <Modal coverScreen={true} style={style.modal} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
-        <View style={style.modalContainer}>
-          <View style={style.modalHeaderContainer}>
-            <Text style={style.modalTextHeader}>{I18n.t('general.filters')}</Text>
-          </View>
-          <View style={style.modalContentContainer}>{this.props.children}</View>
-          <View style={style.modalButtonsContainer}>
-            <Button style={style.modalButton} full light onPress={this.applyFiltersAndNotify}>
-              <Text style={style.modalTextButton}>{I18n.t('general.apply')}</Text>
-            </Button>
-            <Button style={style.modalButton} full danger onPress={this.clearFiltersAndNotify}>
-              <Text style={style.modalTextButton}>{I18n.t('general.clear')}</Text>
-            </Button>
-          </View>
-        </View>
-      </Modal>
+      <View>
+        {visible && (
+          <DialogModal
+            title={I18n.t('general.filters')}
+            renderControls={() => this.props.children}
+            withCloseButton={true}
+            close={() => this.setState({ visible: false })}
+            buttons={[
+              {
+                text: I18n.t('general.apply'),
+                action: async () => this.applyFiltersAndNotify(),
+                buttonTextStyle: modalCommonStyle.primaryButton,
+                buttonStyle: modalCommonStyle.primaryButton
+              },
+              {
+                text: I18n.t('general.clear'),
+                action: async () => this.clearFiltersAndNotify(),
+                buttonTextStyle: modalCommonStyle.primaryButton,
+                buttonStyle: modalCommonStyle.primaryButton
+              }
+            ]}
+          />
+        )}
+      </View>
     );
   };
 }

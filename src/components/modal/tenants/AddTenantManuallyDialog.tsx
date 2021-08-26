@@ -1,22 +1,21 @@
 import I18n from 'i18n-js';
-import { Icon, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Alert } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 
-import Configuration from '../../config/Configuration';
-import BaseProps from '../../types/BaseProps';
-import { EndpointCloud, TenantConnection } from '../../types/Tenant';
-import SecuredStorage from '../../utils/SecuredStorage';
-import Utils from '../../utils/Utils';
-import DialogModal from '../../components/modal/DialogModal';
+import Configuration from '../../../config/Configuration';
+import BaseProps from '../../../types/BaseProps';
+import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
+import SecuredStorage from '../../../utils/SecuredStorage';
+import Utils from '../../../utils/Utils';
+import DialogModal, { DialogCommonProps } from '../DialogModal';
 import { Input } from 'react-native-elements';
-import computeStyleSheet from './CreateTenantDialogStyle';
+import computeStyleSheet from './AddTenantManuallyDialogStyle';
+import computeModalCommonStyle from '../ModalCommonStyle';
 
-export interface Props extends BaseProps {
+export interface Props extends BaseProps, DialogCommonProps {
   tenants: TenantConnection[];
-  close: (newTenant?: TenantConnection) => void;
-  goBack?: () => void;
 }
 
 interface State {
@@ -26,9 +25,11 @@ interface State {
   newTenantEndpointCloud?: EndpointCloud;
   errorNewTenantName?: Record<string, unknown>[];
   errorNewTenantSubDomain?: Record<string, unknown>[];
+  tenantNameWithSameSubdomain?: TenantConnection;
+  showSubdomainAlreadyUsedError: boolean;
 }
 
-export default class CreateTenantDialog extends React.Component<Props, State> {
+export default class AddTenantManuallyDialog extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   public tenantEndpointClouds: EndpointCloud[];
@@ -61,37 +62,41 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
       newTenantSubDomain: null,
       newTenantName: null,
       tenantEndpointClouds,
-      newTenantEndpointCloud: Configuration.ENDPOINT_CLOUDS?.[0]
+      newTenantEndpointCloud: Configuration.ENDPOINT_CLOUDS?.[0],
+      showSubdomainAlreadyUsedError: false
     };
   }
 
   public render() {
     const style = computeStyleSheet();
-    const commonColor = Utils.getCurrentCommonColor();
-    const { newTenantSubDomain, newTenantName, newTenantEndpointCloud, tenantEndpointClouds } = this.state;
+    const modalCommonStyle = computeModalCommonStyle();
+    const { newTenantSubDomain, newTenantName, newTenantEndpointCloud } = this.state;
+    const { back } = this.props;
 
     return (
       <DialogModal
-        renderIcon={(iconStyle) => <Icon style={iconStyle} type={'MaterialIcons'} name={'business'} />}
+        renderIcon={(iconStyle) => <Icon style={iconStyle} type={'MaterialIcons'} name={'add-business'} />}
         animationIn={'fadeInLeft'}
         animationOut={'fadeOutRight'}
         close={() => this.props.close?.()}
         title={I18n.t('authentication.addTenantManuallyTitle')}
         withCloseButton={true}
+        onBackButtonPressed={() => back?.()}
+        onBackDropPress={() => {}}
         buttons={[
           {
             text: I18n.t('general.create'),
-            buttonTextStyle: style.createButton,
-            buttonStyle: style.createButton,
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonStyle: modalCommonStyle.primaryButton,
             action: () => {
               this.createTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
             }
           },
           {
             text: I18n.t('general.back'),
-            buttonTextStyle: style.backButton,
-            buttonStyle: style.backButton,
-            action: () => this.props.goBack?.()
+            buttonTextStyle: modalCommonStyle.outlinedButton,
+            buttonStyle: modalCommonStyle.outlinedButton,
+            action: () => back?.()
           }
         ]}
         renderControls={() => this.renderControls(style)}
@@ -100,7 +105,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
   }
 
   private renderControls(style: any) {
-    const { tenantEndpointClouds, newTenantEndpointCloud } = this.state;
+    const { tenantEndpointClouds, newTenantEndpointCloud, tenantNameWithSameSubdomain, showSubdomainAlreadyUsedError } = this.state;
     const commonColor = Utils.getCurrentCommonColor();
     return (
       <View style={style.modalControlsContainer}>
@@ -134,7 +139,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
 
         {/* TODO style arrow icon */}
         <Input
-          label={I18n.t('authentication.tenantEndpoint') + ' Endpoint'}
+          label={I18n.t('authentication.tenantEndpoint')}
           labelStyle={[style.inputLabel, style.selectLabel]}
           containerStyle={style.inputContainer}
           inputStyle={style.inputText}
@@ -155,6 +160,9 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
             />
           )}
         />
+        {showSubdomainAlreadyUsedError && (
+          <Text style={style.inputError}>{I18n.t('general.subdomainAlreadyUsed', { tenantName: tenantNameWithSameSubdomain })}</Text>
+        )}
       </View>
     );
   }
@@ -172,12 +180,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
       const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain);
       // Already exists
       if (foundTenant) {
-        Alert.alert(
-          I18n.t('general.error'),
-          I18n.t('general.tenantExists', { tenantName: foundTenant.name }),
-          [{ text: I18n.t('general.ok'), style: 'cancel' }],
-          { cancelable: false }
-        );
+        this.setState({ tenantNameWithSameSubdomain: foundTenant.name, showSubdomainAlreadyUsedError: true });
         // Add new Tenant and Save
       } else {
         // Save

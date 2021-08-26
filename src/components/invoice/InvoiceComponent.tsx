@@ -14,6 +14,8 @@ import Utils from '../../utils/Utils';
 import Chip from '../chip/Chip';
 import computeChipStyleSheet from '../chip/ChipStyle';
 import computeStyleSheet from './InvoiceComponentStyles';
+import DialogModal from '../modal/DialogModal';
+import computeModalCommonStyle from '../modal/ModalCommonStyle';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;
@@ -21,6 +23,7 @@ export interface Props extends BaseProps {
 
 interface State {
   downloading: boolean;
+  showDownloadInvoiceDialog: boolean;
 }
 
 export default class InvoiceComponent extends React.Component<Props, State> {
@@ -31,7 +34,8 @@ export default class InvoiceComponent extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = {
-      downloading: false
+      downloading: false,
+      showDownloadInvoiceDialog: false
     };
   }
 
@@ -44,9 +48,10 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { invoice, navigation } = this.props;
     const invoiceAmount = invoice.amount && invoice.amount / 100;
-    const { downloading } = this.state;
+    const { downloading, showDownloadInvoiceDialog } = this.state;
     return (
       <Card style={style.container}>
+        {showDownloadInvoiceDialog && this.renderDownloadInvoiceDialog()}
         <CardItem style={style.invoiceContent}>
           <View style={[this.buildStatusIndicatorStyle(invoice.status, style), style.statusIndicator]} />
           <View style={style.invoiceContainer}>
@@ -94,7 +99,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                 </Text>
               </View>
               {invoice.downloadable && (
-                <TouchableOpacity style={style.downloadButtonContainer} onPress={() => this.downloadInvoiceConfirm()}>
+                <TouchableOpacity style={style.downloadButtonContainer} onPress={() => this.setState({ showDownloadInvoiceDialog: true })}>
                   {downloading ? (
                     <ActivityIndicator size={scale(26)} color={commonColor.textColor} />
                   ) : (
@@ -157,19 +162,32 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     }
   }
 
-  private downloadInvoiceConfirm() {
+  private renderDownloadInvoiceDialog() {
     const { invoice } = this.props;
     const invoiceDate = I18nManager.formatDateTime(invoice.createdOn);
-    Alert.alert(
-      I18n.t('invoices.downloadInvoiceTitle'),
-      I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(invoice.user), invoiceDate }),
-      [{ text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() }, { text: I18n.t('general.cancel') }]
+    const modalCommonStyle = computeModalCommonStyle();
+    return (
+      <DialogModal
+        title={I18n.t('invoices.downloadInvoiceTitle')}
+        withCloseButton={true}
+        withCancel={true}
+        close={() => this.setState({ showDownloadInvoiceDialog: false })}
+        description={I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(invoice.user), invoiceDate })}
+        buttons={[
+          {
+            text: I18n.t('general.yes'),
+            buttonStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            action: async () => this.downloadInvoice()
+          }
+        ]}
+      />
     );
   }
 
   private async downloadInvoice() {
     const { invoice } = this.props;
-    this.setState({ downloading: true });
+    this.setState({ downloading: true, showDownloadInvoiceDialog: false });
     try {
       await this.centralServerProvider.downloadInvoice(invoice);
       Message.showSuccess(`${I18n.t('invoices.downloadedSuccessfully')}!`);
