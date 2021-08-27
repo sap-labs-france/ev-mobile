@@ -46,7 +46,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     buttonText: {
       textAlign: 'center',
-      fontSize: '15@s',
+      fontSize: '14@s',
       color: commonColor.textColor,
       flex: 1,
       paddingLeft: '7@s'
