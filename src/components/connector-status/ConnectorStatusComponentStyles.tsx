@@ -10,7 +10,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     containerWithDescription: {
       height: '60@s',
-      width: '100@s',
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'center'
@@ -41,7 +40,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     commonConnectorDescription: {
       position: 'absolute',
       bottom: '-2@s',
-      fontSize: '12@s',
+      fontSize: '11@s',
       color: commonColor.textColor
     },
     faultedConnector: {

@@ -166,11 +166,15 @@ export default class ChargingStationConnectorComponent extends React.Component<P
         <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>
             <View style={style.connectorDetailContainer}>
-              {this.renderFirstConnectorDetails(chargingStation, connector)}
-              {this.renderSecondConnectorDetails(chargingStation, connector, style)}
-              {this.renderThirdConnectorDetails(chargingStation, connector, style)}
-              {!chargingStation.inactive && <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />}
+              <View style={{ flex: 1 }}>{this.renderFirstConnectorDetails(chargingStation, connector)}</View>
+              <View style={{ flex: 1 }}>{this.renderSecondConnectorDetails(chargingStation, connector, style)}</View>
+              <View style={{ flex: 1 }}>{this.renderThirdConnectorDetails(chargingStation, connector, style)}</View>
             </View>
+            {!chargingStation.inactive && (
+              <View style={style.iconContainer}>
+                <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
+              </View>
+            )}
           </View>
         </Animatable.View>
       </TouchableOpacity>

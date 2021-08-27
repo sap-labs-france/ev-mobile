@@ -80,14 +80,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     subTitleContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: 'flex-start',
+      flexWrap: 'wrap',
       width: '100%',
       paddingRight: '5@s',
       paddingLeft: '5@s'
     },
     address: {
       color: commonColor.headerTextColor,
-      width: '100%',
+      fontSize: '13@s',
+      width: '85%'
+    },
+    distance: {
+      color: commonColor.textColor,
       fontSize: '13@s'
     },
     headerName: {

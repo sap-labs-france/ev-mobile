@@ -75,15 +75,10 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
                 </Text>
               </View>
               <View style={style.subTitleContainer}>
-                <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
-                  {Utils.formatAddress(siteArea.address)}
+                <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>
+                  {Utils.formatAddress(siteArea.address)} {Utils.formatAddress2(siteArea.address)}
                 </Text>
-                {siteArea.distanceMeters > 0 && <Text>{Utils.formatDistance(siteArea.distanceMeters)}</Text>}
-              </View>
-              <View style={style.subTitleContainer}>
-                <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
-                  {Utils.formatAddress2(siteArea.address)}
-                </Text>
+                {siteArea.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(siteArea.distanceMeters)}</Text>}
               </View>
               <View style={style.connectorContent}>
                 <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />
