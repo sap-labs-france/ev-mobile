@@ -41,8 +41,8 @@ export default class TagComponent extends React.Component<Props, State> {
     const userFullName = Utils.buildUserName(tag?.user);
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
-      <Card style={[style.container, selected ? style.selected : null]}>
-        <CardItem style={[style.tagContent]}>
+      <Card style={style.container}>
+        <CardItem style={[style.tagContent, selected ? style.selected : null]}>
           <View style={style.leftContainer}>
             <Icon style={style.icon} type={'MaterialCommunityIcons'} name={'credit-card'}></Icon>
             {tag.default && (

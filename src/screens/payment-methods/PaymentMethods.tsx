@@ -177,6 +177,7 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
                 <Swipeable
                   overshootRight={false}
                   overshootLeft={false}
+                  containerStyle={style.swiperContainer}
                   childrenContainerStyle={style.swiperChildrenContainer}
                   renderRightActions={() => this.renderPaymentMethodRightActions(paymentMethod, style)}>
                   <PaymentMethodComponent paymentMethod={paymentMethod} navigation={navigation} />

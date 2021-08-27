@@ -136,6 +136,8 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
           inputStyle={style.inputText}
           onChangeText={(value: string) => this.setState({ newTenantName: value })}
         />
+
+        {/* TODO style arrow icon */}
         <Input
           label={I18n.t('authentication.tenantEndpoint')}
           labelStyle={[style.inputLabel, style.selectLabel]}

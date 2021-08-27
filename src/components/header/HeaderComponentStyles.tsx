@@ -15,7 +15,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       margin: 0,
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.listHeaderBgColor
+      backgroundColor: commonColor.containerBgColor
     },
     leftHeader: {
       flexDirection: 'row'
@@ -25,7 +25,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     bodyHeader: {
-      flex: 3,
+      flex: 4,
       paddingLeft: Platform.OS === 'ios' ? 0 : '40@s',
       height: '100%',
       justifyContent: 'center'

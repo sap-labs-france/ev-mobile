@@ -13,7 +13,7 @@ const dangerLight = color(palette.dangerLight).desaturate(0.2).hex();
 const warning = color(palette.warning).desaturate(0.2).hex();
 const warningLight = color(palette.warningLight).desaturate(0.2).hex();
 const warningDark = color(palette.warningDark).desaturate(0.2).hex();
-const primary = color(palette.primary).desaturate(0.5).hex();
+const primary = color(palette.primary).desaturate(0.2).hex();
 const primaryDark = color(palette.primaryDark).desaturate(0.2).hex();
 const primaryLight = color(palette.primaryLight).desaturate(0.2).hex();
 const info = color(palette.info).desaturate(0.2).hex();
@@ -43,7 +43,9 @@ export default {
   lightDark,
   backgroundHeader: dark,
   modalBackgroundColor: '#262626',
-  listBackgroundHeader: '#262626',
+  listBackgroundHeader: '#383838',
+  listItemSelected: '#1E1E1E',
+  cardShadowColor: '#5c3074',
   background: dark,
   borderColor: light,
   textColor: light,

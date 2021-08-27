@@ -3,24 +3,22 @@ import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
-import Utils from '../../../utils/Utils';
+import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: commonColor.containerBgColor
+      elevation: 11
     },
-    content: {
-      flex: 1
+    rowContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%'
     },
-    searchBar: {
-      marginVertical: '10@s'
-    },
-    spinner: {
-      flex: 1,
-      backgroundColor: commonColor.containerBgColor
+    rowSeparator: {
+      borderBottomColor: commonColor.listBorderColor,
+      borderBottomWidth: 1
     }
   });
   const portraitStyles = {};

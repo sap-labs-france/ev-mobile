@@ -65,11 +65,16 @@
     "errorTitle": "Titolo Errore",
     "errorDescription": "Descrizione",
     "scanQrCodeSuccess": "Il codice QR è stato scansionato con successo",
+    "validate": "Validate",
     "default": "Default",
     "save": "Save",
     "update": "Update",
     "close": "Close",
-    "tenants": "Organizations"
+    "tenants": "Organizations",
+    "reset": "Reset",
+    "selected": "Selected",
+    "results": "Result(s)",
+    "optional": "Optional"
   },
   "sidebar": {
     "home": "Home",
@@ -183,7 +188,9 @@
   "users": {
     "userUnexpectedError": "Non posso leggere gli utenti",
     "noUsers": "No users",
-    "users": "Users(s)"
+    "users": "Users(s)",
+    "selectUser" : "Select User",
+    "selectUsers" : "Select Users"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
@@ -224,7 +231,9 @@
   "cars": {
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)"
+    "cars": "Car(s)",
+    "selectCar": "Select a car",
+    "selectCars": "Select cars"
   },
   "invoices": {
     "noInvoices": "No Invoices",
@@ -262,7 +271,11 @@
     "connectorNotAvailable": "La presa di questa stazione di ricarica non è disponibile",
     "transactionStopUnexpectedError": "Non posso fermare la sessione",
     "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
-    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support.",
+    "noBadgeError": "Service unavailable, no charge card registered",
+    "selectUser": "Select User",
+    "selectEV": "Select EV",
+    "selectChargeCard": "Select Charge Card"
   },
   "home": {
     "browseSites": "Siti",
@@ -365,7 +378,9 @@
     "noTags": "No badges",
     "tags": "Badge(s)",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "selectTag": "Select Badge",
+    "selectTags": "Select Badges"
   },
   "details": {
     "connector": "Presa",

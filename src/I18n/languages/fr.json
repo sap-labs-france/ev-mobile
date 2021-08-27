@@ -65,11 +65,16 @@
     "errorTitle": "Titre de l'erreur",
     "errorDescription": "Description",
     "scanQrCodeSuccess": "Le QR code a bien été scanné",
+    "validate": "Valider",
     "default": "Par défaut",
     "save": "Sauvegarder",
     "update": "Mettre à jour",
     "close": "Fermer",
-    "tenants": "Organisations"
+    "tenants": "Organisations",
+    "reset": "Réinitialiser",
+    "selected": "Sélectionné(s)",
+    "results": "Résultat(s)",
+    "optional": "Optionnel"
   },
   "sidebar": {
     "home": "Home",
@@ -183,7 +188,9 @@
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur",
     "noUsers": "Aucun utilisateur",
-    "users": "Utilisateur(s)"
+    "users": "Utilisateur(s)",
+    "selectUser" : "Sélectionnez un utilisateur",
+    "selectUsers" : "Sélectionnez des utilisateurs"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Une erreur est survenue",
@@ -224,7 +231,9 @@
   "cars": {
     "noCars": "Aucune voiture",
     "carUnexpectedError": "Une erreur est survenue",
-    "cars": "Voiture(s)"
+    "cars": "Voiture(s)",
+    "selectCar": "Sélectionnez une voiture",
+    "selectCars": "Sélectionnez des voitures"
   },
   "invoices": {
     "noInvoices": "Aucune facture",
@@ -261,8 +270,12 @@
     "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
     "connectorNotAvailable": "Le connecteur de cette borne n'est pas disponible",
     "transactionStopUnexpectedError": "Impossible de stopper la session",
-    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistrée.",
-    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support."
+    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistré.",
+    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support.",
+    "noBadgeError": "Service indisponible, aucune carte de recharge enregistrée",
+    "selectUser": "Sélectionnez l'utilisateur",
+    "selectEV": "Sélectionnez le véhicule",
+    "selectChargeCard": "Sélectionnez la carte de recharge"
   },
   "home": {
     "browseSites": "Sites",
@@ -365,7 +378,9 @@
     "noTags": "Aucun badge",
     "tags": "Badge(s)",
     "active": "Actif",
-    "inactive": "Inactif"
+    "inactive": "Inactif",
+    "selectTag": "Sélectionnez un badge",
+    "selectTags": "Sélectionnez des badges"
   },
   "details": {
     "connector": "Connecteur",

@@ -37,8 +37,8 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     this.startRefreshTimer();
   }
 
-  public async componentWillUnmount() {
-    await super.componentWillUnmount();
+  public componentWillUnmount() {
+    super.componentWillUnmount();
     // Clear the timer
     this.clearRefreshTimer();
   }

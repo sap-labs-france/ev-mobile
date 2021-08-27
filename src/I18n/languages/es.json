@@ -65,11 +65,16 @@
     "errorTitle": "Titulo del error",
     "errorDescription": "Descripción del error",
     "scanQrCodeSuccess": "El código QR se ha escaneado correctamente",
+    "validate": "Validate",
     "default": "Por defecto",
     "save": "Guardar",
     "update": "Actualizar",
     "close": "Close",
-    "tenants": "Organizations"
+    "tenants": "Organizations",
+    "reset": "Reset",
+    "selected": "Selected",
+    "results": "Result(s)",
+    "optional": "Optional"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -183,7 +188,9 @@
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario",
     "noUsers": "No users",
-    "users": "Users(s)"
+    "users": "Users(s)",
+    "selectUser" : "Select User",
+    "selectUsers" : "Select Users"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
@@ -224,7 +231,9 @@
   "cars": {
     "noCars": "Nigún vehículo",
     "carUnexpectedError": "An error occurred",
-    "cars": "Vehículo(s)"
+    "cars": "Vehículo(s)",
+    "selectCar": "Select a car",
+    "selectCars": "Select cars"
   },
   "invoices": {
     "noInvoices": "No Invoices",
@@ -262,7 +271,11 @@
     "connectorNotAvailable": "This charging station's connector is not available",
     "transactionStopUnexpectedError": "No se puede detener la sesión",
     "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
-    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support.",
+    "noBadgeError": "Service unavailable, no charge card registered",
+    "selectUser": "Select User",
+    "selectEV": "Select EV",
+    "selectChargeCard": "Select Charge Card"
   },
   "home": {
     "browseSites": "Sitios",
@@ -365,7 +378,9 @@
     "noTags": "No insignia",
     "tags": "Insignia(s)",
     "active": "Activa",
-    "inactive": "Inactiva"
+    "inactive": "Inactiva",
+    "selectTag": "Select Badge",
+    "selectTags": "Select Badges"
   },
   "details": {
     "connector": "Connector",

@@ -21,6 +21,7 @@ export default {
   backgroundHeader: palette.light,
   modalBackgroundColor: palette.light,
   listBackgroundHeader: palette.disabled,
+  listItemSelected: '#BFBFBF',
   background: palette.light,
   borderColor: palette.dark,
   textColor: palette.primaryDark,

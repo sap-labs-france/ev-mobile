@@ -41,7 +41,8 @@
       "default":"Výchozí",
       "save":"Uložit",
       "close": "Close",
-      "tenants": "Organizations"
+      "tenants": "Organizations",
+      "optional": "Optional"
    },
    "sidebar":{
       "home":"Domovská stránka",
@@ -214,7 +215,11 @@
       "transactionStartUnexpectedError":"Nelze zahájit relaci",
       "carNotConnectedError":"Váš elektromobil není připojen k nabíjecí stanici",
       "connectorNotAvailable":"Konektor nabíjecí stanice není k dispozici",
-      "transactionStopUnexpectedError":"Nelze ukončit relaci"
+      "transactionStopUnexpectedError":"Nelze ukončit relaci",
+      "noBadgeError": "Service unavailable, no charge card registered",
+      "selectUser": "Select User",
+      "selectEV": "Select EV",
+      "selectChargeCard": "Select Charge Card"
    },
    "home":{
       "browseSites":"Parkoviště",

@@ -3,16 +3,12 @@ import { Buffer } from 'buffer';
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
-import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
-import { Platform } from 'react-native';
-import ReactNativeBlobUtil from 'react-native-blob-util';
 import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
@@ -35,6 +31,10 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+import { Platform } from 'react-native';
+import { PLATFORM } from '../theme/variables/commonColor';
+import I18n from 'i18n-js';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -570,16 +570,19 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async startTransaction(chargingStationID: string, connectorId: number, tagID: string): Promise<ActionResponse> {
+  // eslint-disable-next-line max-len
+  public async startTransaction(chargingStationID: string, connectorId: number, visualTagID: string, carID: string, userID: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_REMOTE_START, { id: chargingStationID });
     // Call
     const result = await this.axiosInstance.put(
       url,
       {
+        carID,
+        userID,
         args: {
           connectorId,
-          tagID
+          visualTagID
         }
       },
       {
@@ -822,7 +825,7 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params: { ID: id }
     });
-    return result.data.image;
+    return result.data.image as string;
   }
 
   public async getUser(id: string): Promise<User> {
