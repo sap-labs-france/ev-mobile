@@ -950,15 +950,14 @@ export default class CentralServerProvider {
   public async downloadInvoice(invoice: BillingInvoice): Promise<void> {
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_DOWNLOAD_INVOICE, { invoiceID: invoice.id });
     const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
-    const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
     let config;
     if (Platform.OS === PLATFORM.IOS) {
-      config = { fileCache: true, path: downloadedFilePath, appendExt: 'pdf' };
+      config = { fileCache: true, path: ReactNativeBlobUtil.fs.dirs.DocumentDir + '/' + fileName, appendExt: 'pdf' };
     } else if (Platform.OS === PLATFORM.ANDROID) {
       config = {
         fileCache: true,
         addAndroidDownloads: {
-          path: downloadedFilePath,
+          path: ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName,
           useDownloadManager: true,
           mime: 'application/pdf',
           notification: true,
