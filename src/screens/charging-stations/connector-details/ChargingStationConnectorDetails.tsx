@@ -8,6 +8,8 @@ import noSite from '../../../../assets/no-site.png';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
+import DialogModal from '../../../components/modal/DialogModal';
+import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
 import ModalSelect from '../../../components/modal/ModalSelect';
 import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
@@ -15,6 +17,7 @@ import BaseProps from '../../../types/BaseProps';
 import Car from '../../../types/Car';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
+import Tag from '../../../types/Tag';
 import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
 import User, { UserDefaultTagCar } from '../../../types/User';
 import UserToken from '../../../types/UserToken';
@@ -23,12 +26,9 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import Cars from '../../cars/Cars';
+import Tags from '../../tags/Tags';
 import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
-import DialogModal from '../../../components/modal/DialogModal';
-import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
-import Tags from '../../tags/Tags';
-import Tag from '../../../types/Tag';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -773,10 +773,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             {this.renderErrorMessages(style)}
             {/* User */}
             {isAdmin && this.renderUserSelection(style)}
-            {/* Car */}
-            {this.renderCarSelection(style)}
             {/* Badge */}
             {this.renderTagSelection(style)}
+            {/* Car */}
+            {this.renderCarSelection(style)}
           </ScrollView>
         ) : (
           <ScrollView

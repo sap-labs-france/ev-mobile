@@ -120,7 +120,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     selectUserCarBadgeContainer: {
       flexDirection: 'column',
-      justifyContent: 'space-evenly',
+      justifyContent: 'flex-start',
       flex: 1
     },
     selectUserCarBadgeTitleContainer: {
@@ -148,7 +148,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     rowUserCarBadgeContainer: {
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      height: '100@s'
     },
     userCarBadgeIcon: {
       fontSize: '75@s'
