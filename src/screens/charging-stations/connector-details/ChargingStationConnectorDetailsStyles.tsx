@@ -119,8 +119,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: 'transparent'
     },
     selectUserCarBadgeContainer: {
-      marginTop: '10@s',
       flexDirection: 'column',
+      justifyContent: 'space-evenly',
       flex: 1
     },
     selectUserCarBadgeTitleContainer: {
@@ -128,9 +128,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginBottom: '5@s'
     },
     selectUserCarBadgeTitle: {
-      fontSize: '15@s',
+      fontSize: '16@s',
       color: commonColor.textColor,
-      textAlign: 'center',
+      textAlign: 'left',
       paddingLeft: '2@s',
       paddingVertical: 0
     },
@@ -148,8 +148,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     rowUserCarBadgeContainer: {
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: '20@s'
+      alignItems: 'center'
     },
     userCarBadgeIcon: {
       fontSize: '75@s'

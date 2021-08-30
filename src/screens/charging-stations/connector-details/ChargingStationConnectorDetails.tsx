@@ -768,19 +768,16 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         )}
         {/* Details */}
         {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
-          <View style={style.selectUserCarBadgeContainer}>
+          <ScrollView contentContainerStyle={style.selectUserCarBadgeContainer}>
             {/* Error messages */}
             {this.renderErrorMessages(style)}
-            <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
-            <View>
-              {/* User */}
-              {isAdmin && this.renderUserSelection(style)}
-              {/* Car */}
-              {this.renderCarSelection(style)}
-              {/* Badge */}
-              {this.renderTagSelection(style)}
-            </View>
-          </View>
+            {/* User */}
+            {isAdmin && this.renderUserSelection(style)}
+            {/* Car */}
+            {this.renderCarSelection(style)}
+            {/* Badge */}
+            {this.renderTagSelection(style)}
+          </ScrollView>
         ) : (
           <ScrollView
             contentContainerStyle={style.scrollViewContainer}
@@ -844,6 +841,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           errorMessages.push(I18n.t('transactions.startTransactionDisabled'));
           break;
       }
+    }
+    if (Utils.isEmptyArray(errorMessages)) {
+      return null;
     }
     return (
       <View>
