@@ -10,6 +10,8 @@ import ChargingStation from '../../types/ChargingStation';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './ChargingStationComponentStyles';
 import ChargingStationConnectorComponent from './connector/ChargingStationConnectorComponent';
+import DialogModal from '../modal/DialogModal';
+import computeModalCommonStyle from '../modal/ModalCommonStyle';
 
 export interface Props extends BaseProps {
   chargingStation: ChargingStation;
@@ -18,7 +20,9 @@ export interface Props extends BaseProps {
   onNavigate?: () => void;
 }
 
-interface State {}
+interface State {
+  showHeartbeatDialog: boolean;
+}
 
 export default class ChargingStationComponent extends React.Component<Props, State> {
   public state: State;
@@ -27,6 +31,9 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
   // eslint-disable-next-line no-useless-constructor
   public constructor(props: Props) {
     super(props);
+    this.state = {
+      showHeartbeatDialog: false
+    };
   }
 
   public setState = (
@@ -36,24 +43,14 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
     super.setState(state, callback);
   };
 
-  public showHeartbeatStatus = () => {
-    const { chargingStation } = this.props;
-    let message = I18n.t('chargers.heartBeatOkMessage', { chargeBoxID: chargingStation.id });
-    if (chargingStation.inactive) {
-      message = I18n.t('chargers.heartBeatKoMessage', {
-        chargeBoxID: chargingStation.id,
-        lastSeen: moment(new Date(chargingStation.lastSeen), null, true).fromNow(true)
-      });
-    }
-    Alert.alert(I18n.t('chargers.heartBeat'), message, [{ text: I18n.t('general.ok') }]);
-  };
-
   public render() {
     const style = computeStyleSheet();
     const { chargingStation, isAdmin, isSiteAdmin, navigation, onNavigate } = this.props;
+    const { showHeartbeatDialog } = this.state;
     const validGPSCoordinates = Utils.containsGPSCoordinates(chargingStation.coordinates);
     return (
       <View style={style.container}>
+        {showHeartbeatDialog && this.renderHeartbeatStatusDialog()}
         <View style={style.headerContent}>
           <View style={style.titleContainer}>
             <TouchableOpacity
@@ -88,7 +85,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
             )}
             <TouchableOpacity
               onPress={() => {
-                this.showHeartbeatStatus();
+                this.setState({ showHeartbeatDialog: true });
               }}>
               {chargingStation.inactive ? (
                 <Animatable.Text animation="fadeIn" easing="ease-in-out" iterationCount="infinite" direction="alternate-reverse">
@@ -127,6 +124,34 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
           )}
         </View>
       </View>
+    );
+  }
+
+  private renderHeartbeatStatusDialog() {
+    const { chargingStation } = this.props;
+    const modalCommonStyle = computeModalCommonStyle();
+    let message = I18n.t('chargers.heartBeatOkMessage', { chargeBoxID: chargingStation.id });
+    if (chargingStation.inactive) {
+      message = I18n.t('chargers.heartBeatKoMessage', {
+        chargeBoxID: chargingStation.id,
+        lastSeen: moment(new Date(chargingStation.lastSeen), null, true).fromNow(true)
+      });
+    }
+    return (
+      <DialogModal
+        title={I18n.t('chargers.heartBeat')}
+        onBackDropPress={() => this.setState({ showHeartbeatDialog: false })}
+        onBackButtonPressed={() => this.setState({ showHeartbeatDialog: false })}
+        description={message}
+        buttons={[
+          {
+            text: I18n.t('general.ok'),
+            buttonStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            action: () => this.setState({ showHeartbeatDialog: false })
+          }
+        ]}
+      />
     );
   }
 }

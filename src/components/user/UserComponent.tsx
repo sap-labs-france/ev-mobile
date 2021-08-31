@@ -36,19 +36,19 @@ export default class UserComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const chipStyle = computeChipStyleSheet();
-    const { user, selected, navigation } = this.props;
+    const { user, navigation, selected } = this.props;
     const userFullName = Utils.buildUserName(user);
     const userRole = user ? user.role : '';
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, chipStyle);
     return (
       <Card style={style.container}>
-        <CardItem style={style.userContent}>
+        <CardItem style={[style.userContent, selected ? style.selected : style.unselected]}>
           <View style={[this.buildStatusIndicatorStyle(user.status, style), style.statusIndicator]} />
           <View style={style.avatarContainer}>
-            <UserAvatar user={user} selected={selected} navigation={navigation} />
+            {selected ? <UserAvatar isSelected={true} navigation={navigation} /> : <UserAvatar user={user} navigation={navigation} />}
           </View>
-          <View style={selected ? [style.userContainer, style.selected] : style.userContainer}>
+          <View style={style.userContainer}>
             <View style={style.userFullnameStatusContainer}>
               <View style={style.fullNameContainer}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.fullName}>

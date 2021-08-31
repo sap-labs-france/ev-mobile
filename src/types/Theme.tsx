@@ -7,6 +7,7 @@ export default interface ThemeDefinition {
   backgroundHeader: string;
   background: string;
   listBackgroundHeader: string;
+  listItemSelected: string;
   borderColor: string;
   textColor: string;
   placeholderTextColor: string;
@@ -24,8 +25,12 @@ export default interface ThemeDefinition {
   light: string;
   primaryDark: string;
   primaryLight: string;
+  lightDark: string;
   disabled: string;
   disabledLight: string;
   disabledDark: string;
   touchableBackgroundColor: string;
+  modalBackgroundColor: string;
+  selectFieldBackgroundColor: string;
+  selectDropdownBackgroundColor: string;
 }

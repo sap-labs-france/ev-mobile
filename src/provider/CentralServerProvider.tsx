@@ -3,16 +3,12 @@ import { Buffer } from 'buffer';
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
-import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
-import { Platform } from 'react-native';
-import ReactNativeBlobUtil from 'react-native-blob-util';
 import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
@@ -35,6 +31,10 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+import { Platform } from 'react-native';
+import { PLATFORM } from '../theme/variables/commonColor';
+import I18n from 'i18n-js';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -570,16 +570,19 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async startTransaction(chargingStationID: string, connectorId: number, tagID: string): Promise<ActionResponse> {
+  // eslint-disable-next-line max-len
+  public async startTransaction(chargingStationID: string, connectorId: number, visualTagID: string, carID: string, userID: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_REMOTE_START, { id: chargingStationID });
     // Call
     const result = await this.axiosInstance.put(
       url,
       {
+        carID,
+        userID,
         args: {
           connectorId,
-          tagID
+          visualTagID
         }
       },
       {
@@ -824,7 +827,7 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params: { ID: id }
     });
-    return result.data.image;
+    return result.data.image as string;
   }
 
   public async getUser(id: string): Promise<User> {
@@ -920,35 +923,42 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Call
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHODS, { userID: params.currentUserID });
-    const result = await this.axiosInstance.get(url, {
-      headers: this.buildSecuredHeaders()
-    });
-    return result.data as DataResult<BillingPaymentMethod>;
+    try{
+      const result = await this.axiosInstance.get(url, {
+        headers: this.buildSecuredHeaders()
+      });
+      return result?.data as DataResult<BillingPaymentMethod>;
+    } catch (e) {
+      return null;
+    }
   }
 
   public async getBillingSettings(): Promise<BillingSettings> {
     // Build the URL
     const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_SETTING}`;
     // Execute the REST Service
-    const result = await this.axiosInstance.get<BillingSettings>(url, {
-      headers: this.buildSecuredHeaders()
-    });
-    return result.data;
+    try {
+      const result = await this.axiosInstance.get<BillingSettings>(url, {
+        headers: this.buildSecuredHeaders()
+      });
+      return result.data;
+    } catch (error) {
+      return null;
+    }
   }
 
   /* eslint-disable @typescript-eslint/indent */
   public async downloadInvoice(invoice: BillingInvoice): Promise<void> {
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_DOWNLOAD_INVOICE, { invoiceID: invoice.id });
     const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
-    const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
     let config;
     if (Platform.OS === PLATFORM.IOS) {
-      config = { fileCache: true, path: downloadedFilePath, appendExt: 'pdf' };
+      config = { fileCache: true, path: ReactNativeBlobUtil.fs.dirs.DocumentDir + '/' + fileName, appendExt: 'pdf' };
     } else if (Platform.OS === PLATFORM.ANDROID) {
       config = {
         fileCache: true,
         addAndroidDownloads: {
-          path: downloadedFilePath,
+          path: ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName,
           useDownloadManager: true,
           mime: 'application/pdf',
           notification: true,

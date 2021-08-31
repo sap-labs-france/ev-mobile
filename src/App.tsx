@@ -46,6 +46,8 @@ import Users from './screens/users/list/Users';
 import BaseProps from './types/BaseProps';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
+import { checkVersion } from 'react-native-check-version';
+import AppUpdateDialog from './components/modal/app-update/AppUpdateDialog';
 
 // Init i18n
 I18nManager.initialize();
@@ -470,6 +472,7 @@ interface State {
   switchTheme?: boolean;
   isNavigationStateLoaded?: boolean;
   navigationState?: InitialState;
+  showAppUpdateDialog?: boolean;
 }
 
 export default class App extends React.Component<Props, State> {
@@ -485,7 +488,8 @@ export default class App extends React.Component<Props, State> {
     this.state = {
       switchTheme: false,
       navigationState: null,
-      isNavigationStateLoaded: false
+      isNavigationStateLoaded: false,
+      showAppUpdateDialog: false
     };
   }
 
@@ -520,6 +524,12 @@ export default class App extends React.Component<Props, State> {
     const migrationManager = MigrationManager.getInstance();
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
+    // Check for app updates
+    const appVersion = await checkVersion();
+    if (appVersion?.needsUpdate) {
+      this.setState({ showAppUpdateDialog: true });
+    }
+
     // Set
     this.setState({
       navigationState,
@@ -537,9 +547,11 @@ export default class App extends React.Component<Props, State> {
   }
 
   public render() {
+    const { showAppUpdateDialog } = this.state;
     return (
       this.state.isNavigationStateLoaded && (
         <RootSiblingParent>
+          {showAppUpdateDialog && <AppUpdateDialog close={() => this.setState({ showAppUpdateDialog: false })} />}
           <StatusBar hidden />
           {createRootNavigator(this, this.state.navigationState)}
         </RootSiblingParent>

@@ -4,8 +4,10 @@ import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, TouchableOpacity } from 'react-native';
+import { CheckVersionResponse, checkVersion } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
+import AppUpdateDialog from '../../components/modal/app-update/AppUpdateDialog';
 import UserAvatar from '../../components/user/avatar/UserAvatar';
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
@@ -21,6 +23,8 @@ interface State {
   tenantName?: string;
   isComponentOrganizationActive?: boolean;
   updateDate?: string;
+  showAppUpdateDialog?: boolean;
+  appVersion?: CheckVersionResponse;
 }
 
 export default class SideBar extends BaseScreen<Props, State> {
@@ -33,7 +37,9 @@ export default class SideBar extends BaseScreen<Props, State> {
       userToken: null,
       tenantName: '',
       isComponentOrganizationActive: false,
-      updateDate: ''
+      updateDate: '',
+      showAppUpdateDialog: false,
+      appVersion: null
     };
   }
 
@@ -53,6 +59,8 @@ export default class SideBar extends BaseScreen<Props, State> {
 
   public refresh = async () => {
     await this.getUserInfo();
+    const appVersion = await checkVersion();
+    this.setState({ appVersion });
   };
 
   public async getUpdateDate() {
@@ -96,8 +104,7 @@ export default class SideBar extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { navigation } = this.props;
-    const { userToken, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    const { userToken, tenantName, isComponentOrganizationActive, showAppUpdateDialog, appVersion } = this.state;
     const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
@@ -108,9 +115,19 @@ export default class SideBar extends BaseScreen<Props, State> {
           <Text numberOfLines={1} style={style.tenantName}>
             {tenantName}
           </Text>
-          {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
-          <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
-          {!Utils.isNullOrEmptyString(updateDate) && <Text style={style.versionDate}>{updateDate}</Text>}
+          <TouchableOpacity
+            disabled={!appVersion?.needsUpdate}
+            onPress={() => this.setState({ showAppUpdateDialog: true })}
+            style={style.versionContainer}>
+            <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
+            {appVersion?.needsUpdate && (
+              <View style={style.newVersionContainer}>
+                <Icon style={style.newVersionIcon} type={'MaterialIcons'} name={'update'} />
+                <Text style={style.newVersionText}>{I18n.t('appUpdate.appUpdateDialogTitle')}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+          {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
         </Header>
         <Content style={style.drawerContent}>
           <View style={style.linkContainer}>
@@ -187,8 +204,8 @@ export default class SideBar extends BaseScreen<Props, State> {
               button={true}
               iconLeft={true}
               onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-              <Icon style={[style.linkIcon, { color: commonColor.danger }]} type="MaterialIcons" name="error-outline" />
-              <Text style={[style.linkText, { color: commonColor.danger }]}>{I18n.t('sidebar.reportError')}</Text>
+              <Icon style={[style.linkIcon, { color: commonColor.dangerLight }]} type="MaterialIcons" name="error-outline" />
+              <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate('Settings')} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />

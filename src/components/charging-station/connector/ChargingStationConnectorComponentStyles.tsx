@@ -18,7 +18,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderTopColor: commonColor.listBorderColor
     },
     connectorContainer: {
-      flexDirection: 'column',
+      flexDirection: 'row',
       justifyContent: 'space-evenly',
       alignItems: 'center',
       width: '100%'
@@ -26,8 +26,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     connectorDetailContainer: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
+      flex: 1,
       alignItems: 'center',
-      width: '100%',
       paddingLeft: '5@s',
       paddingRight: '5@s',
       paddingTop: '10@s',
@@ -73,6 +73,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     icon: {
       fontSize: '30@s',
       color: commonColor.textColor
+    },
+    iconContainer: {
+      width: '30@s'
     }
   });
   const portraitStyles = {};

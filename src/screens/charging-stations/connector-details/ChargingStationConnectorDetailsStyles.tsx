@@ -8,6 +8,10 @@ import Utils from '../../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
+    text: {
+      color: commonColor.textColor,
+      textAlign: 'center'
+    },
     container: {
       flex: 1,
       flexDirection: 'column',
@@ -114,16 +118,41 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.buttonDisabledBg,
       backgroundColor: 'transparent'
     },
+    selectUserCarBadgeContainer: {
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      flex: 1
+    },
+    selectUserCarBadgeTitleContainer: {
+      width: '100%',
+      marginBottom: '5@s'
+    },
+    selectUserCarBadgeTitle: {
+      fontSize: '16@s',
+      color: commonColor.textColor,
+      textAlign: 'left',
+      paddingLeft: '2@s',
+      paddingVertical: 0
+    },
     scrollViewContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      alignItems: 'center',
-      paddingTop: '20@s'
+      alignItems: 'center'
     },
     rowContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      height: '100@s',
+      alignSelf: 'center'
+    },
+    rowUserCarBadgeContainer: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
       height: '100@s'
+    },
+    userCarBadgeIcon: {
+      fontSize: '75@s'
     },
     columnContainer: {
       flexDirection: 'column',
@@ -169,6 +198,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '25@s',
       color: commonColor.textColor
     },
+    downArrow: {
+      fontSize: '30@s'
+    },
+    listContainer: {
+      width: '100%',
+      height: '100%'
+    },
     userImage: {
       height: '52@s',
       width: '52@s',
@@ -198,6 +234,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     errorMessage: {
       color: commonColor.danger,
       textAlign: 'center'
+    },
+    inputContainer: {
+      marginBottom: '7@s'
     }
   });
   const portraitStyles = {};

@@ -21,6 +21,7 @@ const infoLight = color(palette.infoLight).desaturate(0.2).hex();
 const disabled = color(palette.disabled).desaturate(0.2).hex();
 const disabledLight = color(palette.disabledLight).desaturate(0.2).hex();
 const disabledDark = color(palette.disabledDark).desaturate(0.2).hex();
+const lightDark = color(palette.lightDark).desaturate(0.2).hex();
 
 export default {
   success,
@@ -38,8 +39,13 @@ export default {
   disabled,
   disabledLight,
   disabledDark,
+  darkLight,
+  lightDark,
   backgroundHeader: dark,
+  modalBackgroundColor: '#262626',
   listBackgroundHeader: '#383838',
+  listItemSelected: '#1E1E1E',
+  cardShadowColor: '#5c3074',
   background: dark,
   borderColor: light,
   textColor: light,
@@ -47,5 +53,7 @@ export default {
   inverseTextColor: dark,
   subTextColor: palette.disabledDark,
   buttonBg: darkLight,
-  touchableBackgroundColor: 'rgba(255,255,255,0.1)'
+  touchableBackgroundColor: 'rgba(255,255,255,0.1)',
+  selectFieldBackgroundColor: palette.dark,
+  selectDropdownBackgroundColor: palette.dark
 };

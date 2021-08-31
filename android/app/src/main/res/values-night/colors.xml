@@ -1,0 +1,6 @@
+<resources>
+  <color name="primary_dark">#00376C</color>
+  <color name="modalBackground">#262626</color>
+  <color name="status_bar_color">#00376C</color>
+  <color name="white">#FFFFFF</color>
+</resources>

@@ -11,6 +11,7 @@ export enum ServerAction {
   CHARGING_STATION_RESET = 'RestChargingStationReset',
   CHARGING_STATION_REQUEST_OCPP_PARAMETERS = 'RestChargingStationRequestOcppParameters',
   CHARGING_STATION_CLEAR_CACHE = 'RestChargingStationClearCache',
+  CHARGING_STATION_TRIGGER_DATA_TRANSFER = 'RestChargingStationDataTransfer',
   CHARGING_STATION_GET_CONFIGURATION = 'RestChargingStationGetConfiguration',
   CHARGING_STATION_CHANGE_CONFIGURATION = 'RestChargingStationChangeConfiguration',
   CHARGING_STATION_DATA_TRANSFER = 'ChargingStationChangeDataTransfer',
@@ -124,6 +125,7 @@ export enum ServerAction {
   OCPI_ENDPOINTS = 'OcpiEndpoints',
   OCPI_ENDPOINT = 'OcpiEndpoint',
   OCPI_REGISTER = 'OcpiRegister',
+  OCPI_UNREGISTER = 'OcpiUnregister',
   OCPI_AUTHORIZE_TOKEN = 'OcpiAuthorizeToken',
   OCPI_COMMAND = 'OcpiCommand',
   OCPI_PUT_TOKEN = 'OcpiPutToken',
@@ -152,6 +154,7 @@ export enum ServerAction {
   OCPI_RESERVE_NOW = 'OcpiReserveNow',
   OCPI_UNLOCK_CONNECTOR = 'OcpiUnlockConnector',
   OCPI_GET_VERSIONS = 'OcpiGetVersions',
+  OCPI_GET_ENDPOINT_VERSIONS = 'OcpiGetEndpointVersions',
   OCPI_GET_LOCATIONS = 'OcpiGetLocations',
   OCPI_GET_TOKEN = 'OcpiGetToken',
   OCPI_GET_TARIFF = 'OcpiGetTariff',
@@ -261,6 +264,7 @@ export enum ServerAction {
   UNKNOWN_USER_BADGED = 'UnknownUserBadged',
   TRANSACTION_STARTED = 'TransactionStarted',
   VERIFICATION_EMAIL = 'VerificationEmail',
+  VERIFICATION_EMAIL_USER_IMPORT = 'VerificationEmailUserImport',
   EMAIL_SERVER_ERROR = 'EmailServerError',
   PATCH_EVSE_STATUS_ERROR = 'PatchEVSEStatusError',
   PATCH_EVSE_ERROR = 'PatchEVSEError',
@@ -270,6 +274,7 @@ export enum ServerAction {
   BILLING_USER_SYNCHRONIZATION_FAILED = 'BillingUserSynchronizationFailed',
   BILLING_INVOICE_SYNCHRONIZATION_FAILED = 'BillingInvoiceSynchronizationFailed',
   USER_ACCOUNT_VERIFICATION = 'UserAccountVerification',
+  USER_CREATE_PASSWORD = 'UserCreatePassword',
   ADMIN_ACCOUNT_VERIFICATION = 'AdminAccountVerificationNotification',
 
   CAR_CATALOG_SYNCHRONIZATION_FAILED = 'CarCatalogSynchronizationFailed',
@@ -378,6 +383,7 @@ export enum ServerAction {
   REMOVE_USERS_FROM_SITE = 'RemoveUsersFromSite',
 
   REFUND = 'Refund',
+  CAR_CONNECTOR = 'CarConnector',
 
   USER_READ = 'UserRead',
   USER_CREATE = 'RestUserCreate',
@@ -453,6 +459,7 @@ export enum ServerRoute {
 
   REST_CHARGING_STATIONS_RESET = 'charging-stations/:id/reset',
   REST_CHARGING_STATIONS_CACHE_CLEAR = 'charging-stations/:id/cache/clear',
+  REST_CHARGING_STATIONS_TRIGGER_DATA_TRANSFER = 'charging-stations/:id/data/transfer',
   REST_CHARGING_STATIONS_RETRIEVE_CONFIGURATION = 'charging-stations/:id/configuration/retrieve',
   REST_CHARGING_STATIONS_CHANGE_CONFIGURATION = 'charging-stations/:id/configuration',
   REST_CHARGING_STATIONS_REMOTE_START = 'charging-stations/:id/remote/start',
@@ -486,18 +493,23 @@ export enum ServerRoute {
   REST_CHARGING_PROFILE = 'charging-profiles/:id',
 
   REST_TRANSACTIONS = 'transactions',
+  REST_TRANSACTIONS_IN_ERROR = 'transactions/status/in-error',
+  REST_TRANSACTIONS_ACTIVE = 'transactions/status/active',
+  REST_TRANSACTIONS_COMPLETED = 'transactions/status/completed',
+  REST_TRANSACTIONS_UNASSIGNED_COUNT = 'transactions/status/unassigned/count',
   REST_TRANSACTION = 'transactions/:id',
   REST_TRANSACTIONS_EXPORT = 'transactions/action/export',
   REST_TRANSACTION_CDR = 'transactions/:id/ocpi/cdr',
-  REST_TRANSACTION_CDR_EXPORT = 'transactions/:id/ocpi/cdr/action/export',
-  REST_TRANSACTION_CONSUMPTION = 'transactions/:id/consumptions',
+  REST_TRANSACTION_CDR_EXPORT = 'transactions/:id/ocpi/cdr/export',
+  REST_TRANSACTION_CONSUMPTIONS = 'transactions/:id/consumptions',
   REST_TRANSACTION_CONSUMPTIONS_REBUILD = 'transactions/:id/consumptions/rebuild',
-  REST_TRANSACTION_SOFT_STOP = 'transactions/:id/stop/soft',
-  REST_TRANSACTIONS_REFUND = 'transactions/action/refund',
-  REST_TRANSACTIONS_REFUND_EXPORT = 'transactions/action/refund/export',
-  REST_TRANSACTIONS_ASSIGN_USER = 'transactions/action/assign',
-  REST_TRANSACTIONS_SYNCHRONIZE_REFUNDED = 'transactions/action/refund/synchronize',
-  REST_TRANSACTIONS_REFUND_REPORTS = 'transactions/action/refund/reports',
+  REST_TRANSACTION_SOFT_STOP = 'transactions/:id/soft-stop',
+  REST_TRANSACTIONS_REFUND_ACTION = 'transactions/action/refund',
+  REST_TRANSACTIONS_REFUND = 'transactions/status/refund',
+  REST_TRANSACTIONS_REFUND_EXPORT = 'transactions/status/refund/export',
+  REST_TRANSACTIONS_ASSIGN_USER = 'transactions/action/assign-user',
+  REST_TRANSACTIONS_SYNCHRONIZE_REFUNDED = 'transactions/status/refund/synchronize',
+  REST_TRANSACTIONS_REFUND_REPORTS = 'transactions/status/refund/reports',
 
   REST_USERS = 'users',
   REST_USER = 'users/:id',
@@ -521,6 +533,13 @@ export enum ServerRoute {
   REST_TENANTS = 'tenants',
   REST_TENANT = 'tenants/:id',
 
+  REST_CONNECTIONS = 'connections',
+  REST_CONNECTION = 'connections/:id',
+
+  REST_LOGGINGS = 'loggings',
+  REST_LOGGING = 'loggings/:id',
+  REST_LOGGINGS_EXPORT = 'loggings/action/export',
+
   // BILLING URLs for CRUD operations on PAYMENT METHODS
   REST_BILLING_PAYMENT_METHODS = 'users/:userID/payment-methods',
   REST_BILLING_PAYMENT_METHOD = 'users/:userID/payment-methods/:paymentMethodID',
@@ -539,7 +558,7 @@ export enum ServerRoute {
   REST_BILLING_INVOICE = 'invoices/:invoiceID',
 
   // BILLING URLs for Non-CRUD operations on INVOICES
-  REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download',
+  REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download'
 }
 
 export enum ServerProtocol {

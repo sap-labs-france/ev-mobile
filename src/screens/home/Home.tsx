@@ -2,7 +2,7 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Icon, Left, Text } from 'native-base';
 import React from 'react';
-import { Alert, BackHandler, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -16,6 +16,7 @@ import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import ChargingStationQrCode from './ChargingStationQrCode';
 import computeStyleSheet from './HomeStyles';
+import ExitAppDialog from '../../components/modal/exit-app/ExitAppDialog';
 
 export interface Props extends BaseProps {}
 
@@ -27,6 +28,7 @@ interface State {
   transactionsActive?: Transaction[];
   qrCodeVisible?: boolean;
   qrCodeData?: QrCode;
+  showExitAppDialog: boolean;
 }
 
 export default class Home extends BaseScreen<Props, State> {
@@ -43,7 +45,8 @@ export default class Home extends BaseScreen<Props, State> {
       isComponentOrganizationActive: false,
       isAdmin: false,
       transactionsActive: null,
-      qrCodeVisible: false
+      qrCodeVisible: false,
+      showExitAppDialog: false
     };
   }
 
@@ -66,18 +69,10 @@ export default class Home extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public onBack = (): boolean => {
-    Alert.alert(
-      I18n.t('general.exitApp'),
-      I18n.t('general.exitAppConfirm'),
-      [
-        { text: I18n.t('general.no'), style: 'cancel' },
-        { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }
-      ],
-      { cancelable: false }
-    );
+  public onBack(): boolean {
+    this.setState({ showExitAppDialog: true });
     return true;
-  };
+  }
 
   public navigateToTransactionInProgress = async () => {
     const { navigation } = this.props;
@@ -129,9 +124,10 @@ export default class Home extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const cardStyle = computeCardStyleSheet();
     const { navigation } = this.props;
-    const { isComponentOrganizationActive, qrCodeVisible } = this.state;
+    const { isComponentOrganizationActive, qrCodeVisible, showExitAppDialog } = this.state;
     return (
       <Container style={style.container}>
+        {showExitAppDialog && this.renderExitAppDialog()}
         {qrCodeVisible ? (
           <ChargingStationQrCode
             navigation={this.props.navigation}
@@ -349,4 +345,8 @@ export default class Home extends BaseScreen<Props, State> {
       </Container>
     );
   };
+
+  private renderExitAppDialog() {
+    return <ExitAppDialog close={() => this.setState({ showExitAppDialog: false })} />;
+  }
 }

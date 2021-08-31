@@ -4,7 +4,7 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList from '../../../components/list/ItemsList';
+import ItemsList, { ItemsSeparatorType } from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import TransactionHistoryComponent from '../../../components/transaction/history/TransactionHistoryComponent';
 import I18nManager from '../../../I18n/I18nManager';
@@ -214,7 +214,9 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           rightActionIcon={'menu'}
           filters={filters}
         />
-        <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        <View style={style.searchBar}>
+          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        </View>
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (

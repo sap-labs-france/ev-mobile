@@ -13,7 +13,7 @@
     "noGPSCoordinates": "Coordonnées GPS non fournies",
     "chooseApp": "Choisissez une App",
     "availableApps": "Apps Disponibles",
-    "back": "Back",
+    "back": "Retour",
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",
@@ -39,6 +39,8 @@
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
     "registerToNewTenantTitle": "S'enregistrer",
     "registerToNewTenant": "Voulez-vous vous enregistrer dans la nouvelle organisation '{{tenantName}}' ?",
+    "newTenantAddedDialogTitle": "L'organisation '{{organizationName}}' a été ajoutée",
+    "newTenantAddedDialogDescription": "Que souhaitez-vous faire?",
     "noRecordFound": "Pas d'enregistrement trouvé",
     "day": "j",
     "hour": "h",
@@ -54,6 +56,7 @@
     "mustLoggedToTenant": "Vous devez être connecté à l'organization '{{tenantName}}'",
     "tenantMissing": "L'organisation est manquante",
     "tenantExists": "L'organisation '{{tenantName}}' existe déjà.",
+    "subdomainAlreadyUsed": "Ce sous-domain est déjà utilisé dans l'organisation '{{tenantName}}'",
     "createdOn": "Créé le",
     "createdBy": "Créé par",
     "lastChangedOn": "Modifié le",
@@ -62,8 +65,16 @@
     "errorTitle": "Titre de l'erreur",
     "errorDescription": "Description",
     "scanQrCodeSuccess": "Le QR code a bien été scanné",
+    "validate": "Valider",
     "default": "Par défaut",
-    "save": "Sauvegarder"
+    "save": "Sauvegarder",
+    "update": "Mettre à jour",
+    "close": "Fermer",
+    "tenants": "Organisations",
+    "reset": "Réinitialiser",
+    "selected": "Sélectionné(s)",
+    "results": "Résultat(s)",
+    "optional": "Optionnel"
   },
   "sidebar": {
     "home": "Home",
@@ -138,10 +149,15 @@
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
     "tenant": "Organisation",
     "createTenantTitle": "Créer une organisation",
+    "addTenantTitle": "Ajouter une organisation",
+    "addTenantManuallyTitle": "Ajouter une organisation manuellement",
     "createTenantText": "Comment voulez vous créer l'organisation ?",
+    "addTenantText": "Comment voulez-vous ajouter l'organisation?",
     "tenantSubdomain": "Sous domaine",
+    "tenantSubdomainPlaceholder": "Sous-domaine de l'organisation",
     "tenantName": "Nom",
-    "tenantEndpoint": "Cloud",
+    "tenantNamePlaceholder": "Nom de l'organisation",
+    "tenantEndpoint": "Endpoint Cloud",
     "phone": "Phone",
     "mandatoryPhone": "Le numéro de téléphone est obligatoire",
     "mandatoryErrorTitle": "Le titre est obligatoire",
@@ -172,7 +188,9 @@
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur",
     "noUsers": "Aucun utilisateur",
-    "users": "Utilisateur(s)"
+    "users": "Utilisateur(s)",
+    "selectUser" : "Sélectionnez un utilisateur",
+    "selectUsers" : "Sélectionnez des utilisateurs"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Une erreur est survenue",
@@ -213,7 +231,9 @@
   "cars": {
     "noCars": "Aucune voiture",
     "carUnexpectedError": "Une erreur est survenue",
-    "cars": "Voiture(s)"
+    "cars": "Voiture(s)",
+    "selectCar": "Sélectionnez une voiture",
+    "selectCars": "Sélectionnez des voitures"
   },
   "invoices": {
     "noInvoices": "Aucune facture",
@@ -250,8 +270,12 @@
     "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
     "connectorNotAvailable": "Le connecteur de cette borne n'est pas disponible",
     "transactionStopUnexpectedError": "Impossible de stopper la session",
-    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistrée.",
-    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support."
+    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistré.",
+    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support.",
+    "noBadgeError": "Service indisponible, aucune carte de recharge enregistrée",
+    "selectUser": "Sélectionnez l'utilisateur",
+    "selectEV": "Sélectionnez le véhicule",
+    "selectChargeCard": "Sélectionnez la carte de recharge"
   },
   "home": {
     "browseSites": "Sites",
@@ -274,15 +298,11 @@
     "carsNote": "Liste des Voitures",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "Pas de Session trouvée",
-    "numberOfSessionsNote": "Nombre total de Sessions",
-    "totalConsumptiom": "{{totalConsumptiom}} kW.h",
-    "totalConsumptiomNote": "Energie totale consommée",
-    "totalDuration": "{{totalDuration}}",
-    "totalDurationNote": "Durée totale des Sessions",
-    "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
-    "totalInactivityNote": "Durée totale d'inactivité",
-    "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Cout total",
+    "numberOfSessionsNote": "Nombre Total de Sessions",
+    "totalConsumptionNote": "Consommation Totale",
+    "totalDurationNote": "Durée Totale des Sessions",
+    "totalInactivityNote": "Inactivité Totale",
+    "totalPriceNote": "Coût Total",
     "paymentMethods": "Moyens de paiement",
     "paymentMethodsNote" : "Consulter et créer des moyens de paiement",
     "invoices": "Factures",
@@ -358,7 +378,9 @@
     "noTags": "Aucun badge",
     "tags": "Badge(s)",
     "active": "Actif",
-    "inactive": "Inactif"
+    "inactive": "Inactif",
+    "selectTag": "Sélectionnez un badge",
+    "selectTags": "Sélectionnez des badges"
   },
   "details": {
     "connector": "Connecteur",
@@ -394,7 +416,8 @@
     "instantPowerChartLabel": "Puissance Instantanée (kW)",
     "cumulatedChartLabel": "Cumulé (kW.h)",
     "batteryChartLabel": "Niveau Batterie (%)",
-    "connectorMax": "Connecteur Max Power (kW)",
+    "gridLimitChartLabel": "Limitation Réseau (kW)",
+    "connectorMax": "Puissance max connecteur (kW)",
     "noData": "Pas de données",
     "noSessionInProgress": "Pas de session en cours",
     "noConsumptionData": "No consumption data",
@@ -443,5 +466,10 @@
       "subMessage": "Utilisateur Inconnu",
       "longMessage": "Un utilisateur inconnu vient juste de badger sur '{{chargeBoxID}}'."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "Nouvelle version disponible",
+    "appUpdateDialogDescription": "Voulez-vous mettre à jour votre application avec la dernière version disponible?",
+    "noUpdateAvailable": "Vous avez la dernière version"
   }
 }

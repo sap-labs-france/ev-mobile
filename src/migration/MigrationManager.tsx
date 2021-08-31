@@ -21,7 +21,7 @@ export default class MigrationManager {
     return MigrationManager.instance;
   }
 
-  public setCentralServerProvider(centralServerProvider: CentralServerProvider) {
+  public setCentralServerProvider(centralServerProvider: CentralServerProvider): void {
     this.centralServerProvider = centralServerProvider;
   }
 
@@ -47,20 +47,12 @@ export default class MigrationManager {
     if (!Utils.isEmptyArray(tenants)) {
       for (let i = tenants.length - 1; i >= 0; i--) {
         const tenant = tenants[i];
-        // Check if user has used this tenant
-        const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain);
-        if (!userCredentials) {
-          // Remove the tenant
-          tenants.splice(i, 1);
-          continue;
-        }
         // Proviridis: Switch cloud
-        if (tenant.subdomain === 'proviridis') {
+        if (tenant.subdomain === 'proviridis' || tenant.subdomain === 'eurecom' || tenant.subdomain === 'imredd') {
           tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
         }
       }
     }
-    // Save
     await SecuredStorage.saveTenants(tenants);
   }
 }

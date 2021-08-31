@@ -15,7 +15,7 @@ interface State {}
 export interface Props extends BaseProps {
   tag: Tag;
   selected?: boolean;
-  isAdmin?: boolean;
+  canReadUser?: boolean;
 }
 
 export default class TagComponent extends React.Component<Props, State> {
@@ -37,17 +37,17 @@ export default class TagComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const chipStyle = computeChipStyleSheet();
-    const { tag, isAdmin, selected, navigation } = this.props;
+    const { tag, selected, navigation, canReadUser } = this.props;
     const userFullName = Utils.buildUserName(tag?.user);
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
-      <Card style={[style.container, selected ? style.selected : null]}>
-        <CardItem style={[style.tagContent]}>
+      <Card style={style.container}>
+        <CardItem style={[style.tagContent, selected ? style.selected : null]}>
           <View style={style.leftContainer}>
             <Icon style={style.icon} type={'MaterialCommunityIcons'} name={'credit-card'}></Icon>
             {tag.default && (
               <View style={style.badgeDefaultContainer}>
-                <Text style={style.badgeDefaultText}>{I18n.t('general.default')}</Text>
+                <Text numberOfLines={1} adjustsFontSizeToFit={true} style={style.badgeDefaultText}>{I18n.t('general.default')}</Text>
               </View>
             )}
           </View>
@@ -57,7 +57,7 @@ export default class TagComponent extends React.Component<Props, State> {
                 {tag?.description}
               </Text>
             </View>
-            {isAdmin && tag.user && (
+            {canReadUser && tag.user && (
               <View style={style.userContainer}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
                   {userFullName}

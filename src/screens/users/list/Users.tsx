@@ -1,55 +1,59 @@
 import { DrawerActions } from '@react-navigation/native';
-import { default as I18n, default as i18n } from 'i18n-js';
+import { default as I18n } from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList from '../../../components/list/ItemsList';
+import ItemsList, { ItemSelectionMode } from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
-import I18nManager from '../../../I18n/I18nManager';
-import BaseScreen from '../../../screens/base-screen/BaseScreen';
-import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UsersStyle';
+import SelectableList, { SelectableProps, SelectableState } from '../../base-screen/SelectableList';
 
-export interface Props extends BaseProps {}
+export interface Props extends SelectableProps<User> {}
 
-export interface State {
+export interface State extends SelectableState<Users> {
   users?: User[];
   skip?: number;
   limit?: number;
-  count?: number;
   refreshing?: boolean;
   loading?: boolean;
 }
 
-export default class Users extends BaseScreen<Props, State> {
+export default class Users extends SelectableList<User> {
+  public static defaultProps = {
+    selectionMode: ItemSelectionMode.NONE,
+    isModal: false
+  };
+
   public state: State;
   public props: Props;
   private searchText: string;
   private userIDs: string[];
-  private title: string;
 
   public constructor(props: Props) {
     super(props);
+    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
+    this.title = (Utils.getParamFromNavigation(this.props.route, 'title', null) as string) ?? I18n.t('users.users');
+    this.selectMultipleTitle = 'users.selectUsers';
+    this.selectSingleTitle = 'users.selectUser';
     this.state = {
       users: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
       refreshing: false,
-      loading: true
+      loading: true,
+      selectedItems: []
     };
   }
 
   public async componentDidMount(): Promise<void> {
-    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
-    this.title = Utils.getParamFromNavigation(this.props.route, 'title', null) as string;
     await super.componentDidMount();
     await this.refresh();
   }
@@ -74,7 +78,7 @@ export default class Users extends BaseScreen<Props, State> {
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
-          'transactions.transactionUnexpectedError',
+          'users.userUnexpectedError',
           this.props.navigation,
           this.refresh.bind(this)
         );
@@ -116,11 +120,13 @@ export default class Users extends BaseScreen<Props, State> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
+      this.setState({ refreshing: true });
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
       // Set
       this.setState({
         loading: false,
+        refreshing: false,
         users: usersResult,
         count: users.count
       });
@@ -132,46 +138,47 @@ export default class Users extends BaseScreen<Props, State> {
     await this.refresh();
   };
 
-  public render = () => {
+  public render(): React.ReactElement {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation } = this.props;
+    const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={this.title ?? i18n.t('sidebar.users')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
+          title={this.buildHeaderTitle()}
+          subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
+          leftAction={isModal ? null : this.onBack}
+          leftActionIcon={isModal ? null : 'navigate-before'}
+          displayTenantLogo={false}
+          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightActionIcon={isModal ? null : 'menu'}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+            <View style={style.searchBar}>
+              <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+            </View>
             <ItemsList<User>
+              ref={this.itemsListRef}
+              selectionMode={selectionMode}
+              onSelect={this.onItemsSelected.bind(this)}
               data={users}
               navigation={navigation}
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(item: User, selected: boolean) => (
-                <UserComponent user={item} selected={selected} navigation={this.props.navigation} />
-              )}
+              renderItem={(item: User, selected: boolean) => <UserComponent user={item} selected={selected} navigation={this.props.navigation} />}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}
-              emptyTitle={i18n.t('users.noUsers')}
+              emptyTitle={I18n.t('users.noUsers')}
             />
           </View>
         )}
       </Container>
     );
-  };
+  }
 }

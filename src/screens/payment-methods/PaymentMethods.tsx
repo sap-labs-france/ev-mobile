@@ -19,6 +19,7 @@ import Constants from '../../utils/Constants';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './PaymentMethodsStyle';
+import { BillingSettings } from '../../types/Setting';
 
 export interface Props extends BaseProps {}
 
@@ -30,6 +31,7 @@ interface State {
   refreshing?: boolean;
   loading?: boolean;
   deleteOperationsStates?: Record<string, boolean>;
+  billingSettings?: BillingSettings;
 }
 
 export default class PaymentMethods extends BaseScreen<Props, State> {
@@ -58,6 +60,10 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
+    const billingSettings: BillingSettings = await this.centralServerProvider.getBillingSettings();
+    if (billingSettings) {
+      this.setState({ billingSettings });
+    }
   }
 
   public async componentDidFocus() {
@@ -72,7 +78,7 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
       };
       const paymentMethods = await this.centralServerProvider.getPaymentMethods(params, { skip, limit });
       // Get total number of records
-      if (paymentMethods.count === -1) {
+      if (paymentMethods?.count === -1) {
         const paymentMethodsNbrRecordsOnly = await this.centralServerProvider.getPaymentMethods(params, Constants.ONLY_RECORD_COUNT);
         paymentMethods.count = paymentMethodsNbrRecordsOnly.count;
       }
@@ -132,7 +138,7 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
-    const { paymentMethods, count, skip, limit, refreshing, loading } = this.state;
+    const { paymentMethods, count, skip, limit, refreshing, loading, billingSettings } = this.state;
     const { navigation } = this.props;
     return (
       <Container style={style.container}>
@@ -149,9 +155,13 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
           rightActionIcon={'menu'}
         />
         <View style={style.toolBar}>
-          <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm')} style={style.addPaymentMethodButton}>
-            <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
-          </TouchableOpacity>
+          {billingSettings?.stripe?.publicKey && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })}
+              style={style.addPaymentMethodButton}>
+              <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
+            </TouchableOpacity>
+          )}
         </View>
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
@@ -167,6 +177,7 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
                 <Swipeable
                   overshootRight={false}
                   overshootLeft={false}
+                  containerStyle={style.swiperContainer}
                   childrenContainerStyle={style.swiperChildrenContainer}
                   renderRightActions={() => this.renderPaymentMethodRightActions(paymentMethod, style)}>
                   <PaymentMethodComponent paymentMethod={paymentMethod} navigation={navigation} />

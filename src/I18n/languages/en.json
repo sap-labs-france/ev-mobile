@@ -39,6 +39,8 @@
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
     "registerToNewTenantTitle": "Sign up",
     "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
+    "newTenantAddedDialogTitle": "The organization '{{organizationName}}' has been added",
+    "newTenantAddedDialogDescription": "What would you like to do?",
     "noRecordFound": "No record found",
     "day": "d",
     "hour": "h",
@@ -54,6 +56,7 @@
     "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
     "tenantMissing": "The organization is missing",
     "tenantExists": "The organization '{{tenantName}}' already exists",
+    "subdomainAlreadyUsed": "This subdomain is already used in the organization '{{tenantName}}'",
     "createdOn": "Created On",
     "createdBy": "Created By",
     "lastChangedOn": "Last Changed On",
@@ -62,8 +65,16 @@
     "errorTitle": "Error title",
     "errorDescription": "Description",
     "scanQrCodeSuccess": "The QR code has been scanned successfully",
+    "validate": "Validate",
     "default": "Default",
-    "save": "Save"
+    "save": "Save",
+    "update": "Update",
+    "close": "Close",
+    "tenants": "Organizations",
+    "reset": "Reset",
+    "selected": "Selected",
+    "results": "Result(s)",
+    "optional": "Optional"
   },
   "sidebar": {
     "home": "Home",
@@ -138,10 +149,15 @@
     "passwordNotMatch": "Password does not match",
     "tenant": "Organization",
     "createTenantTitle": "Create Organization",
+    "addTenantTitle": "Add an organization",
+    "addTenantManuallyTitle": "Add an organization manually",
     "createTenantText": "How do you want to create the organization ?",
+    "addTenantText": "How do you want to add the organization?",
     "tenantSubdomain": "Subdomain",
+    "tenantSubdomainPlaceholder": "Organization subdomain",
     "tenantName": "Name",
-    "tenantEndpoint": "Cloud",
+    "tenantNamePlaceholder": "Organization name",
+    "tenantEndpoint": "Cloud Endpoint",
     "phone": "Phone",
     "mandatoryPhone": "The phone number is mandatory",
     "mandatoryErrorTitle": "The title is mandatory",
@@ -165,14 +181,16 @@
     "newOrganizationMessage": "Do you want to save the new organization '{{tenantName}}'?",
     "unknownChargingStation": "Unknown Charging Station '{{chargingStationID}}'",
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
-    "scanTenantQrCodeTitle": "Scan Tenant",
+    "scanTenantQrCodeTitle": "Scan Organization",
     "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has been saved successfully",
     "scanChargingStationQrCodeTitle": "Scan Charging Station"
   },
   "users": {
     "userUnexpectedError": "Cannot read the users",
     "noUsers": "No users",
-    "users": "Users(s)"
+    "users": "Users(s)",
+    "selectUser" : "Select User",
+    "selectUsers" : "Select Users"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
@@ -213,7 +231,9 @@
   "cars": {
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)"
+    "cars": "Car(s)",
+    "selectCar": "Select a car",
+    "selectCars": "Select cars"
   },
   "invoices": {
     "noInvoices": "No Invoices",
@@ -251,7 +271,11 @@
     "connectorNotAvailable": "This charging station's connector is not available",
     "transactionStopUnexpectedError": "Cannot stop the session",
     "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
-    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support.",
+    "noBadgeError": "Service unavailable, no charge card registered",
+    "selectUser": "Select User",
+    "selectEV": "Select EV",
+    "selectChargeCard": "Select Charge Card"
   },
   "home": {
     "browseSites": "Sites",
@@ -274,15 +298,11 @@
     "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "No Session found",
-    "numberOfSessionsNote": "Total number of Sessions",
-    "totalConsumptiom": "{{totalConsumptiom}} kW.h",
-    "totalConsumptiomNote": "Total energy consumed",
-    "totalDuration": "{{totalDuration}}",
-    "totalDurationNote": "Total Sessions duration",
-    "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
-    "totalInactivityNote": "Total Inactivity duration",
-    "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Total cost",
+    "numberOfSessionsNote": "Total Sessions",
+    "totalConsumptionNote": "Total Consumption",
+    "totalDurationNote": "Total Sessions Duration",
+    "totalInactivityNote": "Total Inactivity",
+    "totalPriceNote": "Total Cost",
     "paymentMethods": "Payment Methods",
     "paymentMethodsNote" : "Browse and create payment methods",
     "invoices": "Invoices",
@@ -358,7 +378,9 @@
     "noTags": "No badges",
     "tags": "Badge(s)",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "selectTag": "Select Badge",
+    "selectTags": "Select Badges"
   },
   "details": {
     "connector": "Connector",
@@ -394,6 +416,7 @@
     "instantPowerChartLabel": "Instant Power (kW)",
     "cumulatedChartLabel": "Cumulated (kW.h)",
     "batteryChartLabel": "Battery Level (%)",
+    "gridLimitChartLabel": "Grid Limit (kW)",
     "connectorMax": "Connector Max Power (kW)",
     "noData": "No Data",
     "noSessionInProgress": "No Session in progress",
@@ -443,5 +466,10 @@
       "subMessage": "Unknown User",
       "longMessage": "An unknown user has just badged on '{{chargeBoxID}}'."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
+    "noUpdateAvailable": "You have the latest version"
   }
 }
