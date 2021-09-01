@@ -56,7 +56,8 @@
     "react-native:log-android": "react-native log-android",
     "react-native:clean-project-auto": "react-native clean-project-auto",
     "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/GoogleService-Info.plist; fi",
-    "import-sort": "npx import-sort-cli --write '{src,__tests__,types}/**/*.ts{,x}' *.ts{,x}"
+    "import-sort": "npx import-sort-cli --write '{src,__tests__,types}/**/*.ts{,x}' *.ts{,x}",
+    "check:i18n": "cross-env TS_NODE_FILES=true ts-node-dev --project tsconfig-i18n.json --files test/I18nChecker.ts"
   },
   "jest": {
     "preset": "react-native"
@@ -179,6 +180,7 @@
     "babel-jest": "^26.6.3",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "cross-env": "^7.0.3",
+    "deep-object-diff": "^1.1.0",
     "eslint": "^7.27.0",
     "eslint-define-config": "^1.0.8",
     "eslint-plugin-import": "^2.23.3",
@@ -201,6 +203,7 @@
     "react-native-svg-transformer": "^0.14.3",
     "react-test-renderer": "17.0.1",
     "rimraf": "^3.0.2",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.4"
   }
 }
