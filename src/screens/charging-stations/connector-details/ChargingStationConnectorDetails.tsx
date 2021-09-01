@@ -390,7 +390,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         }
         // Soft Stop Transaction
       } else {
-        const response = await this.centralServerProvider.softStopstopTransaction(connector.currentTransactionID);
+        const response = await this.centralServerProvider.softStopTransaction(connector.currentTransactionID);
         if (response?.status === 'Invalid') {
           Message.showError(I18n.t('details.denied'));
         } else {
