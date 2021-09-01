@@ -3,12 +3,15 @@ import { Buffer } from 'buffer';
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
+import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
-import SafeUrlAssembler from 'safe-url-assembler';
+import { Platform } from 'react-native';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
+import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
@@ -31,10 +34,6 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import ReactNativeBlobUtil from 'react-native-blob-util';
-import { Platform } from 'react-native';
-import { PLATFORM } from '../theme/variables/commonColor';
-import I18n from 'i18n-js';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -693,7 +692,7 @@ export default class CentralServerProvider {
   }
 
   public async getTransactions(
-    params: any = {},
+    params = {},
     paging: PagingParams = Constants.DEFAULT_PAGING,
     sorting: string[] = []
   ): Promise<TransactionDataResult> {
@@ -702,9 +701,8 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Build Sorting
     this.buildSorting(sorting, params);
-    params.Status = 'completed';
     // Call
-    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS), {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS_COMPLETED), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -799,20 +797,15 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransactionsActive(
-    params: any = {},
-    paging: PagingParams = Constants.DEFAULT_PAGING,
-    sorting: string[] = []
-  ): Promise<DataResult<Transaction>> {
+  public async getTransactionsActive(params: any = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Transaction>> {
     this.debugMethod('getTransactionsActive');
     // Build Paging
     this.buildPaging(paging, params);
     // Build Sorting
     this.buildSorting(sorting, params);
-    params.Status = 'active';
     params.WithUser = 'true';
     // Call
-    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS), {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS_ACTIVE), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -869,7 +862,7 @@ export default class CentralServerProvider {
     this.debugMethod('getChargingStationConsumption');
     // Call
     const result = await this.axiosInstance.get(
-      this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION_CONSUMPTION, { id: transactionId }),
+      this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION_CONSUMPTIONS, { id: transactionId }),
       {
         headers: this.buildSecuredHeaders()
       }
@@ -1045,16 +1038,13 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/client/api';
   }
 
-  private buildRestEndpointUrl(
-    urlPatternAsString: ServerRoute,
-    params: {
-      // Just a flat list of key/value pairs!
-      [name: string]: string | number | null;
-    } = {}
-  ) {
-    const url = SafeUrlAssembler(this.buildRestServerURL())
-      .template('/' + urlPatternAsString)
-      .param(params);
-    return url.toString();
+  private buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: {[name: string]: string | number | null } = {}) {
+    let resolvedUrlPattern = urlPatternAsString as string;
+    for (const key in params) {
+      if (Object.prototype.hasOwnProperty.call(params, key)) {
+        resolvedUrlPattern = resolvedUrlPattern.replace(`:${key}`, encodeURIComponent(params[key]));
+      }
+    }
+    return `${this.buildRestServerURL()}/${resolvedUrlPattern}`;
   }
 }
