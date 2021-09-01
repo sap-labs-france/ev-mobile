@@ -12,8 +12,8 @@ class I18nChecker {
     try {
       const parsedContentEN = JSON.parse(contentEN);
       for (const file of otherFiles) {
-        const contentOtherLanguage = await fs.readFile('./src/I18n/languages/' + file, 'utf8');
         try {
+          const contentOtherLanguage = await fs.readFile('./src/I18n/languages/' + file, 'utf8');
           const parsedContentOtherLanguage = JSON.parse(contentOtherLanguage);
           const added = addedDiff(parsedContentEN, parsedContentOtherLanguage);
           const deleted = deletedDiff(parsedContentEN, parsedContentOtherLanguage);
