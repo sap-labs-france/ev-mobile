@@ -8,7 +8,7 @@ import Utils from '../utils/Utils';
 
 export default class MigrationManager {
   private static instance: MigrationManager;
-  private currentMigrationVersion = '1.31';
+  private currentMigrationVersion = '1.41';
   private centralServerProvider: CentralServerProvider;
 
   // eslint-disable-next-line no-useless-constructor
@@ -48,7 +48,9 @@ export default class MigrationManager {
       for (let i = tenants.length - 1; i >= 0; i--) {
         const tenant = tenants[i];
         // Switch to AWS cloud
-        if (tenant.subdomain === 'slf') {
+        if (['slf', 'imredd', 'eurecom', 'proviridis'].includes(tenant.subdomain) &&
+          tenant.endpoint !== Configuration.AWS_REST_ENDPOINT_PROD) {
+          // Set AWS
           tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
         }
       }
