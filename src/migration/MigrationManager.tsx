@@ -47,8 +47,8 @@ export default class MigrationManager {
     if (!Utils.isEmptyArray(tenants)) {
       for (let i = tenants.length - 1; i >= 0; i--) {
         const tenant = tenants[i];
-        // Proviridis: Switch cloud
-        if (tenant.subdomain === 'proviridis' || tenant.subdomain === 'eurecom' || tenant.subdomain === 'imredd') {
+        // Switch to AWS cloud
+        if (tenant.subdomain === 'slf') {
           tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
         }
       }
