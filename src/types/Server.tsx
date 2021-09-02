@@ -27,7 +27,7 @@ export enum ServerAction {
   CHARGING_STATION_DOWNLOAD_QR_CODE_PDF = 'RestChargingStationDownloadQrCodePdf',
 
   CHARGING_STATIONS_EXPORT = 'RestChargingStationsExport',
-  CHARGING_STATIONS_OCPP_PARAMS_EXPORT = 'RestChargingStationsOCPPParamsExport',
+  CHARGING_STATIONS_OCPP_PARAMS_EXPORT = 'RestChargingStationsOcppParamsExport',
   CHARGING_STATION = 'RestChargingStation',
   CHARGING_STATIONS_OCPP_PARAMETERS = 'RestChargingStationOcppParameters',
   CHARGING_STATIONS_IN_ERROR = 'RestChargingStationsInError',
@@ -78,7 +78,7 @@ export enum ServerAction {
   CHARGING_PROFILE_UPDATE = 'RestChargingProfileUpdate',
   CHARGING_PROFILE_CREATE = 'RestChargingProfileCreate',
   GENERATE_QR_CODE_FOR_CONNECTOR = 'RestGenerateQrCodeForConnector',
-  OCPP_PARAM_UPDATE = 'OCPPParamUpdate',
+  OCPP_PARAM_UPDATE = 'OcppParamUpdate',
   RESEND_VERIFICATION_MAIL = 'RestResendVerificationEmail',
   END_USER_LICENSE_AGREEMENT = 'RestEndUserLicenseAgreement',
   CHECK_END_USER_LICENSE_AGREEMENT = 'RestCheckEndUserLicenseAgreement',
@@ -195,7 +195,7 @@ export enum ServerAction {
   OICP_ENDPOINT_UNREGISTER = 'OicpEndpointUnregister',
   OICP_ENDPOINT_DELETE = 'OicpEndpointDelete',
 
-  OCPP_SERVICE = 'OCPPService',
+  OCPP_SERVICE = 'OcppService',
 
   AUTHORIZATIONS = 'Authorizations',
 
