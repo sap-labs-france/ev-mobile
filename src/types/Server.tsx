@@ -211,17 +211,16 @@ export enum ServerAction {
 
   SOCKET_IO = 'SocketIO',
 
-  // OCPP server commands
-  BOOT_NOTIFICATION = 'BootNotification',
-  AUTHORIZE = 'Authorize',
-  HEARTBEAT = 'Heartbeat',
-  DIAGNOSTICS_STATUS_NOTIFICATION = 'DiagnosticsStatusNotification',
-  FIRMWARE_STATUS_NOTIFICATION = 'FirmwareStatusNotification',
-  STATUS_NOTIFICATION = 'StatusNotification',
-  START_TRANSACTION = 'StartTransaction',
-  STOP_TRANSACTION = 'StopTransaction',
-  METER_VALUES = 'MeterValues',
-  DATA_TRANSFER = 'DataTransfer',
+  OCPP_BOOT_NOTIFICATION = 'BootNotification',
+  OCPP_AUTHORIZE = 'Authorize',
+  OCPP_HEARTBEAT = 'Heartbeat',
+  OCPP_DIAGNOSTICS_STATUS_NOTIFICATION = 'DiagnosticsStatusNotification',
+  OCPP_FIRMWARE_STATUS_NOTIFICATION = 'FirmwareStatusNotification',
+  OCPP_STATUS_NOTIFICATION = 'StatusNotification',
+  OCPP_START_TRANSACTION = 'StartTransaction',
+  OCPP_STOP_TRANSACTION = 'StopTransaction',
+  OCPP_METER_VALUES = 'MeterValues',
+  OCPP_DATA_TRANSFER = 'DataTransfer',
 
   EXTRA_INACTIVITY = 'ExtraInactivity',
 
