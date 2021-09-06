@@ -16,7 +16,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      width: '100%'
     },
     spinner: {
       flex: 1,
@@ -119,9 +120,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: 'transparent'
     },
     selectUserCarBadgeContainer: {
-      marginTop: '10@s',
       flexDirection: 'column',
-      flex: 1
+      alignItems: 'center',
+      flex: 1,
+      width: '100%'
     },
     selectUserCarBadgeTitleContainer: {
       width: '100%',
@@ -143,13 +145,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'space-between',
       height: '100@s',
-      alignSelf: 'center'
+      alignSelf: 'center',
+      width: '100%'
     },
     rowUserCarBadgeContainer: {
-      flexDirection: 'column',
+      width: '100%',
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: '20@s'
+      marginBottom: '10@s'
     },
     userCarBadgeIcon: {
       fontSize: '75@s'
@@ -231,12 +234,140 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.buttonDisabledBg,
       borderColor: commonColor.buttonDisabledBg
     },
+    messageText: {
+      textAlign: 'left',
+      fontSize: '13@s'
+    },
     errorMessage: {
-      color: commonColor.danger,
-      textAlign: 'center'
+      color: commonColor.dangerLight,
+      fontSize: '14@s'
+    },
+    noPaymentMethodIcon: {
+      color: commonColor.dangerLight,
+      marginHorizontal: '10@s',
+      fontSize: '50@s'
+    },
+    noItemContainer: {
+      width: '95%',
+      minHeight: '90@s',
+      padding: '10@s',
+      justifyContent: 'flex-start'
+    },
+    noCarContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '95%'
+    },
+    noCarIcon: {
+      color: commonColor.textColor,
+      fontSize: '50@s',
+      marginHorizontal: '10@s'
+    },
+    noTagContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: '80@s',
+      borderColor: commonColor.dangerLight,
+      borderTopWidth: 0.8,
+      borderLeftWidth: 0.8,
+      borderRightWidth: 0.8,
+      borderBottomWidth: 0.8
+    },
+    noTagIcon: {
+      color: commonColor.dangerLight,
+      fontSize: '50@s',
+      marginHorizontal: '10@s'
+    },
+    adviceText: {
+      fontSize: '12@s',
+      flex: 1,
+      marginLeft: '10@s'
+    },
+    messageContainer: {
+      backgroundColor: commonColor.listItemBackground,
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: '12@s',
+      width: '95%',
+      borderRadius: '8@s',
+      marginBottom: '10@s'
+    },
+    errorMessageContainer: {
+      borderColor: commonColor.dangerLight,
+      borderWidth: 0.8
     },
     inputContainer: {
       marginBottom: '7@s'
+    },
+    selectionContainer: {
+      width: '100%'
+    },
+    splitter: {
+      flexDirection: 'row',
+      width: '100%',
+      alignItems: 'center',
+      backgroundColor: commonColor.listItemBackground,
+      marginBottom: '15@s'
+    },
+    splitterButton: {
+      flex: 1,
+      padding: '10@s',
+      width: '100%'
+    },
+    splitterButtonText: {
+      textAlign: 'center'
+    },
+    splitterButtonFocused: {
+      borderColor: commonColor.textColor,
+      borderBottomWidth: 1.5
+    },
+    chargingSettingsContainer: {
+      width: '100%',
+      alignItems: 'center',
+      marginHorizontal: 0
+    },
+    scrollviewContainer: {
+      width: '100%'
+    },
+    column: {
+      flexDirection: 'column',
+      flex: 1
+    },
+    linkText: {
+      color: commonColor.brandPrimaryLight,
+      alignItems: 'center'
+    },
+    switchContainer: {
+      flexDirection: 'row',
+      marginTop: '5@s',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      marginBottom: '20@s',
+      width: '100%',
+      marginLeft: '5%'
+    },
+    switchLabel: {
+      fontSize: '14@s',
+      marginRight: '10@s'
+    },
+    errorAsterisque: {
+      color: commonColor.danger,
+      fontSize: '20@s'
+    },
+    plusSign: {
+      fontSize: '28@s',
+      color: commonColor.brandPrimaryLight,
+      marginRight: '5@s'
+    },
+    addItemContainer: {
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'flex-start',
+      alignItems: 'center'
+    },
+    linkLabel: {
+      flex: 1
     }
   });
   const portraitStyles = {};

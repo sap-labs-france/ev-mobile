@@ -728,6 +728,20 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async getCar(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<Car> {
+    this.debugMethod('getCar');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CAR}`, {
+      headers: this.buildSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
   public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<User>> {
     this.debugMethod('getUsers');
     // Build Paging
@@ -972,6 +986,8 @@ export default class CentralServerProvider {
         .fetch('GET', url, this.buildSecuredHeaders())
         .then(async (res) => {
           // Open the  downloaded invoice
+          // On IOS, apps can only save files in their own internal filesystem
+          // We need to open it to be able to save it to the phone custom directories
           if (Platform.OS === PLATFORM.IOS) {
             ReactNativeBlobUtil.ios.openDocument(res.path());
           } else {

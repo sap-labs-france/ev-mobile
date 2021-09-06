@@ -74,7 +74,8 @@
     "reset": "Réinitialiser",
     "selected": "Sélectionné(s)",
     "results": "Résultat(s)",
-    "optional": "Optionnel"
+    "optional": "Optionnel",
+    "defaultSettings": "Paramètres par défaut"
   },
   "sidebar": {
     "home": "Home",
@@ -202,8 +203,8 @@
     "addPaymentMethodSuccess" : "Nouveau moyen de paiement ajoutée",
     "deletePaymentMethodSuccess": "Moyen de paiement supprimé",
     "deletePaymentMethodTitle": "Supprimer un moyen de paiement",
-    "deletePaymentMethodSubtitle": "Voulez-vous vraiment supprimer la carte {{cardBrand}} finissant par {{cardLast4}}",
-    "addPaymentMethod": "Ajouter un Moyen de Paiement",
+    "deletePaymentMethodSubtitle": "Voulez-vous vraiment supprimer la carte {{cardBrand}} finissant par {{cardLast4}} ?",
+    "addPaymentMethod": "Ajouter un moyen de paiement",
     "paymentMethodCreationRules": "Pour des raisons de sécurité, nous ne stockons ni ne traitons vos informations de moyen de paiement. Les informations collectées sont envoyées de manière sécurisée à notre partenaire STRIPE qui fournit l'infrastructure de facturation et de paiement.",
     "paymentMethodsCreationCheckboxText": "J'ai lu les conditions générales d'utilisation et j'accepte que mes informations de paiement soient utilisées pour payer mes futures sessions de recharge."
   },
@@ -236,7 +237,9 @@
     "cars": "Voitures",
     "car": "Voiture",
     "selectCar": "Sélectionnez une voiture",
-    "selectCars": "Sélectionnez des voitures"
+    "selectCars": "Sélectionnez des voitures",
+    "noCarMessageTitle": "Indiquez la voiture utilisée pour bénéficier de meilleures recharges",
+    "addCar": "Ajouter une voiture"
   },
   "invoices": {
     "noInvoices": "Aucune facture",
@@ -278,7 +281,8 @@
     "noBadgeError": "Service indisponible, aucune carte de recharge enregistrée",
     "selectUser": "Sélectionnez l'utilisateur",
     "selectEV": "Sélectionnez le véhicule",
-    "selectChargeCard": "Sélectionnez la carte de recharge"
+    "selectChargeCard": "Sélectionnez la carte de recharge",
+    "chargingSettings": "Paramètres de charge"
   },
   "home": {
     "browseSites": "Sites",
@@ -384,7 +388,9 @@
     "active": "Actif",
     "inactive": "Inactif",
     "selectTag": "Sélectionnez un badge",
-    "selectTags": "Sélectionnez des badges"
+    "selectTags": "Sélectionnez des badges",
+    "noTagMessageTitle": "Aucun badge",
+    "noTagMessageSubtitle": "La recharge nécessite un badge"
   },
   "details": {
     "connector": "Connecteur",

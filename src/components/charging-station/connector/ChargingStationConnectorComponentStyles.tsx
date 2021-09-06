@@ -14,7 +14,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'stretch',
       borderStyle: 'solid',
       borderWidth: 1,
-      borderColor: 'transparent',
+      borderColor: 'transparent'
+    },
+    borderedTopContainer: {
       borderTopColor: commonColor.listBorderColor
     },
     connectorContainer: {

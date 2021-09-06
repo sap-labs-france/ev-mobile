@@ -74,7 +74,8 @@
     "reset": "Reset",
     "selected": "Selected",
     "results": "Result(s)",
-    "optional": "Optional"
+    "optional": "Optional",
+    "defaultSettings": "Default Settings"
   },
   "sidebar": {
     "home": "Home",
@@ -202,10 +203,10 @@
     "addPaymentMethodSuccess" : "New payment method added successfully",
     "deletePaymentMethodSuccess": "Payment method removed successfully",
     "deletePaymentMethodTitle": "Delete payment method",
-    "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}}",
+    "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}} ?",
     "addPaymentMethod": "Add Payment Method",
     "paymentMethodCreationRules": "For security reasons, we do not store nor process your bank and card details directly. The collected information is sent via a secure channel to our STRIPE partner which provides the billing and payment infrastructure.",
-    "paymentMethodsCreationCheckboxText": " I have read the End-user License Agreement and agree that my bank details will be used for paying future EV Charging Sessions."
+    "paymentMethodsCreationCheckboxText": " I have read the End-user License Agreement and agree that my bank details will be used for paying future EV Charging Sessions.",
   },
   "paymentMethodStatus": {
     "valid": "Valid",
@@ -236,7 +237,9 @@
     "cars": "Cars",
     "Car": "Car",
     "selectCar": "Select a car",
-    "selectCars": "Select cars"
+    "selectCars": "Select cars",
+    "noCarMessageTitle": "Indicate what car you are using to get better recharges",
+    "addCar": "Add a car"
   },
   "invoices": {
     "noInvoices": "No Invoices",
@@ -278,7 +281,8 @@
     "noBadgeError": "Service unavailable, no charge card registered",
     "selectUser": "Select User",
     "selectEV": "Select EV",
-    "selectChargeCard": "Select Charge Card"
+    "selectChargeCard": "Select Charge Card",
+    "chargingSettings": "Charging Settings"
   },
   "home": {
     "browseSites": "Sites",
@@ -384,7 +388,9 @@
     "active": "Active",
     "inactive": "Inactive",
     "selectTag": "Select Badge",
-    "selectTags": "Select Badges"
+    "selectTags": "Select Badges",
+    "noTagMessageTitle": "No badge",
+    "noTagMessageSubtitle": "A badge is required to recharge"
   },
   "details": {
     "connector": "Connector",
