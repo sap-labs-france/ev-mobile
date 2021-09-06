@@ -125,17 +125,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       width: '100%'
     },
-    selectUserCarBadgeTitleContainer: {
-      width: '100%',
-      marginBottom: '5@s'
-    },
-    selectUserCarBadgeTitle: {
-      fontSize: '15@s',
-      color: commonColor.textColor,
-      textAlign: 'center',
-      paddingLeft: '2@s',
-      paddingVertical: 0
-    },
     scrollViewContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-start',
@@ -153,9 +142,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: '10@s'
-    },
-    userCarBadgeIcon: {
-      fontSize: '75@s'
     },
     columnContainer: {
       flexDirection: 'column',
@@ -207,15 +193,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     listContainer: {
       width: '100%',
       height: '100%'
-    },
-    userImage: {
-      height: '52@s',
-      width: '52@s',
-      alignSelf: 'center',
-      marginBottom: '5@s',
-      borderRadius: '26@s',
-      borderWidth: '3@s',
-      borderColor: commonColor.textColor
     },
     info: {
       color: commonColor.textColor,
