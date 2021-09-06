@@ -231,7 +231,8 @@
   "cars": {
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)",
+    "cars": "Cars",
+    "Car": "Car",
     "selectCar": "Select a car",
     "selectCars": "Select cars"
   },

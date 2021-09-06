@@ -15,6 +15,7 @@ import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from '../transactions/TransactionsStyles';
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
+import Orientation from 'react-native-orientation-locker';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];
@@ -37,7 +38,8 @@ export default class Cars extends SelectableList<Car> {
     super(props);
     this.selectMultipleTitle = 'cars.selectCars';
     this.selectSingleTitle = 'cars.selectCar';
-    this.title = I18n.t('cars.cars');
+    this.singleItemTitle = I18n.t('cars.car');
+    this.multiItemsTitle = I18n.t('cars.cars');
     this.state = {
       cars: [],
       skip: 0,
@@ -59,6 +61,12 @@ export default class Cars extends SelectableList<Car> {
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
     await this.refresh();
+    Orientation.lockToPortrait();
+  }
+
+  public componentWillUnmount() {
+    super.componentWillUnmount();
+    Orientation.unlockAllOrientations();
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {

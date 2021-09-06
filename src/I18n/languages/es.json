@@ -231,7 +231,8 @@
   "cars": {
     "noCars": "Nigún vehículo",
     "carUnexpectedError": "An error occurred",
-    "cars": "Vehículo(s)",
+    "cars": "Vehículos",
+    "car": "Vehículo",
     "selectCar": "Select a car",
     "selectCars": "Select cars"
   },
