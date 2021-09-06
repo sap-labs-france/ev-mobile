@@ -22,7 +22,7 @@ export default {
   modalBackgroundColor: palette.light,
   listBackgroundHeader: palette.disabled,
   listItemSelected: '#BFBFBF',
-  background: palette.light,
+  background: '#f2f2f2',
   borderColor: palette.dark,
   textColor: palette.primaryDark,
   placeholderTextColor: palette.disabledDark,
@@ -31,5 +31,7 @@ export default {
   buttonBg: palette.disabled,
   touchableBackgroundColor: 'rgba(0,0,0,0.4)',
   selectFieldBackgroundColor: '#eeeeee',
-  selectDropdownBackgroundColor: '#eeeeee'
+  selectDropdownBackgroundColor: '#eeeeee',
+  listHeaderBackground: palette.light,
+  listItemBackground: palette.light
 };

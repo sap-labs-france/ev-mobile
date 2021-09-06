@@ -195,7 +195,8 @@
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Une erreur est survenue",
     "noPaymentMethod": "Aucun moyen de paiement",
-    "paymentMethods": "Moyen(s) de paiement",
+    "paymentMethods": "Moyens de paiement",
+    "paymentMethod": "Moyen de paiement",
     "addPaymentMethodError": "Impossible d'ajouter le moyen de paiement",
     "addPaymentMethodSuccess" : "Nouveau moyen de paiement ajoutée",
     "deletePaymentMethodSuccess": "Moyen de paiement supprimé",

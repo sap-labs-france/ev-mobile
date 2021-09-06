@@ -195,6 +195,7 @@
     "paymentMethodUnexpectedError": "An error occurred",
     "noPaymentMethod": "No payment method",
     "paymentMethods": "Métodos de pago",
+    "paymentMethod": "Método de pago",
     "addPaymentMethodError": "Failed to add payment method",
     "addPaymentMethodSuccess" : "New payment method added successfully",
     "deletePaymentMethodSuccess": "Payment method removed successfully",

@@ -2,7 +2,7 @@ import palette from './palette';
 import color from 'color';
 
 // Dark theme
-const dark = '#121212';
+const dark = '#272727';
 const darkLight = '#2c2c2c';
 const light = '#FAF9F6'; // Off-white
 
@@ -24,7 +24,7 @@ const disabledDark = color(palette.disabledDark).desaturate(0.2).hex();
 const lightDark = color(palette.lightDark).desaturate(0.2).hex();
 
 export default {
-  success,
+  success: palette.success,
   warning,
   warningLight,
   warningDark,
@@ -55,5 +55,7 @@ export default {
   buttonBg: darkLight,
   touchableBackgroundColor: 'rgba(255,255,255,0.1)',
   selectFieldBackgroundColor: palette.dark,
-  selectDropdownBackgroundColor: palette.dark
+  selectDropdownBackgroundColor: palette.dark,
+  listItemBackground: '#1d1d1d',
+  listHeaderBackground: '#1d1d1d'
 };

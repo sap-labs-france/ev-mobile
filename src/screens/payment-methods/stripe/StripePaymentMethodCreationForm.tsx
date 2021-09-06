@@ -24,6 +24,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [eulaChecked, setEulaChecked] = useState<boolean>(false);
   const [cardDetails, setCardDetails] = useState<CardFieldInput.Details>(null);
+  const [isBillingSetUp, setIsBillingSetUp] = useState<boolean>(undefined);
   const style = computeStyleSheet();
   const commonColors = Utils.getCurrentCommonColor();
 
@@ -37,18 +38,20 @@ export default function StripePaymentMethodCreationForm(props: Props) {
     const csProvider = await ProviderFactory.getProvider();
     setProvider(csProvider);
     // Billing
-    const billingSettings: BillingSettings = Utils.getParamFromNavigation(
-      props.route,
-      'billingSettings',
-      null
-    ) as unknown as BillingSettings;
+    let billingSettings: BillingSettings = Utils.getParamFromNavigation(props.route, 'billingSettings', null) as unknown as BillingSettings;
+    if (!billingSettings?.stripe?.publicKey) {
+      billingSettings = await csProvider.getBillingSettings();
+    }
     if (billingSettings?.stripe?.publicKey) {
       await initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
+      setIsBillingSetUp(true);
+    } else {
+      setIsBillingSetUp(false);
     }
   }
 
   async function addPaymentMethod(): Promise<void> {
-    if (cardDetails?.complete && eulaChecked) {
+    if (cardDetails?.complete && eulaChecked && isBillingSetUp === true) {
       try {
         setLoading(true);
         // STEP 1 - Call Back-End to create intent
@@ -104,6 +107,14 @@ export default function StripePaymentMethodCreationForm(props: Props) {
     return true;
   }
 
+  function renderBillingErrorMessage() {
+    return (
+      <View>
+        <Text>Payment service is unavailable</Text>
+      </View>
+    );
+  }
+
   function buildCardFieldStyle() {
     return {
       backgroundColor: commonColors.buttonBg,
@@ -127,6 +138,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
         }}
         rightActionIcon={'menu'}
       />
+      {isBillingSetUp === false && renderBillingErrorMessage()}
       <CardField
         cardStyle={buildCardFieldStyle()}
         onCardChange={(details: CardFieldInput.Details) => setCardDetails(details)}
@@ -147,8 +159,11 @@ export default function StripePaymentMethodCreationForm(props: Props) {
           </View>
         ) : (
           <Button
-            disabled={!(cardDetails?.complete && eulaChecked)}
-            style={[style.button, cardDetails?.complete && eulaChecked ? style.buttonEnabled : style.buttonDisabled]}
+            disabled={!(cardDetails?.complete && eulaChecked && isBillingSetUp === true)}
+            style={[
+              style.button,
+              cardDetails?.complete && eulaChecked && isBillingSetUp === true ? style.buttonEnabled : style.buttonDisabled
+            ]}
             light
             block
             onPress={async () => addPaymentMethod()}>
