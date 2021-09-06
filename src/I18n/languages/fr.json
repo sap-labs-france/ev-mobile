@@ -232,7 +232,8 @@
   "cars": {
     "noCars": "Aucune voiture",
     "carUnexpectedError": "Une erreur est survenue",
-    "cars": "Voiture(s)",
+    "cars": "Voitures",
+    "car": "Voiture",
     "selectCar": "Sélectionnez une voiture",
     "selectCars": "Sélectionnez des voitures"
   },

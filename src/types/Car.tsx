@@ -7,6 +7,7 @@ export default interface Car extends CreatedUpdatedProps, ListItem {
   licensePlate: string;
   carCatalog?: CarCatalog;
   user?: User;
+  default: boolean;
   type?: CarType;
   converter?: CarConverter;
 }
