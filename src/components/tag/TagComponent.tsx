@@ -1,14 +1,14 @@
 import I18n from 'i18n-js';
-import { Card, CardItem, Icon } from 'native-base';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Image, ImageStyle, Text, View } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import Tag from '../../types/Tag';
 import Utils from '../../utils/Utils';
-import Chip from '../chip/Chip';
 import computeChipStyleSheet from '../chip/ChipStyle';
 import computeStyleSheet from './TagComponentStyle';
+import computeListItemCommonStyle from '../list/ListItemCommonStyle';
+import ChargeCard from '../../../assets/charge-card/charge-card.png';
 
 interface State {}
 
@@ -16,11 +16,13 @@ export interface Props extends BaseProps {
   tag: Tag;
   selected?: boolean;
   canReadUser?: boolean;
+  shadowed?: boolean;
 }
 
 export default class TagComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
+  private exampleImageUri = Image.resolveAssetSource(ChargeCard).uri;
 
   // eslint-disable-next-line no-useless-constructor
   public constructor(props: Props) {
@@ -37,49 +39,43 @@ export default class TagComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const chipStyle = computeChipStyleSheet();
-    const { tag, selected, navigation, canReadUser } = this.props;
+    const { tag, selected, canReadUser, shadowed } = this.props;
+    const listItemCommonStyle = computeListItemCommonStyle();
     const userFullName = Utils.buildUserName(tag?.user);
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
-      <Card style={style.container}>
-        <CardItem style={[style.tagContent, selected ? style.selected : null]}>
+      <View style={shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer}>
+        <View style={style.tagContent}>
           <View style={style.leftContainer}>
-            <Icon style={style.icon} type={'MaterialCommunityIcons'} name={'credit-card'}></Icon>
-            {tag.default && (
-              <View style={style.badgeDefaultContainer}>
-                <Text numberOfLines={1} adjustsFontSizeToFit={true} style={style.badgeDefaultText}>{I18n.t('general.default')}</Text>
-              </View>
-            )}
+            <Image
+              style={style.icon as ImageStyle}
+              source={{uri: this.exampleImageUri}}/>
           </View>
           <View style={style.middleContainer}>
-            <View style={style.tagDescriptionContainer}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagDescription]}>
-                {tag?.description}
-              </Text>
-            </View>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagDescription]}>
+              {tag?.description}
+            </Text>
             {canReadUser && tag.user && (
-              <View style={style.userContainer}>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
-                  {userFullName}
-                </Text>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
-                  ({tag.user.email})
-                </Text>
-              </View>
-            )}
-            <View style={style.tagVisualIDContainer}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagVisualID]}>
-                {I18n.t('tags.visualID')}: {tag?.visualID}
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
+                {userFullName}
               </Text>
+            )}
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagVisualID]}>
+              {I18n.t('tags.visualID')}: {tag?.visualID}
+            </Text>
+            <View style={style.bottomLine}>
+              <View style={[style.statusContainer, tag?.default && style.statusContainerWithRightBorder]}>
+                <Text style={[style.text, statusStyle]}>{tag?.active ? I18n.t('tags.active') : I18n.t('tags.inactive')}</Text>
+              </View>
+              {tag?.default && (
+                <View style={style.defaultContainer}>
+                  <Text style={[style.defaultText]}>{I18n.t('general.default')}</Text>
+                </View>
+              )}
             </View>
           </View>
-          <View style={style.rightContainer}>
-            <View style={style.statusContainer}>
-              <Chip statusStyle={statusStyle} text={I18n.t(tag?.active ? 'tags.active' : 'tags.inactive')} navigation={navigation} />
-            </View>
-          </View>
-        </CardItem>
-      </Card>
+        </View>
+      </View>
     );
   }
 }
