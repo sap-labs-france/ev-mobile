@@ -80,7 +80,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
         renderItem={({ item }) => (
           <View>
             <TouchableOpacity style={style.container} disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
-              <View style={style.rowContainer}>{this.props.renderItem(item, selectedItems.has(item.id))}</View>
+             {this.props.renderItem(item, selectedItems.has(item.id))}
             </TouchableOpacity>
             {this.renderItemsSeparator(itemsSeparator, style)}
           </View>

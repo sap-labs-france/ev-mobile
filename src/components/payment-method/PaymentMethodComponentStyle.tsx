@@ -10,7 +10,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     paymentMethodContainer: {
       width: '100%',
-      height: '80@s',
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: '5@s'
@@ -27,13 +26,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     cardSVG: {
-      height: '70@s',
-      width: '70@s',
+      height: '80@s',
+      width: '80@s',
       color: commonColor.textColor
     },
     text: {
       color: commonColor.textColor,
-      fontSize: '15@s'
+      fontSize: '14@s'
     },
     badgeText: {
       fontSize: '10@s',

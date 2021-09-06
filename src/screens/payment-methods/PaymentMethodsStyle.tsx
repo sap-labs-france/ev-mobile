@@ -10,8 +10,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      width: '100%',
-      backgroundColor: commonColor.containerBgColor
+      width: '100%'
     },
     content: {
       flex: 1,
@@ -22,27 +21,41 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     addPaymentMethodButton: {
-      width: '100%',
-      justifyContent: 'flex-start',
-      flexDirection: 'row'
+      width: '45@s',
+      height: '45@s',
+      borderRadius: '22.5@s',
+      padding: '5@s',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      backgroundColor: commonColor.listItemBackground,
+      elevation: 4,
+      shadowColor: commonColor.cardShadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '25@s'
+      fontSize: '27@s'
     },
     toolBar: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderBottomWidth: 1,
-      borderColor: commonColor.textColor,
+      marginVertical: '10@s',
       borderRadius: 1,
       height: '40@s',
       padding: '5@s'
     },
     trashIconButton: {
-      height: '100%',
+      height: '85%',
       width: '80@s',
+      borderRadius: '8@s',
+      marginRight: '2.5%',
       backgroundColor: commonColor.danger,
       justifyContent: 'center',
       alignItems: 'center'
@@ -52,11 +65,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '20@s'
     },
     swiperContainer: {
-      width: '100%'
+      width: '100%',
+      alignItems: 'center'
     },
     swiperChildrenContainer: {
       backgroundColor: commonColor.containerBgColor,
-      width: '100%'
+      width: '100%',
+      alignItems: 'center'
     }
   });
   const portraitStyles = {};

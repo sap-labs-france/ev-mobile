@@ -33,4 +33,6 @@ export default interface ThemeDefinition {
   modalBackgroundColor: string;
   selectFieldBackgroundColor: string;
   selectDropdownBackgroundColor: string;
+  listItemBackground: string;
+  listHeaderBackground: string;
 }

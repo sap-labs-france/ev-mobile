@@ -56,6 +56,8 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => ({
 
   listBorderColor: palette.disabledDark,
   listItemSelected: currentTheme.listItemSelected,
+  listItemBackground: currentTheme.listItemBackground,
+  listHeaderBackground: currentTheme.listHeaderBackground,
   cardBorderColor: currentTheme.textColor,
 
   containerBgColor: currentTheme.background,

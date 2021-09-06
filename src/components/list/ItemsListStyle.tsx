@@ -9,12 +9,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      elevation: 11
+      alignItems: 'center',
+      flex: 1
     },
     rowContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '100%'
+      flexDirection: 'row'
     },
     rowSeparator: {
       borderBottomColor: commonColor.listBorderColor,

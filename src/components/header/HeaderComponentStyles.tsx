@@ -13,9 +13,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       padding: 0,
       margin: 0,
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.containerBgColor
+      borderBottomWidth: 0,
+      borderTopWidth: 0,
+      backgroundColor: commonColor.listHeaderBackground,
+      shadowColor: commonColor.cardShadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62,
+      elevation: 4
     },
     leftHeader: {
       flexDirection: 'row'

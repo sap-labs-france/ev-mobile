@@ -9,8 +9,6 @@ import { scale } from 'react-native-size-matters';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import PaymentMethodComponent from '../../components/payment-method/PaymentMethodComponent';
-import I18nManager from '../../I18n/I18nManager';
-import BaseScreen from '../../screens/base-screen/BaseScreen';
 import BaseProps from '../../types/BaseProps';
 import { BillingPaymentMethod } from '../../types/Billing';
 import { DataResult } from '../../types/DataResult';
@@ -20,28 +18,31 @@ import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './PaymentMethodsStyle';
 import { BillingSettings } from '../../types/Setting';
+import SelectableList, { SelectableState } from '../base-screen/SelectableList';
 
 export interface Props extends BaseProps {}
 
-interface State {
+interface State extends SelectableState<BillingPaymentMethod> {
   paymentMethods?: BillingPaymentMethod[];
   skip?: number;
   limit?: number;
-  count?: number;
   refreshing?: boolean;
   loading?: boolean;
   deleteOperationsStates?: Record<string, boolean>;
   billingSettings?: BillingSettings;
 }
 
-export default class PaymentMethods extends BaseScreen<Props, State> {
+export default class PaymentMethods extends SelectableList<BillingPaymentMethod> {
   public state: State;
   public props: Props;
 
   public constructor(props: Props) {
     super(props);
+    this.singleItemTitle = I18n.t('paymentMethods.paymentMethod');
+    this.multiItemsTitle = I18n.t('paymentMethods.paymentMethods');
     this.state = {
       paymentMethods: [],
+      selectedItems: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
@@ -72,7 +73,6 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
 
   public async getPaymentMethods(skip: number, limit: number): Promise<DataResult<BillingPaymentMethod>> {
     try {
-      // TODO: Remove the ID, the new auth will take care of returning the payments the user is allowed to see
       const params = {
         currentUserID: this.centralServerProvider?.getUserInfo()?.id
       };
@@ -143,8 +143,8 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={I18n.t('sidebar.paymentMethods')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('paymentMethods.paymentMethods')}` : null}
+          title={this.buildHeaderTitle()}
+          subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
