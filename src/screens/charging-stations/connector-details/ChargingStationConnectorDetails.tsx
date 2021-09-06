@@ -1125,7 +1125,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           buildItemName={(tag: Tag) => tag?.description ?? '-'}
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
-          <Tags userIDs={[selectedUser?.id as string]} navigation={navigation} />
+          <Tags active={true} userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
       </View>
     );
