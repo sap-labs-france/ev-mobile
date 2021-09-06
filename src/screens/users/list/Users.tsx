@@ -39,7 +39,8 @@ export default class Users extends SelectableList<User> {
   public constructor(props: Props) {
     super(props);
     this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
-    this.title = (Utils.getParamFromNavigation(this.props.route, 'title', null) as string) ?? I18n.t('users.users');
+    this.singleItemTitle = I18n.t('users.user');
+    this.multiItemsTitle = I18n.t('users.users');
     this.selectMultipleTitle = 'users.selectUsers';
     this.selectSingleTitle = 'users.selectUser';
     this.state = {
@@ -62,8 +63,7 @@ export default class Users extends SelectableList<User> {
     try {
       const params = {
         Search: searchText,
-        UserID: this.userIDs?.join('|'),
-        carName: this.title
+        UserID: this.userIDs?.join('|')
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
       // Get total number of records

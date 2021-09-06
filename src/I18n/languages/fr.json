@@ -188,7 +188,8 @@
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur",
     "noUsers": "Aucun utilisateur",
-    "users": "Utilisateur(s)",
+    "users": "Utilisateurs",
+    "user": "Utilisateur",
     "selectUser" : "Sélectionnez un utilisateur",
     "selectUsers" : "Sélectionnez des utilisateurs"
   },
