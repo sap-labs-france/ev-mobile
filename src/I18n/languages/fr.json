@@ -378,7 +378,8 @@
   "tags": {
     "visualID": "ID Visuel",
     "noTags": "Aucun badge",
-    "tags": "Badge(s)",
+    "tags": "Badges",
+    "tag": "Badge",
     "active": "Actif",
     "inactive": "Inactif",
     "selectTag": "Sélectionnez un badge",

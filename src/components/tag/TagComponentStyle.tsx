@@ -8,23 +8,6 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    container: {
-      flex: 1,
-      width: '97%',
-      height: '80@s',
-      alignSelf: 'center',
-      borderColor: 'transparent',
-      backgroundColor: commonColor.listHeaderBgColor,
-      shadowColor: commonColor.cardShadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62,
-      elevation: 11,
-      marginBottom: '8@s'
-    },
     selected: {
       backgroundColor: commonColor.listItemSelected
     },
@@ -33,40 +16,25 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     tagContent: {
       width: '100%',
-      height: '100%',
+      height: '90@s',
       justifyContent: 'space-between',
-      backgroundColor: commonColor.listHeaderBgColor,
+      alignItems: 'center',
       flexDirection: 'row',
       margin: 0,
-      flex: 1,
-      paddingLeft: 0,
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingRight: 0
+      padding: '5@s'
     },
     leftContainer: {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      width: '55@s'
+      width: '30%',
+      height: '100%',
+      marginHorizontal: '10@s'
     },
     icon: {
-      width: '100%',
-      color: commonColor.textColor,
-      textAlign: 'center',
-      fontSize: '55@s'
-    },
-    badgeDefaultContainer: {
-      width: '85%',
-      backgroundColor: commonColor.disabledDark,
-      borderRadius: '2@s'
-    },
-    badgeDefaultText: {
-      fontSize: '10@s',
-      textAlign: 'center',
-      color: commonColor.light,
-      paddingVertical: '1@s',
-      paddingHorizontal: '3@s'
+      flex: 1,
+      width: '90@s',
+      resizeMode: 'contain'
     },
     middleContainer: {
       flexDirection: 'column',
@@ -74,27 +42,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       height: '100%',
       paddingVertical: '5@s',
-      marginLeft: '5@s',
       flex: 1
-    },
-    statusIndicator: {
-      height: '100%',
-      width: '5@s'
-    },
-    statusInactive: {
-      backgroundColor: commonColor.brandDanger
-    },
-    statusActive: {
-      backgroundColor: commonColor.brandSuccess
-    },
-    userConstainer: {
-      marginTop: '3@s'
-    },
-    tagVisualIDContainer: {
-      marginTop: '3@s'
-    },
-    tagDescriptionContainer: {
-      flexDirection: 'row'
     },
     text: {
       fontSize: '13@s',
@@ -104,29 +52,37 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontWeight: 'bold',
       width: '100%'
     },
-    userContainer: {
-      marginTop: '3@s'
-    },
     fullName: {
-      fontSize: '12@s',
       alignSelf: 'flex-start'
     },
     tagVisualID: {
       fontSize: '11@s',
       alignSelf: 'flex-start',
+      lineHeight: '15@s',
       width: '100%'
     },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'flex-start',
-      width: '80@s',
-      paddingVertical: '5@s',
-      paddingRight: '5@s',
-      height: '100%'
+    bottomLine: {
+      flexDirection: 'row',
+      alignItems: 'center'
     },
     statusContainer: {
-      marginBottom: '2@s'
+      marginRight: '8@s',
+      paddingRight: '8@s'
+    },
+    statusContainerWithRightBorder: {
+      borderRightWidth: 0.8,
+      borderRightColor: commonColor.textColor
+    },
+    defaultContainer: {
+      backgroundColor: commonColor.primary,
+      borderRadius: '2@s',
+      justifyContent: 'center',
+      height: '14@s'
+    },
+    defaultText: {
+      fontSize: '10@s',
+      color: commonColor.light,
+      paddingHorizontal: '3@s'
     }
   });
   const portraitStyles = {};

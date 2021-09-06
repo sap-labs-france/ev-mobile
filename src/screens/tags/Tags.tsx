@@ -20,12 +20,12 @@ export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];
 }
 
-interface State extends SelectableState<Tag>{
+interface State extends SelectableState<Tag> {
   tags?: Tag[];
   projectedFields?: string[];
   skip?: number;
   limit?: number;
-  count?: number;
+  count: number;
   refreshing?: boolean;
   loading?: boolean;
 }
@@ -37,9 +37,10 @@ export default class Tags extends SelectableList<Tag> {
 
   public constructor(props: Props) {
     super(props);
-    this.title = I18n.t('tags.tags');
     this.selectMultipleTitle = 'tags.selectTags';
     this.selectSingleTitle = 'tags.selectTag';
+    this.singleItemTitle = I18n.t('tags.tag');
+    this.multiItemsTitle = I18n.t('tags.tags');
     this.state = {
       projectedFields: [],
       tags: [],
