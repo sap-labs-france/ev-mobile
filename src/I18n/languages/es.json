@@ -69,7 +69,6 @@
     "default": "Por defecto",
     "save": "Guardar",
     "update": "Actualizar",
-    "close": "Close",
     "tenants": "Organizations",
     "reset": "Reset",
     "selected": "Selected",
@@ -206,7 +205,7 @@
     "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}} ?",
     "addPaymentMethod": "Add Payment Method",
     "paymentMethodCreationRules": "Por razones de seguridad, no guardamos información sobre su cuenta bancaria y tarjeta de crédito directamente. La información es enviada vía un canal seguro a nuestro socio STRIPE, quien provee la infraestructura para facturación y pago.",
-    "paymentMethodsCreationCheckboxText": "He leído el acuerdo de licencia de usuario final y acepto que mi información bancaria sea utilizada para futuros pagos de sesiones de carga para VE.",
+    "paymentMethodsCreationCheckboxText": "He leído el acuerdo de licencia de usuario final y acepto que mi información bancaria sea utilizada para futuros pagos de sesiones de carga para VE."
   },
   "paymentMethodStatus": {
     "valid": "Valid",

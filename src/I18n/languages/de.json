@@ -1,4 +1,4 @@
-﻿{
+{
   "general": {
     "notAuthorized": "You are not authorized to perform this action",
     "migrationError": "Fehler während der Datenmigration",
@@ -69,7 +69,6 @@
     "default": "Default",
     "save": "Save",
     "update": "Update",
-    "close": "Close",
     "tenants": "Organizations",
     "reset": "Reset",
     "selected": "Selected",

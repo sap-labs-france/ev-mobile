@@ -3,12 +3,15 @@ import { Buffer } from 'buffer';
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
+import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
-import SafeUrlAssembler from 'safe-url-assembler';
+import { Platform } from 'react-native';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
+import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
@@ -31,10 +34,6 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import ReactNativeBlobUtil from 'react-native-blob-util';
-import { Platform } from 'react-native';
-import { PLATFORM } from '../theme/variables/commonColor';
-import I18n from 'i18n-js';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -610,11 +609,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async softStopstopTransaction(transactionID: number): Promise<ActionResponse> {
-    this.debugMethod('softStopstopTransaction');
+  public async softStopTransaction(transactionID: number): Promise<ActionResponse> {
+    this.debugMethod('softStopTransaction');
     const result = await this.axiosInstance.put(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION_SOFT_STOP}`,
-      { ID: transactionID },
+      this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION_SOFT_STOP, { id: transactionID }),
+      {},
       {
         headers: this.buildSecuredHeaders()
       }
@@ -663,11 +662,10 @@ export default class CentralServerProvider {
   public async getTransaction(id: number): Promise<Transaction> {
     this.debugMethod('getTransaction');
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION, { id }), {
       headers: this.buildSecuredHeaders(),
       params: {
-        ID: id,
-        WithUser: true,
+        WithUser: true
       }
     });
     return result.data;
@@ -704,13 +702,10 @@ export default class CentralServerProvider {
     // Build Sorting
     this.buildSorting(sorting, params);
     // Call
-    const result = await this.axiosInstance.get(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_COMPLETED}`,
-      {
-        headers: this.buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS_COMPLETED), {
+      headers: this.buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -822,9 +817,9 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Build Sorting
     this.buildSorting(sorting, params);
-    params['WithUser'] = 'true';
+    params.WithUser = 'true';
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_ACTIVE}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS_ACTIVE), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -881,10 +876,9 @@ export default class CentralServerProvider {
     this.debugMethod('getChargingStationConsumption');
     // Call
     const result = await this.axiosInstance.get(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION_CONSUMPTION}`,
+      this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION_CONSUMPTIONS, { id: transactionId }),
       {
-        headers: this.buildSecuredHeaders(),
-        params: { TransactionId: transactionId }
+        headers: this.buildSecuredHeaders()
       }
     );
     return result.data;
@@ -1060,16 +1054,13 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/client/api';
   }
 
-  private buildRestEndpointUrl(
-    urlPatternAsString: ServerRoute,
-    params: {
-      // Just a flat list of key/value pairs!
-      [name: string]: string | number | null;
-    } = {}
-  ) {
-    const url = SafeUrlAssembler(this.buildRestServerURL())
-      .template('/' + urlPatternAsString)
-      .param(params);
-    return url.toString();
+  private buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: {[name: string]: string | number | null } = {}) {
+    let resolvedUrlPattern = urlPatternAsString as string;
+    for (const key in params) {
+      if (Object.prototype.hasOwnProperty.call(params, key)) {
+        resolvedUrlPattern = resolvedUrlPattern.replace(`:${key}`, encodeURIComponent(params[key]));
+      }
+    }
+    return `${this.buildRestServerURL()}/${resolvedUrlPattern}`;
   }
 }
