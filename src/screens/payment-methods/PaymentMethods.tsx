@@ -19,6 +19,8 @@ import Utils from '../../utils/Utils';
 import computeStyleSheet from './PaymentMethodsStyle';
 import { BillingSettings } from '../../types/Setting';
 import SelectableList, { SelectableState } from '../base-screen/SelectableList';
+import DialogModal from '../../components/modal/DialogModal';
+import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
 
 export interface Props extends BaseProps {}
 
@@ -30,6 +32,7 @@ interface State extends SelectableState<BillingPaymentMethod> {
   loading?: boolean;
   deleteOperationsStates?: Record<string, boolean>;
   billingSettings?: BillingSettings;
+  paymentMethodToBeDeleted?: BillingPaymentMethod;
 }
 
 export default class PaymentMethods extends SelectableList<BillingPaymentMethod> {
@@ -48,7 +51,8 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
       count: 0,
       refreshing: false,
       loading: true,
-      deleteOperationsStates: {}
+      deleteOperationsStates: {},
+      paymentMethodToBeDeleted: null
     };
   }
 
@@ -138,7 +142,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
 
   public render = () => {
     const style = computeStyleSheet();
-    const { paymentMethods, count, skip, limit, refreshing, loading, billingSettings } = this.state;
+    const { paymentMethods, count, skip, limit, refreshing, loading, billingSettings, paymentMethodToBeDeleted } = this.state;
     const { navigation } = this.props;
     return (
       <Container style={style.container}>
@@ -163,6 +167,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
             </TouchableOpacity>
           )}
         </View>
+        {paymentMethodToBeDeleted && this.renderDeletePaymentMethodDialog(paymentMethodToBeDeleted)}
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
@@ -203,7 +208,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
           disabled={deleteInProgress}
           style={style.trashIconButton}
           onPress={() => {
-            this.deletePaymentMethodConfirm(paymentMethod);
+            this.setState({ paymentMethodToBeDeleted: paymentMethod });
           }}>
           {deleteInProgress ? (
             <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
@@ -215,25 +220,37 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     );
   }
 
-  private deletePaymentMethodConfirm(paymentMethod: BillingPaymentMethod): void {
-    Alert.alert(
-      I18n.t('paymentMethods.deletePaymentMethodTitle'),
-      I18n.t('paymentMethods.deletePaymentMethodSubtitle', { cardBrand: paymentMethod.brand, cardLast4: paymentMethod.last4 }),
-      [
-        {
-          text: I18n.t('general.yes'),
-          onPress: () => {
-            this.deletePaymentMethod(paymentMethod.id as string);
+  private renderDeletePaymentMethodDialog(paymentMethod: BillingPaymentMethod) {
+    const modalCommonStyle = computeModalCommonStyles();
+    return (
+      <DialogModal
+        onBackDropPress={() => null}
+        withCloseButton={true}
+        close={() => this.setState({ paymentMethodToBeDeleted: null })}
+        withCancel={true}
+        title={I18n.t('paymentMethods.deletePaymentMethodTitle')}
+        description={I18n.t('paymentMethods.deletePaymentMethodSubtitle', {
+          cardBrand: paymentMethod.brand,
+          cardLast4: paymentMethod.last4
+        })}
+        buttons={[
+          {
+            text: I18n.t('general.yes'),
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonStyle: modalCommonStyle.primaryButton,
+            action: async () => this.deletePaymentMethod(paymentMethod.id as string)
           }
-        },
-        { text: I18n.t('general.cancel') }
-      ]
+        ]}
+      />
     );
   }
 
   private async deletePaymentMethod(paymentMethodID: string): Promise<void> {
     const userID = this.centralServerProvider?.getUserInfo()?.id;
-    this.setState({ deleteOperationsStates: { ...this.state.deleteOperationsStates, [paymentMethodID]: true } });
+    this.setState({
+      paymentMethodToBeDeleted: null,
+      deleteOperationsStates: { ...this.state.deleteOperationsStates, [paymentMethodID]: true }
+    });
     try {
       const res = await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
       if (res?.succeeded) {
