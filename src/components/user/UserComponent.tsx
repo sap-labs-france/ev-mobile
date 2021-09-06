@@ -1,18 +1,19 @@
-import { Card, CardItem, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
 import { ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
 import Utils from '../../utils/Utils';
-import Chip from '../chip/Chip';
 import computeChipStyleSheet from '../chip/ChipStyle';
 import UserAvatar from './avatar/UserAvatar';
 import computeStyleSheet from './UserComponentStyle';
+import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 
 export interface Props extends BaseProps {
   user: User;
   selected?: boolean;
+  shadowed?: boolean;
 }
 
 interface State {}
@@ -35,39 +36,43 @@ export default class UserComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const listItemCommonStyle = computeListItemCommonStyle();
     const chipStyle = computeChipStyleSheet();
-    const { user, navigation, selected } = this.props;
+    const { user, navigation, selected, shadowed } = this.props;
     const userFullName = Utils.buildUserName(user);
     const userRole = user ? user.role : '';
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, chipStyle);
     return (
-      <Card style={style.container}>
-        <CardItem style={[style.userContent, selected ? style.selected : style.unselected]}>
-          <View style={[this.buildStatusIndicatorStyle(user.status, style), style.statusIndicator]} />
+      <View style={shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer}>
+        <View style={style.userContent}>
           <View style={style.avatarContainer}>
             {selected ? <UserAvatar isSelected={true} navigation={navigation} /> : <UserAvatar user={user} navigation={navigation} />}
           </View>
           <View style={style.userContainer}>
-            <View style={style.userFullnameStatusContainer}>
-              <View style={style.fullNameContainer}>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.fullName}>
-                  {userFullName}
-                </Text>
-              </View>
-              <Chip statusStyle={statusStyle} text={Utils.translateUserStatus(userStatus)} navigation={navigation} />
-            </View>
-            <View style={style.emailRoleContainer}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.email}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
+              {userFullName}
+            </Text>
+            {user?.email && (
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
                 {user.email}
               </Text>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.role}>
-                {Utils.translateUserRole(userRole)}
-              </Text>
+            )}
+            <View style={style.bottomLine}>
+              {user?.role && (
+                <View style={[style.roleContainer, user?.status && style.roleContainerWithBorderRight]}>
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
+                    {Utils.translateUserRole(userRole)}
+                  </Text>
+                </View>
+              )}
+              {user?.status && (
+                <Text style={[style.text, statusStyle]}>{Utils.translateUserStatus(userStatus)}</Text>
+              )}
             </View>
           </View>
-        </CardItem>
-      </Card>
+        </View>
+      </View>
     );
   }
 

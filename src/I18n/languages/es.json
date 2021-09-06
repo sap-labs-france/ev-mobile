@@ -188,7 +188,8 @@
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario",
     "noUsers": "No users",
-    "users": "Users(s)",
+    "users": "Users",
+    "user": "User",
     "selectUser" : "Select User",
     "selectUsers" : "Select Users"
   },
