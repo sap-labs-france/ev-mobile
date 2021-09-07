@@ -284,7 +284,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   // eslint-disable-next-line complexity
   public refresh = async () => {
-    let siteImage = null;
+    let siteImage = this.state.siteImage;
     let transaction = null;
     let showBadgeErrorMessage: boolean;
     let showBillingErrorMessage: boolean;
@@ -314,7 +314,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return;
     }
     // Get the site image if not already fetched
-    if (!this.state.siteImage && chargingStation?.siteArea) {
+    if (!siteImage && chargingStation?.siteArea) {
       siteImage = await this.getSiteImage(chargingStation.siteArea?.siteID);
     }
     // Get Current Transaction
