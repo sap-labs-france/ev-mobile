@@ -329,8 +329,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       buttonDisabled = true;
       showBillingErrorMessage = true;
     }
-    // Manually add the default property to the badge (not sent from the server)
-
+    
     // Get selected user cars and tags count to disable the selection if count is < 2
     const selectedUserTagsCount = await this.countSelectedUserActiveTags(selectedUser);
     const selectedUserCarsCount = await this.countSelectedUserCars(selectedUser);
