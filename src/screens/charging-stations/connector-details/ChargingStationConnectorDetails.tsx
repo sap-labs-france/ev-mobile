@@ -2,7 +2,7 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Switch, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, ImageBackground, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
 import noSite from '../../../../assets/no-site.png';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
@@ -60,6 +60,7 @@ interface State {
   refreshing?: boolean;
   userDefaultTagCar?: UserDefaultTagCar;
   showStartTransactionDialog: boolean;
+  showStopTransactionDialog: boolean;
   selectedUser?: User;
   selectedCar?: Car;
   selectedTag?: Tag;
@@ -106,6 +107,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive: false,
       refreshing: false,
       showStartTransactionDialog: false,
+      showStopTransactionDialog: false,
       selectedUser: null,
       selectedCar: null,
       selectedTag: null,
@@ -330,7 +332,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // Manually add the default property to the badge (not sent from the server)
 
     // Get selected user cars and tags count to disable the selection if count is < 2
-    const selectedUserTagsCount = await this.countSelectedUserTags(selectedUser);
+    const selectedUserTagsCount = await this.countSelectedUserActiveTags(selectedUser);
     const selectedUserCarsCount = await this.countSelectedUserCars(selectedUser);
 
     // If the selected user has no badge, disable the button
@@ -458,7 +460,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     this.setState({ refreshing: true });
     // Refresh
     await this.refresh();
-    await this.loadSelectedUserDefaultTagAndCar(this.state.selectedUser);
+    // await this.loadSelectedUserDefaultTagAndCar(this.state.selectedUser);
     // Hide spinner
     this.setState({ refreshing: false });
   };
@@ -521,14 +523,35 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   }
 
-  public stopTransactionConfirm = async () => {
+  private renderStopTransactionDialog() {
     const { chargingStation } = this.state;
-    // Confirm
-    Alert.alert(I18n.t('details.stopTransaction'), I18n.t('details.stopTransactionMessage', { chargeBoxID: chargingStation.id }), [
-      { text: I18n.t('general.yes'), onPress: async () => this.stopTransaction() },
-      { text: I18n.t('general.no') }
-    ]);
-  };
+    const modalCommonStyle = computeModalCommonStyle();
+    return (
+      <DialogModal
+        withCloseButton={true}
+        close={() => this.setState({ showStopTransactionDialog: false })}
+        title={I18n.t('details.stopTransaction')}
+        description={I18n.t('details.stopTransactionMessage', { chargeBoxID: chargingStation.id })}
+        buttons={[
+          {
+            text: I18n.t('general.yes'),
+            action: () => {
+              this.stopTransaction();
+              this.setState({ showStopTransactionDialog: false });
+            },
+            buttonStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButton
+          },
+          {
+            text: I18n.t('general.no'),
+            action: () => this.setState({ showStopTransactionDialog: false }),
+            buttonStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButton
+          }
+        ]}
+      />
+    );
+  }
 
   public stopTransaction = async () => {
     const { chargingStation, connector } = this.state;
@@ -809,7 +832,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public renderStopTransactionButton = (style: any) => {
     const { canStopTransaction } = this.state;
     return (
-      <TouchableOpacity onPress={async () => this.stopTransactionConfirm()} disabled={!canStopTransaction}>
+      <TouchableOpacity onPress={() => this.setState({ showStopTransactionDialog: true })} disabled={!canStopTransaction}>
         <View
           style={
             !canStopTransaction
@@ -849,7 +872,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       loading,
       siteImage,
       isPricingActive,
-      showStartTransactionDialog
+      showStartTransactionDialog,
+      showStopTransactionDialog,
+      showAdviceMessage
     } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return loading ? (
@@ -857,6 +882,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     ) : (
       <Container style={style.container}>
         {showStartTransactionDialog && this.renderStartTransactionDialog()}
+        {showStopTransactionDialog && this.renderStopTransactionDialog()}
         <HeaderComponent
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : '-'}
@@ -870,26 +896,34 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           rightActionIcon={'menu'}
         />
         {/* Site Image */}
-        <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
-        {/* Show Last Transaction */}
-        {this.renderShowLastTransactionButton(style)}
-        {/* Report Error */}
-        {this.renderReportErrorButton(style)}
-        {/* Start/Stop Transaction */}
-        {canStartTransaction && connector?.currentTransactionID === 0 ? (
-          <View style={style.transactionContainer}>{this.renderStartTransactionButton(style)}</View>
-        ) : canStopTransaction && connector?.currentTransactionID > 0 ? (
-          <View style={style.transactionContainer}>{this.renderStopTransactionButton(style)}</View>
-        ) : (
-          <View style={style.noButtonStopTransaction} />
-        )}
+        <ImageBackground source={siteImage ? { uri: siteImage } : noSite} style={style.backgroundImage as ImageStyle}>
+          <View style={style.imageInnerContainer}>
+            {/* Show Last Transaction */}
+            {this.renderShowLastTransactionButton(style)}
+            {/* Start/Stop Transaction */}
+            {canStartTransaction && connector?.currentTransactionID === 0 ? (
+              <View style={style.transactionContainer}>{this.renderStartTransactionButton(style)}</View>
+            ) : canStopTransaction && connector?.currentTransactionID > 0 ? (
+              <View style={style.transactionContainer}>{this.renderStopTransactionButton(style)}</View>
+            ) : (
+              <View style={style.noButtonStopTransaction} />
+            )}
+            {/* Report Error */}
+            {this.renderReportErrorButton(style)}
+          </View>
+          {showAdviceMessage && this.renderAdviceMessage(style)}
+        </ImageBackground>
+
         {/* Details */}
         {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
           <View style={style.selectUserCarBadgeContainer}>
             {/* Error messages */}
             {this.renderSplitterButton(style)}
             {showChargingSettings ? (
-              <ScrollView style={style.scrollviewContainer} contentContainerStyle={style.chargingSettingsContainer}>
+              <ScrollView
+                style={style.scrollviewContainer}
+                refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}
+                contentContainerStyle={style.chargingSettingsContainer}>
                 {this.renderDefaultSwitch(style)}
                 {/* User */}
                 {this.renderUserSelection(style)}
@@ -930,14 +964,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderConnectorInfo() {
     return (
-      <View>
+      <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
         <ChargingStationConnectorComponent
           listed={false}
           chargingStation={this.state.chargingStation}
           connector={this.state.connector}
           navigation={this.props.navigation}
         />
-      </View>
+      </ScrollView>
     );
   }
 
@@ -977,9 +1011,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderAdviceMessage(style: any) {
     return (
-      <View style={style.messageContainer}>
+      <View style={[style.messageContainer, style.adviceMessageContainer]}>
         <Icon type={'MaterialCommunityIcons'} name={'power-plug'} />
-        <Text style={style.adviceText}>Be sure that the cable is connected to both the car and the charging station</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.adviceText}>
+          {I18n.t('transactions.adviceMessage')}
+        </Text>
       </View>
     );
   }
@@ -1210,11 +1246,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return null;
   }
 
-  private async countSelectedUserTags(selectedUser: User): Promise<number> {
+  private async countSelectedUserActiveTags(selectedUser: User): Promise<number> {
     const userID = selectedUser?.id;
     if (userID) {
       const params = {
-        UserID: userID
+        UserID: userID,
+        Active: true
       };
       try {
         const userTags = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);

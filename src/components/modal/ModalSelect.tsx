@@ -157,7 +157,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     const commonColors = Utils.getCurrentCommonColor();
     if (defaultItemLoading) {
       return (
-        <View style={listItemCommonStyle.noShadowContainer}>
+        <View style={[listItemCommonStyle.noShadowContainer, style.spinnerContainer]}>
           <Spinner color={commonColors.textColor} style={style.spinner} />
         </View>
       );
@@ -169,7 +169,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
         <TouchableOpacity
           disabled={!openable || disabled}
           onPress={() => this.setState({ isVisible: true })}
-          style={[style.itemContainer, disabled && style.buttonDisabled]}>
+          style={[style.itemContainer, (disabled || !openable) && style.buttonDisabled]}>
           {renderItem?.(selectedItems.length > 0 ? selectedItems[0] : defaultItem)}
         </TouchableOpacity>
       );

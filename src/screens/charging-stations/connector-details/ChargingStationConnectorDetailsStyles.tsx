@@ -25,14 +25,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     backgroundImage: {
       width: '100%',
-      height: '125@s'
+      height: '135@s',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    imageInnerContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+      width: '100%'
     },
     lastTransactionContainer: {
       width: '50@s',
       height: '50@s',
-      marginTop: '-85@s',
-      marginLeft: '45@s',
-      marginBottom: '25@s',
       backgroundColor: 'transparent'
     },
     buttonLastTransaction: {
@@ -49,10 +54,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     reportErrorContainer: {
       width: '50@s',
       height: '50@s',
-      marginTop: '-75@s',
-      marginLeft: '250@s',
-      marginBottom: '25@s',
-      backgroundColor: 'transparent'
+      justifyContent: 'center'
     },
     reportErrorButton: {
       width: '50@s',
@@ -66,19 +68,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     transactionContainer: {
-      width: '100@s',
-      height: '100@s',
       padding: '0@s',
-      paddingBottom: '25@s',
       justifyContent: 'center',
-      alignSelf: 'center',
-      marginTop: '-85@s',
-      backgroundColor: 'transparent'
+      alignSelf: 'center'
     },
     buttonTransaction: {
-      width: '100@s',
-      height: '100@s',
-      borderRadius: '50@s',
+      width: '90@s',
+      height: '90@s',
+      borderRadius: '45@s',
       borderStyle: 'solid',
       borderWidth: '4@s',
       borderColor: commonColor.textColor,
@@ -258,7 +255,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     adviceText: {
       fontSize: '12@s',
-      flex: 1,
+      textAlign: 'center',
       marginLeft: '10@s'
     },
     messageContainer: {
@@ -269,6 +266,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '95%',
       borderRadius: '8@s',
       marginBottom: '10@s'
+    },
+    adviceMessageContainer: {
+      backgroundColor: '#000000c0',
+      padding: '3@s',
+      marginBottom: 0,
+      marginVertical: '4@s',
+      justifyContent: 'center'
     },
     errorMessageContainer: {
       borderColor: commonColor.dangerLight,

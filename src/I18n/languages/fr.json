@@ -282,7 +282,8 @@
     "selectUser": "Sélectionnez l'utilisateur",
     "selectEV": "Sélectionnez le véhicule",
     "selectChargeCard": "Sélectionnez la carte de recharge",
-    "chargingSettings": "Paramètres de charge"
+    "chargingSettings": "Paramètres de charge",
+    "adviceMessage": "Assurez-vous que le câble est branché"
   },
   "home": {
     "browseSites": "Sites",
