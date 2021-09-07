@@ -48,7 +48,7 @@ export default class MigrationManager {
       for (let i = tenants.length - 1; i >= 0; i--) {
         const tenant = tenants[i];
         // Switch to AWS cloud
-        if (['slf', 'imredd', 'eurecom', 'proviridis'].includes(tenant.subdomain) &&
+        if (['slfcah', 'slf', 'imredd', 'eurecom', 'proviridis'].includes(tenant.subdomain) &&
           tenant.endpoint !== Configuration.AWS_REST_ENDPOINT_PROD) {
           // Set AWS
           tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
