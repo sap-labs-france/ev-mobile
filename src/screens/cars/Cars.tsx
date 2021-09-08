@@ -110,7 +110,7 @@ export default class Cars extends SelectableList<Car> {
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const cars = await this.getCars(this.searchText, +Constants.PAGING_SIZE, limit);
+      const cars = await this.getCars(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
         cars: cars ? [...prevState.cars, ...cars.result] : prevState.cars,

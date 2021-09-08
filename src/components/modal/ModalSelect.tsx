@@ -8,14 +8,20 @@ import computeStyleSheet from './ModalStyles';
 import I18n from 'i18n-js';
 import SelectableList from '../../screens/base-screen/SelectableList';
 import ListItem from '../../types/ListItem';
+import { TouchableOpacity } from 'react-native';
+import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 
 export interface Props<T> extends BaseProps {
   defaultItem?: T;
   buildItemName: (item: T) => string;
+  disabled?: boolean;
+  label?: string;
+  renderItem?: (item: T) => React.ReactElement;
+  renderNoItem?: () => React.ReactElement;
   selectionMode: ItemSelectionMode;
   onItemsSelected: (selectedItems: T[]) => void;
   defaultItemLoading?: boolean;
-  renderIcon?: (style: any) => React.ReactElement;
+  openable?: boolean;
 }
 interface State<T> {
   isVisible: boolean;
@@ -45,30 +51,15 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
 
   public render() {
     const style = computeStyleSheet();
-    const commonColors = Utils.getCurrentCommonColor();
-    const { buildItemName, selectionMode, defaultItemLoading, defaultItem, renderIcon } = this.props;
+    const { selectionMode, label } = this.props;
     const { isVisible, selectedItems } = this.state;
     const itemsList = React.Children.only(this.props.children);
     return (
       <View style={style.container}>
-        <Button
-          disabled={!defaultItem}
-          block={true}
-          style={[style.button, !defaultItem ? style.buttonDisabled : style.buttonEnabled]}
-          onPress={() => this.setState({ isVisible: true })}>
-          <View style={style.selectionContainer}>
-            {renderIcon && renderIcon(style.inputIcon)}
-            {defaultItemLoading ? (
-              <Spinner style={style.spinner} color={commonColors.textColor} />
-            ) : (
-              <Text adjustsFontSizeToFit={true} style={[style.buttonText, style.selectText]} uppercase={false}>
-                {buildItemName(selectedItems.length > 0 ? selectedItems[0] : defaultItem)}{' '}
-                {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
-              </Text>
-            )}
-            <Icon type={'MaterialIcons'} style={[style.inputIcon, style.rightIcon]} name={'arrow-drop-down'} />
-          </View>
-        </Button>
+        <View style={style.buttonContainer}>
+          <Text style={style.label}>{label}</Text>
+          {this.renderButton(style)}
+        </View>
         <Modal
           propagateSwipe={true}
           supportedOrientations={['portrait', 'landscape']}
@@ -136,6 +127,32 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
       this.setState({ selectedItems });
     } else if (selectionMode === ItemSelectionMode.SINGLE && !Utils.isEmptyArray(selectedItems)) {
       this.setState({ selectedItems, isVisible: false }, () => onItemsSelected(selectedItems));
+    }
+  }
+
+  private renderButton(style: any) {
+    const { defaultItemLoading, defaultItem, renderNoItem, renderItem, openable, disabled } = this.props;
+    const { selectedItems } = this.state;
+    const listItemCommonStyle = computeListItemCommonStyle();
+    const commonColors = Utils.getCurrentCommonColor();
+    if (defaultItemLoading) {
+      return (
+        <View style={[listItemCommonStyle.noShadowContainer, style.spinnerContainer]}>
+          <Spinner color={commonColors.textColor} style={style.spinner} />
+        </View>
+      );
+    }
+    if (!defaultItem) {
+      return <View style={style.itemContainer}>{renderNoItem?.()}</View>;
+    } else {
+      return (
+        <TouchableOpacity
+          disabled={!openable || disabled}
+          onPress={() => this.setState({ isVisible: true })}
+          style={[style.itemContainer, (disabled || !openable) && style.buttonDisabled]}>
+          {renderItem?.(selectedItems.length > 0 ? selectedItems[0] : defaultItem)}
+        </TouchableOpacity>
+      );
     }
   }
 }

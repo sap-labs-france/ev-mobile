@@ -7,6 +7,7 @@ import { Icon } from 'native-base';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import { scale } from 'react-native-size-matters';
 
 import computeStyleSheet from './AppStyles';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
@@ -100,9 +101,10 @@ const createTabBarIcon = (
   return (
     <Icon
       style={{
-        color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor,
-        paddingBottom: 5,
-        fontSize: 23
+        color: props.focused ? commonColor.textColor : commonColor.disabledDark,
+        paddingBottom: 10,
+        fontSize: scale(25),
+        height: scale(30)
       }}
       type={type}
       name={name}
@@ -158,10 +160,11 @@ function createReportErrorNavigator(props: BaseProps) {
 function getTabStyle(): any {
   const commonColor = Utils.getCurrentCommonColor();
   return {
-    backgroundColor: commonColor.containerBgColor,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: commonColor.topTabBarTextColor
+    backgroundColor: commonColor.listHeaderBackground,
+    borderTopWidth: 0.5,
+    borderTopColor: commonColor.disabledLight,
+    paddingTop: 0,
+    marginTop: 0
   };
 }
 
@@ -172,7 +175,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
     <ChargingStationDetailsTabs.Navigator
       initialRouteName="ChargingStationActions"
       activeColor={commonColor.topTabBarActiveTextColor}
-      inactiveColor={commonColor.topTabBarTextColor}
+      inactiveColor={commonColor.topTabBarActiveTextColor}
       barStyle={barStyle}
       labeled
       backBehavior="none">
@@ -214,9 +217,10 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
     <ChargingStationConnectorDetailsTabs.Navigator
       initialRouteName="ChargingStationConnectorDetails"
       activeColor={commonColor.topTabBarActiveTextColor}
-      inactiveColor={commonColor.topTabBarTextColor}
+      inactiveColor={commonColor.topTabBarActiveTextColor}
       barStyle={barStyle}
       labeled
+      shifting={true}
       backBehavior="none">
       <ChargingStationConnectorDetailsTabs.Screen
         name="ChargingStationConnectorDetails"
@@ -233,7 +237,7 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
         options={{
           title: I18n.t('details.graph'),
-          tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
+          tabBarIcon: (props) => createTabBarIcon(props, 'MaterialCommunityIcons', 'chart-line')
         }}
       />
     </ChargingStationConnectorDetailsTabs.Navigator>
@@ -246,11 +250,12 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
   return (
     <TransactionDetailsTabs.Navigator
       initialRouteName="TransactionDetails"
+      shifting={true}
       activeColor={commonColor.topTabBarActiveTextColor}
       inactiveColor={commonColor.topTabBarTextColor}
       barStyle={barStyle}
       labeled
-      backBehavior="none">
+      backBehavior="history">
       <TransactionDetailsTabs.Screen
         name="TransactionDetails"
         component={TransactionDetails}

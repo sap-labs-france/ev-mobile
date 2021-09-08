@@ -115,6 +115,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
               connector && (
                 <ChargingStationConnectorComponent
                   onNavigate={onNavigate}
+                  listed={true}
                   key={`${chargingStation.id}~${connector.connectorId}`}
                   chargingStation={chargingStation}
                   connector={connector}

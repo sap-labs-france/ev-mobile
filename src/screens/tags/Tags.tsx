@@ -18,6 +18,7 @@ import SelectableList, { SelectableProps, SelectableState } from '../base-screen
 
 export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];
+  active?: boolean;
 }
 
 interface State extends SelectableState<Tag> {
@@ -70,7 +71,8 @@ export default class Tags extends SelectableList<Tag> {
       const params = {
         Search: searchText,
         WithUser: true,
-        UserID: this.props.userIDs?.join('|')
+        UserID: this.props.userIDs?.join('|'),
+        Active: this.props.active
       };
       // Get the Tags
       const tags = await this.centralServerProvider.getTags(params, { skip, limit }, ['-createdOn']);

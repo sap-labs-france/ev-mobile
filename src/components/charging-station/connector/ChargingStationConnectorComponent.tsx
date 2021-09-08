@@ -23,6 +23,7 @@ export interface Props extends BaseProps {
   chargingStation: ChargingStation;
   connector: Connector;
   onNavigate?: () => void;
+  listed?: boolean;
 }
 
 interface State {
@@ -146,11 +147,11 @@ export default class ChargingStationConnectorComponent extends React.Component<P
 
   public render() {
     const style = computeStyleSheet();
-    const { connector, navigation, chargingStation, onNavigate } = this.props;
+    const { connector, navigation, chargingStation, onNavigate, listed } = this.props;
     return (
       <TouchableOpacity
-        style={style.container}
-        disabled={chargingStation.inactive}
+        style={[style.container, listed && style.borderedTopContainer]}
+        disabled={chargingStation.inactive || !listed}
         onPress={() => {
           if (onNavigate) {
             onNavigate();
@@ -170,7 +171,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
               <View style={{ flex: 1 }}>{this.renderSecondConnectorDetails(chargingStation, connector, style)}</View>
               <View style={{ flex: 1 }}>{this.renderThirdConnectorDetails(chargingStation, connector, style)}</View>
             </View>
-            {!chargingStation.inactive && (
+            {!chargingStation.inactive && listed && (
               <View style={style.iconContainer}>
                 <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
               </View>

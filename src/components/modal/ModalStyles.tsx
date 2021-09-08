@@ -18,7 +18,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.buttonBg
     },
     buttonDisabled: {
-      opacity: 0.4
+      opacity: 0.5
     },
     buttonEnabled: {
       opacity: 1
@@ -37,9 +37,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       textAlign: 'right'
     },
     spinner: {
-      alignSelf: 'flex-start',
+      alignSelf: 'center',
       flex: 1,
-      paddingLeft: '7@s'
+      paddingLeft: '7@s',
+      color: commonColor.textColor
     },
     selectText: {
       textAlign: 'left'
@@ -67,7 +68,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '5@s'
+      padding: '5@s',
+      backgroundColor: commonColor.listHeaderBackground,
+      borderTopLeftRadius: '20@s',
+      borderTopRightRadius: '20@s'
     },
     modalTitle: {
       fontSize: '16@s'
@@ -91,6 +95,24 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'center',
       width: '40%',
       backgroundColor: commonColor.buttonBg
+    },
+    itemContainer: {
+      width: '100%'
+    },
+    spinnerContainer: {
+      width: '95%',
+      height: '90@s'
+    },
+    buttonContainer: {
+      width: '100%'
+    },
+    label: {
+      fontWeight: 'bold',
+      fontSize: '14@s',
+      color: commonColor.textColor,
+      marginLeft: '5%',
+      marginBottom: '6@s',
+      textAlign: 'left'
     }
   });
   const portraitStyles = {};

@@ -73,7 +73,8 @@
     "reset": "Reset",
     "selected": "Selected",
     "results": "Result(s)",
-    "optional": "Optional"
+    "optional": "Optional",
+    "defaultSettings": "Default Settings"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -201,7 +202,7 @@
     "addPaymentMethodSuccess" : "New payment method added successfully",
     "deletePaymentMethodSuccess": "Payment method removed successfully",
     "deletePaymentMethodTitle": "Delete payment method",
-    "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}}",
+    "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}} ?",
     "addPaymentMethod": "Add Payment Method",
     "paymentMethodCreationRules": "Por razones de seguridad, no guardamos información sobre su cuenta bancaria y tarjeta de crédito directamente. La información es enviada vía un canal seguro a nuestro socio STRIPE, quien provee la infraestructura para facturación y pago.",
     "paymentMethodsCreationCheckboxText": "He leído el acuerdo de licencia de usuario final y acepto que mi información bancaria sea utilizada para futuros pagos de sesiones de carga para VE."
@@ -235,7 +236,9 @@
     "cars": "Vehículos",
     "car": "Vehículo",
     "selectCar": "Select a car",
-    "selectCars": "Select cars"
+    "selectCars": "Select cars",
+    "noCarMessageTitle": "Indicate what car you are using to get better recharges",
+    "addCar": "Add a car"
   },
   "invoices": {
     "noInvoices": "No Invoices",
@@ -277,7 +280,9 @@
     "noBadgeError": "Service unavailable, no charge card registered",
     "selectUser": "Select User",
     "selectEV": "Select EV",
-    "selectChargeCard": "Select Charge Card"
+    "selectChargeCard": "Select Charge Card",
+    "chargingSettings": "Charging Settings",
+    "adviceMessage": "Ensure that the cable is connected"
   },
   "home": {
     "browseSites": "Sitios",
@@ -383,7 +388,9 @@
     "active": "Activa",
     "inactive": "Inactiva",
     "selectTag": "Select Badge",
-    "selectTags": "Select Badges"
+    "selectTags": "Select Badges",
+    "noTagMessageTitle": "No badge",
+    "noTagMessageSubtitle": "A badge is required to recharge"
   },
   "details": {
     "connector": "Connector",
