@@ -26,7 +26,9 @@ class I18nChecker {
             console.log(deleted);
           }
           if (Object.keys(added).length === 0 && Object.keys(deleted).length === 0) {
-            console.log('No issue found for: ' + file);
+            if (I18nChecker.compareContent(parsedContentEN, parsedContentOtherLanguage, file)) {
+              console.log('No error found for file ' + file);
+            }
           }
         } catch (err) {
           console.log('File not found or with wrong format: ' + file);
@@ -37,6 +39,31 @@ class I18nChecker {
       console.log('English file not found.');
       throw err;
     }
+  }
+
+  private static compareValueContent(keyName: string, originalValue: string, comparedValue: string, file: string): boolean {
+    if (originalValue.trim() === comparedValue.trim()) {
+      console.log(file + ': Content `' + keyName + '` probably not yet translated (current value is: `' + originalValue + '`)');
+      return false; // Value is same!
+    }
+    return true; // Value is translated.
+  }
+
+  private static compareContent(originalLanguage: JSON, comparedLanguage: JSON, file: string): boolean {
+    let noIssue = true;
+    for (const keyName of Object.keys(originalLanguage)) {
+      switch (typeof (originalLanguage as any)[keyName]) {
+        case 'string':
+          noIssue = I18nChecker.compareValueContent(keyName, (originalLanguage as any)[keyName] as string, (comparedLanguage as any)[keyName] as string, file) && noIssue;
+          break;
+        case 'object':
+          noIssue = I18nChecker.compareContent(Object.assign({}, (originalLanguage as any)[keyName]), Object.assign({}, (comparedLanguage as any)[keyName]), file) && noIssue;
+          break;
+        default:
+          console.error(keyName + ' is not a supported type!');
+      }
+    }
+    return noIssue;
   }
 }
 

@@ -234,7 +234,7 @@
     "noCars": "Aucune voiture",
     "carUnexpectedError": "Une erreur est survenue",
     "cars": "Voitures",
-    "car": "Voiture",
+    "Car": "Voiture",
     "selectCar": "Sélectionnez une voiture",
     "selectCars": "Sélectionnez des voitures"
   },
@@ -440,7 +440,7 @@
     "cannotNavigate": "Impossible de naviger vers l'écran",
     "extraDataMissing": "La notification est corrompue",
     "incorrectTenant": "L'organisation est incorrecte",
-    "notifyEndOfSession": {
+    "notifyEndOfTransaction": {
       "message": "Votre session sur '{{chargeBoxID}}' est terminée.",
       "subMessage": "Session Terminée",
       "longMessage": "Votre session sur '{{chargeBoxID}}' est terminée."
