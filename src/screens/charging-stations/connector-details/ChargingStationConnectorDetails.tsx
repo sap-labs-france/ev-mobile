@@ -329,7 +329,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       buttonDisabled = true;
       showBillingErrorMessage = true;
     }
-    
+
     // Get selected user cars and tags count to disable the selection if count is < 2
     const selectedUserTagsCount = await this.countSelectedUserActiveTags(selectedUser);
     const selectedUserCarsCount = await this.countSelectedUserCars(selectedUser);
@@ -1083,7 +1083,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           openable={isAdmin}
           disabled={defaultSettings}
           label={I18n.t('users.user')}
-          renderItem={() => <UserComponent shadowed={!defaultSettings} user={selectedUser} navigation={navigation} />}
+          renderItem={() => <UserComponent shadowed={!defaultSettings && isAdmin} user={selectedUser} navigation={navigation} />}
           defaultItem={selectedUser}
           onItemsSelected={this.onUserSelected.bind(this)}
           buildItemName={Utils.buildUserName.bind(this)}

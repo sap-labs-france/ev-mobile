@@ -100,7 +100,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     spinnerContainer: {
-      width: '100%',
+      width: '95%',
       height: '90@s'
     },
     buttonContainer: {

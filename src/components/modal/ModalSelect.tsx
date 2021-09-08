@@ -163,7 +163,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
       );
     }
     if (!defaultItem) {
-      return <View style={[style.itemContainer, style.spinnerContainer]}>{renderNoItem?.()}</View>;
+      return <View style={style.itemContainer}>{renderNoItem?.()}</View>;
     } else {
       return (
         <TouchableOpacity
