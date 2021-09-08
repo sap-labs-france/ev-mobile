@@ -51,31 +51,11 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
 
   public render() {
     const style = computeStyleSheet();
-    const { selectionMode, label, disabled } = this.props;
+    const { selectionMode, label } = this.props;
     const { isVisible, selectedItems } = this.state;
     const itemsList = React.Children.only(this.props.children);
     return (
       <View style={style.container}>
-        {/* }
-        <Button
-          disabled={isDisabled}
-          block={true}
-          style={[style.button, isDisabled ? style.buttonDisabled : style.buttonEnabled]}
-          onPress={() => this.setState({ isVisible: true })}>
-          <View style={style.selectionContainer}>
-            {renderIcon && renderIcon(style.inputIcon)}
-            {defaultItemLoading ? (
-              <Spinner style={style.spinner} color={commonColors.textColor} />
-            ) : (
-              <Text adjustsFontSizeToFit={true} style={[style.buttonText, style.selectText]} uppercase={false}>
-                {buildItemName(selectedItems.length > 0 ? selectedItems[0] : defaultItem)}{' '}
-                {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
-              </Text>
-            )}
-            <Icon type={'MaterialIcons'} style={[style.inputIcon, style.rightIcon]} name={'arrow-drop-down'} />
-          </View>
-        </Button>
-        */}
         <View style={style.buttonContainer}>
           <Text style={style.label}>{label}</Text>
           {this.renderButton(style)}
