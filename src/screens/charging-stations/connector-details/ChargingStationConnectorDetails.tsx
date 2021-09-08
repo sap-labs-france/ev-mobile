@@ -1011,7 +1011,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private renderAdviceMessage(style: any) {
     return (
       <View style={[style.messageContainer, style.adviceMessageContainer]}>
-        <Icon type={'MaterialCommunityIcons'} name={'power-plug'} />
+        <Icon style={style.adviceMessageIcon} type={'MaterialCommunityIcons'} name={'power-plug'} />
         <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.adviceText}>
           {I18n.t('transactions.adviceMessage')}
         </Text>

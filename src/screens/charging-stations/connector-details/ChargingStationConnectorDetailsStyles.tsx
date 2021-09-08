@@ -256,7 +256,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     adviceText: {
       fontSize: '12@s',
       textAlign: 'center',
-      marginLeft: '10@s'
+      marginLeft: '10@s',
+      color: commonColor.light
     },
     messageContainer: {
       backgroundColor: commonColor.listItemBackground,
@@ -268,11 +269,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginBottom: '10@s'
     },
     adviceMessageContainer: {
-      backgroundColor: '#000000c0',
+      backgroundColor: 'rgba(0,0,0,0.3)',
       padding: '3@s',
       marginBottom: 0,
       marginVertical: '4@s',
       justifyContent: 'center'
+    },
+    adviceMessageIcon: {
+      fontSize: '25@s',
+      color: commonColor.light
     },
     errorMessageContainer: {
       borderColor: commonColor.dangerLight,
@@ -337,7 +342,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '20@s'
     },
     plusSign: {
-      fontSize: '28@s',
+      fontSize: '25@s',
       color: commonColor.brandPrimaryLight,
       marginRight: '5@s'
     },
