@@ -60,6 +60,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           }}
           selectionColor={commonColor.textColor}
           style={formStyle.inputField}
+          autoCorrect={false}
           placeholder={I18n.t('general.search')}
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}

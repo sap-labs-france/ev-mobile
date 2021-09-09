@@ -139,7 +139,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const selectedUser = {
       id: this.currentUser?.id,
       firstName: this.currentUser?.firstName,
-      name: this.currentUser?.name
+      name: this.currentUser?.name,
+      status: 'A',
+      role: this.currentUser.role,
+      email: this.currentUser.email
     };
     await this.loadSelectedUserDefaultTagAndCar(selectedUser as User);
     // Init the selected user to the currently logged in user
@@ -1125,16 +1128,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const listItemCommonStyle = computeListItemCommonStyle();
     const style = computeStyleSheet();
     const { selectedUser } = this.state;
+    const { navigation } = this.props;
     return (
       <View style={[listItemCommonStyle.noShadowContainer, style.noItemContainer, style.noCarContainer]}>
         <Icon style={style.noCarIcon} type={'MaterialCommunityIcons'} name={'car'} />
         <View style={style.column}>
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
-          {this.currentUser?.id === selectedUser?.id && false && (
-            <View style={style.addItemContainer}>
+          {(this.currentUser?.id === selectedUser?.id || this.securityProvider.canListCars()) && (
+            <TouchableOpacity onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={style.addItemContainer}>
               <Text style={[style.linkText, style.plusSign]}>+</Text>
               <Text style={[style.messageText, style.linkText, style.linkLabel]}>{I18n.t('cars.addCar')}</Text>
-            </View>
+            </TouchableOpacity>
           )}
         </View>
       </View>
@@ -1197,8 +1201,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
     // Temporary workaround to ensure that the default car has all the needed properties (server-side changes are to be done)
     if (userDefaultTagCar.car) {
-      const car = await this.getSelectedUserDefaultCar(userDefaultTagCar.car.id);
-      userDefaultTagCar.car = car ?? userDefaultTagCar.car;
+      userDefaultTagCar.car.user = this.state.selectedUser;
     }
     this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
   }
