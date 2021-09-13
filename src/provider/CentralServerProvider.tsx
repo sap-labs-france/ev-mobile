@@ -887,7 +887,7 @@ export default class CentralServerProvider {
   public async sendErrorReport(mobile: string, subject: string, description: string): Promise<any> {
     this.debugMethod('sendErrorReport');
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.END_USER_REPORT_ERROR}`,
+      this.buildRestEndpointUrl(ServerRoute.REST_NOTIFICATIONS_END_USER_REPORT_ERROR),
       {
         mobile,
         subject,
@@ -930,7 +930,7 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Call
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHODS, { userID: params.currentUserID });
-    try{
+    try {
       const result = await this.axiosInstance.get(url, {
         headers: this.buildSecuredHeaders()
       });
@@ -1054,7 +1054,7 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/client/api';
   }
 
-  private buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: {[name: string]: string | number | null } = {}) {
+  private buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}) {
     let resolvedUrlPattern = urlPatternAsString as string;
     for (const key in params) {
       if (Object.prototype.hasOwnProperty.call(params, key)) {
