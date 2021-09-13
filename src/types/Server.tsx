@@ -211,16 +211,16 @@ export enum ServerAction {
 
   SOCKET_IO = 'SocketIO',
 
-  OCPP_BOOT_NOTIFICATION = 'BootNotification',
-  OCPP_AUTHORIZE = 'Authorize',
-  OCPP_HEARTBEAT = 'Heartbeat',
-  OCPP_DIAGNOSTICS_STATUS_NOTIFICATION = 'DiagnosticsStatusNotification',
-  OCPP_FIRMWARE_STATUS_NOTIFICATION = 'FirmwareStatusNotification',
-  OCPP_STATUS_NOTIFICATION = 'StatusNotification',
-  OCPP_START_TRANSACTION = 'StartTransaction',
-  OCPP_STOP_TRANSACTION = 'StopTransaction',
-  OCPP_METER_VALUES = 'MeterValues',
-  OCPP_DATA_TRANSFER = 'DataTransfer',
+  OCPP_BOOT_NOTIFICATION = 'OcppBootNotification',
+  OCPP_AUTHORIZE = 'OcppAuthorize',
+  OCPP_HEARTBEAT = 'OcppHeartbeat',
+  OCPP_DIAGNOSTICS_STATUS_NOTIFICATION = 'OcppDiagnosticsStatusNotification',
+  OCPP_FIRMWARE_STATUS_NOTIFICATION = 'OcppFirmwareStatusNotification',
+  OCPP_STATUS_NOTIFICATION = 'OcppStatusNotification',
+  OCPP_START_TRANSACTION = 'OcppStartTransaction',
+  OCPP_STOP_TRANSACTION = 'OcppStopTransaction',
+  OCPP_METER_VALUES = 'OcppMeterValues',
+  OCPP_DATA_TRANSFER = 'OcppDataTransfer',
 
   EXTRA_INACTIVITY = 'ExtraInactivity',
 
@@ -525,7 +525,22 @@ export enum ServerRoute {
   REST_TAGS_IMPORT = 'tags/action/import',
   REST_TAGS_EXPORT = 'tags/action/export',
 
-  REST_ASSET_CONSUMPTION = 'assets/:assetID/consumption',
+  REST_ASSETS = 'assets',
+  REST_ASSET = 'assets/:id',
+  REST_ASSETS_IN_ERROR = 'assets/status/in-error',
+  REST_ASSET_CHECK_CONNECTION = 'assets/:id/connector/connection/check',
+  REST_ASSET_RETRIEVE_CONSUMPTION = 'assets/:id/connector/consumption/retrieve-last',
+  REST_ASSET_CONSUMPTIONS = 'assets/:id/consumptions',
+  REST_ASSET_IMAGE = 'assets/:id/image',
+
+  REST_CARS = 'cars',
+  REST_CAR = 'cars/:id',
+  REST_CAR_CATALOGS = 'car-catalogs',
+  REST_CAR_CATALOG = 'car-catalogs/:id',
+  REST_CAR_CATALOG_IMAGES = 'car-catalogs/:id/images',
+  REST_CAR_CATALOG_IMAGE = 'car-catalogs/:id/image',
+  REST_CAR_CATALOG_SYNCHRONIZE = 'car-catalogs/action/synchronize',
+  REST_CAR_MAKERS = 'car-makers',
 
   REST_PING = 'ping',
 
@@ -538,6 +553,9 @@ export enum ServerRoute {
   REST_LOGGINGS = 'loggings',
   REST_LOGGING = 'loggings/:id',
   REST_LOGGINGS_EXPORT = 'loggings/action/export',
+
+  REST_NOTIFICATIONS = 'notifications',
+  REST_NOTIFICATIONS_END_USER_REPORT_ERROR = 'notifications/action/end-user/report-error',
 
   // BILLING URLs for CRUD operations on PAYMENT METHODS
   REST_BILLING_PAYMENT_METHODS = 'users/:userID/payment-methods',
@@ -557,7 +575,7 @@ export enum ServerRoute {
   REST_BILLING_INVOICE = 'invoices/:invoiceID',
 
   // BILLING URLs for Non-CRUD operations on INVOICES
-  REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download'
+  REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download',
 }
 
 export enum ServerProtocol {
