@@ -135,7 +135,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
+      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
       return chargingStation;
     } catch (error) {
       // Other common Error

@@ -153,7 +153,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       }
       // Check Charging Station
       try {
-        const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationQrCode.chargingStationID);
+        const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationQrCode.chargingStationID });
         // Check Connector
         const foundConnector = chargingStation.connectors.find(
           (connector: Connector) => connector.connectorId === chargingStationQrCode.connectorID
