@@ -514,15 +514,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStation(id: string): Promise<ChargingStation> {
+  public async getChargingStation(params: Record<string, any>): Promise<ChargingStation> {
     this.debugMethod('getChargingStation');
-    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATION, { id });
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATION, { id: params.ID });
     // Call
     const result = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders(),
-      params: {
-        ID: id
-      }
+      params
     });
     return result.data;
   }
