@@ -15,7 +15,7 @@ import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
-import ChargingStation, { HttpChargingStationRequest } from '../types/ChargingStation';
+import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import { KeyValue } from '../types/Global';
@@ -34,6 +34,7 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
+import { HttpChargingStationRequest } from '../types/requests/HTTPChargingStationRequests';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -510,9 +511,9 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStation(ID: string, extraParams: HttpChargingStationRequest = {}): Promise<ChargingStation> {
+  public async getChargingStation(id: string, extraParams: HttpChargingStationRequest = {}): Promise<ChargingStation> {
     this.debugMethod('getChargingStation');
-    const params = { ID, ...extraParams };
+    const params = { ID: id, ...extraParams };
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATION, { id: params.ID });
     // Call
     const result = await this.axiosInstance.get(url, {

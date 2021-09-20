@@ -140,8 +140,3 @@ export enum ConnectorCurrentLimitSource {
   STATIC_LIMITATION = 'SL',
   CONNECTOR = 'CO'
 }
-
-export interface HttpChargingStationRequest {
-  WithSite?: boolean;
-  WithSiteArea?: boolean;
-}

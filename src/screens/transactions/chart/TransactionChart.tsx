@@ -115,11 +115,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
-      const params = {
+      const extraParams = {
         WithSite: true
       };
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID, params);
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID, extraParams);
       return chargingStation;
     } catch (error) {
       // Other common Error
