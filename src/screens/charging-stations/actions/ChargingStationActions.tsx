@@ -58,7 +58,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
   public getChargingStation = async (): Promise<ChargingStation> => {
     try {
       // Get Charger
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: this.chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(this.chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error

@@ -80,7 +80,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error
