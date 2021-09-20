@@ -671,6 +671,10 @@ export default class Utils {
     return carName;
   }
 
+  public static buildCarFastChargePower(fastChargePower: number): string | number {
+    return fastChargePower || I18n.t('general.notApplicable');
+  }
+
   public static async handleHttpUnexpectedError(
     centralServerProvider: CentralServerProvider,
     error: RequestError,
