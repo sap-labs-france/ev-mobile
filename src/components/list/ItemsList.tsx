@@ -54,15 +54,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     };
   }
 
-  public setState = (
-    state:
-    | State<T>
-    | ((prevState: Readonly<State<T>>, props: Readonly<Props<T>>) => State<T> | Pick<State<T>, never>)
-    | Pick<State<T>, never>,
-    callback?: () => void
-  ) => {
-    super.setState(state, callback);
-  };
+  public setState = (state: | State<T> | ((prevState: Readonly<State<T>>, props: Readonly<Props<T>>) => State<T> | Pick<State<T>, never>) | Pick<State<T>, never>, callback?: () => void) => {super.setState(state, callback);};
 
   public clearSelectedItems(): void {
     this.setState({ selectedItems: new Map<string | number, T>() }, this.itemsSelectedCallback);

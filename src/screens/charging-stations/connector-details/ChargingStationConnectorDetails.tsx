@@ -865,8 +865,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive,
       showStartTransactionDialog,
       showStopTransactionDialog,
-      showAdviceMessage,
-      isAdmin
+      showAdviceMessage
     } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return loading ? (
@@ -914,7 +913,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             {showChargingSettings && (
               <ScrollView style={style.scrollviewContainer} contentContainerStyle={style.chargingSettingsContainer}>
                 {/* User */}
-                {isAdmin && this.renderUserSelection(style)}
+                {this.securityProvider?.canListUsers() && this.renderUserSelection(style)}
                 {/* Badge */}
                 {this.renderTagSelection(style)}
                 {/* Car */}
@@ -1047,7 +1046,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         <ModalSelect<User>
           disabled={disabled}
           openable={isAdmin}
-          renderItem={() => <UserComponent shadowed={isAdmin} user={selectedUser} navigation={navigation} />}
+          renderItem={() => <UserComponent shadowed={true} user={selectedUser} navigation={navigation} />}
           defaultItem={selectedUser}
           onItemsSelected={this.onUserSelected.bind(this)}
           navigation={navigation}
@@ -1092,7 +1091,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         <Icon style={style.noCarIcon} type={'MaterialCommunityIcons'} name={'car'} />
         <View style={style.column}>
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
-          {(this.currentUser?.id === selectedUser?.id || this.securityProvider.canListCars()) && (
+          {(this.currentUser?.id === selectedUser?.id || this.securityProvider.canListCars()) && false && (
             <TouchableOpacity onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={style.addItemContainer}>
               <Text style={[style.linkText, style.plusSign]}>+</Text>
               <Text style={[style.messageText, style.linkText, style.linkLabel]}>{I18n.t('cars.addCar')}</Text>
