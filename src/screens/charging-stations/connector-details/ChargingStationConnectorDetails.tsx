@@ -1087,7 +1087,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { selectedUser } = this.state;
     const { navigation } = this.props;
     return (
-      <View style={[listItemCommonStyle.noShadowContainer, style.noItemContainer, style.noCarContainer]}>
+      <View style={[listItemCommonStyle.noShadowContainer, listItemCommonStyle.disabled, style.noItemContainer, style.noCarContainer]}>
         <Icon style={style.noCarIcon} type={'MaterialCommunityIcons'} name={'car'} />
         <View style={style.column}>
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
