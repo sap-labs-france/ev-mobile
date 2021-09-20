@@ -42,7 +42,10 @@
       "save":"Uložit",
       "close": "Close",
       "tenants": "Organizations",
-      "optional": "Optional"
+      "results": "Results",
+      "result": "Result",
+      "optional": "Optional",
+      "notApplicable": "N/A"
    },
    "sidebar":{
       "home":"Domovská stránka",

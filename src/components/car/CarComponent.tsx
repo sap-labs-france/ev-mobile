@@ -92,13 +92,10 @@ export default class CarComponent extends React.Component<Props, State> {
                     <Icon style={style.icon} type="MaterialIcons" name="bolt" />
                     <Icon style={[style.icon, style.currentTypeIcon]} type="MaterialIcons" name="power-input" />
                   </View>
-                  {car?.carCatalog?.fastChargePowerMax ? (
-                    <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
-                      {car?.carCatalog?.fastChargePowerMax} kW
-                    </Text>
-                  ) : (
-                    <Text style={style.text}>-</Text>
-                  )}
+                  <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
+                    {Utils.buildCarFastChargePower(car?.carCatalog?.fastChargePowerMax)}
+                    {car?.carCatalog?.fastChargePowerMax ? ' kW' : ''}
+                  </Text>
                 </View>
                 <View style={style.columnContainer}>
                   <View style={style.iconContainer}>

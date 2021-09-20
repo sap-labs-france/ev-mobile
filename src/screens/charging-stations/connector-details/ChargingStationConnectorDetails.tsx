@@ -73,9 +73,6 @@ interface State {
   showAdviceMessage?: boolean;
   transactionPendingTimesUp?: boolean;
   showChargingSettings?: boolean;
-  selectedUserTagsCount?: number;
-  selectedUserCarsCount?: number;
-  defaultSettings?: boolean;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -119,10 +116,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       didPreparing: false,
       startTransactionDialogWasClosed: false,
       transactionPendingTimesUp: false,
-      showChargingSettings: false,
-      selectedUserTagsCount: 0,
-      selectedUserCarsCount: 0,
-      defaultSettings: true
+      showChargingSettings: undefined
     };
   }
 
@@ -144,9 +138,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       role: this.currentUser.role,
       email: this.currentUser.email
     };
-    await this.loadSelectedUserDefaultTagAndCar(selectedUser as User);
     // Init the selected user to the currently logged in user
     this.setState({ selectedUser }, this.refresh.bind(this));
+    await this.loadSelectedUserDefaultTagAndCar(selectedUser as User);
   }
 
   public async componentDidFocus(): Promise<void> {
@@ -333,12 +327,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       showBillingErrorMessage = true;
     }
 
-    // Get selected user cars and tags count to disable the selection if count is < 2
-    const selectedUserTagsCount = await this.countSelectedUserActiveTags(selectedUser);
-    const selectedUserCarsCount = await this.countSelectedUserCars(selectedUser);
-
     // If the selected user has no badge, disable the button
-    if (!selectedUserTagsCount) {
+    if (!userDefaultTagCar.tag) {
       buttonDisabled = true;
       showBadgeErrorMessage = true;
     }
@@ -378,8 +368,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       transaction,
       userDefaultTagCar,
       siteImage,
-      selectedUserCarsCount,
-      selectedUserTagsCount,
+      showChargingSettings: this.state.showChargingSettings ?? (showBadgeErrorMessage || showBillingErrorMessage),
       isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
       isSiteAdmin: this.securityProvider?.isSiteAdmin(chargingStation.siteArea?.siteID) ?? false,
       canDisplayTransaction: chargingStation ? this.securityProvider?.canReadTransaction() : false,
@@ -876,7 +865,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive,
       showStartTransactionDialog,
       showStopTransactionDialog,
-      showAdviceMessage
+      showAdviceMessage,
+      isAdmin
     } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return loading ? (
@@ -918,24 +908,18 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
         {/* Details */}
         {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
-          <View style={style.selectUserCarBadgeContainer}>
-            {/* Error messages */}
-            {this.renderSplitterButton(style)}
-            {showChargingSettings ? (
-              <ScrollView
-                style={style.scrollviewContainer}
-                refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}
-                contentContainerStyle={style.chargingSettingsContainer}>
-                {this.renderDefaultSwitch(style)}
+          <View style={style.connectorInfoSettingsContainer}>
+            {this.renderConnectorInfo()}
+            {this.renderAccordion(style)}
+            {showChargingSettings && (
+              <ScrollView style={style.scrollviewContainer} contentContainerStyle={style.chargingSettingsContainer}>
                 {/* User */}
-                {this.renderUserSelection(style)}
+                {isAdmin && this.renderUserSelection(style)}
                 {/* Badge */}
                 {this.renderTagSelection(style)}
                 {/* Car */}
                 {this.renderCarSelection(style)}
               </ScrollView>
-            ) : (
-              <View>{this.renderConnectorInfo()}</View>
             )}
           </View>
         ) : (
@@ -964,36 +948,34 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
+  private renderAccordion(style: any) {
+    const { showChargingSettings, showBillingErrorMessage, showBadgeErrorMessage } = this.state;
+    return (
+      <TouchableOpacity onPress={() => this.setState({ showChargingSettings: !showChargingSettings })} style={style.accordion}>
+        <Text style={style.accordionText}>
+          {I18n.t('transactions.chargingSettings')}
+          {(showBillingErrorMessage || showBadgeErrorMessage) && <Text style={style.errorAsterisque}>*</Text>}
+        </Text>
+        {showChargingSettings ? (
+          <Icon style={style.accordionIcon} type={'MaterialIcons'} name={'arrow-drop-up'} />
+        ) : (
+          <Icon style={style.accordionIcon} type={'MaterialIcons'} name={'arrow-drop-down'} />
+        )}
+      </TouchableOpacity>
+    );
+  }
+
   private renderConnectorInfo() {
     return (
-      <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+      <View>
         <ChargingStationConnectorComponent
           listed={false}
           chargingStation={this.state.chargingStation}
           connector={this.state.connector}
           navigation={this.props.navigation}
         />
-      </ScrollView>
-    );
-  }
-
-  private renderDefaultSwitch(style: any) {
-    const { defaultSettings, connector } = this.state;
-    const disabled = connector.status !== ChargePointStatus.AVAILABLE && connector.status !== ChargePointStatus.PREPARING;
-    return (
-      <View style={style.switchContainer}>
-        <Text style={style.switchLabel}>{I18n.t('general.defaultSettings')}</Text>
-        <Switch disabled={disabled} value={defaultSettings} onValueChange={this.onSwitchValueChanged.bind(this)} />
       </View>
     );
-  }
-
-  private onSwitchValueChanged() {
-    const { defaultSettings } = this.state;
-    if (!defaultSettings) {
-      this.onUserSelected([this.currentUser as unknown as User]);
-    }
-    this.setState({ defaultSettings: !defaultSettings });
   }
 
   private async getUserDefaultTagAndCar(user: User): Promise<UserDefaultTagCar> {
@@ -1056,40 +1038,18 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   }
 
-  private renderSplitterButton(style: any) {
-    const { showChargingSettings, showBillingErrorMessage, showBadgeErrorMessage } = this.state;
-    return (
-      <View style={style.splitter}>
-        <TouchableOpacity
-          onPress={() => this.setState({ showChargingSettings: false })}
-          style={[style.splitterButton, !showChargingSettings && style.splitterButtonFocused]}>
-          <Text style={style.splitterButtonText}>{I18n.t('details.connector')}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.setState({ showChargingSettings: true })}
-          style={[style.splitterButton, showChargingSettings && style.splitterButtonFocused]}>
-          <Text adjustsFontSizeToFit={true} style={style.splitterButtonText}>
-            {I18n.t('transactions.chargingSettings')}
-            {(showBillingErrorMessage || showBadgeErrorMessage) && <Text style={style.errorAsterisque}>*</Text>}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
   private renderUserSelection(style: any) {
     const { navigation } = this.props;
-    const { selectedUser, defaultSettings, isAdmin, showBillingErrorMessage } = this.state;
+    const { selectedUser, isAdmin, showBillingErrorMessage, connector } = this.state;
+    const disabled = connector.status !== ChargePointStatus.PREPARING && connector.status !== ChargePointStatus.AVAILABLE;
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <ModalSelect<User>
+          disabled={disabled}
           openable={isAdmin}
-          disabled={defaultSettings}
-          label={I18n.t('users.user')}
-          renderItem={() => <UserComponent shadowed={!defaultSettings && isAdmin} user={selectedUser} navigation={navigation} />}
+          renderItem={() => <UserComponent shadowed={isAdmin} user={selectedUser} navigation={navigation} />}
           defaultItem={selectedUser}
           onItemsSelected={this.onUserSelected.bind(this)}
-          buildItemName={Utils.buildUserName.bind(this)}
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
           <Users navigation={navigation} />
@@ -1101,21 +1061,19 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderCarSelection(style: any) {
     const { navigation } = this.props;
-    const { tagCarLoading, selectedUser, selectedCar, selectedUserCarsCount, defaultSettings } = this.state;
-    const shadowedInput = selectedUserCarsCount > 1 && !defaultSettings;
+    const { tagCarLoading, selectedUser, selectedCar, connector } = this.state;
+    const disabled = connector.status !== ChargePointStatus.PREPARING && connector.status !== ChargePointStatus.AVAILABLE;
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <ModalSelect<Car>
-          label={I18n.t('cars.car')}
-          disabled={defaultSettings}
-          openable={selectedUserCarsCount >= 2}
+          disabled={disabled}
+          openable={true}
           renderNoItem={this.renderNoCar.bind(this)}
-          renderItem={() => <CarComponent shadowed={shadowedInput} car={selectedCar} navigation={navigation} />}
+          renderItem={() => <CarComponent shadowed={true} car={selectedCar} navigation={navigation} />}
           ref={this.carModalRef}
           defaultItem={selectedCar}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedCars: Car[]) => this.setState({ selectedCar: selectedCars?.[0] })}
-          buildItemName={(car: Car) => Utils.buildCarCatalogName(car?.carCatalog)}
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
           <Cars userIDs={[selectedUser?.id as string]} navigation={navigation} />
@@ -1147,24 +1105,22 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderTagSelection(style: any) {
     const { navigation } = this.props;
-    const { tagCarLoading, selectedUser, selectedTag, selectedUserTagsCount, defaultSettings } = this.state;
-    const shadowedInput = !defaultSettings && selectedUserTagsCount > 1;
+    const { tagCarLoading, selectedUser, selectedTag, connector } = this.state;
+    const disabled = connector.status !== ChargePointStatus.PREPARING && connector.status !== ChargePointStatus.AVAILABLE;
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <ModalSelect<Tag>
-          renderItem={() => <TagComponent shadowed={shadowedInput} tag={selectedTag} navigation={navigation} />}
-          label={I18n.t('tags.tag')}
-          disabled={defaultSettings}
-          openable={selectedUserTagsCount >= 2}
+          renderItem={() => <TagComponent shadowed={true} tag={selectedTag} navigation={navigation} />}
+          disabled={disabled}
+          openable={true}
           renderNoItem={this.renderNoTag.bind(this)}
           ref={this.tagModalRef}
           defaultItem={selectedTag}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedTags: Tag[]) => this.setState({ selectedTag: selectedTags?.[0] })}
-          buildItemName={(tag: Tag) => tag?.description ?? '-'}
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
-          <Tags active={true} userIDs={[selectedUser?.id as string]} navigation={navigation} />
+          <Tags disableInactive={true} sorting={'-active'} userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
       </View>
     );
@@ -1204,71 +1160,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       userDefaultTagCar.car.user = this.state.selectedUser;
     }
     this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
-  }
-
-  private async getSelectedUserDefaultCar(carID: string | number): Promise<Car> {
-    if (carID) {
-      const params = {
-        ID: carID
-      };
-      try {
-        return await this.centralServerProvider.getCar(params);
-      } catch (error) {
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'tags.siteUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
-      }
-    }
-    return null;
-  }
-
-  private async countSelectedUserCars(selectedUser: User): Promise<number> {
-    const userID = selectedUser?.id;
-    if (userID) {
-      const params = {
-        UserID: userID
-      };
-      try {
-        const userCars = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
-        return userCars?.count;
-      } catch (error) {
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'tags.siteUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
-      }
-    }
-    return null;
-  }
-
-  private async countSelectedUserActiveTags(selectedUser: User): Promise<number> {
-    const userID = selectedUser?.id;
-    if (userID) {
-      const params = {
-        UserID: userID,
-        Active: true
-      };
-      try {
-        const userTags = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
-        return userTags?.count;
-      } catch (error) {
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'tags.siteUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
-      }
-    }
-    return null;
   }
 
   private renderStartTransactionDialog() {

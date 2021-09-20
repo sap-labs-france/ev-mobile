@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
-import { Alert } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 
 import Configuration from '../../../config/Configuration';

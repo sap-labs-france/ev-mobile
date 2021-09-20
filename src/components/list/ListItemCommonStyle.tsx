@@ -39,6 +39,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     unselected: {
       backgroundColor: commonColor.listItemBackground
+    },
+    disabled: {
+      opacity: 0.5
     }
   });
   const portraitStyles = {};

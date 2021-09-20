@@ -122,10 +122,18 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       width: '100%'
     },
+    connectorInfoSettingsContainer: {
+      flex: 1
+    },
     scrollViewContainer: {
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'center'
+      width: '100%',
+      height: 'auto'
+    },
+    chargingSettingsContainer: {
+      width: '100%',
+      alignItems: 'center',
+      marginHorizontal: 0,
+      height: 'auto'
     },
     rowContainer: {
       flexDirection: 'row',
@@ -289,33 +297,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     selectionContainer: {
       width: '100%'
     },
-    splitter: {
-      flexDirection: 'row',
-      width: '100%',
-      alignItems: 'center',
-      backgroundColor: commonColor.listItemBackground,
-      marginBottom: '15@s'
-    },
-    splitterButton: {
-      flex: 1,
-      padding: '10@s',
-      width: '100%'
-    },
-    splitterButtonText: {
-      textAlign: 'center'
-    },
-    splitterButtonFocused: {
-      borderColor: commonColor.textColor,
-      borderBottomWidth: 1.5
-    },
-    chargingSettingsContainer: {
-      width: '100%',
-      alignItems: 'center',
-      marginHorizontal: 0
-    },
-    scrollviewContainer: {
-      width: '100%'
-    },
     column: {
       flexDirection: 'column',
       flex: 1
@@ -354,6 +335,26 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     linkLabel: {
       flex: 1
+    },
+    accordion: {
+      width: '98%',
+      paddingHorizontal: '5@s',
+      marginBottom: '10@s',
+      borderTopWidth: 0.8,
+      borderTopColor: commonColor.disabledDark,
+      flexDirection: 'row',
+      borderRadius: '8@s',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: '10@s'
+    },
+    accordionText: {
+      color: commonColor.textColor,
+      fontSize: '15@s'
+    },
+    accordionIcon: {
+      color: commonColor.textColor,
+      fontSize: '35@s'
     }
   });
   const portraitStyles = {};

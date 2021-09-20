@@ -13,11 +13,12 @@ import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 
 export interface Props<T> extends BaseProps {
   defaultItem?: T;
-  buildItemName: (item: T) => string;
+  buildItemName?: (item: T) => string;
   disabled?: boolean;
   label?: string;
-  renderItem?: (item: T) => React.ReactElement;
+  renderItem?: (item?: T) => React.ReactElement;
   renderNoItem?: () => React.ReactElement;
+  renderItemPlaceholder?: () => React.ReactElement;
   selectionMode: ItemSelectionMode;
   onItemsSelected: (selectedItems: T[]) => void;
   defaultItemLoading?: boolean;
@@ -57,7 +58,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     return (
       <View style={style.container}>
         <View style={style.buttonContainer}>
-          <Text style={style.label}>{label}</Text>
+          {label && <Text style={style.label}>{label}</Text>}
           {this.renderButton(style)}
         </View>
         <Modal
@@ -111,6 +112,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
 
   private clearSelection(): void {
     this.itemsListRef?.current?.clearSelectedItems();
+    this.setState(this.state);
   }
 
   private validateSelection(): void {
@@ -131,7 +133,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
   }
 
   private renderButton(style: any) {
-    const { defaultItemLoading, defaultItem, renderNoItem, renderItem, openable, disabled } = this.props;
+    const { defaultItemLoading, defaultItem, renderNoItem, renderItem, renderItemPlaceholder, openable, disabled } = this.props;
     const { selectedItems } = this.state;
     const listItemCommonStyle = computeListItemCommonStyle();
     const commonColors = Utils.getCurrentCommonColor();
@@ -142,17 +144,23 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
         </View>
       );
     }
-    if (!defaultItem) {
-      return <View style={style.itemContainer}>{renderNoItem?.()}</View>;
-    } else {
+    if (defaultItem || selectedItems[0]) {
       return (
         <TouchableOpacity
-          disabled={!openable || disabled}
+          disabled={disabled || !openable}
           onPress={() => this.setState({ isVisible: true })}
-          style={[style.itemContainer, (disabled || !openable) && style.buttonDisabled]}>
+          style={[style.itemContainer, disabled && style.buttonDisabled]}>
           {renderItem?.(selectedItems.length > 0 ? selectedItems[0] : defaultItem)}
         </TouchableOpacity>
       );
+    } else if (renderItemPlaceholder) {
+      return (
+        <TouchableOpacity onPress={() => this.setState({ isVisible: true })} style={style.itemContainer}>
+          {renderItemPlaceholder?.()}
+        </TouchableOpacity>
+      );
+    } else {
+      return <View style={style.itemContainer}>{renderNoItem?.()}</View>;
     }
   }
 }

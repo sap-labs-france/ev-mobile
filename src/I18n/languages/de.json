@@ -72,9 +72,11 @@
     "tenants": "Organizations",
     "reset": "Reset",
     "selected": "Selected",
-    "results": "Result(s)",
+    "results": "Results",
+    "result": "Result",
     "optional": "Optional",
-    "defaultSettings": "Default Settings"
+    "defaultSettings": "Default Settings",
+    "notApplicable": "N/A"
   },
   "sidebar": {
     "home": "Home",

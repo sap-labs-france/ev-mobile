@@ -13,7 +13,9 @@ import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import computeStyleSheet from '../transactions/TransactionsStyles';
+import computeStyleSheet from './CarsStyles';
+import computeTransactionStyles from '../transactions/TransactionsStyles'
+
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
 
@@ -141,11 +143,12 @@ export default class Cars extends SelectableList<Car> {
   };
 
   public render() {
+    const transactionStyles = computeTransactionStyles();
     const style = computeStyleSheet();
     const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
     return (
-      <Container style={style.container}>
+      <Container style={transactionStyles.container}>
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
@@ -156,13 +159,13 @@ export default class Cars extends SelectableList<Car> {
           rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={isModal ? null : 'menu'}
         />
-        <View style={style.searchBar}>
+        <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (
-          <View style={style.content}>
+          <View style={transactionStyles.content}>
             <ItemsList<Car>
               data={cars}
               ref={this.itemsListRef}

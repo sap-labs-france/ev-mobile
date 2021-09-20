@@ -44,12 +44,10 @@ export default class TagComponent extends React.Component<Props, State> {
     const userFullName = Utils.buildUserName(tag?.user);
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
-      <View style={shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer}>
+      <View style={shadowed ? listItemCommonStyle.container : [listItemCommonStyle.noShadowContainer]}>
         <View style={style.tagContent}>
           <View style={style.leftContainer}>
-            <Image
-              style={style.icon as ImageStyle}
-              source={{uri: this.exampleImageUri}}/>
+            <Image style={style.icon as ImageStyle} source={{ uri: this.exampleImageUri }} />
           </View>
           <View style={style.middleContainer}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagDescription]}>

@@ -87,8 +87,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      marginLeft: '22@s',
-      marginVertical: '10@s'
+      marginLeft: '21@s',
+      marginBottom: '7@s'
     },
     avatarContainer: {
       justifyContent: 'flex-end',
@@ -121,8 +121,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1
     },
     columnContainerBorderRight: {
-      borderRightWidth: 0.3,
-      borderColor: commonColor.textColor
     },
     iconContainer: {
       flexDirection: 'row',
