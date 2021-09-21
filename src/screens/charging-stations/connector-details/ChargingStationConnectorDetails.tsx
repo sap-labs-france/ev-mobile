@@ -309,7 +309,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
     // When Scanning a QR-Code, redirect if a session is already in progress. (if the connector has a non null userID)
     if (startTransactionFromQRCode && connector.currentUserID) {
-      Message.showWarning('A session is already in progress on this connector');
+      Message.showWarning(I18n.t('transactions.sessionAlreadyInProgressError'));
       this.onBack();
       return;
     }
