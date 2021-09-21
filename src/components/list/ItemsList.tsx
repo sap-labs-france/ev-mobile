@@ -83,14 +83,15 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     return (
       <FlatList
         data={data}
+        onStartShouldSetResponder={() => true}
         renderItem={({ item }) => {
           const isItemDisabled = !!disableItem?.(item);
           return (
             <View>
               <TouchableOpacity
-                style={[style.container, isItemDisabled && listItemCommonStyles.disabled]}
-                disabled={!selectionEnabled || isItemDisabled}
-                onPress={selectionEnabled && !isItemDisabled && (() => this.onSelectItem(item))}>
+                style={[style.container, isItemDisabled && selectionEnabled && listItemCommonStyles.disabled]}
+                disabled={!selectionEnabled}
+                onPress={selectionEnabled && !isItemDisabled ? () => this.onSelectItem(item) : () => {}}>
                 {this.props.renderItem(item, selectedItems.has(item.id))}
               </TouchableOpacity>
               {this.renderItemsSeparator(itemsSeparator, style)}
