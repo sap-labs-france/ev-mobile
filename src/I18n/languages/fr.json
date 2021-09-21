@@ -284,7 +284,8 @@
     "selectEV": "Sélectionnez le véhicule",
     "selectChargeCard": "Sélectionnez la carte de recharge",
     "chargingSettings": "Paramètres de charge",
-    "adviceMessage": "Assurez-vous que le câble est branché"
+    "adviceMessage": "Assurez-vous que le câble est branché",
+    "sessionAlreadyInProgressError": "Une sessions est déjà en cours sur ce connecteur"
   },
   "home": {
     "browseSites": "Sites",

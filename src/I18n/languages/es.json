@@ -284,7 +284,8 @@
     "selectEV": "Select EV",
     "selectChargeCard": "Select Charge Card",
     "chargingSettings": "Charging Settings",
-    "adviceMessage": "Ensure that the cable is connected"
+    "adviceMessage": "Ensure that the cable is connected",
+    "sessionAlreadyInProgressError": "A session is already in progress on this connector"
   },
   "home": {
     "browseSites": "Sitios",
