@@ -16,14 +16,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomWidth: 0,
       borderTopWidth: 0,
       backgroundColor: commonColor.listHeaderBackground,
-      shadowColor: commonColor.cardShadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62,
-      elevation: 4
+      elevation: 0
     },
     leftHeader: {
       flexDirection: 'row'
