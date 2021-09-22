@@ -40,7 +40,7 @@ export default class PaymentMethodComponent extends React.Component<Props, State
     const statusStyle = this.buildStatusStyle(status, style);
     const paymentMethodType = I18n.t('paymentMethodType.card');
     return (
-      <View style={listItemCommonStyle.container}>
+      <View style={listItemCommonStyle.noShadowContainer}>
         <View style={style.paymentMethodContainer}>
           <View style={style.paymentMethodLogoContainer}>{this.renderPaymentMethodLogo(paymentMethod.brand, style)}</View>
           <View style={style.paymentMethodDetailsContainer}>
