@@ -435,15 +435,15 @@ export default class Login extends BaseScreen<Props, State> {
                   {I18n.t('authentication.forgotYourPassword')}
                 </Text>
               </TouchableOpacity>
-              <View style={formStyle.formCheckboxContainer}>
-                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
+              <TouchableOpacity onPress={() => this.setState({ eula: !eula })} style={formStyle.formCheckboxContainer}>
+                <CheckBox disabled={true} style={formStyle.checkbox} checked={eula} />
                 <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
                     {I18n.t('authentication.eula')}
                   </Text>
                 </Text>
-              </View>
+              </TouchableOpacity>
               {this.state.errorEula &&
                 this.state.errorEula.map((errorMessage, index) => (
                   <Text style={[formStyle.formErrorText, style.formErrorTextEula]} key={index}>
