@@ -17,6 +17,7 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './TransactionChartStyles';
+import { HttpChargingStationRequest } from '../../../types/requests/HTTPChargingStationRequests';
 
 export interface Props extends BaseProps {}
 
@@ -115,8 +116,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
+      const extraParams: HttpChargingStationRequest = {
+        WithSite: true
+      };
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID, extraParams);
       return chargingStation;
     } catch (error) {
       // Other common Error

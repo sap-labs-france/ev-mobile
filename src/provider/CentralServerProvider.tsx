@@ -34,6 +34,7 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
+import { HttpChargingStationRequest } from '../types/requests/HTTPChargingStationRequests';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -486,11 +487,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStations(
-    params = {},
-    paging: PagingParams = Constants.DEFAULT_PAGING,
-    sorting: string[] = []
-  ): Promise<DataResult<ChargingStation>> {
+  public async getChargingStations(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<ChargingStation>> {
     this.debugMethod('getChargingStations');
     // Build Paging
     this.buildPaging(paging, params);
@@ -514,14 +511,15 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStation(id: string): Promise<ChargingStation> {
+  public async getChargingStation(id: string, extraParams: HttpChargingStationRequest = {}): Promise<ChargingStation> {
     this.debugMethod('getChargingStation');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATION, { id });
     // Call
     const result = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders(),
       params: {
-        ID: id
+        ID: id,
+        ...extraParams
       }
     });
     return result.data;
@@ -887,7 +885,7 @@ export default class CentralServerProvider {
   public async sendErrorReport(mobile: string, subject: string, description: string): Promise<any> {
     this.debugMethod('sendErrorReport');
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.END_USER_REPORT_ERROR}`,
+      this.buildRestEndpointUrl(ServerRoute.REST_NOTIFICATIONS_END_USER_REPORT_ERROR),
       {
         mobile,
         subject,
@@ -930,7 +928,7 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Call
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHODS, { userID: params.currentUserID });
-    try{
+    try {
       const result = await this.axiosInstance.get(url, {
         headers: this.buildSecuredHeaders()
       });
@@ -1054,7 +1052,7 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/client/api';
   }
 
-  private buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: {[name: string]: string | number | null } = {}) {
+  private buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}) {
     let resolvedUrlPattern = urlPatternAsString as string;
     for (const key in params) {
       if (Object.prototype.hasOwnProperty.call(params, key)) {
