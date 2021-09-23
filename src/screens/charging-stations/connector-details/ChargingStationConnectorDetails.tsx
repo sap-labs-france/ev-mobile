@@ -3,18 +3,27 @@ import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Switch, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, ImageBackground, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
 
 import noSite from '../../../../assets/no-site.png';
+import CarComponent from '../../../components/car/CarComponent';
+import ChargingStationConnectorComponent from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
+import computeListItemCommonStyle from '../../../components/list/ListItemCommonStyle';
+import DialogModal from '../../../components/modal/DialogModal';
+import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
 import ModalSelect from '../../../components/modal/ModalSelect';
+import TagComponent from '../../../components/tag/TagComponent';
 import UserAvatar from '../../../components/user/avatar/UserAvatar';
+import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import Car from '../../../types/Car';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
+import Tag from '../../../types/Tag';
 import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
 import User, { UserDefaultTagCar } from '../../../types/User';
 import UserToken from '../../../types/UserToken';
@@ -23,18 +32,9 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import Cars from '../../cars/Cars';
+import Tags from '../../tags/Tags';
 import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
-import DialogModal from '../../../components/modal/DialogModal';
-import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
-import Tags from '../../tags/Tags';
-import Tag from '../../../types/Tag';
-import Orientation from 'react-native-orientation-locker';
-import TagComponent from '../../../components/tag/TagComponent';
-import CarComponent from '../../../components/car/CarComponent';
-import UserComponent from '../../../components/user/UserComponent';
-import computeListItemCommonStyle from '../../../components/list/ListItemCommonStyle';
-import ChargingStationConnectorComponent from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -523,7 +523,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   }
 
-  private renderStopTransactionDialog() {
+  public renderStopTransactionDialog() {
     const { chargingStation } = this.state;
     const modalCommonStyle = computeModalCommonStyle();
     return (
@@ -913,11 +913,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           </View>
           {showAdviceMessage && this.renderAdviceMessage(style)}
         </ImageBackground>
-
         {/* Details */}
         {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
           <View style={style.connectorInfoSettingsContainer}>
-            {this.renderConnectorInfo()}
+            {this.renderConnectorInfo(style)}
             {this.renderAccordion(style)}
             {showChargingSettings && (
               <ScrollView
@@ -978,9 +977,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  private renderConnectorInfo() {
+  private renderConnectorInfo(style: any) {
     return (
-      <View>
+      <View style={style.connectorInfoContainer}>
         <ChargingStationConnectorComponent
           listed={false}
           chargingStation={this.state.chargingStation}

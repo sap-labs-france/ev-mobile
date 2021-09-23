@@ -122,6 +122,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       width: '100%'
     },
+    connectorInfoContainer: {
+    },
     connectorInfoSettingsContainer: {
       flex: 1
     },
@@ -337,16 +339,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1
     },
     accordion: {
-      width: '98%',
-      paddingHorizontal: '5@s',
+      width: '100%',
       marginBottom: '10@s',
+      paddingLeft: '10@s',
       borderTopWidth: 0.8,
       borderTopColor: commonColor.disabledDark,
       flexDirection: 'row',
-      borderRadius: '8@s',
       justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: '10@s'
+      alignItems: 'center'
     },
     accordionText: {
       color: commonColor.textColor,

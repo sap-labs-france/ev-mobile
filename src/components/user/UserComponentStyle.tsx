@@ -32,7 +32,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.success
     },
     avatarContainer: {
-      marginLeft: '10@s',
+      marginLeft: '15@s',
       height: '100%',
       paddingRight: '15@s',
       alignItems: 'center',
