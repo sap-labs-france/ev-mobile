@@ -28,6 +28,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'row',
+      marginLeft: '2.5%',
       backgroundColor: commonColor.listItemBackground,
       elevation: 4,
       shadowColor: commonColor.cardShadowColor,
@@ -48,8 +49,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       marginVertical: '10@s',
       borderRadius: 1,
-      height: '40@s',
-      padding: '5@s'
+      height: '40@s'
     },
     trashIconButton: {
       height: '85%',

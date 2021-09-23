@@ -1,17 +1,12 @@
 import React from 'react';
-import {
-  FlatList,
-  Platform,
-  RefreshControl,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { FlatList, Platform, RefreshControl, TouchableOpacity, View } from 'react-native';
 import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './ItemsListStyle';
+import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 
 export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T, selected?: boolean) => React.ReactElement;
@@ -26,6 +21,7 @@ export interface Props<T extends ListItem> extends BaseProps {
   count: number;
   limit: number;
   refreshing: boolean;
+  disableItem?: (item: T) => boolean;
 }
 
 export enum ItemSelectionMode {
@@ -58,33 +54,50 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     };
   }
 
-  public setState = (
-    state: State<T> | ((prevState: Readonly<State<T>>, props: Readonly<Props<T>>) => State<T> | Pick<State<T>, never>) | Pick<State<T>, never>,
-    callback?: () => void
-  ) => {
-    super.setState(state, callback);
-  };
+  public setState = (state: | State<T> | ((prevState: Readonly<State<T>>, props: Readonly<Props<T>>) => State<T> | Pick<State<T>, never>) | Pick<State<T>, never>, callback?: () => void) => {super.setState(state, callback);};
 
   public clearSelectedItems(): void {
     this.setState({ selectedItems: new Map<string | number, T>() }, this.itemsSelectedCallback);
   }
 
   public render() {
-    const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle, selectionMode, onSelect, itemsSeparator } = this.props;
+    const {
+      data,
+      skip,
+      count,
+      limit,
+      navigation,
+      manualRefresh,
+      refreshing,
+      onEndReached,
+      emptyTitle,
+      selectionMode,
+      onSelect,
+      itemsSeparator,
+      disableItem
+    } = this.props;
     const { selectedItems } = this.state;
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
     const style = computeStyleSheet();
+    const listItemCommonStyles = computeListItemCommonStyle();
     return (
       <FlatList
         data={data}
-        renderItem={({ item }) => (
-          <View>
-            <TouchableOpacity style={style.container} disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
-             {this.props.renderItem(item, selectedItems.has(item.id))}
-            </TouchableOpacity>
-            {this.renderItemsSeparator(itemsSeparator, style)}
-          </View>
-        )}
+        onStartShouldSetResponder={() => true}
+        renderItem={({ item }) => {
+          const isItemDisabled = !!disableItem?.(item);
+          return (
+            <View>
+              <TouchableOpacity
+                style={[style.container, isItemDisabled && selectionEnabled && listItemCommonStyles.disabled]}
+                disabled={!selectionEnabled}
+                onPress={selectionEnabled && !isItemDisabled ? () => this.onSelectItem(item) : () => {}}>
+                {this.props.renderItem(item, selectedItems.has(item.id))}
+              </TouchableOpacity>
+              {this.renderItemsSeparator(itemsSeparator, style)}
+            </View>
+          );
+        }}
         keyExtractor={(item, index) => Utils.concatenateStrings(item?.id?.toString(), index?.toString())}
         removeClippedSubviews={true}
         onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}

@@ -17,9 +17,13 @@ export interface Props extends BaseProps {
   selected?: boolean;
   canReadUser?: boolean;
   shadowed?: boolean;
+  outlinedInactive?: boolean;
 }
 
 export default class TagComponent extends React.Component<Props, State> {
+  static defaultProps = {
+    outlinedInactive: false
+  };
   public state: State;
   public props: Props;
   private exampleImageUri = Image.resolveAssetSource(ChargeCard).uri;
@@ -39,17 +43,19 @@ export default class TagComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const chipStyle = computeChipStyleSheet();
-    const { tag, selected, canReadUser, shadowed } = this.props;
+    const { tag, selected, canReadUser, shadowed, outlinedInactive } = this.props;
     const listItemCommonStyle = computeListItemCommonStyle();
     const userFullName = Utils.buildUserName(tag?.user);
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
-      <View style={shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer}>
+      <View
+        style={[
+          shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer,
+          outlinedInactive && !tag.active && listItemCommonStyle.outlinedError
+        ]}>
         <View style={style.tagContent}>
           <View style={style.leftContainer}>
-            <Image
-              style={style.icon as ImageStyle}
-              source={{uri: this.exampleImageUri}}/>
+            <Image style={style.icon as ImageStyle} source={{ uri: this.exampleImageUri }} />
           </View>
           <View style={style.middleContainer}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagDescription]}>

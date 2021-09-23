@@ -40,7 +40,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       alignItems: 'center',
       height: '60@s',
-      width: '80@s',
       color: commonColor.textColor
     },
     connectorDetailAnimated: {

@@ -41,6 +41,7 @@ export default class CarComponent extends React.Component<Props, State> {
     const userName = Utils.buildUserName(car?.user);
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
     const carFullNameWords = carFullName.split(' ');
+    const imageURI = car?.carCatalog?.image;
     return (
       <View style={shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer}>
         <View style={style.carContainer}>
@@ -60,7 +61,14 @@ export default class CarComponent extends React.Component<Props, State> {
             </Text>
           </View>
           <View style={style.bottomContainer}>
-            <Image resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={{ uri: car?.carCatalog?.image }} />
+            {imageURI ? (
+              <Image resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={{ uri: imageURI }} />
+            ) : (
+              <View style={style.noImageContainer}>
+                <Icon style={style.carImagePlaceholder} type={'Ionicons'} name={'car-sport'} />
+              </View>
+            )}
+
             <View style={style.carInfos}>
               <View style={style.userContainer}>
                 <View style={[style.avatarContainer]}>
@@ -84,13 +92,10 @@ export default class CarComponent extends React.Component<Props, State> {
                     <Icon style={style.icon} type="MaterialIcons" name="bolt" />
                     <Icon style={[style.icon, style.currentTypeIcon]} type="MaterialIcons" name="power-input" />
                   </View>
-                  {car?.carCatalog?.fastChargePowerMax ? (
-                    <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
-                      {car?.carCatalog?.fastChargePowerMax} kW
-                    </Text>
-                  ) : (
-                    <Text style={style.text}>-</Text>
-                  )}
+                  <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
+                    {Utils.buildCarFastChargePower(car?.carCatalog?.fastChargePowerMax)}
+                    {car?.carCatalog?.fastChargePowerMax ? ' kW' : ''}
+                  </Text>
                 </View>
                 <View style={style.columnContainer}>
                   <View style={style.iconContainer}>

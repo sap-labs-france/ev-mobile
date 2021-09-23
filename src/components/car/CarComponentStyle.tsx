@@ -11,7 +11,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   commonStyles = ScaledSheet.create({
     carContainer: {
       width: '100%',
-      height: '130@s'
+      height: 'auto'
     },
     selected: {
       backgroundColor: commonColor.listItemSelected
@@ -51,7 +51,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     licensePlate: {
       textAlign: 'right',
-      maxWidth: '25%'
+      marginLeft: '20@s'
     },
     bottomContainer: {
       flexDirection: 'row',
@@ -64,24 +64,31 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       height: '100%',
       padding: 0,
-      borderBottomLeftRadius: '8@s'
+      borderRadius: '8@s'
+    },
+    noImageContainer: {
+      flex: 1,
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    carImagePlaceholder: {
+      fontSize: '75@s'
     },
     carInfos: {
       flexDirection: 'column',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       alignItems: 'center',
       width: '60%',
       height: '100%',
-      paddingVertical: '10@s',
       paddingHorizontal: '5@s'
     },
     userContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
-      marginBottom: '5@s',
       alignItems: 'center',
-      flex: 1,
-      marginLeft: '22@s'
+      marginLeft: '21@s',
+      marginBottom: '7@s'
     },
     avatarContainer: {
       justifyContent: 'flex-end',
@@ -103,7 +110,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: '100%'
+      width: '100%',
+      paddingBottom: '5@s'
     },
     columnContainer: {
       flexDirection: 'column',
@@ -113,8 +121,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1
     },
     columnContainerBorderRight: {
-      borderRightWidth: 0.3,
-      borderColor: commonColor.textColor
     },
     iconContainer: {
       flexDirection: 'row',
@@ -132,9 +138,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     powerDetailsText: {
       fontSize: '12@s'
-    },
-    test: {
-      backgroundColor: 'red'
     }
   });
   const portraitStyles = {};

@@ -18,7 +18,8 @@ import SelectableList, { SelectableProps, SelectableState } from '../base-screen
 
 export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];
-  active?: boolean;
+  disableInactive?: boolean;
+  sorting?: string;
 }
 
 interface State extends SelectableState<Tag> {
@@ -67,15 +68,15 @@ export default class Tags extends SelectableList<Tag> {
   };
 
   public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
+    const { sorting } = this.props;
     try {
       const params = {
         Search: searchText,
         WithUser: true,
-        UserID: this.props.userIDs?.join('|'),
-        Active: this.props.active
+        UserID: this.props.userIDs?.join('|')
       };
       // Get the Tags
-      const tags = await this.centralServerProvider.getTags(params, { skip, limit }, ['-createdOn']);
+      const tags = await this.centralServerProvider.getTags(params, { skip, limit }, [sorting ?? '-createdOn']);
       // Get total number of records
       if (tags.count === -1) {
         const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
@@ -143,7 +144,7 @@ export default class Tags extends SelectableList<Tag> {
   public render = () => {
     const style = computeStyleSheet();
     const { tags, count, skip, limit, refreshing, loading, projectedFields } = this.state;
-    const { navigation, isModal, selectionMode } = this.props;
+    const { navigation, isModal, selectionMode, disableInactive } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -167,6 +168,7 @@ export default class Tags extends SelectableList<Tag> {
               data={tags}
               ref={this.itemsListRef}
               navigation={navigation}
+              disableItem={(item: Tag) => !item.active}
               onSelect={this.onItemsSelected.bind(this)}
               selectionMode={selectionMode}
               count={count}

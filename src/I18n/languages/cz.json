@@ -42,7 +42,10 @@
       "save":"Uložit",
       "close": "Close",
       "tenants": "Organizations",
-      "optional": "Optional"
+      "results": "Results",
+      "result": "Result",
+      "optional": "Optional",
+      "notApplicable": "N/A"
    },
    "sidebar":{
       "home":"Domovská stránka",
@@ -219,7 +222,8 @@
       "noBadgeError": "Service unavailable, no charge card registered",
       "selectUser": "Select User",
       "selectEV": "Select EV",
-      "selectChargeCard": "Select Charge Card"
+      "selectChargeCard": "Select Charge Card",
+      "sessionAlreadyInProgressError": "A session is already in progress on this connector"
    },
    "home":{
       "browseSites":"Parkoviště",

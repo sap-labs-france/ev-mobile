@@ -8,41 +8,30 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    container: {
-      width: '95%',
-      alignSelf: 'center',
-      borderRadius: '8@s',
+    addCarButton: {
+      width: '45@s',
+      height: '45@s',
+      borderRadius: '22.5@s',
+      padding: '5@s',
+      marginLeft: '2.5%',
+      marginBottom: '5@s',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
       backgroundColor: commonColor.listItemBackground,
+      elevation: 4,
       shadowColor: commonColor.cardShadowColor,
       shadowOffset: {
         width: 0,
         height: 1
       },
       shadowOpacity: 0.23,
-      shadowRadius: 3.62,
-      elevation: 4,
-      marginBottom: '11@s'
+      shadowRadius: 3.62
     },
-    noShadowContainer: {
-      width: '95%',
-      alignSelf: 'center',
-      borderTopWidth: 0,
-      borderBottomWidth: 0,
-      borderLeftWidth: 0,
-      borderRightWidth: 0,
-      borderRadius: '8@s',
-      backgroundColor: commonColor.listItemBackground,
-      marginBottom: '11@s'
+    icon: {
+      color: commonColor.textColor,
+      fontSize: '27@s'
     },
-    selected: {
-      backgroundColor: commonColor.listItemSelected
-    },
-    unselected: {
-      backgroundColor: commonColor.listItemBackground
-    },
-    disabled: {
-      opacity: 0.5
-    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

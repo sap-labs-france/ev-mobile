@@ -54,8 +54,8 @@ export default {
   subTextColor: palette.disabledDark,
   buttonBg: darkLight,
   touchableBackgroundColor: 'rgba(255,255,255,0.1)',
-  selectFieldBackgroundColor: palette.dark,
-  selectDropdownBackgroundColor: palette.dark,
+  selectFieldBackgroundColor: '#1d1d1d',
+  selectDropdownBackgroundColor: '#1d1d1d',
   listItemBackground: '#1d1d1d',
   listHeaderBackground: '#1d1d1d'
 };

@@ -69,13 +69,14 @@
     "default": "Par défaut",
     "save": "Sauvegarder",
     "update": "Mettre à jour",
-    "close": "Fermer",
     "tenants": "Organisations",
     "reset": "Réinitialiser",
     "selected": "Sélectionné(s)",
-    "results": "Résultat(s)",
+    "results": "Résultats",
+    "result": "Résultat",
     "optional": "Optionnel",
-    "defaultSettings": "Paramètres par défaut"
+    "defaultSettings": "Paramètres par défaut",
+    "notApplicable": "N/A"
   },
   "sidebar": {
     "home": "Home",
@@ -283,7 +284,8 @@
     "selectEV": "Sélectionnez le véhicule",
     "selectChargeCard": "Sélectionnez la carte de recharge",
     "chargingSettings": "Paramètres de charge",
-    "adviceMessage": "Assurez-vous que le câble est branché"
+    "adviceMessage": "Assurez-vous que le câble est branché",
+    "sessionAlreadyInProgressError": "Une sessions est déjà en cours sur ce connecteur"
   },
   "home": {
     "browseSites": "Sites",
