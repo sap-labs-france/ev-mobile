@@ -32,7 +32,7 @@ export default class StatisticsComponent extends React.Component<Props, State> {
             <Text style={[commonTextStyle, style.valueText]}>
               {value} {!prefixWithSecondLine && prefix}
             </Text>
-            {secondLine && (
+            {!!secondLine && (
               <Text style={[commonTextStyle, style.unitText]}>
                 {prefixWithSecondLine && prefix}
                 {secondLine}
