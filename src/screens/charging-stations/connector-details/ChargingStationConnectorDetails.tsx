@@ -1,6 +1,6 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, Switch, Text, View } from 'native-base';
+import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, ImageBackground, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
@@ -140,9 +140,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       role: this.currentUser.role,
       email: this.currentUser.email
     };
-    this.setState({ selectedUser }, this.refresh.bind(this));
     // Init the selected user to the currently logged in user
-    this.loadSelectedUserDefaultTagAndCar(selectedUser as User);
+    this.setState({ selectedUser });
+    await this.loadSelectedUserDefaultTagAndCar(selectedUser as User);
+    this.refresh();
   }
 
   public async componentDidFocus(): Promise<void> {
@@ -308,7 +309,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
 
     // When Scanning a QR-Code, redirect if a session is already in progress. (if the connector has a non null userID)
-    if (startTransactionFromQRCode && connector.currentUserID) {
+    if (startTransactionFromQRCode && connector?.currentUserID) {
       Message.showWarning(I18n.t('transactions.sessionAlreadyInProgressError'));
       this.onBack();
       return;
@@ -331,12 +332,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
 
     // If the selected user has no badge, disable the button
-    if (!userDefaultTagCar.tag) {
+    if (!userDefaultTagCar?.tag) {
       buttonDisabled = true;
       showNoBadgeErrorMessage = true;
     }
     // Check if the selected badge is active
-    if (!selectedTag.active) {
+    if (selectedTag && !selectedTag?.active) {
       buttonDisabled = true;
       showBadgeInactiveErrorMessage = true;
     }
@@ -1117,7 +1118,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderTagSelection(style: any) {
     const { navigation } = this.props;
-    const { tagCarLoading, selectedUser, selectedTag, connector, showBadgeInactiveErrorMessage } = this.state;
+    const { tagCarLoading, selectedUser, selectedTag, connector } = this.state;
     const disabled = connector.status !== ChargePointStatus.PREPARING && connector.status !== ChargePointStatus.AVAILABLE;
     return (
       <View style={style.rowUserCarBadgeContainer}>
