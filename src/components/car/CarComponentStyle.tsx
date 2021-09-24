@@ -64,7 +64,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       height: '100%',
       padding: 0,
-      borderRadius: '8@s'
+      borderBottomLeftRadius: '8@s'
     },
     noImageContainer: {
       flex: 1,

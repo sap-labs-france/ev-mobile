@@ -29,7 +29,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       width: '30%',
       height: '100%',
-      marginHorizontal: '10@s'
+      marginHorizontal: '5@s'
     },
     icon: {
       flex: 1,
