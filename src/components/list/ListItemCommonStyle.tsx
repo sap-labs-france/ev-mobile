@@ -42,6 +42,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     disabled: {
       opacity: 0.5
+    },
+    outlinedError: {
+      borderColor: commonColor.dangerLight,
+      borderWidth: 1
     }
   });
   const portraitStyles = {};

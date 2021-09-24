@@ -21,7 +21,7 @@ export interface Props extends BaseProps {
 }
 
 export default class TagComponent extends React.Component<Props, State> {
-  static defaultProps = {
+  public static defaultProps = {
     outlinedInactive: false
   };
   public state: State;
