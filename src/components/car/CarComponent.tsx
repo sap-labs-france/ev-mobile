@@ -50,7 +50,7 @@ export default class CarComponent extends React.Component<Props, State> {
               {carFullNameWords.map((word, index) => (
                 <Text key={index} numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.carName]}>{word} </Text>
               ))}
-              {car?.default && (
+              {!!car?.default && (
                 <View style={style.defaultContainer}>
                   <Text style={style.defaultText}>{I18n.t('general.default')}</Text>
                 </View>
