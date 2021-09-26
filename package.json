@@ -167,7 +167,7 @@
     "@types/node": "^14.17.1",
     "@types/react": "^17.0.8",
     "@types/react-dom": "^17.0.5",
-    "@types/react-native": "^0.64.7",
+    "@types/react-native": "^0.65.1",
     "@types/react-native-actionsheet": "^2.4.2",
     "@types/react-native-calendars": "^1.505.3",
     "@types/react-native-charts-wrapper": "^0.5.1",
