@@ -182,7 +182,7 @@
     "cross-env": "^7.0.3",
     "deep-object-diff": "^1.1.0",
     "eslint": "^7.27.0",
-    "eslint-define-config": "^1.0.8",
+    "eslint-define-config": "^1.0.9",
     "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-jsdoc": "^35.0.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
