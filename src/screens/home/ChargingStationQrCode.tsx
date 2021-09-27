@@ -16,6 +16,7 @@ import Message from '../../utils/Message';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
+import Configuration from '../../config/Configuration';
 
 export interface Props extends BaseProps {
   currentTenantSubDomain: string;
@@ -37,7 +38,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     this.state = {
       activateQrCode: true
     };
-    this.tenantEndpointClouds = Utils.getEndpointCloud();
+    this.tenantEndpointClouds = Configuration.getEndpoints();
   }
 
   public async componentDidMount() {

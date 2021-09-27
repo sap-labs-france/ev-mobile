@@ -12,9 +12,12 @@ import DialogModal, { DialogCommonProps } from '../DialogModal';
 import { Input } from 'react-native-elements';
 import computeStyleSheet from './AddTenantManuallyDialogStyle';
 import computeModalCommonStyle from '../ModalCommonStyle';
+import Message from '../../../utils/Message';
 
 export interface Props extends BaseProps, DialogCommonProps {
   tenants: TenantConnection[];
+  mode: TenantDialogMode;
+  tenantIndex?: number;
 }
 
 interface State {
@@ -25,13 +28,19 @@ interface State {
   errorNewTenantName?: Record<string, unknown>[];
   errorNewTenantSubDomain?: Record<string, unknown>[];
   tenantNameWithSameSubdomain?: TenantConnection;
-  showSubdomainAlreadyUsedError: boolean;
+  errorSubdomainAlreadyUsed: boolean;
 }
 
-export default class AddTenantManuallyDialog extends React.Component<Props, State> {
+export enum TenantDialogMode {
+  ADD = 'ADD',
+  EDIT = 'EDIT'
+}
+
+export default class AddEditTenantDialog extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   public tenantEndpointClouds: EndpointCloud[];
+  private tenant: TenantConnection;
 
   private formCreateTenantValidationDef = {
     newTenantSubDomain: {
@@ -50,72 +59,109 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
 
   public constructor(props: Props) {
     super(props);
-    let tenantEndpointClouds: EndpointCloud[];
-    if (__DEV__) {
-      tenantEndpointClouds = Configuration.DEVELOPMENT_ENDPOINT_CLOUDS;
-    } else {
-      tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS;
-    }
+    const tenantEndpointClouds: EndpointCloud[] = Configuration.getEndpoints();
+    this.tenant = props.tenants?.[props.tenantIndex];
     // Set initial state
     this.state = {
       newTenantSubDomain: null,
       newTenantName: null,
       tenantEndpointClouds,
-      newTenantEndpointCloud: Configuration.ENDPOINT_CLOUDS?.[0],
-      showSubdomainAlreadyUsedError: false
+      newTenantEndpointCloud: null,
+      errorSubdomainAlreadyUsed: false
     };
+  }
+
+  public componentDidMount() {
+    const { mode } = this.props;
+    if (mode === TenantDialogMode.EDIT) {
+      const newTenantEndpointCloud = Configuration.getEndpoints()?.find((e) => e.endpoint === this.tenant.endpoint);
+      this.setState({
+        newTenantSubDomain: this.tenant?.subdomain,
+        newTenantName: this.tenant?.name,
+        newTenantEndpointCloud
+      });
+    }
   }
 
   public render() {
     const style = computeStyleSheet();
     const modalCommonStyle = computeModalCommonStyle();
     const { newTenantSubDomain, newTenantName, newTenantEndpointCloud } = this.state;
-    const { back } = this.props;
-
+    const { back, mode, withCancel } = this.props;
+    const addButtons = [
+      {
+        text: I18n.t('general.create'),
+        buttonTextStyle: modalCommonStyle.primaryButton,
+        buttonStyle: modalCommonStyle.primaryButton,
+        action: () => {
+          this.createTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
+        }
+      },
+      {
+        text: I18n.t('general.back'),
+        buttonTextStyle: modalCommonStyle.outlinedButton,
+        buttonStyle: modalCommonStyle.outlinedButton,
+        action: () => back?.()
+      }
+    ];
+    const editButtons = [
+      {
+        text: I18n.t('general.save'),
+        buttonTextStyle: modalCommonStyle.primaryButton,
+        buttonStyle: modalCommonStyle.primaryButton,
+        action: () => {
+          this.editTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
+        }
+      }
+    ];
     return (
       <DialogModal
-        renderIcon={(iconStyle) => <Icon style={iconStyle} type={'MaterialIcons'} name={'add-business'} />}
+        renderIcon={(iconStyle) => this.renderIcon(iconStyle)}
         animationIn={'fadeInLeft'}
         animationOut={'fadeOutRight'}
         close={() => this.props.close?.()}
-        title={I18n.t('authentication.addTenantManuallyTitle')}
+        withCancel={withCancel}
+        title={mode === TenantDialogMode.ADD ? I18n.t('authentication.addTenantManuallyTitle') : I18n.t('authentication.editTenantTitle')}
         withCloseButton={true}
         onBackButtonPressed={() => back?.()}
         onBackDropPress={() => {}}
-        buttons={[
-          {
-            text: I18n.t('general.create'),
-            buttonTextStyle: modalCommonStyle.primaryButton,
-            buttonStyle: modalCommonStyle.primaryButton,
-            action: () => {
-              this.createTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
-            }
-          },
-          {
-            text: I18n.t('general.back'),
-            buttonTextStyle: modalCommonStyle.outlinedButton,
-            buttonStyle: modalCommonStyle.outlinedButton,
-            action: () => back?.()
-          }
-        ]}
+        buttons={mode === TenantDialogMode.ADD ? addButtons : editButtons}
         renderControls={() => this.renderControls(style)}
       />
     );
   }
 
+  private renderIcon(iconStyle: any) {
+    const { mode } = this.props;
+    switch (mode) {
+      case TenantDialogMode.ADD:
+        return <Icon style={iconStyle} type={'MaterialIcons'} name={'add-business'} />;
+      default:
+        return <Icon style={iconStyle} type={'MaterialCommunityIcons'} name={'home-edit'} />;
+    }
+  }
+
   private renderControls(style: any) {
-    const { tenantEndpointClouds, newTenantEndpointCloud, tenantNameWithSameSubdomain, showSubdomainAlreadyUsedError } = this.state;
+    const {
+      tenantEndpointClouds,
+      newTenantEndpointCloud,
+      tenantNameWithSameSubdomain,
+      errorSubdomainAlreadyUsed,
+      newTenantName,
+      newTenantSubDomain
+    } = this.state;
     const commonColor = Utils.getCurrentCommonColor();
     return (
       <View style={style.modalControlsContainer}>
         <Input
           autoCorrect={false}
+          defaultValue={newTenantSubDomain}
           autoCapitalize={'none'}
           placeholder={I18n.t('authentication.tenantSubdomainPlaceholder')}
           placeholderTextColor={commonColor.placeholderTextColor}
           errorMessage={this.state.errorNewTenantSubDomain?.join(' ')}
           errorStyle={style.inputError}
-          label={I18n.t('authentication.tenantSubdomain')}
+          label={`${I18n.t('authentication.tenantSubdomain')}*`}
           labelStyle={style.inputLabel}
           containerStyle={style.inputContainer}
           inputContainerStyle={style.inputInnerContainer}
@@ -124,11 +170,12 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
         />
         <Input
           autoCorrect={false}
+          defaultValue={newTenantName}
           placeholder={I18n.t('authentication.tenantNamePlaceholder')}
           placeholderTextColor={commonColor.placeholderTextColor}
           errorMessage={this.state.errorNewTenantName?.join(' ')}
           errorStyle={style.inputError}
-          label={I18n.t('authentication.tenantName')}
+          label={`${I18n.t('authentication.tenantName')}*`}
           labelStyle={style.inputLabel}
           containerStyle={style.inputContainer}
           inputContainerStyle={style.inputInnerContainer}
@@ -159,35 +206,58 @@ export default class AddTenantManuallyDialog extends React.Component<Props, Stat
             />
           )}
         />
-        {showSubdomainAlreadyUsedError && (
-          <Text style={style.inputError}>{I18n.t('general.subdomainAlreadyUsed', { tenantName: tenantNameWithSameSubdomain })}</Text>
+        {errorSubdomainAlreadyUsed && (
+          <Text style={style.inputError}>{I18n.t('general.subdomainAlreadyUsed', { tenantName: tenantNameWithSameSubdomain.name })}</Text>
         )}
       </View>
     );
   }
 
+  private async editTenant(newSubdomain: string, newName: string, newEndpointCloud: EndpointCloud) {
+    const { tenantIndex, tenants } = this.props;
+    let formIsValid = Utils.validateInput(this, this.formCreateTenantValidationDef);
+    if (this.tenant?.subdomain !== newSubdomain) {
+      const foundTenant = tenants.find((tenantConnection) => tenantConnection.subdomain === newSubdomain);
+      if (foundTenant) {
+        formIsValid = false;
+        this.setState({ tenantNameWithSameSubdomain: foundTenant, errorSubdomainAlreadyUsed: true });
+      }
+    }
+    if (formIsValid) {
+      const editedTenant: TenantConnection = {
+        subdomain: newSubdomain,
+        name: newName,
+        endpoint: newEndpointCloud?.endpoint
+      };
+      tenants[tenantIndex] = editedTenant;
+      await SecuredStorage.saveTenants(tenants);
+      Message.showSuccess(I18n.t('general.editTenantSuccess'));
+      this.props.close(editedTenant);
+    }
+  }
+
   private createTenant = async (subdomain: string, name: string, endpointCloud: EndpointCloud) => {
     const { tenants, close } = this.props;
     // Check field
-    const formIsValid = Utils.validateInput(this, this.formCreateTenantValidationDef);
+    let formIsValid = Utils.validateInput(this, this.formCreateTenantValidationDef);
+    const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain);
+    // Already exists
+    if (foundTenant) {
+      formIsValid = false;
+      this.setState({ tenantNameWithSameSubdomain: foundTenant, errorSubdomainAlreadyUsed: true });
+    }
     const newTenant: TenantConnection = {
       subdomain,
       name,
-      endpoint: endpointCloud.endpoint
+      endpoint: endpointCloud?.endpoint
     };
     if (formIsValid) {
-      const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain);
-      // Already exists
-      if (foundTenant) {
-        this.setState({ tenantNameWithSameSubdomain: foundTenant.name, showSubdomainAlreadyUsedError: true });
-        // Add new Tenant and Save
-      } else {
-        // Save
-        tenants.push(newTenant);
-        await SecuredStorage.saveTenants(tenants);
-        // Hide Modal
-        close(newTenant);
-      }
+      // Save
+      tenants.push(newTenant);
+      await SecuredStorage.saveTenants(tenants);
+      Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
+      // Hide Modal
+      close(newTenant);
     }
   };
 }
