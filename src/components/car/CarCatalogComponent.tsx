@@ -20,11 +20,6 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
   public props: Props;
   public state: State;
 
-  public constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
-
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void

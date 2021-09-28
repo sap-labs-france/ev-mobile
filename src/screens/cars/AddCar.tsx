@@ -15,7 +15,7 @@ import Utils from '../../utils/Utils';
 import SelectDropdown from 'react-native-select-dropdown';
 import CarCatalogComponent from '../../components/car/CarCatalogComponent';
 import CarCatalogs from './CarCatalogs';
-import User from '../../types/User';
+import User, { UserStatus } from '../../types/User';
 import UserComponent from '../../components/user/UserComponent';
 import Users from '../users/list/Users';
 import computeModalCommonStyle from '../../components/modal/ModalCommonStyle';
@@ -26,6 +26,7 @@ import { HTTPError } from '../../types/HTTPError';
 import I18n from 'i18n-js';
 import computeFormStyleSheet from '../../FormStyles';
 import { RadioButton } from 'react-native-paper';
+import Constants from '../../utils/Constants';
 
 interface State {
   selectedCarCatalog: CarCatalog;
@@ -43,7 +44,6 @@ export interface Props extends BaseProps {}
 export default class AddCar extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
-  private vinInputRef = React.createRef<Input>();
 
   public constructor(props: Props) {
     super(props);
@@ -68,7 +68,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         id: currentUser?.id,
         firstName: currentUser?.firstName,
         name: currentUser?.name,
-        status: 'A',
+        status: UserStatus.ACTIVE,
         role: currentUser.role,
         email: currentUser.email
       }
@@ -96,7 +96,7 @@ export default class AddCar extends BaseScreen<Props, State> {
     return (
       <View style={style.container}>
         <HeaderComponent
-          title={'Add a car'}
+          title={I18n.t('cars.addCar')}
           navigation={navigation}
           leftAction={this.onBack.bind(this)}
           leftActionIcon={'navigate-before'}
@@ -137,13 +137,12 @@ export default class AddCar extends BaseScreen<Props, State> {
             )}
           />
           <Input
-            placeholder={'Vehicle Identification Number'}
+            placeholder={Constants.VIN_FULL}
             placeholderTextColor={commonColors.disabledDark}
             labelStyle={style.inputLabel}
             autoCapitalize={'none'}
             autoCorrect={false}
-            label={'VIN*'}
-            ref={this.vinInputRef}
+            label={`${Constants.VIN}*`}
             errorMessage={!this.checkVIN() && vin && I18n.t('cars.invalidVIN')}
             errorStyle={style.errorText}
             inputStyle={style.selectDropdownRowText}
