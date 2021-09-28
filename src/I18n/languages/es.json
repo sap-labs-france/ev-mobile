@@ -240,7 +240,8 @@
     "selectCar": "Select a car",
     "selectCars": "Select cars",
     "noCarMessageTitle": "Indicate what car you are using to get better recharges",
-    "addCar": "Add a car",
+    "addCarTitle": "Add a car",
+    "addCarButton": "Add car",
     "evse_phase": "Fase",
     "evse_phases": "Fases",
     "invalidVIN": "Invalid VIN",
@@ -251,7 +252,7 @@
     "carAlreadyExistError": "A car with the same VIN and license plate already exists",
     "userAlreadyAssignedError": "This car already belongs to another user",
     "addError": "An error occurred while adding the car",
-    "addCarSuccessfully": "Car has bee successfully added",
+    "addCarSuccessfully": "Car has been successfully added",
     "defaultCar": "Vehículo predeterminado"
   },
   "carTypes": {
