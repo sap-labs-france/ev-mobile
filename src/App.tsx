@@ -49,6 +49,7 @@ import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
 import { checkVersion } from 'react-native-check-version';
 import AppUpdateDialog from './components/modal/app-update/AppUpdateDialog';
+import AddCar from './screens/cars/AddCar';
 
 // Init i18n
 I18nManager.initialize();
@@ -387,6 +388,7 @@ function createCarsNavigator(props: BaseProps) {
   return (
     <CarsStack.Navigator initialRouteName="Cars" headerMode="none">
       <CarsStack.Screen name="Cars" component={Cars} initialParams={props?.route?.params?.params} />
+      <CarsStack.Screen name={'AddCar'} component={AddCar} initialParams={props?.route?.params?.params} />
     </CarsStack.Navigator>
   );
 }

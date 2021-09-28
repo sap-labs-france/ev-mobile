@@ -240,7 +240,24 @@
     "selectCar": "Select a car",
     "selectCars": "Select cars",
     "noCarMessageTitle": "Indicate what car you are using to get better recharges",
-    "addCar": "Add a car"
+    "addCar": "Add a car",
+    "evse_phase": "Fase",
+    "evse_phases": "Fases",
+    "invalidVIN": "Invalid VIN",
+    "invalidLicensePlate": "Invalid License Plate",
+    "licensePlate": "Placa",
+    "converter": "Conversor",
+    "model": "Modelo",
+    "carAlreadyExistError": "A car with the same VIN and license plate already exists",
+    "userAlreadyAssignedError": "This car already belongs to another user",
+    "addError": "An error occurred while adding the car",
+    "addCarSuccessfully": "Car has bee successfully added",
+    "defaultCar": "Vehículo predeterminado"
+  },
+  "carTypes": {
+    "poolCar": "Vehículos compartidos",
+    "privateCar": "Vehículos privados",
+    "companyCar": "Vehículos de la empresa"
   },
   "invoices": {
     "noInvoices": "No Invoices",

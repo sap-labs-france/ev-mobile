@@ -274,7 +274,7 @@ export default class Home extends BaseScreen<Props, State> {
                   <CardItem
                     style={cardStyle.cardItem}
                     button={true}
-                    onPress={() => navigation.navigate('CarsNavigator', { key: `${Utils.randomNumber()}` })}>
+                    onPress={() => navigation.navigate('CarsNavigator', { screen: 'Cars', key: `${Utils.randomNumber()}` })}>
                     <Left>
                       <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="directions-car" />
                       <Body>

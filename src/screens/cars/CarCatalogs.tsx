@@ -1,23 +1,22 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Container,Spinner } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
-import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
-import Car from '../../types/Car';
+import Car, { CarCatalog } from '../../types/Car';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import computeStyleSheet from './CarsStyles';
-import computeTransactionStyles from '../transactions/TransactionsStyles'
+import computeTransactionStyles from '../transactions/TransactionsStyles';
 
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
+import CarCatalogComponent from '../../components/car/CarCatalogComponent';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];
@@ -31,7 +30,7 @@ export interface Props extends SelectableProps<Car> {
   userIDs?: string[];
 }
 
-export default class Cars extends SelectableList<Car> {
+export default class CarCatalogs extends SelectableList<Car> {
   public props: Props;
   public state: State;
   private searchText: string;
@@ -71,17 +70,16 @@ export default class Cars extends SelectableList<Car> {
     Orientation.unlockAllOrientations();
   }
 
-  public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
+
+  public async getCarCatalog(searchText: string, skip: number, limit: number): Promise<DataResult<CarCatalog>> {
     try {
       const params = {
-        Search: searchText,
-        WithUser: true,
-        UserID: this.props.userIDs?.join('|')
+        Search: searchText
       };
-      const cars = await this.centralServerProvider.getCars(params, { skip, limit });
+      const cars = await this.centralServerProvider.getCarCatalog(params, { skip, limit }, ['vehicleMake|vehicleModel|vehicleModelVersion']);
       // Get total number of records
       if (cars.count === -1) {
-        const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
+        const carsNbrRecordsOnly = await this.centralServerProvider.getCarCatalog(params, Constants.ONLY_RECORD_COUNT);
         cars.count = carsNbrRecordsOnly.count;
       }
       return cars;
@@ -102,7 +100,7 @@ export default class Cars extends SelectableList<Car> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
@@ -112,7 +110,7 @@ export default class Cars extends SelectableList<Car> {
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const cars = await this.getCars(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const cars = await this.getCarCatalog(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
         cars: cars ? [...prevState.cars, ...cars.result] : prevState.cars,
@@ -125,12 +123,14 @@ export default class Cars extends SelectableList<Car> {
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      this.setState({ refreshing: true });
       // Refresh All
-      const cars = await this.getCars(this.searchText, 0, skip + limit);
+      const cars = await this.getCarCatalog(this.searchText, 0, skip + limit);
       const carsResult = cars ? cars.result : [];
       // Set
       this.setState({
         loading: false,
+        refreshing: false,
         cars: carsResult,
         count: cars ? cars.count : 0
       });
@@ -144,7 +144,6 @@ export default class Cars extends SelectableList<Car> {
 
   public render() {
     const transactionStyles = computeTransactionStyles();
-    const style = computeStyleSheet();
     const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
     return (
@@ -162,31 +161,23 @@ export default class Cars extends SelectableList<Car> {
         <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
-        {!isModal && (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CarsNavigator', {screen: 'AddCar'})}
-            style={style.addCarButton}>
-            <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
-          </TouchableOpacity>
-        )}
         {loading ? (
           <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (
           <View style={transactionStyles.content}>
-            <ItemsList<Car>
+            <ItemsList<CarCatalog>
               data={cars}
-              ref={this.itemsListRef}
               navigation={navigation}
               count={count}
               limit={limit}
               skip={skip}
               onSelect={this.onItemsSelected.bind(this)}
               selectionMode={selectionMode}
-              renderItem={(item: Car, selected: boolean) => (
-                <CarComponent
+              renderItem={(item: CarCatalog, selected: boolean) => (
+                <CarCatalogComponent
                   navigation={navigation}
                   selected={selected}
-                  car={item}
+                  carCatalog={item}
                 />
               )}
               refreshing={refreshing}

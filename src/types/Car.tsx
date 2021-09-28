@@ -12,14 +12,50 @@ export default interface Car extends CreatedUpdatedProps, ListItem {
   converter?: CarConverter;
 }
 
-export interface CarCatalog {
-  id: number;
+export interface CarDTO {
+  vin: string;
+  licensePlate: string;
+  carCatalogID: number;
+  userID?: string;
+  default?: boolean;
+  type?: CarType;
+  converter?: CarConverter;
+  carConnectorData?: CarConnectorData;
+  forced?: boolean;
+}
+
+export interface CarConnectorData {
+  carConnectorID: string;
+  carConnectorMeterID: string;
+}
+
+export interface CarCatalog extends ListItem {
   vehicleMake: string;
   vehicleModel: string;
   vehicleModelVersion?: string;
   image?: string;
   fastChargePowerMax?: number;
   batteryCapacityFull?: number;
+  drivetrainPowerHP: number;
+  performanceAcceleration: number;
+  performanceTopspeed: number;
+  rangeWLTP: number;
+  rangeReal: number;
+  efficiencyReal: number;
+  chargePlug: string;
+  chargeStandardPower: number;
+  chargeStandardPhase: number;
+  chargeStandardPhaseAmp: number;
+  chargeAlternativePower: number;
+  chargeAlternativePhase: number;
+  chargeAlternativePhaseAmp: number;
+  chargeOptionPower: number;
+  chargeOptionPhase: number;
+  chargeOptionPhaseAmp: number;
+  fastChargePlug: string;
+  canRead: boolean;
+  canDelete: boolean;
+  canUpdate: boolean;
 }
 
 export interface CarConverter {

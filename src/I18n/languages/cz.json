@@ -195,8 +195,25 @@
    "cars":{
       "noCars":"Žádné elektromobily",
       "carUnexpectedError":"Došlo k chybě",
-      "cars":"Elektromobily"
+      "cars":"Elektromobily",
+      "evse_phase": "Fáze",
+      "evse_phases": "Phases",
+      "invalidVIN": "Invalid VIN",
+      "invalidLicensePlate": "Invalid License Plate",
+      "licensePlate": "Registrační značka",
+      "converter": "Měnič",
+      "model": "Model",
+      "carAlreadyExistError": "A car with the same VIN and license plate already exists",
+      "userAlreadyAssignedError": "This car already belongs to another user",
+      "addError": "An error occurred while adding the car",
+      "addCarSuccessfully": "Car has bee successfully added",
+      "defaultCar": "Výchozí elektromobil"
    },
+  "carTypes": {
+    "poolCar": "Sdílený elektromobil",
+    "privateCar": "Soukromý elektromobil",
+    "companyCar": "Firemní elektromobil"
+  },
    "invoices":{
       "noInvoices":"Žádné faktury",
       "invoiceUnexpectedError":"Došlo k chybě",

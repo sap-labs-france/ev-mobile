@@ -14,7 +14,7 @@ import NotificationManager from '../notification/NotificationManager';
 import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
-import Car from '../types/Car';
+import Car, { CarCatalog, CarDTO } from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
@@ -707,6 +707,19 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async createCar(car: CarDTO, forced: boolean): Promise<ActionResponse> {
+    this.debugMethod('createCar');
+    // Execute
+    const response = await this.axiosInstance.post<ActionResponse>(
+      this.buildRestEndpointUrl(ServerRoute.REST_CARS),
+      { ...car, forced },
+      {
+        headers: this.buildSecuredHeaders()
+      }
+    );
+    return response?.data;
+  }
+
   public async getCars(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Car>> {
     this.debugMethod('getCars');
     // Build Paging
@@ -715,6 +728,24 @@ export default class CentralServerProvider {
     this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CARS}`, {
+      headers: this.buildSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
+  public async getCarCatalog(
+    params = {},
+    paging: PagingParams = Constants.DEFAULT_PAGING,
+    sorting: string[] = []
+  ): Promise<DataResult<CarCatalog>> {
+    this.debugMethod('getCarCatalog');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CAR_CATALOGS}`, {
       headers: this.buildSecuredHeaders(),
       params
     });

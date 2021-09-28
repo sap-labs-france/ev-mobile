@@ -20,7 +20,7 @@ import I18nManager from '../I18n/I18nManager';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Address from '../types/Address';
 import { BillingPaymentMethod, BillingPaymentMethodStatus } from '../types/Billing';
-import Car, { CarCatalog } from '../types/Car';
+import Car, { CarCatalog, CarConverter } from '../types/Car';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
 import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
@@ -673,6 +673,18 @@ export default class Utils {
 
   public static buildCarFastChargePower(fastChargePower: number): string | number {
     return fastChargePower || I18n.t('general.notApplicable');
+  }
+
+  public static buildCarCatalogConverterName(converter: CarConverter): string {
+    let converterName = '';
+    converterName += `${converter?.powerWatts ?? ''} kW`;
+    if (converter?.numberOfPhases > 0) {
+      converterName += ` - ${converter?.numberOfPhases ?? ''} ${converter?.numberOfPhases > 1 ? I18n.t('cars.evse_phases') : I18n.t('cars.evse_phase')}`;
+    }
+    if (converter?.amperagePerPhase > 0) {
+      converterName += ` - ${converter?.amperagePerPhase ?? ''} A`;
+    }
+    return converterName;
   }
 
   public static async handleHttpUnexpectedError(

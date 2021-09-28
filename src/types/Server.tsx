@@ -491,6 +491,8 @@ export enum ServerRoute {
   REST_CHARGING_PROFILES = 'charging-profiles',
   REST_CHARGING_PROFILE = 'charging-profiles/:id',
 
+  REST_CARS = 'cars',
+
   REST_TRANSACTIONS = 'transactions',
   REST_TRANSACTIONS_IN_ERROR = 'transactions/status/in-error',
   REST_TRANSACTIONS_ACTIVE = 'transactions/status/active',
@@ -588,4 +590,8 @@ export enum ServerProtocol {
 export enum WSServerProtocol {
   OCPP16 = 'ocpp1.6',
   REST = 'rest'
+}
+
+export enum RestResponse {
+  SUCCESS = 'Success'
 }
