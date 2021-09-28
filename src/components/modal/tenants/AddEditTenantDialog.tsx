@@ -88,32 +88,6 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     const modalCommonStyle = computeModalCommonStyle();
     const { newTenantSubDomain, newTenantName, newTenantEndpointCloud } = this.state;
     const { back, mode, withCancel } = this.props;
-    const addButtons = [
-      {
-        text: I18n.t('general.create'),
-        buttonTextStyle: modalCommonStyle.primaryButton,
-        buttonStyle: modalCommonStyle.primaryButton,
-        action: () => {
-          this.createTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
-        }
-      },
-      {
-        text: I18n.t('general.back'),
-        buttonTextStyle: modalCommonStyle.outlinedButton,
-        buttonStyle: modalCommonStyle.outlinedButton,
-        action: () => back?.()
-      }
-    ];
-    const editButtons = [
-      {
-        text: I18n.t('general.save'),
-        buttonTextStyle: modalCommonStyle.primaryButton,
-        buttonStyle: modalCommonStyle.primaryButton,
-        action: () => {
-          this.editTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
-        }
-      }
-    ];
     return (
       <DialogModal
         renderIcon={(iconStyle) =>
@@ -131,7 +105,36 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
         withCloseButton={true}
         onBackButtonPressed={() => back?.()}
         onBackDropPress={() => {}}
-        buttons={mode === TenantDialogMode.ADD ? addButtons : editButtons}
+        buttons={
+          mode === TenantDialogMode.ADD ?
+            [
+              {
+                text: I18n.t('general.create'),
+                buttonTextStyle: modalCommonStyle.primaryButton,
+                buttonStyle: modalCommonStyle.primaryButton,
+                action: () => {
+                  this.createTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
+                }
+              },
+              {
+                text: I18n.t('general.back'),
+                buttonTextStyle: modalCommonStyle.outlinedButton,
+                buttonStyle: modalCommonStyle.outlinedButton,
+                action: () => back?.()
+              }
+            ]
+            :
+            [
+              {
+                text: I18n.t('general.save'),
+                buttonTextStyle: modalCommonStyle.primaryButton,
+                buttonStyle: modalCommonStyle.primaryButton,
+                action: () => {
+                  this.editTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
+                }
+              }
+            ]
+        }
         renderControls={() => this.renderControls(style)}
       />
     );
