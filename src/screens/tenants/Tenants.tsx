@@ -197,7 +197,7 @@ export default class Tenants extends BaseScreen<Props, State> {
         tenants={Utils.cloneObject(this.state.tenants)}
         back={() => this.setState({ tenantToBeEditedIndex: null })}
         close={(newTenantCreated: TenantConnection) => {
-          this.addEditTenantClosed();
+          this.addEditTenantDialogClosed();
         }}
       />
     );
@@ -240,11 +240,11 @@ export default class Tenants extends BaseScreen<Props, State> {
   }
 
   private tenantCreated(newTenant?: TenantConnection): void {
-    this.addEditTenantClosed(newTenant);
+    this.addEditTenantDialogClosed(newTenant);
     this.setState({ showNewTenantAddedDialog: true });
   }
 
-  private async addEditTenantClosed(newTenant?: TenantConnection): Promise<void> {
+  private async addEditTenantDialogClosed(newTenant?: TenantConnection): Promise<void> {
     // Always close pop-up
     const newTenants = await this.centralServerProvider.getTenants();
     this.setState({
