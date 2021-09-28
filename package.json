@@ -86,7 +86,7 @@
     "@react-native-community/datetimepicker": "^3.5.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/picker": "^1.8.1",
-    "@react-native-community/toolbar-android": "0.1.0-rc.2",
+    "@react-native-community/toolbar-android": "0.2.1",
     "@react-navigation/drawer": "^5.12.9",
     "@react-navigation/material-bottom-tabs": "^5.3.15",
     "@react-navigation/native": "^5.9.4",
