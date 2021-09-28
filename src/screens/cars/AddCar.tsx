@@ -37,6 +37,7 @@ interface State {
   selectedUser: User;
   isDefault: boolean;
   type: CarType;
+  addCarPending: boolean;
 }
 
 export interface Props extends BaseProps {}
@@ -55,7 +56,8 @@ export default class AddCar extends BaseScreen<Props, State> {
       licensePlate: null,
       selectedUser: null,
       isDefault: false,
-      type: CarType.COMPANY
+      type: CarType.COMPANY,
+      addCarPending: false
     };
   }
 
@@ -87,8 +89,17 @@ export default class AddCar extends BaseScreen<Props, State> {
 
   public render() {
     const { navigation } = this.props;
-    const { selectedCarCatalog, selectedConverter, selectedCarCatalogConverters, selectedUser, vin, licensePlate, isDefault, type } =
-      this.state;
+    const {
+      selectedCarCatalog,
+      selectedConverter,
+      selectedCarCatalogConverters,
+      selectedUser,
+      vin,
+      licensePlate,
+      isDefault,
+      type,
+      addCarPending
+    } = this.state;
     const commonColors = Utils.getCurrentCommonColor();
     const modalCommonStyles = computeModalCommonStyle();
     const formStyles = computeFormStyleSheet();
@@ -96,7 +107,7 @@ export default class AddCar extends BaseScreen<Props, State> {
     return (
       <View style={style.container}>
         <HeaderComponent
-          title={I18n.t('cars.addCar')}
+          title={I18n.t('cars.addCarTitle')}
           navigation={navigation}
           leftAction={this.onBack.bind(this)}
           leftActionIcon={'navigate-before'}
@@ -218,7 +229,8 @@ export default class AddCar extends BaseScreen<Props, State> {
             containerStyle={style.buttonContainer}
             buttonStyle={modalCommonStyles.primaryButton}
             onPress={this.addCar.bind(this)}
-            title={'ADD CAR'}
+            loading={addCarPending}
+            title={I18n.t('cars.addCarButton').toUpperCase()}
           />
         </ScrollView>
       </View>
@@ -300,6 +312,7 @@ export default class AddCar extends BaseScreen<Props, State> {
 
   private async addCar(forced: boolean = false): Promise<void> {
     if (this.checkForm()) {
+      this.setState({ addCarPending: true });
       const { selectedConverter, selectedCarCatalog, selectedUser, vin, licensePlate, isDefault, type } = this.state;
       const carDTO = {
         vin,
@@ -314,10 +327,10 @@ export default class AddCar extends BaseScreen<Props, State> {
       try {
         const response = await this.centralServerProvider.createCar(carDTO, forced);
         if (response.status === RestResponse.SUCCESS) {
-          Message.showSuccess('car created');
-          return;
+          Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
+        } else {
+          Message.showError(I18n.t('cars.addError'));
         }
-        Message.showError(I18n.t('cars.addError'));
         return;
       } catch (error) {
         switch (error.status) {
@@ -330,6 +343,8 @@ export default class AddCar extends BaseScreen<Props, State> {
           default:
             Message.showError(I18n.t('cars.addError'));
         }
+      } finally {
+        this.setState({ addCarPending: false });
       }
     }
     return null;
