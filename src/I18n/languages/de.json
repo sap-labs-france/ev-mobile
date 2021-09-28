@@ -253,7 +253,6 @@
     "addError": "An error occurred while adding the car",
     "addCarSuccessfully": "Car has bee successfully added",
     "defaultCar": "Standard Fahrzeug"
-
   },
   "carTypes": {
     "poolCar": "Pool Fahrzeug",
