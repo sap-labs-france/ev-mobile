@@ -24,7 +24,7 @@ interface State {
   tenants?: TenantConnection[];
   showAddTenantManuallyDialog?: boolean;
   showAddTenantWithQRCode?: boolean;
-  tenantToBeEdited?: number;
+  tenantToBeEditedIndex?: number;
   showAddTenantDialog?: boolean;
   showNewTenantAddedDialog?: boolean;
   newTenant?: TenantConnection;
@@ -39,7 +39,7 @@ export default class Tenants extends BaseScreen<Props, State> {
     this.state = {
       showAddTenantWithQRCode: false,
       showAddTenantManuallyDialog: false,
-      tenantToBeEdited: null,
+      tenantToBeEditedIndex: null,
       showAddTenantDialog: false,
       showNewTenantAddedDialog: false,
       newTenant: null,
@@ -72,7 +72,7 @@ export default class Tenants extends BaseScreen<Props, State> {
       showAddTenantWithQRCode,
       showAddTenantDialog,
       showNewTenantAddedDialog,
-      tenantToBeEdited
+      tenantToBeEditedIndex
     } = this.state;
     const style = computeTenantStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
@@ -80,7 +80,7 @@ export default class Tenants extends BaseScreen<Props, State> {
       <View style={{ flex: 1 }}>
         {showAddTenantDialog && this.renderAddTenantDialog(style)}
         {showNewTenantAddedDialog && this.renderNewTenantAddedDialog(style)}
-        {tenantToBeEdited !== null && this.renderEditTenantDialog(style)}
+        {tenantToBeEditedIndex !== null && this.renderEditTenantDialog(style)}
         {showAddTenantWithQRCode ? (
           <CreateTenantQrCode
             tenants={Utils.cloneObject(this.state.tenants)}
@@ -152,7 +152,7 @@ export default class Tenants extends BaseScreen<Props, State> {
           }}>
           <Icon style={style.actionIcon} name="trash" />
         </TouchableOpacity>
-        <TouchableOpacity style={style.editIconButton} onPress={() => this.setState({ tenantToBeEdited: index })}>
+        <TouchableOpacity style={style.editIconButton} onPress={() => this.setState({ tenantToBeEditedIndex: index })}>
           <Icon style={style.actionIcon} name="edit" type={'MaterialIcons'} />
         </TouchableOpacity>
       </View>
@@ -193,9 +193,9 @@ export default class Tenants extends BaseScreen<Props, State> {
         mode={TenantDialogMode.EDIT}
         withCancel={true}
         navigation={this.props.navigation}
-        tenantIndex={this.state.tenantToBeEdited}
+        tenantIndex={this.state.tenantToBeEditedIndex}
         tenants={Utils.cloneObject(this.state.tenants)}
-        back={() => this.setState({ tenantToBeEdited: null })}
+        back={() => this.setState({ tenantToBeEditedIndex: null })}
         close={(newTenantCreated: TenantConnection) => {
           this.addEditTenantClosed();
         }}
@@ -239,22 +239,22 @@ export default class Tenants extends BaseScreen<Props, State> {
     );
   }
 
-  private tenantCreated(newTenant?: TenantConnection) {
+  private tenantCreated(newTenant?: TenantConnection): void {
     this.addEditTenantClosed(newTenant);
     this.setState({ showNewTenantAddedDialog: true });
   }
 
-  private addEditTenantClosed = async (newTenant?: TenantConnection) => {
+  private async addEditTenantClosed(newTenant?: TenantConnection): Promise<void> {
     // Always close pop-up
     const newTenants = await this.centralServerProvider.getTenants();
     this.setState({
       showAddTenantWithQRCode: false,
       showAddTenantManuallyDialog: false,
-      tenantToBeEdited: null,
+      tenantToBeEditedIndex: null,
       tenants: newTenants,
       newTenant
     });
-  };
+  }
 
   private deleteTenant = async (index: number, subdomain: string) => {
     const tenants = this.state.tenants;

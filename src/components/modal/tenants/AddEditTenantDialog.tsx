@@ -116,7 +116,13 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     ];
     return (
       <DialogModal
-        renderIcon={(iconStyle) => this.renderIcon(iconStyle)}
+        renderIcon={(iconStyle) =>
+          mode === TenantDialogMode.ADD ? (
+            <Icon style={iconStyle} type={'MaterialIcons'} name={'add-business'} />
+          ) : (
+            <Icon style={iconStyle} type={'MaterialCommunityIcons'} name={'home-edit'} />
+          )
+        }
         animationIn={'fadeInLeft'}
         animationOut={'fadeOutRight'}
         close={() => this.props.close?.()}
@@ -129,16 +135,6 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
         renderControls={() => this.renderControls(style)}
       />
     );
-  }
-
-  private renderIcon(iconStyle: any) {
-    const { mode } = this.props;
-    switch (mode) {
-      case TenantDialogMode.ADD:
-        return <Icon style={iconStyle} type={'MaterialIcons'} name={'add-business'} />;
-      default:
-        return <Icon style={iconStyle} type={'MaterialCommunityIcons'} name={'home-edit'} />;
-    }
   }
 
   private renderControls(style: any) {
