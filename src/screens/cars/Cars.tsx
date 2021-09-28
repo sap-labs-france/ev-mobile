@@ -63,12 +63,16 @@ export default class Cars extends SelectableList<Car> {
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
     await this.refresh();
-    Orientation.lockToPortrait();
   }
 
   public componentWillUnmount() {
     super.componentWillUnmount();
     Orientation.unlockAllOrientations();
+  }
+
+  public async componentDidFocus() {
+    Orientation.lockToPortrait();
+    await this.refresh();
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
@@ -78,7 +82,7 @@ export default class Cars extends SelectableList<Car> {
         WithUser: true,
         UserID: this.props.userIDs?.join('|')
       };
-      const cars = await this.centralServerProvider.getCars(params, { skip, limit });
+      const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
       // Get total number of records
       if (cars.count === -1) {
         const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
@@ -124,6 +128,7 @@ export default class Cars extends SelectableList<Car> {
 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
+      this.setState({ refreshing : true});
       const { skip, limit } = this.state;
       // Refresh All
       const cars = await this.getCars(this.searchText, 0, skip + limit);
@@ -132,7 +137,8 @@ export default class Cars extends SelectableList<Car> {
       this.setState({
         loading: false,
         cars: carsResult,
-        count: cars ? cars.count : 0
+        count: cars ? cars.count : 0,
+        refreshing: false
       });
     }
   }
