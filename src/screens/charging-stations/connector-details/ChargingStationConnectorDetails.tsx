@@ -1105,7 +1105,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         <Icon style={style.noCarIcon} type={'MaterialCommunityIcons'} name={'car'} />
         <View style={style.column}>
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
-          {(this.currentUser?.id === selectedUser?.id || this.securityProvider.canListCars()) && false && (
+          {(this.currentUser?.id === selectedUser?.id || this.securityProvider.canListCars()) && (
             <TouchableOpacity onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={style.addItemContainer}>
               <Text style={[style.linkText, style.plusSign]}>+</Text>
               <Text style={[style.messageText, style.linkText, style.linkLabel]}>{I18n.t('cars.addCar')}</Text>
