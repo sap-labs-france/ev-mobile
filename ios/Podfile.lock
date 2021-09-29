@@ -517,7 +517,7 @@ PODS:
     - Stripe (~> 21.6.0)
   - Stripe/Stripe3DS2 (21.6.0)
   - SwiftyJSON (5.0.0)
-  - toolbar-android (0.1.0-rc.2):
+  - toolbar-android (0.2.1):
     - React
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -840,7 +840,7 @@ SPEC CHECKSUMS:
   Stripe: 6cc7bb348f4b1fad111129f6ee40eb6682deaefb
   stripe-react-native: dbb9117864014d4c621e9152c25999264a63c9fb
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
-  toolbar-android: 404f4450b203597e7b417f714ff417bed562a1be
+  toolbar-android: 7c528a58a3d79f03124cbb370f738280bf1114a6
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
