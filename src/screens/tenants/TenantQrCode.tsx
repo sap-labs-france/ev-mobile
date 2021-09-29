@@ -53,7 +53,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     const newTenant: TenantConnection = {
       subdomain: tenantQrCode.tenantSubDomain,
       name: tenantQrCode.tenantName,
-      endpoint: newTenantEndpointCloud.endpoint
+      endpoint: newTenantEndpointCloud?.endpoint
     };
     // Add
     tenants.push(newTenant);

@@ -1,6 +1,5 @@
-import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Icon, Text, View } from 'native-base';
+import { Icon, View } from 'native-base';
 import React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
@@ -12,10 +11,12 @@ import Message from '../../utils/Message';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
-import AddTenantManuallyDialog from '../../components/modal/tenants/AddTenantManuallyDialog';
+import AddEditTenantDialog, { TenantDialogMode } from '../../components/modal/tenants/AddEditTenantDialog';
 import CreateTenantQrCode from './TenantQrCode';
 import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
+import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
+import TenantComponent from '../../components/tenant/TenantComponent';
 
 export interface Props extends BaseProps {}
 
@@ -23,6 +24,7 @@ interface State {
   tenants?: TenantConnection[];
   showAddTenantManuallyDialog?: boolean;
   showAddTenantWithQRCode?: boolean;
+  tenantToBeEditedIndex?: number;
   showAddTenantDialog?: boolean;
   showNewTenantAddedDialog?: boolean;
   newTenant?: TenantConnection;
@@ -37,9 +39,11 @@ export default class Tenants extends BaseScreen<Props, State> {
     this.state = {
       showAddTenantWithQRCode: false,
       showAddTenantManuallyDialog: false,
+      tenantToBeEditedIndex: null,
       showAddTenantDialog: false,
       showNewTenantAddedDialog: false,
-      newTenant: null
+      newTenant: null,
+      tenants: []
     };
   }
 
@@ -62,13 +66,21 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   public render() {
     const navigation = this.props.navigation;
-    const { tenants, showAddTenantManuallyDialog, showAddTenantWithQRCode, showAddTenantDialog, showNewTenantAddedDialog } =
-      this.state;
+    const {
+      tenants,
+      showAddTenantManuallyDialog,
+      showAddTenantWithQRCode,
+      showAddTenantDialog,
+      showNewTenantAddedDialog,
+      tenantToBeEditedIndex
+    } = this.state;
     const style = computeTenantStyleSheet();
+    const listItemCommonStyle = computeListItemCommonStyle();
     return (
       <View style={{ flex: 1 }}>
         {showAddTenantDialog && this.renderAddTenantDialog(style)}
         {showNewTenantAddedDialog && this.renderNewTenantAddedDialog(style)}
+        {tenantToBeEditedIndex !== null && this.renderEditTenantDialog(style)}
         {showAddTenantWithQRCode ? (
           <CreateTenantQrCode
             tenants={Utils.cloneObject(this.state.tenants)}
@@ -94,11 +106,12 @@ export default class Tenants extends BaseScreen<Props, State> {
             />
             <View>
               <View style={style.toolBar}>
-                <TouchableOpacity style={style.createTenantButton} onPress={() => this.setState({ showAddTenantDialog: true })}>
+                <TouchableOpacity style={style.addTenantButton} onPress={() => this.setState({ showAddTenantDialog: true })}>
                   <Icon style={style.icon} type={'MaterialIcons'} name="add" />
                 </TouchableOpacity>
                 {showAddTenantManuallyDialog && (
-                  <AddTenantManuallyDialog
+                  <AddEditTenantDialog
+                    mode={TenantDialogMode.ADD}
                     navigation={navigation}
                     tenants={Utils.cloneObject(this.state.tenants)}
                     back={() => this.setState({ showAddTenantManuallyDialog: false, showAddTenantDialog: true })}
@@ -116,36 +129,32 @@ export default class Tenants extends BaseScreen<Props, State> {
                     overshootRight={false}
                     overshootLeft={false}
                     containerStyle={style.tenantContainer}
-                    childrenContainerStyle={style.tenantNameContainer}
-                    renderRightActions={() => (
-                      <TouchableOpacity
-                        style={style.trashIconButton}
-                        onPress={() => {
-                          this.deleteTenant(index, item.subdomain);
-                        }}>
-                        <Icon style={style.trashIcon} name="trash" />
-                      </TouchableOpacity>
-                    )}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.props.navigation.dispatch(
-                          StackActions.replace('AuthNavigator', {
-                            name: 'Login',
-                            params: {
-                              tenantSubDomain: item.subdomain
-                            },
-                            key: `${Utils.randomNumber()}`
-                          })
-                        );
-                      }}>
-                      <Text style={style.tenantNameText}>{item.name}</Text>
-                    </TouchableOpacity>
+                    childrenContainerStyle={[listItemCommonStyle.noShadowContainer, style.tenantNameContainer]}
+                    renderRightActions={() => this.renderTenantRightActions(index, item, style)}>
+                    <TenantComponent tenant={item} navigation={navigation} />
                   </Swipeable>
                 )}
               />
             </View>
           </View>
         )}
+      </View>
+    );
+  }
+
+  private renderTenantRightActions(index: number, tenant: TenantConnection, style: any) {
+    return (
+      <View style={style.rightActionsContainer}>
+        <TouchableOpacity
+          style={style.trashIconButton}
+          onPress={() => {
+            this.deleteTenant(index, tenant.subdomain);
+          }}>
+          <Icon style={style.actionIcon} name="trash" />
+        </TouchableOpacity>
+        <TouchableOpacity style={style.editIconButton} onPress={() => this.setState({ tenantToBeEditedIndex: index })}>
+          <Icon style={style.actionIcon} name="edit" type={'MaterialIcons'} />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -174,6 +183,22 @@ export default class Tenants extends BaseScreen<Props, State> {
             buttonStyle: style.modalPrimaryButton
           }
         ]}
+      />
+    );
+  }
+
+  private renderEditTenantDialog(style: any) {
+    return (
+      <AddEditTenantDialog
+        mode={TenantDialogMode.EDIT}
+        withCancel={true}
+        navigation={this.props.navigation}
+        tenantIndex={this.state.tenantToBeEditedIndex}
+        tenants={Utils.cloneObject(this.state.tenants)}
+        back={() => this.setState({ tenantToBeEditedIndex: null })}
+        close={(newTenantCreated: TenantConnection) => {
+          this.addEditTenantDialogClosed();
+        }}
       />
     );
   }
@@ -214,29 +239,22 @@ export default class Tenants extends BaseScreen<Props, State> {
     );
   }
 
-  private tenantCreated = async (newTenant: TenantConnection) => {
+  private tenantCreated(newTenant?: TenantConnection): void {
+    this.addEditTenantDialogClosed(newTenant);
+    this.setState({ showNewTenantAddedDialog: true });
+  }
+
+  private async addEditTenantDialogClosed(newTenant?: TenantConnection): Promise<void> {
     // Always close pop-up
+    const newTenants = await this.centralServerProvider.getTenants();
     this.setState({
       showAddTenantWithQRCode: false,
-      showAddTenantManuallyDialog: false
+      showAddTenantManuallyDialog: false,
+      tenantToBeEditedIndex: null,
+      tenants: newTenants,
+      newTenant
     });
-    if (newTenant) {
-      const foundTenant = this.state.tenants.find((tenant: TenantConnection) => tenant.subdomain === newTenant.subdomain);
-      if (foundTenant) {
-        // Tenant already exists
-        Message.showInfo(I18n.t('general.tenantExists', { tenantName: foundTenant.name }));
-      } else {
-        // Refresh
-        const tenants = await this.centralServerProvider.getTenants();
-        this.setState({
-          tenants,
-          newTenant,
-          showNewTenantAddedDialog: true
-        });
-        Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
-      }
-    }
-  };
+  }
 
   private deleteTenant = async (index: number, subdomain: string) => {
     const tenants = this.state.tenants;
