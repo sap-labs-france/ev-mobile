@@ -33,6 +33,8 @@ export interface Props {
 export interface DialogCommonProps {
   close: (...args: any[]) => void;
   back?: (...args: any[]) => void;
+  confirm?: (...args: any[]) => void;
+  withCancel?: boolean;
 }
 
 interface State {}
@@ -88,15 +90,17 @@ export default class DialogModal extends React.Component<Props, State> {
           <Text style={[style.text, style.description]}>{description}</Text>
           {renderControls?.()}
           <View style={[style.buttonsContainer, buttonsContainerStyle]}>
-            {buttons?.map((button: DialogModalButton, index) => (
-              <TouchableOpacity onPress={button.action} style={[button.buttonStyle, buttonCommonStyle]} key={index}>
-                {button.renderIcon?.()}
-                <Text style={{ ...style.buttonText, ...button.buttonTextStyle }}>{button.text?.toUpperCase()}</Text>
-              </TouchableOpacity>
-            ))}
+            {buttons?.filter((b) => b).map((button: DialogModalButton, index) => (
+                <TouchableOpacity onPress={button.action} style={[button.buttonStyle, buttonCommonStyle]} key={index}>
+                  {button.renderIcon?.()}
+                  <Text style={{ ...style.buttonText, ...button.buttonTextStyle }}>{button.text?.toUpperCase()}</Text>
+                </TouchableOpacity>
+              ))}
             {withCancel && (
               <TouchableOpacity style={[buttonCommonStyle, style.cancelButton]} onPress={() => close?.()}>
-                <Text style={[style.buttonText, style.cancelButtonText]}>{(cancelButtonText ?? I18n.t('general.cancel')).toUpperCase()}</Text>
+                <Text style={[style.buttonText, style.cancelButtonText]}>
+                  {(cancelButtonText ?? I18n.t('general.cancel')).toUpperCase()}
+                </Text>
               </TouchableOpacity>
             )}
           </View>
@@ -108,9 +112,9 @@ export default class DialogModal extends React.Component<Props, State> {
   private computeButtonsContainerStyle(style: any) {
     const { buttons, withCancel } = this.props;
     const horizontalLayoutCount = withCancel ? 1 : 2;
-    if (buttons?.length === horizontalLayoutCount) {
+    if (buttons?.filter((b) => b).length === horizontalLayoutCount) {
       return style.horizontalButtonsContainer;
-    } else if (buttons && buttons.length !== horizontalLayoutCount) {
+    } else if (buttons && buttons?.filter((b) => b).length !== horizontalLayoutCount) {
       return style.verticalButtonsContainer;
     }
   }
@@ -118,9 +122,9 @@ export default class DialogModal extends React.Component<Props, State> {
   private computeButtonCommonStyle(style: any) {
     const { buttons, withCancel } = this.props;
     const horizontalLayoutCount = withCancel ? 1 : 2;
-    if (buttons?.length === horizontalLayoutCount) {
+    if (buttons?.filter((b) => b).length === horizontalLayoutCount) {
       return { ...style.button, ...style.horizontalButton };
-    } else if (buttons && buttons.length !== horizontalLayoutCount) {
+    } else if (buttons && buttons?.filter((b) => b).length !== horizontalLayoutCount) {
       return { ...style.button, ...style.verticalButton };
     }
   }

@@ -16,22 +16,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderBottomWidth: 1,
-      borderColor: commonColor.textColor,
       borderRadius: 1,
       height: '40@s',
-      padding: '5@s'
-    },
-    createTenantButton: {
-      width: '100%',
-      justifyContent: 'flex-start',
-      flexDirection: 'row'
+      padding: '5@s',
+      marginVertical: '10@s'
     },
     tenantContainer: {
-      height: '50@s'
+      height: '70@s',
+      marginBottom: '8@s'
     },
     tenantNameContainer: {
-      backgroundColor: commonColor.containerBgColor,
       height: '100%',
       alignItems: 'center',
       justifyContent: 'center'
@@ -43,18 +37,50 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '25@s'
+      fontSize: '27@s'
+    },
+    addTenantButton: {
+      width: '45@s',
+      height: '45@s',
+      borderRadius: '22.5@s',
+      padding: '5@s',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      backgroundColor: commonColor.listItemBackground,
+      elevation: 4,
+      shadowColor: commonColor.cardShadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62
+    },
+    rightActionsContainer: {
+      flexDirection: 'row',
+      marginRight: '2.5%'
     },
     trashIconButton: {
       height: '100%',
-      width: '50@s',
+      width: '60@s',
       backgroundColor: commonColor.danger,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      borderRadius: '8@s',
+      marginRight: '5@s'
     },
-    trashIcon: {
+    actionIcon: {
       color: 'white',
       fontSize: '20@s'
+    },
+    editIconButton: {
+      height: '100%',
+      width: '60@s',
+      backgroundColor: commonColor.primary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '8@s'
     },
     modalPrimaryButton: {
       backgroundColor: commonColor.primary,
