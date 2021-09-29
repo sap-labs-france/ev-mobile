@@ -145,6 +145,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       this.setState({ spinnerClearCache: false });
     } catch (error) {
       this.setState({ spinnerClearCache: false });
+      Message.showError(I18n.t('details.denied'));
       // Other common Error
       await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
