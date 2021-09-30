@@ -100,7 +100,7 @@ export default class Tags extends SelectableList<Tag> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
+    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
     // Do not bubble up
     return true;
   };

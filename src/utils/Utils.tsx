@@ -531,7 +531,7 @@ export default class Utils {
   }
 
   public static getParamFromNavigation(
-    route: any, name: string, defaultValue: string | boolean, removeValue = false
+    route: any, name: string, defaultValue: string | boolean | Record<any, any>, removeValue = false
   ): string | number | boolean | Record<string, unknown> | [] {
     const params: any = route?.params?.params ?? route?.params;
     // Has param object?

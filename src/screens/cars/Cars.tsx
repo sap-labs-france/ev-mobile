@@ -106,7 +106,7 @@ export default class Cars extends SelectableList<Car> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
+    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
     // Do not bubble up
     return true;
   };

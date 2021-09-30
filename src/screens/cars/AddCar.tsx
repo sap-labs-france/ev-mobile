@@ -45,6 +45,7 @@ export interface Props extends BaseProps {}
 export default class AddCar extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
+  private user: User;
 
   public constructor(props: Props) {
     super(props);
@@ -64,16 +65,18 @@ export default class AddCar extends BaseScreen<Props, State> {
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
     Orientation.lockToPortrait();
-    const currentUser = this.centralServerProvider.getUserInfo();
+    const currentUserToken = this.centralServerProvider.getUserInfo();
+    this.user = Utils.getParamFromNavigation(this.props.route, 'user', null) as unknown as User;
+    const currentUser = {
+      id: currentUserToken?.id,
+      firstName: currentUserToken?.firstName,
+      name: currentUserToken?.name,
+      status: UserStatus.ACTIVE,
+      role: currentUserToken.role,
+      email: currentUserToken.email
+    } as User;
     this.setState({
-      selectedUser: {
-        id: currentUser?.id,
-        firstName: currentUser?.firstName,
-        name: currentUser?.name,
-        status: UserStatus.ACTIVE,
-        role: currentUser.role,
-        email: currentUser.email
-      }
+      selectedUser: this.user ?? currentUser
     });
   }
 
@@ -83,8 +86,27 @@ export default class AddCar extends BaseScreen<Props, State> {
   }
 
   public onBack(): boolean {
-    this.props.navigation.goBack();
-    return true;
+    const { navigation } = this.props;
+    const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as unknown as number;
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as unknown as string;
+    if (connectorID !== null && chargingStationID) {
+      navigation.navigate('ChargingStationsNavigator', {
+        screen: 'ChargingStationConnectorDetailsTabs',
+        params: {
+          params: {
+            chargingStationID,
+            connectorID,
+            user: this.user,
+            tag: Utils.getParamFromNavigation(this.props.route, 'tag', null),
+            showChargingSettings: true
+          }
+        }
+      });
+      return true;
+    } else {
+      navigation.goBack();
+      return true;
+    }
   }
 
   public render() {
@@ -326,14 +348,14 @@ export default class AddCar extends BaseScreen<Props, State> {
       } as CarDTO;
       try {
         const response = await this.centralServerProvider.createCar(carDTO, forced);
-        if (response.status === RestResponse.SUCCESS) {
+        if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
         } else {
           Message.showError(I18n.t('cars.addError'));
         }
         return;
       } catch (error) {
-        switch (error.status) {
+        switch (error?.status) {
           case HTTPError.CAR_ALREADY_EXIST_ERROR:
             Message.showError(I18n.t('users.carAlreadyExistError'));
             break;

@@ -89,7 +89,7 @@ export default class Users extends SelectableList<User> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
     // Do not bubble up
     return true;
   };
