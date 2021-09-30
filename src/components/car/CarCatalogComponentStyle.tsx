@@ -43,8 +43,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderTopLeftRadius: '8@s'
     },
     noImageContainer: {
-      flex: 1,
-      height: '100%',
+      width: '35%',
+      height: 'auto',
       justifyContent: 'center',
       alignItems: 'center'
     },

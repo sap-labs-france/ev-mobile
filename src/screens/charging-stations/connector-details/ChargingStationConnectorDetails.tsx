@@ -1029,7 +1029,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { navigation } = this.props;
     const listItemCommonStyle = computeListItemCommonStyle();
     // Check the error code
-    const errorCode = StartTransactionErrorCode.BILLING_NO_PAYMENT_METHOD //userDefaultTagCar.errorCodes[0];
+    const errorCode = userDefaultTagCar.errorCodes[0];
     switch (errorCode) {
       case StartTransactionErrorCode.BILLING_NO_PAYMENT_METHOD:
         return (
@@ -1086,7 +1086,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             <Users navigation={navigation} />
           </ModalSelect>
         )}
-        {this.renderBillingErrorMessages(style)}
+        {showBillingErrorMessage && this.renderBillingErrorMessages(style)}
       </View>
     );
   }

@@ -122,8 +122,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       width: '100%'
     },
-    connectorInfoContainer: {
-    },
     connectorInfoSettingsContainer: {
       flex: 1
     },
@@ -148,7 +146,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: '10@s'
+      marginBottom: '5@s',
+      paddingTop: '5@s'
     },
     columnContainer: {
       flexDirection: 'column',
