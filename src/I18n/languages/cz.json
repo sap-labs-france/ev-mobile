@@ -1,9 +1,9 @@
 {
   "general": {
-    "notAuthorized": "You are not authorized to perform this action",
+    "notAuthorized": "Nemáte oprávnění provést tuto akci",
     "migrationError": "Error during migration of data",
     "cannotConnectBackend": "Connection has been lost",
-    "unexpectedErrorBackend": "Unexpected Backend Error",
+    "unexpectedErrorBackend": "Došlo k neočekávané chybě, zkontrolujte protokoly",
     "unexpectedError": "Unexpected Error",
     "sessionExpired": "Session has expired",
     "numbers": "Enter a valid number",
