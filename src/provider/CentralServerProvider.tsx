@@ -734,11 +734,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getCarCatalog(
-    params = {},
-    paging: PagingParams = Constants.DEFAULT_PAGING,
-    sorting: string[] = []
-  ): Promise<DataResult<CarCatalog>> {
+  public async getCarCatalog(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<CarCatalog>> {
     this.debugMethod('getCarCatalog');
     // Build Paging
     this.buildPaging(paging, params);
