@@ -38,13 +38,10 @@ export default class TenantComponent extends React.Component<Props, State> {
           );
         }}>
         <View style={style.content}>
-          <Text style={[style.text, style.tenantName]}>{tenant.name}</Text>
-          <Text style={style.text}>
-            {I18n.t('authentication.tenantEndpoint')}: {tenantEndpointName}
+          <Text style={[style.text, style.tenantName]}>
+            {tenant.name} ({tenant.subdomain})
           </Text>
-          <Text style={style.text}>
-            {I18n.t('authentication.tenantSubdomain')}: {tenant.subdomain}
-          </Text>
+          <Text style={style.text}>{tenantEndpointName}</Text>
         </View>
       </TouchableOpacity>
     );

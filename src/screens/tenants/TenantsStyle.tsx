@@ -22,7 +22,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginVertical: '10@s'
     },
     tenantContainer: {
-      height: '70@s',
+      height: '60@s',
       marginBottom: '8@s'
     },
     tenantNameContainer: {
@@ -40,9 +40,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '27@s'
     },
     addTenantButton: {
-      width: '45@s',
-      height: '45@s',
-      borderRadius: '22.5@s',
+      width: '35@s',
+      height: '35@s',
+      borderRadius: '8@s',
       padding: '5@s',
       justifyContent: 'center',
       alignItems: 'center',
