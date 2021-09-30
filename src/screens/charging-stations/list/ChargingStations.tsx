@@ -204,6 +204,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
+      this.setState({ refreshing: true });
       const { skip, limit } = this.state;
       // Refresh All
       const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
