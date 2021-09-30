@@ -148,7 +148,7 @@
     "react-native-svg": "^12.1.1",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-vector-icons": "^7.1.0",
-    "react-native-webview": "^11.6.2",
+    "react-native-webview": "^11.13.0",
     "rn-secure-storage": "^2.0.7",
     "safe-url-assembler": "^1.3.5",
     "tslib": "^2.2.0",
