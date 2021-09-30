@@ -9,9 +9,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     addCarButton: {
-      width: '45@s',
-      height: '45@s',
-      borderRadius: '22.5@s',
+      width: '35@s',
+      height: '35@s',
+      borderRadius: '8@s',
       padding: '5@s',
       marginLeft: '2.5%',
       marginBottom: '5@s',
