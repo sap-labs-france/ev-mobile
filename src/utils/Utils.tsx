@@ -709,6 +709,7 @@ export default class Utils {
           break;
         // Not logged in?
         case StatusCodes.UNAUTHORIZED:
+          Message.showError(I18n.t('general.notAuthorized'));
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;

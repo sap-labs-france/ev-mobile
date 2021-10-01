@@ -20,6 +20,7 @@ import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import { KeyValue } from '../types/Global';
 import QueryParams, { PagingParams } from '../types/QueryParams';
+import { HttpChargingStationRequest } from '../types/requests/HTTPChargingStationRequests';
 import { ServerAction, ServerRoute } from '../types/Server';
 import { BillingSettings } from '../types/Setting';
 import Site from '../types/Site';
@@ -34,7 +35,6 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import { HttpChargingStationRequest } from '../types/requests/HTTPChargingStationRequests';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -641,7 +641,7 @@ export default class CentralServerProvider {
     this.debugMethod('clearCache');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_CACHE_CLEAR, { id: chargingStationID });
     // Call
-    const result = await this.axiosInstance.put(url, {
+    const result = await this.axiosInstance.put(url, null, {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
@@ -651,7 +651,7 @@ export default class CentralServerProvider {
     this.debugMethod('unlockConnector');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_UNLOCK_CONNECTOR, { id: chargingStationID, connectorId });
     // Call
-    const result = await this.axiosInstance.put(url, {
+    const result = await this.axiosInstance.put(url, null, {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
