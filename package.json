@@ -172,7 +172,7 @@
     "@types/react-native-calendars": "^1.1264.2",
     "@types/react-native-charts-wrapper": "^0.5.1",
     "@types/react-native-htmlview": "^0.12.2",
-    "@types/react-native-modalbox": "^1.4.8",
+    "@types/react-native-modalbox": "^1.4.9",
     "@types/react-native-vector-icons": "^6.4.6",
     "@types/react-test-renderer": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
