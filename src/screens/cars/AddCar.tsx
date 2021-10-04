@@ -369,6 +369,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         }
       } finally {
         this.setState({ addCarPending: false });
+        this.onBack();
       }
     }
     return null;
