@@ -34,7 +34,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     selectField: {
       width: '100%',
-      backgroundColor: commonColor.selectFieldBackgroundColor
+      backgroundColor: commonColor.selectFieldBackgroundColor,
+      height: '40@s'
     },
     selectFieldDisabled: {
       opacity: 0.4
@@ -53,6 +54,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     selectDropdownRowText: {
       color: commonColor.textColor,
+      paddingBottom: '2@s',
       textAlign: 'left',
       fontSize: '14@s'
     },

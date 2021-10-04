@@ -151,11 +151,13 @@ export default class AddCar extends BaseScreen<Props, State> {
           </ModalSelect>
           <Input
             disabled={true}
+            label={`${I18n.t('cars.converter')}*`}
+            labelStyle={style.inputLabel}
             InputComponent={() => (
               <SelectDropdown
                 disabled={!selectedCarCatalog}
                 defaultValue={selectedConverter}
-                defaultButtonText={`${I18n.t('cars.converter')}*`}
+                defaultButtonText={I18n.t('cars.converter')}
                 data={selectedCarCatalogConverters}
                 buttonTextAfterSelection={(carConverter: CarConverter) => Utils.buildCarCatalogConverterName(carConverter)}
                 rowTextForSelection={(carConverter: CarConverter) => Utils.buildCarCatalogConverterName(carConverter)}
