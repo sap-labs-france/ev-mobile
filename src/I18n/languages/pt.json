@@ -238,7 +238,7 @@
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
     "cars": "Cars",
-    "Car": "Car",
+    "car": "Car",
     "selectCar": "Select a car",
     "selectCars": "Select cars",
     "noCarMessageTitle": "Indicate what car you are using to get better recharges",
@@ -255,7 +255,8 @@
     "userAlreadyAssignedError": "This car already belongs to another user",
     "addError": "An error occurred while adding the car",
     "addCarSuccessfully": "Car has been successfully added",
-    "defaultCar": "Carro padrão"
+    "defaultCar": "Carro padrão",
+    "drivetrainPowerUnit": "cv"
   },
   "carTypes": {
     "poolCar": "Pool car",

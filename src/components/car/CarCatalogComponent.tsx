@@ -7,6 +7,7 @@ import { CarCatalog } from '../../types/Car';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './CarCatalogComponentStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
+import I18n from 'i18n-js';
 
 interface State {}
 
@@ -73,7 +74,7 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
                   </View>
                   {carCatalog?.drivetrainPowerHP ? (
                     <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
-                      {carCatalog?.drivetrainPowerHP} hp
+                      {carCatalog?.drivetrainPowerHP} {I18n.t('cars.drivetrainPowerUnit')}
                     </Text>
                   ) : (
                     <Text style={style.text}>-</Text>

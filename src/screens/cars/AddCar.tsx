@@ -6,10 +6,10 @@ import { DrawerActions } from '@react-navigation/native';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './AddCarStyle';
 import ModalSelect from '../../components/modal/ModalSelect';
-import { CarCatalog, CarConverter, CarConverterType, CarDTO, CarType } from '../../types/Car';
+import Car, { CarCatalog, CarConverter, CarConverterType, CarType } from '../../types/Car';
 import { ItemSelectionMode } from '../../components/list/ItemsList';
 import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
-import { CheckBox, Icon } from 'native-base';
+import { Icon, Switch } from 'native-base';
 import { Button, Input } from 'react-native-elements';
 import Utils from '../../utils/Utils';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -151,11 +151,13 @@ export default class AddCar extends BaseScreen<Props, State> {
           </ModalSelect>
           <Input
             disabled={true}
+            label={`${I18n.t('cars.converter')}*`}
+            labelStyle={style.inputLabel}
             InputComponent={() => (
               <SelectDropdown
                 disabled={!selectedCarCatalog}
                 defaultValue={selectedConverter}
-                defaultButtonText={`${I18n.t('cars.converter')}*`}
+                defaultButtonText={I18n.t('cars.converter')}
                 data={selectedCarCatalogConverters}
                 buttonTextAfterSelection={(carConverter: CarConverter) => Utils.buildCarCatalogConverterName(carConverter)}
                 rowTextForSelection={(carConverter: CarConverter) => Utils.buildCarCatalogConverterName(carConverter)}
@@ -205,10 +207,16 @@ export default class AddCar extends BaseScreen<Props, State> {
               <Users navigation={navigation} />
             </ModalSelect>
           )}
-          <TouchableOpacity onPress={() => this.setState({ isDefault: !isDefault })} style={style.defaultContainer}>
-            <CheckBox style={formStyles.checkbox} checked={isDefault} disabled={true} />
+          <View style={style.defaultContainer}>
+            <Switch
+              trackColor={{ true: commonColors.primary, false: commonColors.disabledDark }}
+              thumbColor={commonColors.disabled}
+              style={style.switch}
+              onValueChange={() => this.setState({ isDefault: !this.state.isDefault })}
+              value={isDefault}
+            />
             <Text style={style.text}>{I18n.t('cars.defaultCar')}</Text>
-          </TouchableOpacity>
+          </View>
           <View style={style.carTypeContainer}>
             <TouchableOpacity onPress={() => this.setState({ type: CarType.COMPANY })} style={style.typeContainer}>
               <RadioButton.Android
@@ -336,7 +344,7 @@ export default class AddCar extends BaseScreen<Props, State> {
     if (this.checkForm()) {
       this.setState({ addCarPending: true });
       const { selectedConverter, selectedCarCatalog, selectedUser, vin, licensePlate, isDefault, type } = this.state;
-      const carDTO = {
+      const car = {
         vin,
         licensePlate,
         carCatalogID: selectedCarCatalog?.id,
@@ -345,9 +353,9 @@ export default class AddCar extends BaseScreen<Props, State> {
         userID: selectedUser?.id,
         default: isDefault,
         forced
-      } as CarDTO;
+      } as Car;
       try {
-        const response = await this.centralServerProvider.createCar(carDTO, forced);
+        const response = await this.centralServerProvider.createCar(car, forced);
         if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
         } else {
@@ -367,6 +375,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         }
       } finally {
         this.setState({ addCarPending: false });
+        this.onBack();
       }
     }
     return null;

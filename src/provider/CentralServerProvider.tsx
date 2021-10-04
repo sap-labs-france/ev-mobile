@@ -14,7 +14,7 @@ import NotificationManager from '../notification/NotificationManager';
 import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
-import Car, { CarCatalog, CarDTO } from '../types/Car';
+import Car, { CarCatalog } from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
@@ -707,7 +707,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async createCar(car: CarDTO, forced: boolean): Promise<ActionResponse> {
+  public async createCar(car: Car, forced: boolean): Promise<ActionResponse> {
     this.debugMethod('createCar');
     // Execute
     const response = await this.axiosInstance.post<ActionResponse>(

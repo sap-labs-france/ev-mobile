@@ -80,6 +80,7 @@ export default class I18nManager {
       it: () => itJsonLanguage
     };
     // Fallback if no available language fits
+    i18n.fallbacks = true;
     const fallback = { languageTag: Constants.DEFAULT_LANGUAGE, isRTL: false };
     // Get current locale
     const { languageTag, isRTL } = RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)) || fallback;
