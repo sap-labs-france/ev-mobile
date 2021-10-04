@@ -358,7 +358,7 @@ PODS:
   - React-jsinspector (0.64.2)
   - react-native-appearance (0.3.4):
     - React
-  - react-native-blob-util (0.13.7):
+  - react-native-blob-util (0.13.16):
     - React-Core
   - react-native-camera (3.43.9):
     - React-Core
@@ -384,7 +384,7 @@ PODS:
     - React
   - react-native-splash-screen (3.2.0):
     - React
-  - react-native-webview (11.6.2):
+  - react-native-webview (11.13.0):
     - React-Core
   - React-perflogger (0.64.2)
   - React-RCTActionSheet (0.64.2):
@@ -802,7 +802,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
   react-native-appearance: fc2014516054585d531e07aa0b40ab0de1d2be85
-  react-native-blob-util: 9e7244030c741bb7720ef1744e0fbfbbd0eeae52
+  react-native-blob-util: 6e75bea8ffce35c4009c0e519cd0a96432a93e2b
   react-native-camera: a3193de4cc61352d9309d15a849b1e0c4a085ac4
   react-native-google-maps: 46dea4aa4acb7300beff508f64d9f8c84e9fb106
   react-native-location: 9c53c0957756f7d70e8fdc76b1c7ed85867c8d0b
@@ -811,7 +811,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
   react-native-sensitive-info: 400c6e3d27945e15c8cddb5b4b92233c85ee06f8
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
-  react-native-webview: 1f56115845c98f0a59dfbbac685797c014a821be
+  react-native-webview: b176c6404ad40d10cfc818be41c053f85a72d751
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
   React-RCTActionSheet: af7796ba49ffe4ca92e7277a5d992d37203f7da5
   React-RCTAnimation: 6a2e76ab50c6f25b428d81b76a5a45351c4d77aa
