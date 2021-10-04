@@ -190,7 +190,7 @@
     "flow-bin": "^0.160.2",
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
-    "jest": "^26.6.3",
+    "jest": "^27.2.4",
     "jetifier": "^2.0.0",
     "metro": "^0.64.0",
     "metro-config": "^0.64.0",
