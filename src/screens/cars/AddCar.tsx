@@ -6,7 +6,7 @@ import { DrawerActions } from '@react-navigation/native';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './AddCarStyle';
 import ModalSelect from '../../components/modal/ModalSelect';
-import { CarCatalog, CarConverter, CarConverterType, CarDTO, CarType } from '../../types/Car';
+import Car, { CarCatalog, CarConverter, CarConverterType, CarType } from '../../types/Car';
 import { ItemSelectionMode } from '../../components/list/ItemsList';
 import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
 import { CheckBox, Icon } from 'native-base';
@@ -338,7 +338,7 @@ export default class AddCar extends BaseScreen<Props, State> {
     if (this.checkForm()) {
       this.setState({ addCarPending: true });
       const { selectedConverter, selectedCarCatalog, selectedUser, vin, licensePlate, isDefault, type } = this.state;
-      const carDTO = {
+      const car = {
         vin,
         licensePlate,
         carCatalogID: selectedCarCatalog?.id,
@@ -347,9 +347,9 @@ export default class AddCar extends BaseScreen<Props, State> {
         userID: selectedUser?.id,
         default: isDefault,
         forced
-      } as CarDTO;
+      } as Car;
       try {
-        const response = await this.centralServerProvider.createCar(carDTO, forced);
+        const response = await this.centralServerProvider.createCar(car, forced);
         if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
         } else {

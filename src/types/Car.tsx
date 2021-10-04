@@ -10,6 +10,10 @@ export default interface Car extends CreatedUpdatedProps, ListItem {
   default: boolean;
   type?: CarType;
   converter?: CarConverter;
+  carCatalogID: number;
+  userID?: string;
+  carConnectorData?: CarConnectorData;
+  forced?: boolean;
 }
 
 export interface CarDTO {
