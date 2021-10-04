@@ -13,8 +13,8 @@ import { HTTPAuthError } from '../../types/HTTPError';
 import Tag from '../../types/Tag';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import computeStyleSheet from '../transactions/TransactionsStyles';
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
+import computeStyleSheet from '../transactions/TransactionsStyles';
 
 export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];
@@ -24,7 +24,7 @@ export interface Props extends SelectableProps<Tag> {
 
 interface State extends SelectableState<Tag> {
   tags?: Tag[];
-  projectedFields?: string[];
+  projectFields?: string[];
   skip?: number;
   limit?: number;
   count: number;
@@ -44,7 +44,7 @@ export default class Tags extends SelectableList<Tag> {
     this.singleItemTitle = I18n.t('tags.tag');
     this.multiItemsTitle = I18n.t('tags.tags');
     this.state = {
-      projectedFields: [],
+      projectFields: [],
       tags: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
@@ -113,7 +113,7 @@ export default class Tags extends SelectableList<Tag> {
       const tags = await this.getTags(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
-        projectedFields: tags ? tags.projectedFields : [],
+        projectFields: tags ? tags.projectFields : [],
         tags: tags ? [...prevState.tags, ...tags.result] : prevState.tags,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
@@ -130,7 +130,7 @@ export default class Tags extends SelectableList<Tag> {
       this.setState({
         loading: false,
         tags: tags ? tags.result : [],
-        projectedFields: tags ? tags.projectedFields : [],
+        projectFields: tags ? tags.projectFields : [],
         count: tags ? tags.count : 0
       });
     }
@@ -143,7 +143,7 @@ export default class Tags extends SelectableList<Tag> {
 
   public render = () => {
     const style = computeStyleSheet();
-    const { tags, count, skip, limit, refreshing, loading, projectedFields } = this.state;
+    const { tags, count, skip, limit, refreshing, loading, projectFields } = this.state;
     const { navigation, isModal, selectionMode, disableInactive } = this.props;
     return (
       <Container style={style.container}>
@@ -177,7 +177,7 @@ export default class Tags extends SelectableList<Tag> {
               renderItem={(item: Tag, selected: boolean) => (
                 <TagComponent
                   tag={item}
-                  canReadUser={projectedFields.includes('user.name') && projectedFields.includes('user.firstName')}
+                  canReadUser={projectFields.includes('user.name') && projectFields.includes('user.firstName')}
                   selected={selected}
                   navigation={navigation}
                 />
