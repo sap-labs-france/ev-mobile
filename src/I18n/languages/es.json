@@ -255,7 +255,8 @@
     "userAlreadyAssignedError": "This car already belongs to another user",
     "addError": "An error occurred while adding the car",
     "addCarSuccessfully": "Car has been successfully added",
-    "defaultCar": "Vehículo predeterminado"
+    "defaultCar": "Vehículo predeterminado",
+    "drivetrainPowerUnit": "cv"
   },
   "carTypes": {
     "poolCar": "Vehículos compartidos",

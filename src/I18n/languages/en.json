@@ -255,7 +255,8 @@
     "userAlreadyAssignedError": "This car already belongs to another user",
     "addError": "An error occurred while adding the car",
     "addCarSuccessfully": "Car has been successfully added",
-    "defaultCar": "Default car"
+    "defaultCar": "Default car",
+    "drivetrainPowerUnit": "hp"
   },
   "carTypes": {
     "poolCar": "Pool car",

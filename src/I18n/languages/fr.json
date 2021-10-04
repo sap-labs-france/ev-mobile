@@ -255,7 +255,8 @@
     "userAlreadyAssignedError": "Cette voiture est déjà assignée à un autre utilisateur",
     "addError": "Une erreur est survenue lors de l'ajout du véhicule",
     "addCarSuccessfully": "La voiture a bien été ajoutée",
-    "defaultCar": "Véhicule par défaut"
+    "defaultCar": "Véhicule par défaut",
+    "drivetrainPowerUnit": "ch"
   },
   "carTypes": {
     "poolCar": "Véhicule de covoiturage",
