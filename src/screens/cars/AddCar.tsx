@@ -9,7 +9,7 @@ import ModalSelect from '../../components/modal/ModalSelect';
 import Car, { CarCatalog, CarConverter, CarConverterType, CarType } from '../../types/Car';
 import { ItemSelectionMode } from '../../components/list/ItemsList';
 import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
-import { CheckBox, Icon } from 'native-base';
+import { CheckBox, Icon, Switch } from 'native-base';
 import { Button, Input } from 'react-native-elements';
 import Utils from '../../utils/Utils';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -207,10 +207,16 @@ export default class AddCar extends BaseScreen<Props, State> {
               <Users navigation={navigation} />
             </ModalSelect>
           )}
-          <TouchableOpacity onPress={() => this.setState({ isDefault: !isDefault })} style={style.defaultContainer}>
-            <CheckBox style={formStyles.checkbox} checked={isDefault} disabled={true} />
+          <View style={style.defaultContainer}>
+            <Switch
+              trackColor={{ true: commonColors.primary, false: commonColors.disabledDark }}
+              thumbColor={commonColors.disabled}
+              style={style.switch}
+              onValueChange={() => this.setState({ isDefault: !this.state.isDefault })}
+              value={isDefault}
+            />
             <Text style={style.text}>{I18n.t('cars.defaultCar')}</Text>
-          </TouchableOpacity>
+          </View>
           <View style={style.carTypeContainer}>
             <TouchableOpacity onPress={() => this.setState({ type: CarType.COMPANY })} style={style.typeContainer}>
               <RadioButton.Android

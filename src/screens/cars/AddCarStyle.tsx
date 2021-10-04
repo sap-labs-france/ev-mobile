@@ -1,9 +1,10 @@
 import deepmerge from 'deepmerge';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
+import { PLATFORM } from '../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -115,6 +116,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     radioButton: {
       marginRight: '15@s',
       borderColor: commonColor.textColor
+    },
+    switch: {
+      marginRight: '15@s',
+      color: 'red',
+      transform: Platform.OS === PLATFORM.IOS ? [{ scaleX: 0.8 }, { scaleY: 0.8 }] : []
     }
   });
   const portraitStyles = {};
