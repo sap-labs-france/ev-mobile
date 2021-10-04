@@ -234,7 +234,7 @@
     "pending": "Čeká na vyřízení",
     "unknown": "Neznámý"
   },
-  "cars":{
+  "cars": {
     "noCars": "Žádné elektromobily",
     "carUnexpectedError": "Došlo k chybě",
     "cars": "Elektromobily",
