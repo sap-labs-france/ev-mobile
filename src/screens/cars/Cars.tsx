@@ -18,6 +18,7 @@ import computeTransactionStyles from '../transactions/TransactionsStyles'
 
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
+import { FAB } from 'react-native-paper';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];
@@ -128,7 +129,6 @@ export default class Cars extends SelectableList<Car> {
 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
-      this.setState({ refreshing : true});
       const { skip, limit } = this.state;
       // Refresh All
       const cars = await this.getCars(this.searchText, 0, skip + limit);
@@ -153,8 +153,12 @@ export default class Cars extends SelectableList<Car> {
     const style = computeStyleSheet();
     const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <Container style={transactionStyles.container}>
+        {!isModal && (
+          <FAB color={commonColors.light} onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} icon={'plus'} style={style.fab} />
+        )}
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
@@ -168,13 +172,6 @@ export default class Cars extends SelectableList<Car> {
         <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
-        {!isModal && (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CarsNavigator', {screen: 'AddCar'})}
-            style={style.addCarButton}>
-            <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
-          </TouchableOpacity>
-        )}
         {loading ? (
           <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (

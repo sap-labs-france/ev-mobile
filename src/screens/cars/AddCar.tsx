@@ -9,7 +9,7 @@ import ModalSelect from '../../components/modal/ModalSelect';
 import Car, { CarCatalog, CarConverter, CarConverterType, CarType } from '../../types/Car';
 import { ItemSelectionMode } from '../../components/list/ItemsList';
 import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
-import { CheckBox, Icon, Switch } from 'native-base';
+import { Icon, Switch } from 'native-base';
 import { Button, Input } from 'react-native-elements';
 import Utils from '../../utils/Utils';
 import SelectDropdown from 'react-native-select-dropdown';
