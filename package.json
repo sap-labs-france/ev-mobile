@@ -92,7 +92,7 @@
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
     "@stripe/stripe-react-native": "^0.1.4",
-    "axios": "^0.21.1",
+    "axios": "^0.22.0",
     "base-64": "^1.0.0",
     "buffer": "^6.0.3",
     "color": "^3.1.3",
