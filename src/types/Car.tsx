@@ -16,18 +16,6 @@ export default interface Car extends CreatedUpdatedProps, ListItem {
   forced?: boolean;
 }
 
-export interface CarDTO {
-  vin: string;
-  licensePlate: string;
-  carCatalogID: number;
-  userID?: string;
-  default?: boolean;
-  type?: CarType;
-  converter?: CarConverter;
-  carConnectorData?: CarConnectorData;
-  forced?: boolean;
-}
-
 export interface CarConnectorData {
   carConnectorID: string;
   carConnectorMeterID: string;
@@ -80,4 +68,3 @@ export enum CarConverterType {
   OPTION = 'O',
   ALTERNATIVE = 'A'
 }
-
