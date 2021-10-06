@@ -403,6 +403,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         const response = await this.centralServerProvider.createCar(car, forced);
         if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
+          this.onBack();
         } else {
           Message.showError(I18n.t('cars.addError'));
         }
@@ -420,7 +421,6 @@ export default class AddCar extends BaseScreen<Props, State> {
         }
       } finally {
         this.setState({ addCarPending: false });
-        this.onBack();
       }
     }
     return null;
