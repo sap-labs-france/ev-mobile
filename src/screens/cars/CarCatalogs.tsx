@@ -13,6 +13,7 @@ import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeTransactionStyles from '../transactions/TransactionsStyles';
+import computeCarsStyles from './CarsStyles';
 
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
@@ -144,6 +145,7 @@ export default class CarCatalogs extends SelectableList<Car> {
 
   public render() {
     const transactionStyles = computeTransactionStyles();
+    const carsStyles = computeCarsStyles();
     const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
     return (
@@ -164,7 +166,7 @@ export default class CarCatalogs extends SelectableList<Car> {
         {loading ? (
           <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (
-          <View style={transactionStyles.content}>
+          <View style={carsStyles.content}>
             <ItemsList<CarCatalog>
               data={cars}
               navigation={navigation}

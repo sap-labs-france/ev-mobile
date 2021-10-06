@@ -154,13 +154,13 @@ export default class Users extends SelectableList<User> {
           rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={isModal ? null : 'menu'}
         />
+        <View style={style.searchBar}>
+          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        </View>
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            <View style={style.searchBar}>
-              <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
-            </View>
             <ItemsList<User>
               ref={this.itemsListRef}
               selectionMode={selectionMode}

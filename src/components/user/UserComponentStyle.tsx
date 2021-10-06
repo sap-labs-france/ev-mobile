@@ -47,11 +47,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     text: {
       color: commonColor.textColor,
-      fontSize: '14@s'
+      fontSize: '13@s'
     },
     fullName: {
       fontSize: '14@s',
-      width: '100%'
+      width: '100%',
+      fontWeight: 'bold'
     },
     bottomLine: {
       flexDirection: 'row',

@@ -14,7 +14,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     content: {
       flex: 1,
-      width: '100%'
+      marginHorizontal: '2.5%'
     },
     spinner: {
       flex: 1,

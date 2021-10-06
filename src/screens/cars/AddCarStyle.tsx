@@ -11,7 +11,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       height: '100%',
-      backgroundColor: commonColor.containerBgColor,
+      backgroundColor: commonColor.containerBgColor
     },
     content: {
       width: '100%',
@@ -28,6 +28,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       alignItems: 'center'
     },
+    carPlaceholderContainer: {
+      backgroundColor: commonColor.listItemBackground
+    },
     noCarIcon: {
       fontSize: '55@s',
       color: commonColor.textColor,
@@ -35,8 +38,22 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     selectField: {
       width: '100%',
-      backgroundColor: commonColor.selectFieldBackgroundColor,
-      height: '40@s'
+      height: 'auto',
+      minHeight: '40@s',
+      marginHorizontal: 0,
+      paddingHorizontal: 0,
+      backgroundColor: commonColor.listBg,
+      justifyContent: 'flex-start'
+    },
+    inputContainer: {
+      borderBottomColor: commonColor.textColor,
+      borderBottomWidth: 0.7,
+      marginLeft: 0,
+      paddingBottom: 0
+    },
+    inputContainerDisabled: {
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.disabledDark
     },
     selectFieldDisabled: {
       opacity: 0.4
@@ -44,8 +61,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     selectFieldText: {
       color: commonColor.textColor,
       textAlign: 'left',
-      marginLeft: 0,
+      marginHorizontal: 0,
       fontSize: '14@s'
+    },
+    selectFieldTextPlaceholder: {
+      color: commonColor.disabledDark
     },
     selectDropdown: {
       backgroundColor: commonColor.selectDropdownBackgroundColor
@@ -55,8 +75,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     selectDropdownRowText: {
       color: commonColor.textColor,
-      paddingBottom: '2@s',
+      paddingVertical: 0,
       textAlign: 'left',
+      paddingLeft: 0,
       fontSize: '14@s'
     },
     text: {
@@ -64,7 +85,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '14@s'
     },
     model: {
-      marginLeft: '5@s'
+      marginLeft: '3@s',
+      color: commonColor.disabledDark
     },
     errorText: {
       color: commonColor.dangerLight
@@ -72,6 +94,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     inputLabel: {
       color: commonColor.textColor,
       fontSize: '16@s'
+    },
+    disabledInputLabel: {
+      color: commonColor.disabledDark
     },
     buttonContainer: {
       width: '95%',

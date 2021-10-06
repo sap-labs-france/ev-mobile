@@ -175,7 +175,7 @@ export default class Cars extends SelectableList<Car> {
         {loading ? (
           <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (
-          <View style={transactionStyles.content}>
+          <View style={style.content}>
             <ItemsList<Car>
               data={cars}
               ref={this.itemsListRef}

@@ -9,10 +9,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   let commonStyles: any;
   commonStyles = ScaledSheet.create({
-    carContainer: {
-      width: '100%',
-      height: 'auto'
-    },
     selected: {
       backgroundColor: commonColor.listItemSelected
     },
@@ -37,7 +33,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     carName: {
-      alignSelf: 'flex-start'
+      alignSelf: 'flex-start',
+      fontWeight: 'bold'
     },
     defaultContainer: {
       backgroundColor: commonColor.primary,

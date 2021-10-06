@@ -31,64 +31,62 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
-    const { carCatalog, shadowed } = this.props;
+    const { carCatalog } = this.props;
     const carFullName = Utils.buildCarCatalogName(carCatalog);
     const imageURI = carCatalog?.image;
     return (
-      <View style={shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer}>
-        <View style={style.carContainer}>
-          {imageURI ? (
-            <Image resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={{ uri: imageURI }} />
-          ) : (
-            <View style={style.noImageContainer}>
-              <Icon style={style.carImagePlaceholder} type={'Ionicons'} name={'car-sport'} />
-            </View>
-          )}
-          <View style={style.rightContainer}>
-            <View style={style.header}>
-              <Text numberOfLines={2} ellipsizeMode={'tail'} style={[style.headerText, style.carName]}>
-                {carFullName}{' '}
-              </Text>
-            </View>
-            <View style={style.carInfos}>
-              <View style={style.powerDetailsContainer}>
-                <View style={style.columnContainer}>
-                  <View style={style.iconContainer}>
-                    <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
-                  </View>
+      <View style={[listItemCommonStyle.container, style.carCatalogContainer]}>
+        {imageURI ? (
+          <Image resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={{ uri: imageURI }} />
+        ) : (
+          <View style={style.noImageContainer}>
+            <Icon style={style.carImagePlaceholder} type={'Ionicons'} name={'car-sport'} />
+          </View>
+        )}
+        <View style={style.rightContainer}>
+          <View style={style.header}>
+            <Text numberOfLines={2} ellipsizeMode={'tail'} style={[style.headerText, style.carName]}>
+              {carFullName}{' '}
+            </Text>
+          </View>
+          <View style={style.carInfos}>
+            <View style={style.powerDetailsContainer}>
+              <View style={style.columnContainer}>
+                <View style={style.iconContainer}>
+                  <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
+                </View>
+                <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
+                  {carCatalog?.batteryCapacityFull} kW.h
+                </Text>
+              </View>
+              <View style={style.columnContainer}>
+                <View style={style.iconContainer}>
+                  <Icon type="MaterialCommunityIcons" name="road-variant" style={style.icon} />
+                </View>
+                <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
+                  {carCatalog?.rangeReal} km
+                </Text>
+              </View>
+              <View style={style.columnContainer}>
+                <View style={style.iconContainer}>
+                  <Icon style={style.icon} type="MaterialCommunityIcons" name="piston" />
+                </View>
+                {carCatalog?.drivetrainPowerHP ? (
                   <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
-                    {carCatalog?.batteryCapacityFull} kW.h
+                    {carCatalog?.drivetrainPowerHP} {I18n.t('cars.drivetrainPowerUnit')}
                   </Text>
+                ) : (
+                  <Text style={style.text}>-</Text>
+                )}
+              </View>
+              <View style={style.columnContainer}>
+                <View style={style.iconContainer}>
+                  <Icon style={style.icon} type="MaterialIcons" name="bolt" />
+                  <Icon style={[style.icon, style.currentTypeIcon]} type="MaterialCommunityIcons" name="sine-wave" />
                 </View>
-                <View style={style.columnContainer}>
-                  <View style={style.iconContainer}>
-                    <Icon type="MaterialCommunityIcons" name="road-variant" style={style.icon} />
-                  </View>
-                  <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
-                    {carCatalog?.rangeReal} km
-                  </Text>
-                </View>
-                <View style={style.columnContainer}>
-                  <View style={style.iconContainer}>
-                    <Icon style={style.icon} type="MaterialCommunityIcons" name="piston" />
-                  </View>
-                  {carCatalog?.drivetrainPowerHP ? (
-                    <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
-                      {carCatalog?.drivetrainPowerHP} {I18n.t('cars.drivetrainPowerUnit')}
-                    </Text>
-                  ) : (
-                    <Text style={style.text}>-</Text>
-                  )}
-                </View>
-                <View style={style.columnContainer}>
-                  <View style={style.iconContainer}>
-                    <Icon style={style.icon} type="MaterialIcons" name="bolt" />
-                    <Icon style={[style.icon, style.currentTypeIcon]} type="MaterialCommunityIcons" name="sine-wave" />
-                  </View>
-                  <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
-                    {carCatalog?.chargeStandardPower} kW
-                  </Text>
-                </View>
+                <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
+                  {carCatalog?.chargeStandardPower} kW
+                </Text>
               </View>
             </View>
           </View>

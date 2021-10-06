@@ -14,7 +14,7 @@ import Tag from '../../types/Tag';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
-import computeStyleSheet from '../transactions/TransactionsStyles';
+import computeStyleSheet from './TagsStyles';
 
 export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];
@@ -144,7 +144,7 @@ export default class Tags extends SelectableList<Tag> {
   public render = () => {
     const style = computeStyleSheet();
     const { tags, count, skip, limit, refreshing, loading, projectFields } = this.state;
-    const { navigation, isModal, selectionMode, disableInactive } = this.props;
+    const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
