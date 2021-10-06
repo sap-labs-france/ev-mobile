@@ -1033,7 +1033,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     switch (errorCode) {
       case StartTransactionErrorCode.BILLING_NO_PAYMENT_METHOD:
         return (
-          <View style={[listItemCommonStyle.noShadowContainer, style.noItemContainer, style.noTagContainer]}>
+          <View style={[listItemCommonStyle.container, style.noItemContainer, style.noTagContainer]}>
             <Icon style={style.noPaymentMethodIcon} type={'MaterialCommunityIcons'} name={'credit-card-off'} />
             <View style={style.column}>
               <Text ellipsizeMode={'tail'} numberOfLines={2} style={style.errorMessage}>
@@ -1120,7 +1120,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { selectedUser, connector, chargingStation, selectedTag } = this.state;
     const { navigation } = this.props;
     return (
-      <View style={[listItemCommonStyle.noShadowContainer, style.noItemContainer, style.noCarContainer]}>
+      <View style={[listItemCommonStyle.container, style.noItemContainer, style.noCarContainer]}>
         <Icon style={style.noCarIcon} type={'MaterialCommunityIcons'} name={'car'} />
         <View style={style.column}>
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
@@ -1174,7 +1174,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const listItemCommonStyle = computeListItemCommonStyle();
     const style = computeStyleSheet();
     return (
-      <View style={[listItemCommonStyle.noShadowContainer, style.noItemContainer, style.noTagContainer]}>
+      <View style={[listItemCommonStyle.container, style.noItemContainer, style.noTagContainer]}>
         <Icon type={'MaterialCommunityIcons'} name={'credit-card-off'} style={style.noTagIcon} />
         <View style={style.column}>
           <Text style={style.errorMessage}>{I18n.t('tags.noTagMessageTitle')}</Text>

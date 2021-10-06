@@ -55,7 +55,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '85%',
       width: '80@s',
       borderRadius: '8@s',
-      marginRight: '2.5%',
+      marginLeft: '2.5%',
       backgroundColor: commonColor.danger,
       justifyContent: 'center',
       alignItems: 'center'
