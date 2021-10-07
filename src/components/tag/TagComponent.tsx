@@ -43,7 +43,7 @@ export default class TagComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const chipStyle = computeChipStyleSheet();
-    const { tag, selected, canReadUser, shadowed, outlinedInactive } = this.props;
+    const { tag, canReadUser, shadowed, outlinedInactive } = this.props;
     const listItemCommonStyle = computeListItemCommonStyle();
     const userFullName = Utils.buildUserName(tag?.user);
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
@@ -51,7 +51,7 @@ export default class TagComponent extends React.Component<Props, State> {
       <View
         style={[
           shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer,
-          outlinedInactive && !tag.active && listItemCommonStyle.outlinedError
+          outlinedInactive && !tag?.active && listItemCommonStyle.outlinedError
         ]}>
         <View style={style.tagContent}>
           <View style={style.leftContainer}>
