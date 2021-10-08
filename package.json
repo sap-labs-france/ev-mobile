@@ -57,7 +57,8 @@
     "react-native:clean-project-auto": "react-native clean-project-auto",
     "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/GoogleService-Info.plist; fi",
     "import-sort": "npx import-sort-cli --write '{src,__tests__,types}/**/*.ts{,x}' *.ts{,x}",
-    "check:i18n": "cross-env TS_NODE_FILES=true ts-node-dev --project tsconfig-i18n.json --files test/I18nChecker.ts"
+    "check:i18n": "cross-env TS_NODE_FILES=true ts-node-dev --project tsconfig-i18n.json --files test/I18nChecker.ts",
+    "react-native:install": "npm install && npm clean-install && cd ios && pod install"
   },
   "jest": {
     "preset": "react-native"
