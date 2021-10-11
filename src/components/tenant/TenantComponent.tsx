@@ -22,7 +22,7 @@ export default class TenantComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { tenant } = this.props;
-    const tenantEndpointName = Configuration.getEndpoints().find((e) => e.endpoint === tenant.endpoint)?.name;
+    const tenantEndpointName = Configuration.getEndpoints().find((e) => e.endpoint === tenant?.endpoint)?.name;
     return (
       <TouchableOpacity
         style={style.container}
@@ -31,7 +31,7 @@ export default class TenantComponent extends React.Component<Props, State> {
             StackActions.replace('AuthNavigator', {
               name: 'Login',
               params: {
-                tenantSubDomain: tenant.subdomain
+                tenantSubDomain: tenant?.subdomain
               },
               key: `${Utils.randomNumber()}`
             })
@@ -39,7 +39,7 @@ export default class TenantComponent extends React.Component<Props, State> {
         }}>
         <View style={style.content}>
           <Text style={[style.text, style.tenantName]}>
-            {tenant.name} ({tenant.subdomain})
+            {tenant?.name} ({tenant?.subdomain})
           </Text>
           <Text style={style.text}>{tenantEndpointName}</Text>
         </View>
