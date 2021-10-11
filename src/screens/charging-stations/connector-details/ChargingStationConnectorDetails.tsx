@@ -925,7 +925,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 style={style.scrollviewContainer}
                 contentContainerStyle={style.chargingSettingsContainer}>
                 {/* User */}
-                {this.securityProvider?.canListUsers() && this.renderUserSelection(style)}
+                {this.renderUserSelection(style)}
                 {/* Badge */}
                 {this.renderTagSelection(style)}
                 {/* Car */}
@@ -1057,16 +1057,18 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const disabled = connector.status !== ChargePointStatus.PREPARING && connector.status !== ChargePointStatus.AVAILABLE;
     return (
       <View style={style.rowUserCarBadgeContainer}>
-        <ModalSelect<User>
-          disabled={disabled}
-          openable={isAdmin}
-          renderItem={() => <UserComponent shadowed={true} user={selectedUser} navigation={navigation} />}
-          defaultItem={selectedUser}
-          onItemsSelected={this.onUserSelected.bind(this)}
-          navigation={navigation}
-          selectionMode={ItemSelectionMode.SINGLE}>
-          <Users navigation={navigation} />
-        </ModalSelect>
+        {this.securityProvider?.canListUsers() && (
+          <ModalSelect<User>
+            disabled={disabled}
+            openable={isAdmin}
+            renderItem={() => <UserComponent shadowed={true} user={selectedUser} navigation={navigation} />}
+            defaultItem={selectedUser}
+            onItemsSelected={this.onUserSelected.bind(this)}
+            navigation={navigation}
+            selectionMode={ItemSelectionMode.SINGLE}>
+            <Users navigation={navigation} />
+          </ModalSelect>
+        )}
         {showBillingErrorMessage && this.renderBillingErrorMessages(style)}
       </View>
     );
