@@ -144,7 +144,7 @@ export default class Tags extends SelectableList<Tag> {
   public render = () => {
     const style = computeStyleSheet();
     const { tags, count, skip, limit, refreshing, loading, projectedFields } = this.state;
-    const { navigation, isModal, selectionMode, disableInactive } = this.props;
+    const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -177,7 +177,7 @@ export default class Tags extends SelectableList<Tag> {
               renderItem={(item: Tag, selected: boolean) => (
                 <TagComponent
                   tag={item}
-                  canReadUser={projectedFields.includes('user.name') && projectedFields.includes('user.firstName')}
+                  canReadUser={projectedFields?.includes('user.name') && projectedFields?.includes('user.firstName')}
                   selected={selected}
                   navigation={navigation}
                 />
