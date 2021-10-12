@@ -13,21 +13,23 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between',
       alignItems: 'center',
       alignSelf: 'center',
-      width: '98%',
-      height: '40@s',
+      width: '95%',
+      height: '35@s',
       paddingLeft: '5@s',
       paddingRight: '5@s',
-      borderRadius: '9@s',
+      borderRadius: '8@s',
       backgroundColor: commonColor.listHeaderBgColor
     },
     inputField: {
       flex: 1,
-      fontSize: '16@s'
+      fontSize: '14@s',
+      height: '100%',
+      paddingVertical: 0
     },
     icon: {
       paddingLeft: '5@s',
       paddingRight: '5@s',
-      fontSize: '25@s',
+      fontSize: '22@s',
       color: commonColor.textColor
     }
   });
