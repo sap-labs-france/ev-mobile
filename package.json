@@ -161,7 +161,7 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/base-64": "^1.0.0",
     "@types/color": "^3.0.1",
-    "@types/i18n-js": "^3.8.1",
+    "@types/i18n-js": "^3.8.2",
     "@types/jest": "^26.0.23",
     "@types/lodash": "^4.14.170",
     "@types/node": "^14.17.1",
