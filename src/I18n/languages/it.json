@@ -242,7 +242,26 @@
     "selectCar": "Select a car",
     "selectCars": "Select cars",
     "noCarMessageTitle": "Indicate what car you are using to get better recharges",
-    "addCar": "Add a car"
+    "addCarTitle": "Ajouter une voiture",
+    "addCarButton": "Ajouter",
+    "evse_phase": "Fase",
+    "evse_phases": "Fasi",
+    "invalidVIN": "Invalid VIN",
+    "invalidLicensePlate": "Invalid License Plate",
+    "licensePlate": "Targa",
+    "converter": "Converter",
+    "model": "Modello",
+    "carAlreadyExistError": "A car with the same VIN and license plate already exists",
+    "userAlreadyAssignedError": "This car already belongs to another user",
+    "addError": "An error occurred while adding the car",
+    "addCarSuccessfully": "Car has been successfully added",
+    "defaultCar": "Veicolo Predefinito",
+    "drivetrainPowerUnit": "cv"
+  },
+  "carTypes": {
+    "poolCar": "Auto di Gruppo",
+    "privateCar": "Veicolo Privato",
+    "companyCar": "Auto Aziendale"
   },
   "invoices": {
     "noInvoices": "No Invoices",

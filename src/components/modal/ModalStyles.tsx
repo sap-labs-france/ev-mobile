@@ -97,7 +97,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.buttonBg
     },
     itemContainer: {
-      width: '100%'
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center'
     },
     spinnerContainer: {
       width: '95%',
