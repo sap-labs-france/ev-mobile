@@ -126,7 +126,7 @@
     "react-native-htmlview": "^0.16.0",
     "react-native-localize": "^1.4.3",
     "react-native-location": "^2.5.0",
-    "react-native-map-link": "^2.7.27",
+    "react-native-map-link": "^2.8.0",
     "react-native-maps": "^0.28.0",
     "react-native-modal": "^11.10.0",
     "react-native-modal-datetime-picker": "^9.2.3",
