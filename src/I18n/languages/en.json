@@ -94,8 +94,8 @@
     "paymentMethods": "Payment Methods"
   },
   "authentication": {
-    "noTenantFoundTitle" : "No organization found",
-    "noTenantFoundMessage" : "Do you want to register a new organization using a QR-Code?",
+    "noTenantFoundTitle": "No organization found",
+    "noTenantFoundMessage": "Do you want to register a new organization using a QR-Code?",
     "tenantTitle": "Organization",
     "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
     "mandatoryTenantName": "The Organization name is mandatory",
@@ -194,8 +194,8 @@
     "noUsers": "No users",
     "users": "Users",
     "user": "User",
-    "selectUser" : "Select User",
-    "selectUsers" : "Select Users"
+    "selectUser": "Select User",
+    "selectUsers": "Select Users"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
@@ -203,13 +203,13 @@
     "paymentMethods": "Payment methods",
     "paymentMethod": "Payment method",
     "addPaymentMethodError": "Failed to add payment method",
-    "addPaymentMethodSuccess" : "New payment method added successfully",
+    "addPaymentMethodSuccess": "New payment method added successfully",
     "deletePaymentMethodSuccess": "Payment method removed successfully",
     "deletePaymentMethodTitle": "Delete payment method",
     "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}} ?",
     "addPaymentMethod": "Add Payment Method",
     "paymentMethodCreationRules": "For security reasons, we do not store nor process your bank and card details directly. The collected information is sent via a secure channel to our STRIPE partner which provides the billing and payment infrastructure.",
-    "paymentMethodsCreationCheckboxText": " I have read the End-user License Agreement and agree that my bank details will be used for paying future EV Charging Sessions.",
+    "paymentMethodsCreationCheckboxText": " I have read the End-user License Agreement and agree that my bank details will be used for paying future EV Charging Sessions."
   },
   "paymentMethodStatus": {
     "valid": "Valid",
@@ -242,7 +242,26 @@
     "selectCar": "Select a car",
     "selectCars": "Select cars",
     "noCarMessageTitle": "Indicate what car you are using to get better recharges",
-    "addCar": "Add a car"
+    "addCarTitle": "Add a car",
+    "addCarButton": "Add car",
+    "evse_phase": "Phase",
+    "evse_phases": "Phases",
+    "invalidVIN": "Invalid VIN",
+    "invalidLicensePlate": "Invalid License Plate",
+    "licensePlate": "License Plate",
+    "converter": "Converter",
+    "model": "Model",
+    "carAlreadyExistError": "A car with the same VIN and license plate already exists",
+    "userAlreadyAssignedError": "This car already belongs to another user",
+    "addError": "An error occurred while adding the car",
+    "addCarSuccessfully": "Car has been successfully added",
+    "defaultCar": "Default car",
+    "drivetrainPowerUnit": "hp"
+  },
+  "carTypes": {
+    "poolCar": "Pool car",
+    "privateCar": "Private car",
+    "companyCar": "Company car"
   },
   "invoices": {
     "noInvoices": "No Invoices",
@@ -316,7 +335,7 @@
     "totalInactivityNote": "Total Inactivity",
     "totalPriceNote": "Total Cost",
     "paymentMethods": "Payment Methods",
-    "paymentMethodsNote" : "Browse and create payment methods",
+    "paymentMethodsNote": "Browse and create payment methods",
     "invoices": "Invoices",
     "invoicesNote": "Browse and download invoices"
   },

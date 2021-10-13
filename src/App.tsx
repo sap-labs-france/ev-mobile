@@ -47,8 +47,9 @@ import Users from './screens/users/list/Users';
 import BaseProps from './types/BaseProps';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
-import { checkVersion } from 'react-native-check-version';
+import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
 import AppUpdateDialog from './components/modal/app-update/AppUpdateDialog';
+import AddCar from './screens/cars/AddCar';
 
 // Init i18n
 I18nManager.initialize();
@@ -387,6 +388,7 @@ function createCarsNavigator(props: BaseProps) {
   return (
     <CarsStack.Navigator initialRouteName="Cars" headerMode="none">
       <CarsStack.Screen name="Cars" component={Cars} initialParams={props?.route?.params?.params} />
+      <CarsStack.Screen name={'AddCar'} component={AddCar} initialParams={props?.route?.params?.params} />
     </CarsStack.Navigator>
   );
 }
@@ -487,6 +489,7 @@ export default class App extends React.Component<Props, State> {
   public deepLinkingManager: DeepLinkingManager;
   public centralServerProvider: CentralServerProvider;
   private location: LocationManager;
+  private appVersion: CheckVersionResponse;
 
   public constructor(props: Props) {
     super(props);
@@ -530,8 +533,8 @@ export default class App extends React.Component<Props, State> {
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
     // Check for app updates
-    const appVersion = await checkVersion();
-    if (appVersion?.needsUpdate) {
+    this.appVersion = await checkVersion();
+    if (this.appVersion?.needsUpdate) {
       this.setState({ showAppUpdateDialog: true });
     }
 
@@ -556,7 +559,7 @@ export default class App extends React.Component<Props, State> {
     return (
       this.state.isNavigationStateLoaded && (
         <RootSiblingParent>
-          {showAppUpdateDialog && <AppUpdateDialog close={() => this.setState({ showAppUpdateDialog: false })} />}
+          {showAppUpdateDialog && <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
           <StatusBar hidden />
           {createRootNavigator(this, this.state.navigationState)}
         </RootSiblingParent>

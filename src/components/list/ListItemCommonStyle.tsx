@@ -9,30 +9,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      width: '95%',
+      width: '100%',
       alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
       borderRadius: '8@s',
-      backgroundColor: commonColor.listItemBackground,
-      shadowColor: commonColor.cardShadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 1
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62,
-      elevation: 4,
-      marginBottom: '11@s'
-    },
-    noShadowContainer: {
-      width: '95%',
-      alignSelf: 'center',
-      borderTopWidth: 0,
-      borderBottomWidth: 0,
-      borderLeftWidth: 0,
-      borderRightWidth: 0,
-      borderRadius: '8@s',
-      backgroundColor: commonColor.listItemBackground,
-      marginBottom: '11@s'
+      marginBottom: '11@s',
+      borderWidth: 0,
+      backgroundColor: commonColor.listItemBackground
     },
     selected: {
       backgroundColor: commonColor.listItemSelected

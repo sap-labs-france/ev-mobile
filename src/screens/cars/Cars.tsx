@@ -1,8 +1,8 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -18,6 +18,7 @@ import computeTransactionStyles from '../transactions/TransactionsStyles'
 
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
+import { FAB } from 'react-native-paper';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];
@@ -63,12 +64,16 @@ export default class Cars extends SelectableList<Car> {
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
     await this.refresh();
-    Orientation.lockToPortrait();
   }
 
   public componentWillUnmount() {
     super.componentWillUnmount();
     Orientation.unlockAllOrientations();
+  }
+
+  public async componentDidFocus() {
+    Orientation.lockToPortrait();
+    await this.refresh();
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
@@ -78,7 +83,7 @@ export default class Cars extends SelectableList<Car> {
         WithUser: true,
         UserID: this.props.userIDs?.join('|')
       };
-      const cars = await this.centralServerProvider.getCars(params, { skip, limit });
+      const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
       // Get total number of records
       if (cars.count === -1) {
         const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
@@ -102,7 +107,7 @@ export default class Cars extends SelectableList<Car> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
+    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
     // Do not bubble up
     return true;
   };
@@ -132,7 +137,8 @@ export default class Cars extends SelectableList<Car> {
       this.setState({
         loading: false,
         cars: carsResult,
-        count: cars ? cars.count : 0
+        count: cars ? cars.count : 0,
+        refreshing: false
       });
     }
   }
@@ -147,8 +153,12 @@ export default class Cars extends SelectableList<Car> {
     const style = computeStyleSheet();
     const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <Container style={transactionStyles.container}>
+        {!isModal && (
+          <FAB color={commonColors.light} onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} icon={'plus'} style={style.fab} />
+        )}
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
@@ -165,7 +175,7 @@ export default class Cars extends SelectableList<Car> {
         {loading ? (
           <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (
-          <View style={transactionStyles.content}>
+          <View style={style.content}>
             <ItemsList<Car>
               data={cars}
               ref={this.itemsListRef}

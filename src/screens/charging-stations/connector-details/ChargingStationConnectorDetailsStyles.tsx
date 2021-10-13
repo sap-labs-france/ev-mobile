@@ -122,8 +122,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       width: '100%'
     },
-    connectorInfoContainer: {
-    },
     connectorInfoSettingsContainer: {
       flex: 1
     },
@@ -132,9 +130,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: 'auto'
     },
     chargingSettingsContainer: {
-      width: '100%',
+      marginHorizontal: '2.5%',
+      justifyContent: 'center',
       alignItems: 'center',
-      marginHorizontal: 0,
       height: 'auto'
     },
     rowContainer: {
@@ -233,7 +231,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '50@s'
     },
     noItemContainer: {
-      width: '95%',
       minHeight: '90@s',
       padding: '10@s',
       justifyContent: 'flex-start'
@@ -241,8 +238,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     noCarContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
-      width: '95%'
+      justifyContent: 'center'
     },
     noCarIcon: {
       color: commonColor.textColor,
