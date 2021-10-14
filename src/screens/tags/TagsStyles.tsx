@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
-import Utils from '../../../utils/Utils';
+import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -12,16 +12,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    content: {
-      flex: 1,
-      marginHorizontal: '2.5%'
-    },
     searchBar: {
       marginVertical: '10@s'
     },
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
+    },
+    content: {
+      flex: 1,
+      marginHorizontal: '2.5%'
     }
   });
   const portraitStyles = {};

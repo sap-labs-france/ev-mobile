@@ -14,8 +14,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     unselected: {
       backgroundColor: commonColor.listHeaderBgColor
     },
-    tagContent: {
-      width: '100%',
+    tagContainer: {
       height: '90@s',
       justifyContent: 'space-between',
       alignItems: 'center',

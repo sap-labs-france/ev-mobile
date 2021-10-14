@@ -9,63 +9,42 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   let commonStyles: any;
   commonStyles = ScaledSheet.create({
-    selected: {
-      backgroundColor: commonColor.listItemSelected
-    },
-    unselected: {
-      backgroundColor: commonColor.listItemBackground
+    carCatalogContainer: {
+      backgroundColor: commonColor.listItemBackground,
+      flexDirection: 'row'
     },
     header: {
       flexDirection: 'row',
       alignItems: 'flex-start',
-      justifyContent: 'space-between',
       padding: '5@s',
-      paddingRight: '10@s'
-    },
-    statusNameContainer: {
-      flexDirection: 'row',
-      flex: 1,
-      flexWrap: 'wrap',
-      alignItems: 'center'
+      marginBottom: '5@s',
+      paddingRight: '10@s',
+      width: '100%'
     },
     headerText: {
-      fontSize: '15@s',
+      fontSize: '14@s',
       color: commonColor.textColor
     },
     carName: {
       alignSelf: 'flex-start',
       fontWeight: 'bold'
     },
-    defaultContainer: {
-      backgroundColor: commonColor.primary,
-      borderRadius: '2@s',
-      justifyContent: 'center'
-    },
-    defaultText: {
-      fontSize: '10@s',
-      color: commonColor.light,
-      paddingHorizontal: '3@s'
-    },
-    licensePlate: {
-      textAlign: 'right',
-      marginLeft: '20@s'
-    },
-    bottomContainer: {
-      flexDirection: 'row',
+    rightContainer: {
       justifyContent: 'center',
       alignItems: 'center',
       flex: 1,
       width: '100%'
     },
     imageStyle: {
-      flex: 1,
+      width: '35%',
       height: '100%',
       padding: 0,
-      borderBottomLeftRadius: '8@s'
+      borderBottomLeftRadius: '8@s',
+      borderTopLeftRadius: '8@s'
     },
     noImageContainer: {
-      flex: 1,
-      height: '100%',
+      width: '35%',
+      height: 'auto',
       justifyContent: 'center',
       alignItems: 'center'
     },
@@ -76,32 +55,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       justifyContent: 'flex-end',
       alignItems: 'center',
-      width: '60%',
-      height: '100%',
+      width: '100%',
       paddingHorizontal: '5@s'
-    },
-    userContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      marginLeft: '21@s',
-      marginBottom: '7@s'
-    },
-    avatarContainer: {
-      justifyContent: 'flex-end',
-      flexDirection: 'row'
     },
     text: {
       color: commonColor.textColor,
       fontSize: '13@s',
       width: '100%',
       textAlign: 'center'
-    },
-    userName: {
-      marginRight: '5@s',
-      textAlign: 'left',
-      flex: 1,
-      marginLeft: '5@s'
     },
     powerDetailsContainer: {
       flexDirection: 'row',
@@ -116,8 +77,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between',
       paddingHorizontal: '2@s',
       flex: 1
-    },
-    columnContainerBorderRight: {
     },
     iconContainer: {
       flexDirection: 'row',

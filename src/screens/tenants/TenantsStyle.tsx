@@ -23,7 +23,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     tenantContainer: {
       height: '60@s',
-      marginBottom: '8@s'
+      marginBottom: '8@s',
+      marginHorizontal: '2.5%'
     },
     tenantNameContainer: {
       height: '100%',
@@ -59,7 +60,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     rightActionsContainer: {
       flexDirection: 'row',
-      marginRight: '2.5%'
+      marginLeft: '2.5%'
     },
     trashIconButton: {
       height: '100%',

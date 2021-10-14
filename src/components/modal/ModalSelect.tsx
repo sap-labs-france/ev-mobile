@@ -139,7 +139,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     const commonColors = Utils.getCurrentCommonColor();
     if (defaultItemLoading) {
       return (
-        <View style={[listItemCommonStyle.noShadowContainer, style.spinnerContainer]}>
+        <View style={[listItemCommonStyle.container, style.spinnerContainer]}>
           <Spinner color={commonColors.textColor} style={style.spinner} />
         </View>
       );
