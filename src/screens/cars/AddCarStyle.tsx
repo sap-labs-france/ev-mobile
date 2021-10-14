@@ -42,8 +42,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       minHeight: '40@s',
       marginHorizontal: 0,
       paddingHorizontal: 0,
-      backgroundColor: commonColor.listBg,
-      justifyContent: 'flex-start'
+      backgroundColor: commonColor.listBg
     },
     inputContainer: {
       borderBottomColor: commonColor.textColor,
