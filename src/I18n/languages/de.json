@@ -238,11 +238,30 @@
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
     "cars": "Cars",
-    "Car": "Car",
+    "car": "Car",
     "selectCar": "Select a car",
     "selectCars": "Select cars",
     "noCarMessageTitle": "Indicate what car you are using to get better recharges",
-    "addCar": "Add a car"
+    "addCarTitle": "Add a car",
+    "addCarButton": "Add car",
+    "evse_phase": "Phase",
+    "evse_phases": "Phasen",
+    "invalidVIN": "Invalid VIN",
+    "invalidLicensePlate": "Invalid License Plate",
+    "licensePlate": "Kennzeichen",
+    "converter": "Converter",
+    "model": "Modell",
+    "carAlreadyExistError": "A car with the same VIN and license plate already exists",
+    "userAlreadyAssignedError": "This car already belongs to another user",
+    "addError": "An error occurred while adding the car",
+    "addCarSuccessfully": "Car has been successfully added",
+    "defaultCar": "Standard Fahrzeug",
+    "drivetrainPowerUnit": "ps"
+  },
+  "carTypes": {
+    "poolCar": "Pool Fahrzeug",
+    "privateCar": "Privates Fahrzeug",
+    "companyCar": "Firmenwagen"
   },
   "invoices": {
     "noInvoices": "No Invoices",

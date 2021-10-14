@@ -44,7 +44,7 @@ export default class UserComponent extends React.Component<Props, State> {
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, chipStyle);
     return (
-      <View style={shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer}>
+      <View style={[listItemCommonStyle.container, style.container]}>
         <View style={style.userContent}>
           <View style={style.avatarContainer}>
             {selected ? <UserAvatar isSelected={true} navigation={navigation} /> : <UserAvatar user={user} navigation={navigation} />}

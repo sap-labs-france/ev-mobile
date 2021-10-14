@@ -1,51 +1,49 @@
 import { DrawerActions } from '@react-navigation/native';
-import i18n, { default as I18n } from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import I18n from 'i18n-js';
+import { Container,Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
-import TagComponent from '../../components/tag/TagComponent';
+import Car, { CarCatalog } from '../../types/Car';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
-import Tag from '../../types/Tag';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
+import computeTransactionStyles from '../transactions/TransactionsStyles';
+import computeCarsStyles from './CarsStyles';
+
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
-import computeStyleSheet from './TagsStyles';
+import Orientation from 'react-native-orientation-locker';
+import CarCatalogComponent from '../../components/car/CarCatalogComponent';
 
-export interface Props extends SelectableProps<Tag> {
-  userIDs?: string[];
-  disableInactive?: boolean;
-  sorting?: string;
-}
-
-interface State extends SelectableState<Tag> {
-  tags?: Tag[];
-  projectFields?: string[];
+interface State extends SelectableState<Car> {
+  cars?: Car[];
   skip?: number;
   limit?: number;
-  count: number;
   refreshing?: boolean;
   loading?: boolean;
 }
 
-export default class Tags extends SelectableList<Tag> {
-  public state: State;
+export interface Props extends SelectableProps<Car> {
+  userIDs?: string[];
+}
+
+export default class CarCatalogs extends SelectableList<Car> {
   public props: Props;
+  public state: State;
   private searchText: string;
 
   public constructor(props: Props) {
     super(props);
-    this.selectMultipleTitle = 'tags.selectTags';
-    this.selectSingleTitle = 'tags.selectTag';
-    this.singleItemTitle = I18n.t('tags.tag');
-    this.multiItemsTitle = I18n.t('tags.tags');
+    this.selectMultipleTitle = 'cars.selectCars';
+    this.selectSingleTitle = 'cars.selectCar';
+    this.singleItemTitle = I18n.t('cars.car');
+    this.multiItemsTitle = I18n.t('cars.cars');
     this.state = {
-      projectFields: [],
-      tags: [],
+      cars: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
@@ -55,41 +53,44 @@ export default class Tags extends SelectableList<Tag> {
     };
   }
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-  }
-
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
-  ) => {
+  ): void => {
     super.setState(state, callback);
   };
 
-  public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
-    const { sorting } = this.props;
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    await this.refresh();
+    Orientation.lockToPortrait();
+  }
+
+  public componentWillUnmount() {
+    super.componentWillUnmount();
+    Orientation.unlockAllOrientations();
+  }
+
+
+  public async getCarCatalog(searchText: string, skip: number, limit: number): Promise<DataResult<CarCatalog>> {
     try {
       const params = {
-        Search: searchText,
-        WithUser: true,
-        UserID: this.props.userIDs?.join('|')
+        Search: searchText
       };
-      // Get the Tags
-      const tags = await this.centralServerProvider.getTags(params, { skip, limit }, [sorting ?? '-createdOn']);
+      const cars = await this.centralServerProvider.getCarCatalog(params, { skip, limit }, ['vehicleMake|vehicleModel|vehicleModelVersion']);
       // Get total number of records
-      if (tags.count === -1) {
-        const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
-        tags.count = tagsNbrRecordsOnly.count;
+      if (cars.count === -1) {
+        const carsNbrRecordsOnly = await this.centralServerProvider.getCarCatalog(params, Constants.ONLY_RECORD_COUNT);
+        cars.count = carsNbrRecordsOnly.count;
       }
-      return tags;
+      return cars;
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
-          'transactions.transactionUnexpectedError',
+          'cars.carUnexpectedError',
           this.props.navigation,
           this.refresh.bind(this)
         );
@@ -100,21 +101,20 @@ export default class Tags extends SelectableList<Tag> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
 
-  public onEndScroll = async () => {
+  public onEndScroll = async (): Promise<void> => {
     const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const tags = await this.getTags(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const cars = await this.getCarCatalog(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
-        projectFields: tags ? tags.projectFields : [],
-        tags: tags ? [...prevState.tags, ...tags.result] : prevState.tags,
+        cars: cars ? [...prevState.cars, ...cars.result] : prevState.cars,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
       }));
@@ -124,72 +124,72 @@ export default class Tags extends SelectableList<Tag> {
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      this.setState({ refreshing: true });
       // Refresh All
-      const tags = await this.getTags(this.searchText, 0, skip + limit);
+      const cars = await this.getCarCatalog(this.searchText, 0, skip + limit);
+      const carsResult = cars ? cars.result : [];
       // Set
       this.setState({
         loading: false,
-        tags: tags ? tags.result : [],
-        projectFields: tags ? tags.projectFields : [],
-        count: tags ? tags.count : 0
+        refreshing: false,
+        cars: carsResult,
+        count: cars ? cars.count : 0
       });
     }
   }
 
-  public search = async (searchText: string) => {
+  public search = async (searchText: string): Promise<void> => {
     this.searchText = searchText;
     await this.refresh();
   };
 
-  public render = () => {
-    const style = computeStyleSheet();
-    const { tags, count, skip, limit, refreshing, loading, projectFields } = this.state;
-    const { navigation, isModal, selectionMode } = this.props;
+  public render() {
+    const transactionStyles = computeTransactionStyles();
+    const carsStyles = computeCarsStyles();
+    const { cars, count, skip, limit, refreshing, loading } = this.state;
+    const { navigation, selectionMode, isModal } = this.props;
     return (
-      <Container style={style.container}>
+      <Container style={transactionStyles.container}>
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
           leftAction={isModal ? null : this.onBack}
-          displayTenantLogo={false}
           leftActionIcon={isModal ? null : 'navigate-before'}
+          displayTenantLogo={false}
           rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={isModal ? null : 'menu'}
         />
-        <View style={style.searchBar}>
+        <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (
-          <View style={style.content}>
-            <ItemsList<Tag>
-              data={tags}
-              ref={this.itemsListRef}
+          <View style={carsStyles.content}>
+            <ItemsList<CarCatalog>
+              data={cars}
               navigation={navigation}
-              disableItem={(item: Tag) => !item.active}
-              onSelect={this.onItemsSelected.bind(this)}
-              selectionMode={selectionMode}
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(item: Tag, selected: boolean) => (
-                <TagComponent
-                  tag={item}
-                  canReadUser={projectFields?.includes('user.name') && projectFields?.includes('user.firstName')}
-                  selected={selected}
+              onSelect={this.onItemsSelected.bind(this)}
+              selectionMode={selectionMode}
+              renderItem={(item: CarCatalog, selected: boolean) => (
+                <CarCatalogComponent
                   navigation={navigation}
+                  selected={selected}
+                  carCatalog={item}
                 />
               )}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
-              emptyTitle={i18n.t('tags.noTags')}
+              emptyTitle={I18n.t('cars.noCars')}
             />
           </View>
         )}
       </Container>
     );
-  };
+  }
 }

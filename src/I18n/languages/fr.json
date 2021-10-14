@@ -242,7 +242,26 @@
     "selectCar": "Sélectionnez une voiture",
     "selectCars": "Sélectionnez des voitures",
     "noCarMessageTitle": "Indiquez la voiture utilisée pour bénéficier de meilleures recharges",
-    "addCar": "Ajouter une voiture"
+    "addCarTitle": "Ajouter une voiture",
+    "addCarButton": "Ajouter",
+    "evse_phase": "Phase",
+    "evse_phases": "Phases",
+    "invalidVIN": "VIN invalide",
+    "invalidLicensePlate": "Plaque d'immatriculation invalide",
+    "licensePlate": "Plaque d'immatriculation",
+    "converter": "Convertisseur",
+    "model": "Modèle",
+    "carAlreadyExistError": "Une voiture avec les mêmes VIN et numéro d'immatriculation existe déjà",
+    "userAlreadyAssignedError": "Cette voiture est déjà assignée à un autre utilisateur",
+    "addError": "Une erreur est survenue lors de l'ajout du véhicule",
+    "addCarSuccessfully": "La voiture a bien été ajoutée",
+    "defaultCar": "Véhicule par défaut",
+    "drivetrainPowerUnit": "ch"
+  },
+  "carTypes": {
+    "poolCar": "Véhicule de covoiturage",
+    "privateCar": "Véhicule privé",
+    "companyCar": "Véhicule d'entreprise"
   },
   "invoices": {
     "noInvoices": "Aucune facture",

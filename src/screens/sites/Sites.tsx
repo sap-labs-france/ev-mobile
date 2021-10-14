@@ -153,7 +153,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     if (this.state.showMap && !Utils.isEmptyArray(this.state.sites)) {
       this.setState({ showMap: false });
     } else {
-      this.props.navigation.goBack();
+      this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
     }
     // Do not bubble up
     return true;

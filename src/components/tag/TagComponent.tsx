@@ -43,42 +43,40 @@ export default class TagComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const chipStyle = computeChipStyleSheet();
-    const { tag, canReadUser, shadowed, outlinedInactive } = this.props;
+    const { tag, canReadUser, outlinedInactive } = this.props;
     const listItemCommonStyle = computeListItemCommonStyle();
     const userFullName = Utils.buildUserName(tag?.user);
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
       <View
         style={[
-          shadowed ? listItemCommonStyle.container : listItemCommonStyle.noShadowContainer,
+          listItemCommonStyle.container, style.tagContainer,
           outlinedInactive && !tag?.active && listItemCommonStyle.outlinedError
         ]}>
-        <View style={style.tagContent}>
-          <View style={style.leftContainer}>
-            <Image style={style.icon as ImageStyle} source={{ uri: this.exampleImageUri }} />
-          </View>
-          <View style={style.middleContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagDescription]}>
-              {tag?.description}
+        <View style={style.leftContainer}>
+          <Image style={style.icon as ImageStyle} source={{ uri: this.exampleImageUri }} />
+        </View>
+        <View style={style.middleContainer}>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagDescription]}>
+            {tag?.description}
+          </Text>
+          {canReadUser && tag.user && (
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
+              {userFullName}
             </Text>
-            {canReadUser && tag.user && (
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
-                {userFullName}
-              </Text>
-            )}
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagVisualID]}>
-              {I18n.t('tags.visualID')}: {tag?.visualID}
-            </Text>
-            <View style={style.bottomLine}>
-              <View style={[style.statusContainer, tag?.default && style.statusContainerWithRightBorder]}>
-                <Text style={[style.text, statusStyle]}>{tag?.active ? I18n.t('tags.active') : I18n.t('tags.inactive')}</Text>
-              </View>
-              {tag?.default && (
-                <View style={style.defaultContainer}>
-                  <Text style={[style.defaultText]}>{I18n.t('general.default')}</Text>
-                </View>
-              )}
+          )}
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagVisualID]}>
+            {I18n.t('tags.visualID')}: {tag?.visualID}
+          </Text>
+          <View style={style.bottomLine}>
+            <View style={[style.statusContainer, tag?.default && style.statusContainerWithRightBorder]}>
+              <Text style={[style.text, statusStyle]}>{tag?.active ? I18n.t('tags.active') : I18n.t('tags.inactive')}</Text>
             </View>
+            {tag?.default && (
+              <View style={style.defaultContainer}>
+                <Text style={[style.defaultText]}>{I18n.t('general.default')}</Text>
+              </View>
+            )}
           </View>
         </View>
       </View>

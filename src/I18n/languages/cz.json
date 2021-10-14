@@ -242,7 +242,26 @@
     "selectCar": "Select a car",
     "selectCars": "Select cars",
     "noCarMessageTitle": "Indicate what car you are using to get better recharges",
-    "addCar": "Add a car"
+    "addCarTitle": "Add a car",
+    "addCarButton": "Add car",
+    "evse_phase": "Fáze",
+    "evse_phases": "Phases",
+    "invalidVIN": "Invalid VIN",
+    "invalidLicensePlate": "Invalid License Plate",
+    "licensePlate": "Registrační značka",
+    "converter": "Měnič",
+    "model": "Model",
+    "carAlreadyExistError": "A car with the same VIN and license plate already exists",
+    "userAlreadyAssignedError": "This car already belongs to another user",
+    "addError": "An error occurred while adding the car",
+    "addCarSuccessfully": "Car has been successfully added",
+    "defaultCar": "Výchozí elektromobil",
+    "drivetrainPowerUnit": "hp"
+  },
+  "carTypes": {
+    "poolCar": "Sdílený elektromobil",
+    "privateCar": "Soukromý elektromobil",
+    "companyCar": "Firemní elektromobil"
   },
   "invoices": {
     "noInvoices": "Žádné faktury",
