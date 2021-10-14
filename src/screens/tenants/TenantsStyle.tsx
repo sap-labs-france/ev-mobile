@@ -12,6 +12,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
+    listContainer: {
+      flex: 1,
+      marginTop: '10@s'
+    },
     toolBar: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -92,6 +96,21 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.modalBackgroundColor,
       borderColor: commonColor.textColor,
       color: commonColor.textColor
+    },
+    fab: {
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      margin: '18@s',
+      zIndex: 1,
+      elevation: 4,
+      backgroundColor: commonColor.primary,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62
     }
   });
   const portraitStyles = {};

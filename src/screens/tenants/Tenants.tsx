@@ -17,6 +17,7 @@ import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
 import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
 import TenantComponent from '../../components/tenant/TenantComponent';
+import { FAB } from 'react-native-paper';
 
 export interface Props extends BaseProps {}
 
@@ -76,6 +77,7 @@ export default class Tenants extends BaseScreen<Props, State> {
     } = this.state;
     const style = computeTenantStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={{ flex: 1 }}>
         {showAddTenantDialog && this.renderAddTenantDialog(style)}
@@ -92,6 +94,18 @@ export default class Tenants extends BaseScreen<Props, State> {
           />
         ) : (
           <View style={style.container}>
+            <FAB color={commonColors.light} onPress={() => this.setState({ showAddTenantDialog: true })} icon={'plus'} style={style.fab} />
+            {showAddTenantManuallyDialog && (
+              <AddEditTenantDialog
+                mode={TenantDialogMode.ADD}
+                navigation={navigation}
+                tenants={Utils.cloneObject(this.state.tenants)}
+                back={() => this.setState({ showAddTenantManuallyDialog: false, showAddTenantDialog: true })}
+                close={(newTenantAdded: TenantConnection) => {
+                  this.addEditTenantDialogClosed(newTenantAdded);
+                }}
+              />
+            )}
             <HeaderComponent
               navigation={this.props.navigation}
               title={I18n.t('general.tenants')}
@@ -104,23 +118,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                 return true;
               }}
             />
-            <View style={{ flex: 1 }}>
-              <View style={style.toolBar}>
-                <TouchableOpacity style={style.addTenantButton} onPress={() => this.setState({ showAddTenantDialog: true })}>
-                  <Icon style={style.icon} type={'MaterialIcons'} name="add" />
-                </TouchableOpacity>
-                {showAddTenantManuallyDialog && (
-                  <AddEditTenantDialog
-                    mode={TenantDialogMode.ADD}
-                    navigation={navigation}
-                    tenants={Utils.cloneObject(this.state.tenants)}
-                    back={() => this.setState({ showAddTenantManuallyDialog: false, showAddTenantDialog: true })}
-                    close={(newTenantAdded: TenantConnection) => {
-                      this.addEditTenantDialogClosed(newTenantAdded);
-                    }}
-                  />
-                )}
-              </View>
+            <View style={style.listContainer}>
               <FlatList
                 data={tenants}
                 keyExtractor={(item) => item.subdomain}
