@@ -12,9 +12,25 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       width: '100%'
     },
+    fab: {
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      margin: '16@s',
+      zIndex: 1,
+      elevation: 4,
+      backgroundColor: commonColor.primary,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62
+    },
     content: {
       flex: 1,
-      marginHorizontal: '2.5%'
+      marginHorizontal: '2.5%',
+      marginTop: '10@s'
     },
     spinner: {
       flex: 1,
