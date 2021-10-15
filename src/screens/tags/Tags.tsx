@@ -177,7 +177,7 @@ export default class Tags extends SelectableList<Tag> {
               renderItem={(item: Tag, selected: boolean) => (
                 <TagComponent
                   tag={item}
-                  canReadUser={projectFields.includes('user.name') && projectFields.includes('user.firstName')}
+                  canReadUser={projectFields?.includes('user.name') && projectFields?.includes('user.firstName')}
                   selected={selected}
                   navigation={navigation}
                 />

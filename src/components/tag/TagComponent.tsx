@@ -51,7 +51,7 @@ export default class TagComponent extends React.Component<Props, State> {
       <View
         style={[
           listItemCommonStyle.container, style.tagContainer,
-          outlinedInactive && !tag.active && listItemCommonStyle.outlinedError
+          outlinedInactive && !tag?.active && listItemCommonStyle.outlinedError
         ]}>
         <View style={style.leftContainer}>
           <Image style={style.icon as ImageStyle} source={{ uri: this.exampleImageUri }} />
@@ -60,7 +60,7 @@ export default class TagComponent extends React.Component<Props, State> {
           <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagDescription]}>
             {tag?.description}
           </Text>
-          {canReadUser && tag.user && (
+          {canReadUser && tag?.user && (
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
               {userFullName}
             </Text>
