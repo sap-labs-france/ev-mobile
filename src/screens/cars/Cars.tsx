@@ -73,6 +73,7 @@ export default class Cars extends SelectableList<Car> {
 
   public async componentDidFocus() {
     Orientation.lockToPortrait();
+    this.setState({ refreshing: true });
     await this.refresh();
   }
 
