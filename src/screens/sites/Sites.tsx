@@ -186,6 +186,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       // Add sites
       this.setState({
         loading: false,
+        refreshing: false,
         sites: sites ? sites.result : [],
         count: sites ? sites.count : 0
       });
@@ -217,6 +218,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public search = async (searchText: string) => {
+    this.setState({ refreshing: true });
     this.searchText = searchText;
     delete this.currentRegion;
     await this.refresh();
@@ -228,7 +230,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public filterChanged(newFilters: SitesFiltersDef) {
     delete this.currentRegion;
-    this.setState({ filters: newFilters }, async () => this.refresh());
+    this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh());
   }
 
   public toggleDisplayMap = () => {
