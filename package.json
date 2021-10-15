@@ -176,7 +176,7 @@
     "@types/react-native-modalbox": "^1.4.9",
     "@types/react-native-vector-icons": "^6.4.6",
     "@types/react-test-renderer": "^17.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.25.0",
     "babel-jest": "^27.2.3",
     "babel-preset-react-native-stage-0": "^1.0.1",
