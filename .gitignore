@@ -104,3 +104,7 @@ ios/GoogleService-Info.plist
 
 assets/config.json
 *.log
+
+# tests
+coverage/
+__tests__/__snapshots__/
