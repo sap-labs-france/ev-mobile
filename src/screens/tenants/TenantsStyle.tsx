@@ -12,6 +12,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
+    listContainer: {
+      flex: 1,
+      marginTop: '10@s'
+    },
     toolBar: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -22,7 +26,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginVertical: '10@s'
     },
     tenantContainer: {
-      height: '70@s',
+      height: '60@s',
       marginBottom: '8@s',
       marginHorizontal: '2.5%'
     },
@@ -41,9 +45,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '27@s'
     },
     addTenantButton: {
-      width: '45@s',
-      height: '45@s',
-      borderRadius: '22.5@s',
+      width: '35@s',
+      height: '35@s',
+      borderRadius: '8@s',
       padding: '5@s',
       justifyContent: 'center',
       alignItems: 'center',
@@ -92,6 +96,21 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.modalBackgroundColor,
       borderColor: commonColor.textColor,
       color: commonColor.textColor
+    },
+    fab: {
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      margin: '18@s',
+      zIndex: 1,
+      elevation: 4,
+      backgroundColor: commonColor.primary,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62
     }
   });
   const portraitStyles = {};
