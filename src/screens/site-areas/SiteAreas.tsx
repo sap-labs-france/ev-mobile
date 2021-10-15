@@ -185,6 +185,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       // Set Site Areas
       this.setState({
         loading: false,
+        refreshing: false,
         siteAreas: siteAreas ? siteAreas.result : [],
         count: siteAreas ? siteAreas.count : 0
       });
@@ -216,6 +217,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public search = async (searchText: string) => {
+    this.setState({ refreshing: true });
     this.searchText = searchText;
     await this.refresh();
   };
@@ -298,7 +300,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             <SiteAreasFilters
               initialFilters={initialFilters}
               locationEnabled={this.locationEnabled}
-              onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters }, async () => this.refresh())}
+              onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh())}
               ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
             />
             {mapIsDisplayed ? (

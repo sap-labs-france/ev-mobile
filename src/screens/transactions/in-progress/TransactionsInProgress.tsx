@@ -4,7 +4,7 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList, { ItemsSeparatorType } from '../../../components/list/ItemsList';
+import ItemsList from '../../../components/list/ItemsList';
 import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
@@ -123,6 +123,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       // Set
       this.setState({
         loading: false,
+        refreshing: false,
         transactions: transactions ? transactions.result : [],
         count: transactions ? transactions.count : 0,
         isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
@@ -181,7 +182,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
               <TransactionsInProgressFilters
                 initialFilters={initialFilters}
                 onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) =>
-                  this.setState({ filters: newFilters }, async () => this.refresh())
+                  this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh())
                 }
                 ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => this.setScreenFilters(transactionsInProgressFilters)}
               />

@@ -129,6 +129,7 @@ export default class Tags extends SelectableList<Tag> {
       // Set
       this.setState({
         loading: false,
+        refreshing: false,
         tags: tags ? tags.result : [],
         projectFields: tags ? tags.projectFields : [],
         count: tags ? tags.count : 0
@@ -137,6 +138,7 @@ export default class Tags extends SelectableList<Tag> {
   }
 
   public search = async (searchText: string) => {
+    this.setState({ refreshing: true });
     this.searchText = searchText;
     await this.refresh();
   };

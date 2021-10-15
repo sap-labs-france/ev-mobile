@@ -245,6 +245,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public search = async (searchText: string) => {
+    this.setState({ refreshing: true });
     this.searchText = searchText;
     delete this.currentRegion;
     await this.refresh();
@@ -256,7 +257,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public filterChanged(newFilters: ChargingStationsFiltersDef) {
     delete this.currentRegion;
-    this.setState({ filters: newFilters }, async () => this.refresh());
+    this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh());
   }
 
   public toggleDisplayMap = () => {

@@ -144,6 +144,7 @@ export default class Cars extends SelectableList<Car> {
   }
 
   public search = async (searchText: string): Promise<void> => {
+    this.setState({ refreshing: true });
     this.searchText = searchText;
     await this.refresh();
   };
