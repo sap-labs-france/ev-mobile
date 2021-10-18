@@ -249,13 +249,6 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         <ScrollView contentContainerStyle={style.scrollViewContainer}>
           <View style={style.viewContainer}>

@@ -353,7 +353,8 @@
     "noChargers": "Tato sekce parkoviště nemá žádnou nabíječku",
     "noSiteAreas": "Nebyly nalezeny žádné sekce parkoviště",
     "siteAreaUnexpectedError": "Nelze načíst sekce parkoviště",
-    "siteAreas": "Sekce parkoviště"
+    "siteAreas": "Sekce parkoviště",
+    "siteArea": "Site Area"
   },
   "chargers": {
     "title": "Nabíjecí stanice",

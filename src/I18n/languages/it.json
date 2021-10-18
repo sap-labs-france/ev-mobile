@@ -353,7 +353,8 @@
     "noChargers": "Questa Area del Sito non ha Caricatori",
     "noSiteAreas": "Nessuna Area del Sito trovata",
     "siteAreaUnexpectedError": "Impossibile leggere le aree del sito",
-    "siteAreas": "Site Area(s)"
+    "siteAreas": "Site Areas",
+    "siteArea": "Site Area"
   },
   "chargers": {
     "title": "Stazione di Ricarica",

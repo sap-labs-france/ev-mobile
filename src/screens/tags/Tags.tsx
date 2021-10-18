@@ -1,6 +1,6 @@
 import { DrawerActions } from '@react-navigation/native';
 import i18n, { default as I18n } from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -152,12 +152,11 @@ export default class Tags extends SelectableList<Tag> {
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
+          modalized={isModal}
+          backArrow={!isModal}
+          sideBar={!isModal}
           navigation={this.props.navigation}
-          leftAction={isModal ? null : this.onBack}
           displayTenantLogo={false}
-          leftActionIcon={isModal ? null : 'navigate-before'}
-          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
-          rightActionIcon={isModal ? null : 'menu'}
         />
         <View style={style.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />

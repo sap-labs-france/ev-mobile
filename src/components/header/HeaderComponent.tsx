@@ -1,40 +1,38 @@
-import { Body, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
-import { BackHandler, Image, ImageStyle, View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Text, BackHandler } from 'react-native';
 
-import defaultTenantLogo from '../../../assets/logo-low.png';
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
 import computeStyleSheet from './HeaderComponentStyles';
+import { DrawerActions } from '@react-navigation/native';
 
 export interface Props extends BaseProps {
   title: string;
   subTitle?: string;
-  hideHomeAction?: boolean;
-  leftAction?: () => boolean;
-  leftActionIcon?: string;
-  leftActionIconType?: IconType;
-  rightAction?: () => boolean;
-  rightActionIcon?: string;
-  rightActionIconType?: IconType;
-  filters?: any;
-  displayMap?: boolean;
-  mapIsDisplayed?: boolean;
-  displayMapAction?: () => void;
-  tenantLogo?: string;
-  displayTenantLogo?: boolean;
+  actions?: HeaderAction[];
+  modalized?: boolean;
+  backArrow?: boolean;
+  sideBar?: boolean;
 }
 
 interface State {
   hasFilter?: boolean;
 }
 
+export interface HeaderAction {
+  onPress?: () => void;
+  renderIcon?: () => React.ReactElement;
+}
+
 export default class HeaderComponent extends React.Component<Props, State> {
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
     rightActionIconType: 'MaterialIcons',
-    displayTenantLogo: true
+    displayTenantLogo: true,
+    backArrow: true,
+    sideBar: true
   };
   public state: State;
   public props: Props;
@@ -66,98 +64,61 @@ export default class HeaderComponent extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-    const { leftAction } = this.props;
     // Left Action is always Back
-    if (leftAction) {
-      BackHandler.addEventListener('hardwareBackPress', leftAction);
-    }
+    const { navigation } = this.props;
+    BackHandler.addEventListener('hardwareBackPress', () => {navigation.goBack(); return true;} );
   }
 
   public componentWillUnmount() {
-    const { leftAction } = this.props;
+    const { navigation } = this.props;
     // Left Action is always Back
-    if (leftAction) {
-      BackHandler.removeEventListener('hardwareBackPress', leftAction);
-    }
+    BackHandler.removeEventListener('hardwareBackPress', () => {navigation.goBack(); return true;});
   }
 
   public render = () => {
     const style = computeStyleSheet();
-    const { hasFilter } = this.state;
-    const {
-      title,
-      subTitle,
-      leftAction,
-      leftActionIcon,
-      leftActionIconType,
-      rightAction,
-      rightActionIcon,
-      rightActionIconType,
-      hideHomeAction,
-      tenantLogo,
-      displayMap,
-      displayMapAction,
-      mapIsDisplayed,
-      navigation,
-      displayTenantLogo
-    } = this.props;
+    const { title, subTitle, navigation, modalized, actions, backArrow, sideBar } = this.props;
     return (
-      <Header style={style.header}>
-        <Left style={style.leftHeader}>
-          {leftAction ? (
-            <View style={style.leftHeader}>
-              <Icon type={leftActionIconType} name={leftActionIcon} style={style.iconLeftHeader} onPress={leftAction} />
-              {!hideHomeAction && (
-                <Icon type="MaterialIcons" name="home" style={style.iconLeftHeader} onPress={() => navigation.navigate('HomeNavigator')} />
-              )}
-            </View>
-          ) : (
-            displayTenantLogo && (
-              <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
-            )
+      <View style={[style.header, modalized && style.modalHeader]}>
+        <View style={style.leftHeader}>
+          {backArrow && (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon type={'Feather'} name={'arrow-left'} />
+            </TouchableOpacity>
           )}
-        </Left>
-        <Body style={style.bodyHeader}>
-          <Title style={[style.titleHeader, subTitle ? style.titleHeaderWithSubTitle : null]}>{title}</Title>
-          {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
-        </Body>
-        <Right style={style.rightHeader}>
-          {hasFilter && (
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
+            {title} {subTitle}
+          </Text>
+        </View>
+        <View style={style.actionsContainer}>
+          {actions?.map((action, index) => (
+            <TouchableOpacity style={style.action} key={index} onPress={action.onPress}>
+              {action.renderIcon?.()}
+            </TouchableOpacity>
+          ))}
+          {this.filterModalContainerComponent && (
             <TouchableOpacity
               onPress={() => {
-                // Show Filter Search
-                if (this.filterModalContainerComponent) {
-                  this.filterModalContainerComponent.setVisible(true);
-                }
+                this.filterModalContainerComponent.setVisible(true);
+                return true;
               }}>
               <Icon
                 type={'MaterialCommunityIcons'}
-                name={
-                  this.filterModalContainerComponent && this.filterModalContainerComponent.getNumberOfFilters() > 0
-                    ? 'filter'
-                    : 'filter-outline'
-                }
-                style={style.iconRightHeader}
+                name={this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'}
               />
             </TouchableOpacity>
           )}
-          {displayMap && (
-            <Icon
-              type="FontAwesome5"
-              name={mapIsDisplayed ? 'list' : 'map-marked-alt'}
-              style={style.mapListIcon}
-              onPress={displayMapAction}
-            />
+          {sideBar && (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.dispatch(DrawerActions.openDrawer());
+                return true;
+              }}>
+              <Icon type={'Feather'} name={'menu'} />
+            </TouchableOpacity>
           )}
-          {rightAction ? (
-            <Icon type={rightActionIconType} name={rightActionIcon} style={style.iconRightHeader} onPress={rightAction} />
-          ) : (
-            displayTenantLogo && (
-              <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
-            )
-          )}
-        </Right>
-      </Header>
+        </View>
+      </View>
     );
   };
 }

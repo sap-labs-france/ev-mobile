@@ -33,6 +33,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       paddingHorizontal: '5@s'
     },
+    closeIcon: {
+      alignSelf: 'flex-end',
+      margin: '5@s'
+    },
     rightIcon: {
       textAlign: 'right'
     },
@@ -69,7 +73,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       alignItems: 'center',
       padding: '5@s',
-      backgroundColor: commonColor.listHeaderBackground,
+      backgroundColor: commonColor.listBg,
       borderTopLeftRadius: '20@s',
       borderTopRightRadius: '20@s'
     },
@@ -103,7 +107,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'center'
     },
     spinnerContainer: {
-      width: '95%',
+      width: '100%',
       height: '90@s'
     },
     buttonContainer: {

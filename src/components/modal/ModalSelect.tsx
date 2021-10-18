@@ -8,7 +8,7 @@ import computeStyleSheet from './ModalStyles';
 import I18n from 'i18n-js';
 import SelectableList from '../../screens/base-screen/SelectableList';
 import ListItem from '../../types/ListItem';
-import { TouchableOpacity } from 'react-native';
+import { TouchableHighlight, TouchableOpacity } from 'react-native';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 
 export interface Props<T> extends BaseProps {
@@ -74,12 +74,9 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           hideModalContentWhileAnimating={true}>
           <View style={style.modalContainer}>
             <View style={style.modalHeader}>
-              <Icon
-                onPress={() => this.setState({ isVisible: false })}
-                type="MaterialIcons"
-                name={'expand-more'}
-                style={[style.icon, style.downArrow]}
-              />
+              <TouchableHighlight style={style.closeIcon} onPress={() => this.setState({ isVisible: false })}>
+                <Icon type="MaterialIcons" name={'close'} />
+              </TouchableHighlight>
             </View>
             <View style={style.listContainer}>
               {React.cloneElement(itemsList, {

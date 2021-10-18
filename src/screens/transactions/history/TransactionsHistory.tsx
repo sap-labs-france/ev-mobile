@@ -1,6 +1,6 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -204,15 +204,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           }}
           navigation={navigation}
           title={I18n.t('transactions.transactionsHistory')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-          filters={filters}
+          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
         <View style={style.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />

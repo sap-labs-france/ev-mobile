@@ -143,11 +143,7 @@ export default class Home extends BaseScreen<Props, State> {
             <HeaderComponent
               navigation={navigation}
               title={I18n.t('sidebar.home')}
-              rightAction={() => {
-                navigation.dispatch(DrawerActions.openDrawer());
-                return true;
-              }}
-              rightActionIcon={'menu'}
+              backArrow={false}
               tenantLogo={this.centralServerProvider?.getCurrentTenantLogo()}
             />
             <ScrollView contentContainerStyle={cardStyle.cards}>

@@ -253,13 +253,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           navigation={this.props.navigation}
           title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
           subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         {/* Site Image */}
         <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />

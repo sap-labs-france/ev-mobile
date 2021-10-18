@@ -353,7 +353,8 @@
     "noChargers": "Esta área de carregemento não tem carga",
     "noSiteAreas": "Área de carregamento não encontrada",
     "siteAreaUnexpectedError": "Não posso ler as areas de carregamento",
-    "siteAreas": "Site Area(s)"
+    "siteAreas": "Site Areas",
+    "siteArea": "Site Area"
   },
   "chargers": {
     "title": "Estáções de Carregamento",
