@@ -153,6 +153,9 @@ export default class CarCatalogs extends SelectableList<Car> {
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
+          modalized={isModal}
+          backArrow={!isModal}
+          sideBar={!isModal}
           navigation={this.props.navigation}
           leftAction={isModal ? null : this.onBack}
           leftActionIcon={isModal ? null : 'navigate-before'}

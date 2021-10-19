@@ -109,14 +109,8 @@ export default class Tenants extends BaseScreen<Props, State> {
             <HeaderComponent
               navigation={this.props.navigation}
               title={I18n.t('general.tenants')}
-              rightActionIcon={null}
+              sideBar={false}
               hideHomeAction
-              leftActionIcon="navigate-before"
-              leftActionIconType="MaterialIcons"
-              leftAction={() => {
-                this.props.navigation.goBack();
-                return true;
-              }}
             />
             <View style={style.listContainer}>
               <FlatList
