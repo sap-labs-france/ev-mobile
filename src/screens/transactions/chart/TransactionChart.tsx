@@ -360,13 +360,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
           subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         {showTransactionDetails && transaction && (
           <TransactionHeaderComponent

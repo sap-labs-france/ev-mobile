@@ -206,14 +206,6 @@ export default class Statistics extends BaseScreen<Props, State> {
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('home.statistics')}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-          filters={filters}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />

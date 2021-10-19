@@ -125,15 +125,8 @@ export default class Invoices extends BaseScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           title={i18n.t('sidebar.invoices')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${i18n.t('invoices.invoices')}` : null}
+          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
           navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />

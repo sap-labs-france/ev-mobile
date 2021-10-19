@@ -353,7 +353,8 @@
     "noChargers": "This Site Area has no Charger",
     "noSiteAreas": "No Site Area found",
     "siteAreaUnexpectedError": "Cannot read the site areas",
-    "siteAreas": "Site Area(s)"
+    "siteAreas": "Site Areas",
+    "siteArea": "Site Area"
   },
   "chargers": {
     "title": "Charging Stations",

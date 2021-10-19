@@ -353,7 +353,8 @@
     "noChargers": "Cette Zone n'a pas de Borne",
     "noSiteAreas": "Aucune Zone trouvée",
     "siteAreaUnexpectedError": "Impossible de lire les zones",
-    "siteAreas": "Zone(s)"
+    "siteAreas": "Zones",
+    "siteArea": "Zone"
   },
   "chargers": {
     "title": "Bornes",

@@ -160,13 +160,6 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         {paymentMethodToBeDeleted && this.renderDeletePaymentMethodDialog(paymentMethodToBeDeleted)}
         {loading ? (

@@ -164,15 +164,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-          filters={filters}
+          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />

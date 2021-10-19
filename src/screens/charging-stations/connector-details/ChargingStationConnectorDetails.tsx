@@ -895,13 +895,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : '-'}
           subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         {/* Site Image */}
         <ImageBackground source={siteImage ? { uri: siteImage } : noSite} style={style.backgroundImage as ImageStyle}>
