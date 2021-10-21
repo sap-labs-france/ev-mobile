@@ -289,7 +289,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     let showNoBadgeErrorMessage: boolean;
     let showBadgeInactiveErrorMessage: boolean;
     let showBillingErrorMessage: boolean;
-    let showStartTransactionDialog = this.state.showStartTransactionDialog;
+    let showStartTransactionDialog: boolean;
     let showAdviceMessage = false;
     let buttonDisabled = false;
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
@@ -369,7 +369,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // await this.loadSelectedUserDefaultTagAndCar(this.state.selectedUser);
 
     this.setState({
-      showStartTransactionDialog,
+      showStartTransactionDialog: this.state.showStartTransactionDialog ?? showStartTransactionDialog,
       showBillingErrorMessage,
       showNoBadgeErrorMessage,
       showBadgeInactiveErrorMessage,
