@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
@@ -70,7 +69,6 @@ export interface State {
   showBillingErrorMessage?: boolean;
   transactionPending?: boolean;
   didPreparing?: boolean;
-  startTransactionDialogWasClosed?: boolean;
   showAdviceMessage?: boolean;
   transactionPendingTimesUp?: boolean;
   showChargingSettings?: boolean;
@@ -104,7 +102,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       startTransactionNbTrial: 0,
       isPricingActive: false,
       refreshing: false,
-      showStartTransactionDialog: false,
+      showStartTransactionDialog: undefined,
       showStopTransactionDialog: false,
       selectedUser: null,
       selectedCar: null,
@@ -116,7 +114,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       transactionPending: false,
       showAdviceMessage: false,
       didPreparing: false,
-      startTransactionDialogWasClosed: false,
       transactionPendingTimesUp: false,
       showChargingSettings: undefined
     };
@@ -359,8 +356,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (
       startTransactionFromQRCode &&
       (connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING) &&
-      !buttonDisabled &&
-      !this.state.startTransactionDialogWasClosed
+      !buttonDisabled
     ) {
       showStartTransactionDialog = true;
     }
@@ -373,7 +369,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // await this.loadSelectedUserDefaultTagAndCar(this.state.selectedUser);
 
     this.setState({
-      showStartTransactionDialog,
+      showStartTransactionDialog: this.state.showStartTransactionDialog ?? showStartTransactionDialog,
       showBillingErrorMessage,
       showNoBadgeErrorMessage,
       showBadgeInactiveErrorMessage,
@@ -1220,14 +1216,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <DialogModal
         title={I18n.t('details.startTransaction')}
         withCloseButton={true}
-        close={() => this.setState({ showStartTransactionDialog: false, startTransactionDialogWasClosed: true })}
+        close={() => this.setState({ showStartTransactionDialog: false })}
         renderIcon={(style) => <Icon style={style} type={'MaterialIcons'} name={'play-circle-outline'} />}
         description={I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStationID })}
         buttons={[
           {
             text: I18n.t('general.yes'),
             action: () =>
-              this.setState({ showStartTransactionDialog: false, startTransactionDialogWasClosed: true }, async () =>
+              this.setState({ showStartTransactionDialog: false }, async () =>
                 this.startTransaction()
               ),
             buttonTextStyle: modalCommonStyle.primaryButton,
@@ -1235,7 +1231,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           },
           {
             text: I18n.t('general.no'),
-            action: () => this.setState({ showStartTransactionDialog: false, startTransactionDialogWasClosed: true }),
+            action: () => this.setState({ showStartTransactionDialog: false }),
             buttonTextStyle: modalCommonStyle.primaryButton,
             buttonStyle: modalCommonStyle.primaryButton
           }
