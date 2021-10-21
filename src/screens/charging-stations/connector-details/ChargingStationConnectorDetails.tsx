@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
@@ -292,7 +291,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     let showNoBadgeErrorMessage: boolean;
     let showBadgeInactiveErrorMessage: boolean;
     let showBillingErrorMessage: boolean;
-    let showStartTransactionDialog: boolean;
+    let showStartTransactionDialog = this.state.showStartTransactionDialog;
     let showAdviceMessage = false;
     let buttonDisabled = false;
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
