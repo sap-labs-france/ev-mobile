@@ -1,6 +1,5 @@
-import { DrawerActions } from '@react-navigation/native';
 import { default as I18n } from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -87,13 +86,6 @@ export default class Users extends SelectableList<User> {
     return null;
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
-    // Do not bubble up
-    return true;
-  };
-
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
@@ -149,7 +141,6 @@ export default class Users extends SelectableList<User> {
           subTitle={this.buildHeaderSubtitle()}
           modalized={isModal}
           backArrow={!isModal}
-          sideBar={!isModal}
           navigation={this.props.navigation}
           displayTenantLogo={false}
         />

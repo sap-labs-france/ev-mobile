@@ -24,7 +24,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       fontSize: '14@s',
       height: '100%',
-      paddingVertical: 0
+      paddingVertical: 0,
+      color: commonColor.textColor
     },
     icon: {
       paddingLeft: '5@s',

@@ -14,6 +14,7 @@ export interface Props extends BaseProps {
   actions?: HeaderAction[];
   modalized?: boolean;
   backArrow?: boolean;
+  backAction?: () => void;
   sideBar?: boolean;
 }
 
@@ -32,7 +33,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
     rightActionIconType: 'MaterialIcons',
     displayTenantLogo: true,
     backArrow: true,
-    sideBar: true
+    sideBar: false
   };
   public state: State;
   public props: Props;
@@ -63,26 +64,23 @@ export default class HeaderComponent extends React.Component<Props, State> {
     });
   }
 
-  public componentDidMount() {
-    // Left Action is always Back
-    const { navigation } = this.props;
-    BackHandler.addEventListener('hardwareBackPress', () => {navigation.goBack(); return true;} );
-  }
-
-  public componentWillUnmount() {
-    const { navigation } = this.props;
-    // Left Action is always Back
-    BackHandler.removeEventListener('hardwareBackPress', () => {navigation.goBack(); return true;});
-  }
-
   public render = () => {
     const style = computeStyleSheet();
-    const { title, subTitle, navigation, modalized, actions, backArrow, sideBar } = this.props;
+    const { title, subTitle, navigation, modalized, actions, backArrow, sideBar, backAction } = this.props;
     return (
       <View style={[style.header, modalized && style.modalHeader]}>
         <View style={style.leftHeader}>
+          {sideBar && (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.dispatch(DrawerActions.openDrawer());
+                return true;
+              }}>
+              <Icon style={style.icon} type={'Feather'} name={'menu'} />
+            </TouchableOpacity>
+          )}
           {backArrow && (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={backAction ?? (() => navigation.goBack())}>
               <Icon type={'Feather'} name={'arrow-left'} />
             </TouchableOpacity>
           )}
@@ -106,15 +104,6 @@ export default class HeaderComponent extends React.Component<Props, State> {
                 type={'MaterialCommunityIcons'}
                 name={this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'}
               />
-            </TouchableOpacity>
-          )}
-          {sideBar && (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.dispatch(DrawerActions.openDrawer());
-                return true;
-              }}>
-              <Icon type={'Feather'} name={'menu'} />
             </TouchableOpacity>
           )}
         </View>

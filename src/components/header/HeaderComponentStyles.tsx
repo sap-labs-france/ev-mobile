@@ -4,7 +4,6 @@ import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
-import { PLATFORM } from '../../theme/variables/commonColor';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
@@ -18,9 +17,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       margin: 0,
       borderBottomWidth: 0,
       borderTopWidth: 0,
-      paddingTop: Platform.OS === PLATFORM.IOS ? scale(20) + getStatusBarHeight() : scale(10) + getStatusBarHeight(),
+      paddingTop: scale(10) + getStatusBarHeight(),
       backgroundColor: commonColor.containerBgColor,
       elevation: 0
+    },
+    icon: {
+      color: commonColor.textColor,
+      fontSize: '20@s'
     },
     modalHeader: {
       paddingTop: '10@s'
@@ -45,7 +48,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '90%',
       fontSize: '17@s',
       textAlign: 'left',
-      marginLeft: '5@s'
+      marginLeft: '15@s'
     },
     titleHeaderWithSubTitle: {
       fontSize: '16@s'
@@ -63,7 +66,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       resizeMode: 'contain'
     },
     iconLeftHeader: {
-      fontSize: '30@s',
+      fontSize: '25@s',
       color: commonColor.textColor,
       width: '35@s'
     },

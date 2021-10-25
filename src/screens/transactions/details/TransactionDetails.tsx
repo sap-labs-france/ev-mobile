@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Icon, Spinner, Text, View } from 'native-base';

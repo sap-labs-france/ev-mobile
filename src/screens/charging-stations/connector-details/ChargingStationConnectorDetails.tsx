@@ -1,13 +1,22 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, ImageBackground, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  Alert,
+  ImageBackground,
+  ImageStyle,
+  RefreshControl,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
 import noSite from '../../../../assets/no-site.png';
 import CarComponent from '../../../components/car/CarComponent';
-import ChargingStationConnectorComponent from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
-import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
+import ChargingStationConnectorComponent
+  from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
+import ConnectorStatusComponent
+  from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
 import computeListItemCommonStyle from '../../../components/list/ListItemCommonStyle';
@@ -312,7 +321,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // When Scanning a QR-Code, redirect if a session is already in progress. (if the connector has a non null userID)
     if (startTransactionFromQRCode && connector?.currentUserID) {
       Message.showWarning(I18n.t('transactions.sessionAlreadyInProgressError'));
-      this.onBack();
+      this.props.navigation.goBack();
       return;
     }
     // Get the site image if not already fetched
@@ -573,7 +582,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         }
         // Soft Stop Transaction
       } else {
-        const response = await this.centralServerProvider.softStopstopTransaction(connector.currentTransactionID);
+        const response = await this.centralServerProvider.softStopTransaction(connector.currentTransactionID);
         if (response?.status === 'Invalid') {
           Message.showError(I18n.t('details.denied'));
         } else {
@@ -857,15 +866,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   };
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.reset({index: 0, routes: [{name: 'ChargingStations'}]});
-    // Do not bubble up
-    return true;
-  };
-
   public render() {
-    const { navigation } = this.props;
     const { showChargingSettings } = this.state;
     const style = computeStyleSheet();
     const {
@@ -998,8 +999,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         this.props.navigation,
         this.refresh.bind(this)
       );
+      return null;
     }
-    return null;
   }
 
   private renderAdviceMessage(style: any) {
@@ -1031,8 +1032,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               {selectedUser?.id === this.currentUser.id && (
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('PaymentMethodsNavigator', {
-                      screen: 'StripePaymentMethodCreationForm',
+                    navigation.navigate('AddPaymentMethod', {
                       params: {
                         connectorID: connector?.connectorId,
                         chargingStationID: chargingStation?.id,
@@ -1116,13 +1116,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           {(this.currentUser?.id === selectedUser?.id || this.securityProvider.canListUsers()) && (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('CarsNavigator', {
-                  screen: 'AddCar',
+                navigation.navigate('AddCar', {
                   params: {
                     connectorID: connector?.connectorId,
                     chargingStationID: chargingStation?.id,
                     user: selectedUser,
-                    tag: selectedTag
+                    tag: selectedTag,
+                    key: this.props.key
                   }
                 })
               }
@@ -1195,18 +1195,22 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private async loadSelectedUserDefaultTagAndCar(selectedUser: User): Promise<void> {
     this.setState({ tagCarLoading: true });
-    const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser);
-    this.carModalRef.current?.clearInput();
-    this.tagModalRef.current?.clearInput();
-    // Temporary workaround to ensure that the default property is set (server-side changes are to be done)
-    if (userDefaultTagCar.tag) {
-      userDefaultTagCar.tag.default = true;
+    try {
+      const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser);
+      this.carModalRef.current?.clearInput();
+      this.tagModalRef.current?.clearInput();
+      // Temporary workaround to ensure that the default property is set (server-side changes are to be done)
+      if (userDefaultTagCar?.tag) {
+        userDefaultTagCar.tag.default = true;
+      }
+      // Temporary workaround to ensure that the default car has all the needed properties (server-side changes are to be done)
+      if (userDefaultTagCar?.car) {
+        userDefaultTagCar.car.user = selectedUser;
+      }
+      this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
+    } catch ( error ) {
+      this.setState({tagCarLoading: false})
     }
-    // Temporary workaround to ensure that the default car has all the needed properties (server-side changes are to be done)
-    if (userDefaultTagCar.car) {
-      userDefaultTagCar.car.user = selectedUser;
-    }
-    this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
   }
 
   private renderStartTransactionDialog() {

@@ -2,7 +2,6 @@ import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
-import { DrawerActions } from '@react-navigation/native';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './AddCarStyle';
 import ModalSelect from '../../components/modal/ModalSelect';
@@ -87,7 +86,24 @@ export default class AddCar extends BaseScreen<Props, State> {
     const { navigation } = this.props;
     const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as unknown as number;
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as unknown as string;
-    if (connectorID !== null && chargingStationID) {
+    const key = Utils.getParamFromNavigation(this.props.route, 'key', null) as unknown as string;
+    navigation.goBack();
+    return true;
+/*    navigation.dispatch(
+      CommonActions.setParams({
+        source: Utils.getParamFromNavigation(this.props.route, 'key', null) as unknown as string,
+        params: {
+          chargingStationID,
+          connectorID,
+          user: this.user,
+          tag: Utils.getParamFromNavigation(this.props.route, 'tag', null),
+          showChargingSettings: true
+        }
+      })
+    );
+    navigation.goBack(Utils.getParamFromNavigation(this.props.route, 'key', null) as unknown as string);
+    return true;*/
+/*    if (connectorID !== null && chargingStationID) {
       navigation.navigate('ChargingStationsNavigator', {
         screen: 'ChargingStationConnectorDetailsTabs',
         params: {
@@ -104,7 +120,7 @@ export default class AddCar extends BaseScreen<Props, State> {
     } else {
       navigation.goBack();
       return true;
-    }
+    }*/
   }
 
   public render() {
@@ -128,13 +144,6 @@ export default class AddCar extends BaseScreen<Props, State> {
         <HeaderComponent
           title={I18n.t('cars.addCarTitle')}
           navigation={navigation}
-          leftAction={this.onBack.bind(this)}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         <ScrollView style={style.scrollview} contentContainerStyle={style.content}>
           <Input
@@ -403,7 +412,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         const response = await this.centralServerProvider.createCar(car, forced);
         if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
-          this.onBack();
+          this.props.navigation.goBack();
         } else {
           Message.showError(I18n.t('cars.addError'));
         }

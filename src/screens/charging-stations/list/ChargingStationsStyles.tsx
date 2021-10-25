@@ -32,6 +32,64 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     filtersHidden: {
       opacity: 0,
       height: '0@s'
+    },
+    fab: {
+      zIndex: 1,
+      elevation: 4,
+      backgroundColor: commonColor.primary,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62,
+      marginTop: '15@s',
+      width: '55@s',
+      height: '55@s',
+      borderRadius: '55@s',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    mapFab: {
+      padding: 0,
+      marginHorizontal: 0,
+      marginVertical: 0,
+      margin: 0,
+      paddingHorizontal: 0,
+      paddingVertical: 0,
+      width: '55@s',
+      height: '55@s',
+      borderRadius: '55@s'
+    },
+    fabContainer: {
+      position: 'absolute',
+      zIndex: 1,
+      bottom: 0,
+      right: 0,
+      margin: '14@s',
+      flexDirection: 'column'
+    },
+    imageStyle: {
+      height: '100%',
+      width: '100%',
+      padding: 0,
+      borderRadius: '60@s'
+    },
+    cluster: {
+      backgroundColor: commonColor.containerBgColor,
+      padding: '10@s',
+      width: '50@s',
+      height: '50@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: '50@s',
+      borderWidth: 1,
+      borderColor: commonColor.textColor,
+      zIndex: 1
+    },
+    text: {
+      color: commonColor.textColor,
+      fontSize: '14@s'
     }
   });
   const portraitStyles = {};

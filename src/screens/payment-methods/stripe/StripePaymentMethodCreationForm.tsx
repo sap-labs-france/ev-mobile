@@ -101,7 +101,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   }
 
   function onBack() {
-    const connectorID = Utils.getParamFromNavigation(props.route, 'connectorID', null) as unknown as number;
+/*    const connectorID = Utils.getParamFromNavigation(props.route, 'connectorID', null) as unknown as number;
     const chargingStationID = Utils.getParamFromNavigation(props.route, 'chargingStationID', null) as unknown as string;
     if (connectorID !== null && chargingStationID) {
       props.navigation.navigate('ChargingStationsNavigator', {
@@ -117,7 +117,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
         }
       });
       return true;
-    }
+    }*/
     props.navigation.goBack();
     return true;
     // Do not bubble up
@@ -146,13 +146,6 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       <HeaderComponent
         title={I18n.t('paymentMethods.addPaymentMethod')}
         navigation={props.navigation}
-        leftAction={onBack}
-        leftActionIcon={'navigate-before'}
-        rightAction={() => {
-          props.navigation.dispatch(DrawerActions.openDrawer());
-          return true;
-        }}
-        rightActionIcon={'menu'}
       />
       {isBillingSetUp === false && renderBillingErrorMessage()}
       <CardField

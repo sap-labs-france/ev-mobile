@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import moment from 'moment';
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import BaseProps from '../../types/BaseProps';
@@ -57,7 +57,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
               disabled={!validGPSCoordinates}
               onPress={() => Utils.jumpToMapWithCoordinates(chargingStation.id, chargingStation.coordinates)}>
               {validGPSCoordinates ? (
-                <Icon style={[style.icon, style.iconLeft]} type="MaterialIcons" name="place" />
+                <Icon style={[style.icon, style.iconLeft]} type="MaterialCommunityIcons" name="directions" />
               ) : (
                 <Icon style={[style.icon, style.iconLeft]} type="MaterialCommunityIcons" name="map-marker-off" />
               )}
