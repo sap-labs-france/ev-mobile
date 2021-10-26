@@ -131,10 +131,6 @@ export default class SideBar extends BaseScreen<Props, State> {
         </Header>
         <Content style={style.drawerContent}>
           <View style={style.linkContainer}>
-            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('HomeNavigator', 'Home')}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="home" />
-              <Text style={style.linkText}>{I18n.t('sidebar.home')}</Text>
-            </ListItem>
             {isComponentOrganizationActive && (
               <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
