@@ -100,29 +100,6 @@ export default function StripePaymentMethodCreationForm(props: Props) {
     }
   }
 
-  function onBack() {
-/*    const connectorID = Utils.getParamFromNavigation(props.route, 'connectorID', null) as unknown as number;
-    const chargingStationID = Utils.getParamFromNavigation(props.route, 'chargingStationID', null) as unknown as string;
-    if (connectorID !== null && chargingStationID) {
-      props.navigation.navigate('ChargingStationsNavigator', {
-        screen: 'ChargingStationConnectorDetailsTabs',
-        params: {
-          params: {
-            chargingStationID,
-            connectorID,
-            user: this.user,
-            tag: Utils.getParamFromNavigation(props.route, 'tag', null),
-            showChargingSettings: true
-          }
-        }
-      });
-      return true;
-    }*/
-    props.navigation.goBack();
-    return true;
-    // Do not bubble up
-  }
-
   function renderBillingErrorMessage() {
     return (
       <View>

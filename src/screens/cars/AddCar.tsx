@@ -82,47 +82,6 @@ export default class AddCar extends BaseScreen<Props, State> {
     Orientation.unlockAllOrientations();
   }
 
-  public onBack(): boolean {
-    const { navigation } = this.props;
-    const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as unknown as number;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as unknown as string;
-    const key = Utils.getParamFromNavigation(this.props.route, 'key', null) as unknown as string;
-    navigation.goBack();
-    return true;
-/*    navigation.dispatch(
-      CommonActions.setParams({
-        source: Utils.getParamFromNavigation(this.props.route, 'key', null) as unknown as string,
-        params: {
-          chargingStationID,
-          connectorID,
-          user: this.user,
-          tag: Utils.getParamFromNavigation(this.props.route, 'tag', null),
-          showChargingSettings: true
-        }
-      })
-    );
-    navigation.goBack(Utils.getParamFromNavigation(this.props.route, 'key', null) as unknown as string);
-    return true;*/
-/*    if (connectorID !== null && chargingStationID) {
-      navigation.navigate('ChargingStationsNavigator', {
-        screen: 'ChargingStationConnectorDetailsTabs',
-        params: {
-          params: {
-            chargingStationID,
-            connectorID,
-            user: this.user,
-            tag: Utils.getParamFromNavigation(this.props.route, 'tag', null),
-            showChargingSettings: true
-          }
-        }
-      });
-      return true;
-    } else {
-      navigation.goBack();
-      return true;
-    }*/
-  }
-
   public render() {
     const { navigation } = this.props;
     const {
