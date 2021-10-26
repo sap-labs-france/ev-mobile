@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
 import { BackHandler, Image, ImageStyle, NativeEventSubscription, Platform, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { ClusterMap } from 'react-native-cluster-map';
@@ -394,6 +394,12 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           navigation={navigation}
           title={this.siteArea?.name ?? I18n.t('chargers.title')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
+          actions={[
+            {
+              onPress: () => navigation.navigate('QRCodeScanner'),
+              renderIcon: () => <Icon type={'MaterialIcons'} name={'qr-code-scanner'} style={style.icon} />
+            }
+          ]}
           sideBar={true}
           backArrow={false}
         />

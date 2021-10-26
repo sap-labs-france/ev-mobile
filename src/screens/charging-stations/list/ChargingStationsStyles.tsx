@@ -90,6 +90,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     text: {
       color: commonColor.textColor,
       fontSize: '14@s'
+    },
+    icon: {
+      color: commonColor.textColor,
+      fontSize: '20@s'
     }
   });
   const portraitStyles = {};
