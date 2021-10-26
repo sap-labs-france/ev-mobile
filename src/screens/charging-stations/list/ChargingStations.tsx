@@ -29,6 +29,9 @@ import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
 import { FAB } from 'react-native-paper';
+import standardLayout from '../../../../assets/map/standard.png';
+import satelliteLayout from '../../../../assets/map/satellite.png';
+
 
 export interface Props extends BaseProps {}
 
@@ -381,7 +384,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           {showMap && (
             <TouchableOpacity style={style.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
               <Image
-                source={satelliteMap ? require('../../../../assets/map/standard.png') : require('../../../../assets/map/terrain.png')}
+                source={satelliteMap ? standardLayout : satelliteLayout}
                 style={style.imageStyle as ImageStyle}
               />
             </TouchableOpacity>
