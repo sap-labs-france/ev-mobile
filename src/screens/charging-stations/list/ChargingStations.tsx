@@ -215,8 +215,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       this.setState({ showMap: true });
       return true;
     }
+    if (!!this.siteArea) {
+      this.props.navigation.goBack();
+      return true;
+    }
     BackHandler.exitApp();
-    // Do not bubble up
     return true;
   };
 
@@ -400,8 +403,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               renderIcon: () => <Icon type={'MaterialIcons'} name={'qr-code-scanner'} style={style.icon} />
             }
           ]}
-          sideBar={true}
-          backArrow={false}
+          sideBar={!this.siteArea}
+          backArrow={!!this.siteArea}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
