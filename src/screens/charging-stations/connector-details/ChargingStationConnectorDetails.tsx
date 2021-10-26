@@ -1,22 +1,13 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import {
-  Alert,
-  ImageBackground,
-  ImageStyle,
-  RefreshControl,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native';
+import { Alert, ImageBackground, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
 import noSite from '../../../../assets/no-site.png';
 import CarComponent from '../../../components/car/CarComponent';
-import ChargingStationConnectorComponent
-  from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
-import ConnectorStatusComponent
-  from '../../../components/connector-status/ConnectorStatusComponent';
+import ChargingStationConnectorComponent from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
+import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
 import computeListItemCommonStyle from '../../../components/list/ListItemCommonStyle';
@@ -1015,7 +1006,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   private renderBillingErrorMessages(style: any) {
-    const { userDefaultTagCar, selectedUser, selectedTag, connector, chargingStation } = this.state;
+    const { userDefaultTagCar, selectedUser } = this.state;
     const { navigation } = this.props;
     const listItemCommonStyle = computeListItemCommonStyle();
     // Check the error code
@@ -1030,17 +1021,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 {I18n.t('transactions.noPaymentMethodError')}
               </Text>
               {selectedUser?.id === this.currentUser.id && (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('AddPaymentMethod', {
-                      params: {
-                        connectorID: connector?.connectorId,
-                        chargingStationID: chargingStation?.id,
-                        user: selectedUser,
-                        tag: selectedTag
-                      }
-                    })
-                  }>
+                <TouchableOpacity onPress={() => navigation.navigate('AddPaymentMethod')}>
                   <View style={style.addItemContainer}>
                     <Text style={[style.linkText, style.plusSign]}>+</Text>
                     <Text ellipsizeMode={'tail'} style={[style.messageText, style.linkText, style.linkLabel]}>
@@ -1067,7 +1048,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <ModalSelect<User>
             disabled={disabled}
             openable={isAdmin}
-            renderItem={() => <UserComponent shadowed={true} user={selectedUser} navigation={navigation}/>}
+            renderItem={() => <UserComponent shadowed={true} user={selectedUser} navigation={navigation} />}
             defaultItem={selectedUser}
             onItemsSelected={this.onUserSelected.bind(this)}
             navigation={navigation}
@@ -1090,7 +1071,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           disabled={disabled}
           openable={true}
           renderNoItem={this.renderNoCar.bind(this)}
-          renderItem={() => <CarComponent shadowed={true} car={selectedCar} navigation={navigation} />}
+          renderItem={() => <CarComponent car={selectedCar} navigation={navigation} />}
           ref={this.carModalRef}
           defaultItem={selectedCar}
           defaultItemLoading={tagCarLoading}
@@ -1106,7 +1087,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private renderNoCar() {
     const listItemCommonStyle = computeListItemCommonStyle();
     const style = computeStyleSheet();
-    const { selectedUser, connector, chargingStation, selectedTag } = this.state;
+    const { selectedUser } = this.state;
     const { navigation } = this.props;
     return (
       <View style={[listItemCommonStyle.container, style.noItemContainer, style.noCarContainer]}>
@@ -1115,17 +1096,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
           {(this.currentUser?.id === selectedUser?.id || this.securityProvider.canListUsers()) && (
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('AddCar', {
-                  params: {
-                    connectorID: connector?.connectorId,
-                    chargingStationID: chargingStation?.id,
-                    user: selectedUser,
-                    tag: selectedTag,
-                    key: this.props.key
-                  }
-                })
-              }
+              onPress={() => navigation.navigate('AddCar', { params: { user: selectedUser } })}
               style={style.addItemContainer}>
               <Text style={[style.linkText, style.plusSign]}>+</Text>
               <Text style={[style.messageText, style.linkText, style.linkLabel]}>{I18n.t('cars.addCarTitle')}</Text>
@@ -1208,8 +1179,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         userDefaultTagCar.car.user = selectedUser;
       }
       this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
-    } catch ( error ) {
-      this.setState({tagCarLoading: false})
+    } catch (error) {
+      this.setState({ tagCarLoading: false });
     }
   }
 
@@ -1226,10 +1197,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         buttons={[
           {
             text: I18n.t('general.yes'),
-            action: () =>
-              this.setState({ showStartTransactionDialog: false }, async () =>
-                this.startTransaction()
-              ),
+            action: () => this.setState({ showStartTransactionDialog: false }, async () => this.startTransaction()),
             buttonTextStyle: modalCommonStyle.primaryButton,
             buttonStyle: modalCommonStyle.primaryButton
           },
