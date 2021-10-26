@@ -70,7 +70,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
     return (
       <View style={[style.header, modalized && style.modalHeader]}>
         <View style={style.leftHeader}>
-          {sideBar && (
+          {sideBar ? (
             <TouchableOpacity
               onPress={() => {
                 navigation.dispatch(DrawerActions.openDrawer());
@@ -78,11 +78,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
               }}>
               <Icon style={style.icon} type={'Feather'} name={'menu'} />
             </TouchableOpacity>
-          )}
-          {backArrow && (
-            <TouchableOpacity onPress={backAction ?? (() => navigation.goBack())}>
-              <Icon type={'Feather'} name={'arrow-left'} />
-            </TouchableOpacity>
+          ) : (
+            backArrow && (
+              <TouchableOpacity onPress={backAction ?? (() => navigation.goBack())}>
+                <Icon style={style.icon} type={'Feather'} name={'arrow-left'} />
+              </TouchableOpacity>
+            )
           )}
           <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
             {title} {subTitle}

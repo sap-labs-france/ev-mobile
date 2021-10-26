@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { scale, ScaledSheet } from 'react-native-size-matters';
 
@@ -31,17 +31,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     leftHeader: {
       flexDirection: 'row',
       alignItems: 'center',
-      flex: 1
-    },
-    rightHeader: {
-      flexDirection: 'row',
-      alignItems: 'center'
-    },
-    bodyHeader: {
-      flex: 4,
-      paddingLeft: Platform.OS === 'ios' ? 0 : '40@s',
-      height: '100%',
-      justifyContent: 'center'
+      flex: 1,
+      marginLeft: '2.5%'
     },
     title: {
       color: commonColor.textColor,
@@ -49,36 +40,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '17@s',
       textAlign: 'left',
       marginLeft: '15@s'
-    },
-    titleHeaderWithSubTitle: {
-      fontSize: '16@s'
-    },
-    subTitleHeader: {
-      color: commonColor.textColor,
-      fontWeight: 'bold',
-      fontSize: '12@s',
-      marginTop: Platform.OS === 'ios' ? 0 : '-3@s'
-    },
-    logoHeader: {
-      width: '60@s',
-      height: '45@s',
-      marginLeft: '5@s',
-      resizeMode: 'contain'
-    },
-    iconLeftHeader: {
-      fontSize: '25@s',
-      color: commonColor.textColor,
-      width: '35@s'
-    },
-    mapListIcon: {
-      fontSize: '25@s',
-      color: commonColor.textColor,
-      width: '35@s'
-    },
-    iconRightHeader: {
-      fontSize: '30@s',
-      color: commonColor.textColor,
-      width: '35@s'
     },
     actionsContainer: {
       flexDirection: 'row'
