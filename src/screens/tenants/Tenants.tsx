@@ -110,7 +110,6 @@ export default class Tenants extends BaseScreen<Props, State> {
               navigation={this.props.navigation}
               title={I18n.t('general.tenants')}
               sideBar={false}
-              hideHomeAction
             />
             <View style={style.listContainer}>
               <FlatList
