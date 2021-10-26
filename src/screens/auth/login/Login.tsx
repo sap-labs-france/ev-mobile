@@ -1,7 +1,15 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import {
+  BackHandler,
+  Keyboard,
+  KeyboardAvoidingView,
+  NativeEventSubscription,
+  ScrollView,
+  TextInput,
+  TouchableOpacity
+} from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
@@ -45,6 +53,7 @@ export default class Login extends BaseScreen<Props, State> {
   public props: Props;
   private tenants: TenantConnection[] = [];
   private passwordInput: TextInput;
+  private backHandler: NativeEventSubscription;
   private formValidationDef = {
     tenantSubDomain: {
       presence: {
@@ -105,6 +114,8 @@ export default class Login extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
+    // Bind the back button to the onBack method (Android)
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     let email = (this.state.email = '');
     let password = (this.state.password = '');
     let tenant: TenantConnection;
@@ -163,6 +174,8 @@ export default class Login extends BaseScreen<Props, State> {
 
   public async componentDidFocus() {
     super.componentDidFocus();
+    // Bind the back button to the onBack method (Android)
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain);
     // Check if current Tenant selection is still valid (handle delete tenant usee case)
     if (tenantSubDomain) {
@@ -187,6 +200,18 @@ export default class Login extends BaseScreen<Props, State> {
         });
       }
     }
+  }
+
+  public componentWillUnmount() {
+    super.componentWillUnmount();
+    // Unbind the back button and reset its default behavior (Android)
+    this.backHandler.remove();
+  }
+
+  public componentDidBlur() {
+    super.componentDidBlur();
+    // Unbind the back button and reset its default behavior (Android)
+    this.backHandler.remove();
   }
 
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
@@ -262,13 +287,13 @@ export default class Login extends BaseScreen<Props, State> {
   };
 
   public onBack(): boolean {
-    this.setState({ showExitAppDialog: true });
+    BackHandler.exitApp();
     return true;
   }
 
   public navigateToApp() {
     // Navigate to App
-    this.props.navigation.navigate('AppDrawerNavigator', { screen: 'ChargingStations', key: `${Utils.randomNumber()}` });
+    this.props.navigation.navigate('AppDrawerNavigator', { screen: 'ChargingStationsNavigator', key: `${Utils.randomNumber()}` });
   }
 
   public setTenantWithIndex = async (buttonIndex: number) => {

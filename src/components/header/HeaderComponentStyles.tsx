@@ -46,7 +46,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     actionsContainer: {
       flexDirection: 'row',
-      marginRight: '2.5%'
+      marginRight: '2.5%',
+      marginLeft: '40@s'
     },
     action: {
       marginHorizontal: '5@s'
