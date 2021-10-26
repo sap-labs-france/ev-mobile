@@ -91,7 +91,8 @@
     "badges": "Badges",
     "cars": "Voitures",
     "invoices": "Factures",
-    "paymentMethods": "Moyens de paiement"
+    "paymentMethods": "Moyens de paiement",
+    "qrCodeScanner": "Scanneur QR-Code"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",

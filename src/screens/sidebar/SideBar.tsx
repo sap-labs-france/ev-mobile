@@ -131,6 +131,10 @@ export default class SideBar extends BaseScreen<Props, State> {
         </Header>
         <Content style={style.drawerContent}>
           <View style={style.linkContainer}>
+            <ListItem style={style.links} button iconLeft onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
+              <Icon style={style.linkIcon} type="MaterialIcons" name="qr-code-scanner" />
+              <Text style={style.linkText}>{I18n.t('sidebar.qrCodeScanner')}</Text>
+            </ListItem>
             {isComponentOrganizationActive && (
               <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
@@ -185,7 +189,7 @@ export default class SideBar extends BaseScreen<Props, State> {
                 button={true}
                 iconLeft={true}
                 onPress={() => this.navigateTo('PaymentMethodsNavigator', 'PaymentMethods')}>
-                <Icon style={style.linkIcon} type="MaterialIcons" name="payment" />
+                <Icon style={style.linkIcon} type="MaterialIcons" name="payments" />
                 <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
               </ListItem>
             )}
@@ -203,14 +207,6 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Icon style={[style.linkIcon, { color: commonColor.dangerLight }]} type="MaterialIcons" name="error-outline" />
               <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
-            {/* <ListItem button onPress={() => navigation.navigate('Settings')} iconLeft style={style.links}>
-              <Icon name="ios-settings-outline" />
-              <Text style={style.linkText}>SETTINGS</Text>
-            </ListItem>
-            <ListItem button onPress={() => navigation.navigate('Feedback')} iconLeft style={style.links}>
-              <Icon name="ios-paper-outline" />
-              <Text style={style.linkText}>FEEDBACK</Text>
-            </ListItem> */}
           </View>
         </Content>
         <View style={style.logoutContainer}>

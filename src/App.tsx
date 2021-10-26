@@ -49,6 +49,7 @@ import Utils from './utils/Utils';
 import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
 import AppUpdateDialog from './components/modal/app-update/AppUpdateDialog';
 import AddCar from './screens/cars/AddCar';
+import ChargingStationQrCode from './screens/home/ChargingStationQrCode';
 
 // Init i18n
 I18nManager.initialize();
@@ -430,6 +431,7 @@ function createAppDrawerNavigator(props: BaseProps) {
         component={createChargingStationsNavigator}
         initialParams={props?.route?.params?.params}
       />
+      <AppDrawer.Screen name="QRCodeScanner" component={ChargingStationQrCode} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="SitesNavigator" component={createSitesNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="StatisticsNavigator" component={createStatsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="ReportErrorNavigator" component={createReportErrorNavigator} initialParams={props?.route?.params?.params} />

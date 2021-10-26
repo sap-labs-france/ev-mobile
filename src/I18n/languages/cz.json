@@ -91,7 +91,8 @@
     "badges": "Karty/čipy",
     "cars": "Elektromobily",
     "invoices": "Faktury",
-    "paymentMethods": "Způsob platby"
+    "paymentMethods": "Způsob platby",
+    "qrCodeScanner": "QR-Code Scanner"
   },
   "authentication": {
     "noTenantFoundTitle": "Žádná organizace nenalezena",
