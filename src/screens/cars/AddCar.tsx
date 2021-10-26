@@ -331,7 +331,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         disabled={true}
         data={[]}
         defaultValue={null}
-        renderCustomizedButtonChild={() => <CarCatalogComponent shadowed={true} carCatalog={carCatalog} navigation={null} />}
+        renderCustomizedButtonChild={() => <CarCatalogComponent carCatalog={carCatalog} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
         renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
@@ -345,7 +345,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         disabled={true}
         data={[]}
         defaultValue={null}
-        renderCustomizedButtonChild={() => <UserComponent shadowed={true} user={user} navigation={null} />}
+        renderCustomizedButtonChild={() => <UserComponent user={user} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
         renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}

@@ -44,7 +44,7 @@ interface State {
   filters?: ChargingStationsFiltersDef;
   showMap?: boolean;
   visible?: boolean;
-  terrainMap?: boolean;
+  satelliteMap?: boolean;
   chargingStationSelected?: ChargingStation;
 }
 
@@ -76,7 +76,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       showMap: true,
       visible: false,
       chargingStationSelected: null,
-      terrainMap: true
+      satelliteMap: true
     };
   }
 
@@ -365,7 +365,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       showMap,
       chargingStationSelected,
       refreshing,
-      terrainMap
+      satelliteMap
     } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
     const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
@@ -376,9 +376,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       <Container style={style.container}>
         <View style={style.fabContainer}>
           {showMap && (
-            <TouchableOpacity style={[style.fab, style.mapFab]} onPress={() => this.setState({ terrainMap: !terrainMap })}>
+            <TouchableOpacity style={style.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
               <Image
-                source={terrainMap ? require('../../../../assets/map/standard.png') : require('../../../../assets/map/terrain.png')}
+                source={satelliteMap ? require('../../../../assets/map/standard.png') : require('../../../../assets/map/terrain.png')}
                 style={style.imageStyle as ImageStyle}
               />
             </TouchableOpacity>
@@ -433,7 +433,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                     )}
                     zoomControlEnabled={false}
                     toolbarEnabled={false}
-                    mapType={terrainMap ? 'satellite' : 'standard'}
+                    mapType={satelliteMap ? 'satellite' : 'standard'}
                     region={this.currentRegion}
                     onRegionChange={this.onMapRegionChange}>
                     {chargingStationsWithGPSCoordinates.map((chargingStation) => (

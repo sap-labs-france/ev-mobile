@@ -72,6 +72,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
         <View style={style.leftHeader}>
           {sideBar ? (
             <TouchableOpacity
+              style={style.leftIcon}
               onPress={() => {
                 navigation.dispatch(DrawerActions.openDrawer());
                 return true;
@@ -80,7 +81,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
             </TouchableOpacity>
           ) : (
             backArrow && (
-              <TouchableOpacity onPress={backAction ?? (() => navigation.goBack())}>
+              <TouchableOpacity style={style.leftIcon} onPress={backAction ?? (() => navigation.goBack())}>
                 <Icon style={style.icon} type={'Feather'} name={'arrow-left'} />
               </TouchableOpacity>
             )

@@ -6,7 +6,6 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
-import { BackHandler } from 'react-native';
 
 export interface Props extends BaseProps {}
 

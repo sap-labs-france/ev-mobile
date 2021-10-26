@@ -156,7 +156,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     Orientation.unlockAllOrientations();
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     super.componentWillUnmount();
     Orientation.unlockAllOrientations();
   }
@@ -1048,7 +1048,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <ModalSelect<User>
             disabled={disabled}
             openable={isAdmin}
-            renderItem={() => <UserComponent shadowed={true} user={selectedUser} navigation={navigation} />}
+            renderItem={() => <UserComponent user={selectedUser} navigation={navigation} />}
             defaultItem={selectedUser}
             onItemsSelected={this.onUserSelected.bind(this)}
             navigation={navigation}
@@ -1114,7 +1114,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <ModalSelect<Tag>
-          renderItem={() => <TagComponent outlinedInactive={true} shadowed={true} tag={selectedTag} navigation={navigation} />}
+          renderItem={() => <TagComponent outlinedInactive={true} tag={selectedTag} navigation={navigation} />}
           disabled={disabled}
           openable={true}
           renderNoItem={this.renderNoTag.bind(this)}
@@ -1144,7 +1144,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  private async onUserSelected(selectedUsers: User[]): Promise<void> {
+  private onUserSelected(selectedUsers: User[]): void {
     const selectedUser = selectedUsers?.[0];
     // Reset errors and selected fields when new user selected
     this.setState(

@@ -25,24 +25,28 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontSize: '20@s'
     },
+    leftIcon: {
+      marginLeft: '2.5%',
+      marginRight: '13@s'
+    },
     modalHeader: {
       paddingTop: '10@s'
     },
     leftHeader: {
       flexDirection: 'row',
       alignItems: 'center',
-      flex: 1,
-      marginLeft: '2.5%'
+      justifyContent: 'flex-start',
+      flex: 1
     },
     title: {
       color: commonColor.textColor,
-      width: '90%',
       fontSize: '17@s',
       textAlign: 'left',
-      marginLeft: '15@s'
+      marginLeft: '2.5%'
     },
     actionsContainer: {
-      flexDirection: 'row'
+      flexDirection: 'row',
+      marginRight: '2.5%'
     },
     action: {
       marginHorizontal: '5@s'

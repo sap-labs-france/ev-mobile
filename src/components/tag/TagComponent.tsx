@@ -16,7 +16,6 @@ export interface Props extends BaseProps {
   tag: Tag;
   selected?: boolean;
   canReadUser?: boolean;
-  shadowed?: boolean;
   outlinedInactive?: boolean;
 }
 
@@ -49,10 +48,7 @@ export default class TagComponent extends React.Component<Props, State> {
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
       <View
-        style={[
-          listItemCommonStyle.container, style.tagContainer,
-          outlinedInactive && !tag?.active && listItemCommonStyle.outlinedError
-        ]}>
+        style={[listItemCommonStyle.container, style.tagContainer, outlinedInactive && !tag?.active && listItemCommonStyle.outlinedError]}>
         <View style={style.leftContainer}>
           <Image style={style.icon as ImageStyle} source={{ uri: this.exampleImageUri }} />
         </View>

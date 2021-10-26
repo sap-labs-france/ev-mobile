@@ -50,17 +50,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       justifyContent: 'center'
     },
-    mapFab: {
-      padding: 0,
-      marginHorizontal: 0,
-      marginVertical: 0,
-      margin: 0,
-      paddingHorizontal: 0,
-      paddingVertical: 0,
-      width: '55@s',
-      height: '55@s',
-      borderRadius: '55@s'
-    },
     fabContainer: {
       position: 'absolute',
       zIndex: 1,
