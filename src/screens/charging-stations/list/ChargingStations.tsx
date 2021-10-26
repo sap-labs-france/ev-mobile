@@ -105,7 +105,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     });
   }
 
-  public async componentDidFocus(): Promise<void> {
+  public componentDidFocus(): void {
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     // Enable swipe for opening sidebar
@@ -114,7 +114,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     });
   }
 
-  public async componentDidBlur(): Promise<void> {
+  public componentDidBlur(): void {
     // Unbind the back button and reset its default behavior (Android)
     this.backHandler.remove();
     // Disable swipe for opening sidebar

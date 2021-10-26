@@ -146,12 +146,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     this.refresh();
   }
 
-  public async componentDidFocus(): Promise<void> {
+  public componentDidFocus(): void {
     super.componentDidFocus();
     Orientation.lockToPortrait();
   }
 
-  public async componentDidBlur(): Promise<void> {
+  public componentDidBlur(): void {
     super.componentDidBlur();
     Orientation.unlockAllOrientations();
   }

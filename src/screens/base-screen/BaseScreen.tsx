@@ -80,8 +80,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     return true;
   }
 
-  public componentDidFocus() {
-  }
+  public componentDidFocus(): void {}
 
-  public async componentDidBlur() {}
+  public componentDidBlur(): void {}
 }
