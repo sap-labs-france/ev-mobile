@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Spinner, Text } from 'native-base';
 import React from 'react';
@@ -263,6 +262,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           values: gridLimitationValues,
           label: I18n.t('details.gridLimitChartLabel'),
           config: {
+            axisDependency: 'LEFT',
             mode: 'LINEAR',
             drawValues: false,
             lineWidth: 2,
@@ -276,6 +276,26 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           }
         });
       }
+    }
+    if (!Utils.isEmptyArray(values)) {
+      const cumulatedConsumptionValues = this.getDataSetFunctionOfTime(values, 'cumulatedConsumptionWh', (y) => y / 1000);
+      chartDefinition.data.dataSets.push({
+        values: cumulatedConsumptionValues,
+        label: I18n.t('details.cumulatedConsumptionLabel'),
+        config: {
+          axisDependency: 'LEFT',
+          mode: 'LINEAR',
+          drawValues: false,
+          lineWidth: 2,
+          drawCircles: false,
+          highlightColor: processColor('#0297a7'),
+          color: processColor('#0297a7'),
+          drawFilled: true,
+          fillAlpha: 65,
+          fillColor: processColor('#0297a7'),
+          valueTextSize: scale(8)
+        }
+      });
     }
     // X Axis
     chartDefinition.xAxis = {
@@ -382,9 +402,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             }}
             marker={{
               enabled: true,
-              markerColor: processColor(commonColor.disabled),
+              markerColor: processColor(commonColor.listItemBackground),
               textSize: scale(12),
-              textColor: processColor(commonColor.inverseTextColor)
+              textColor: processColor(commonColor.textColor)
             }}
             xAxis={chartDefinition.xAxis}
             yAxis={chartDefinition.yAxis}

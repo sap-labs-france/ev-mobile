@@ -452,6 +452,7 @@
     "cumulatedChartLabel": "Acomulada (kW.h)",
     "batteryChartLabel": "Nível de Bateria (%)",
     "gridLimitChartLabel": "Grid Limit (kW)",
+    "cumulatedConsumptionLabel": "Energy Delivered (kW.h)",
     "connectorMax": "Maximo poder de conexão (kW)",
     "noData": "Sem dados",
     "noSessionInProgress": "Nenhuma sessão em progresso",
