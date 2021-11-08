@@ -72,15 +72,15 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-    const { mode } = this.props;
-    if (mode === TenantDialogMode.EDIT) {
-      const newTenantEndpointCloud = Configuration.getEndpoints()?.find((e) => e.endpoint === this.tenant.endpoint);
-      this.setState({
-        newTenantSubDomain: this.tenant?.subdomain,
-        newTenantName: this.tenant?.name,
-        newTenantEndpointCloud
-      });
-    }
+    const { tenantEndpointClouds } = this.state;
+    // Set the endpoint of the tenant being edited otherwise default to the first endpoint in the list
+    const newTenantEndpointCloud =
+      Configuration.getEndpoints()?.find((e) => e.endpoint === this.tenant?.endpoint) ?? tenantEndpointClouds?.[0];
+    this.setState({
+      newTenantSubDomain: this.tenant?.subdomain,
+      newTenantName: this.tenant?.name,
+      newTenantEndpointCloud
+    });
   }
 
   public render() {

@@ -353,7 +353,8 @@
     "noChargers": "Esta zona no tiene cargadores",
     "noSiteAreas": "Zona no encontrada",
     "siteAreaUnexpectedError": "No se ha podido cargar la zona",
-    "siteAreas": "Zona(s)"
+    "siteAreas": "Zonas",
+    "siteArea": "Zona"
   },
   "chargers": {
     "title": "Estaciones de carga",

@@ -13,6 +13,7 @@ import * as RNLocalize from 'react-native-localize';
 
 import Constants from '../utils/Constants';
 import Utils from '../utils/Utils';
+import czJsonLanguage from './languages/cz.json';
 import deJsonLanguage from './languages/de.json';
 import enJsonLanguage from './languages/en.json';
 import esJsonLanguage from './languages/es.json';
@@ -77,7 +78,8 @@ export default class I18nManager {
       de: () => deJsonLanguage,
       es: () => esJsonLanguage,
       pt: () => ptJsonLanguage,
-      it: () => itJsonLanguage
+      it: () => itJsonLanguage,
+      cz: () => czJsonLanguage
     };
     // Fallback if no available language fits
     i18n.fallbacks = true;
@@ -91,6 +93,7 @@ export default class I18nManager {
     i18n.translations.es = esJsonLanguage;
     i18n.translations.pt = ptJsonLanguage;
     i18n.translations.it = itJsonLanguage;
+    i18n.translations.cz = czJsonLanguage;
     // Update layout direction
     I18nReactNativeManager.forceRTL(isRTL);
     // Default

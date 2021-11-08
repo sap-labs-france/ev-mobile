@@ -73,6 +73,7 @@ export default class Cars extends SelectableList<Car> {
 
   public async componentDidFocus() {
     Orientation.lockToPortrait();
+    this.setState({ refreshing: true });
     await this.refresh();
   }
 
@@ -144,6 +145,7 @@ export default class Cars extends SelectableList<Car> {
   }
 
   public search = async (searchText: string): Promise<void> => {
+    this.setState({ refreshing: true });
     this.searchText = searchText;
     await this.refresh();
   };
@@ -162,12 +164,11 @@ export default class Cars extends SelectableList<Car> {
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
+          modalized={isModal}
+          backArrow={!isModal}
+          sideBar={!isModal}
           navigation={this.props.navigation}
-          leftAction={isModal ? null : this.onBack}
-          leftActionIcon={isModal ? null : 'navigate-before'}
           displayTenantLogo={false}
-          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
-          rightActionIcon={isModal ? null : 'menu'}
         />
         <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />

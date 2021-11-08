@@ -21,6 +21,7 @@ import { BillingSettings } from '../../types/Setting';
 import SelectableList, { SelectableState } from '../base-screen/SelectableList';
 import DialogModal from '../../components/modal/DialogModal';
 import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
+import { FAB } from 'react-native-paper';
 
 export interface Props extends BaseProps {}
 
@@ -72,6 +73,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
   }
 
   public async componentDidFocus() {
+    this.setState({ refreshing: true });
     await this.refresh();
   }
 
@@ -104,7 +106,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
     // Do not bubble up
     return true;
   };
@@ -127,7 +129,6 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
-      this.setState({ refreshing: true });
       // Refresh All
       const paymentMethods = await this.getPaymentMethods(0, skip + limit);
       // Set
@@ -144,29 +145,22 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     const style = computeStyleSheet();
     const { paymentMethods, count, skip, limit, refreshing, loading, billingSettings, paymentMethodToBeDeleted } = this.state;
     const { navigation } = this.props;
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <Container style={style.container}>
+        {billingSettings?.stripe?.publicKey && (
+          <FAB
+            color={commonColors.light}
+            onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })}
+            icon={'plus'}
+            style={style.fab}
+          />
+        )}
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
-        <View style={style.toolBar}>
-          {billingSettings?.stripe?.publicKey && (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })}
-              style={style.addPaymentMethodButton}>
-              <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
-            </TouchableOpacity>
-          )}
-        </View>
         {paymentMethodToBeDeleted && this.renderDeletePaymentMethodDialog(paymentMethodToBeDeleted)}
         {loading ? (
           <Spinner style={style.spinner} color="grey" />

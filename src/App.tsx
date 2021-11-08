@@ -537,7 +537,6 @@ export default class App extends React.Component<Props, State> {
     if (this.appVersion?.needsUpdate) {
       this.setState({ showAppUpdateDialog: true });
     }
-
     // Set
     this.setState({
       navigationState,
@@ -560,7 +559,7 @@ export default class App extends React.Component<Props, State> {
       this.state.isNavigationStateLoaded && (
         <RootSiblingParent>
           {showAppUpdateDialog && <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
-          <StatusBar hidden />
+          <StatusBar translucent backgroundColor="transparent" />
           {createRootNavigator(this, this.state.navigationState)}
         </RootSiblingParent>
       )

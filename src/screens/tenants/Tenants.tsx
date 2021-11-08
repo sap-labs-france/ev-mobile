@@ -17,6 +17,7 @@ import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
 import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
 import TenantComponent from '../../components/tenant/TenantComponent';
+import { FAB } from 'react-native-paper';
 
 export interface Props extends BaseProps {}
 
@@ -76,6 +77,7 @@ export default class Tenants extends BaseScreen<Props, State> {
     } = this.state;
     const style = computeTenantStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={{ flex: 1 }}>
         {showAddTenantDialog && this.renderAddTenantDialog(style)}
@@ -86,41 +88,31 @@ export default class Tenants extends BaseScreen<Props, State> {
             tenants={Utils.cloneObject(this.state.tenants)}
             navigation={navigation}
             close={(tenant: TenantConnection) => {
-              this.tenantCreated(tenant);
+              this.addEditTenantDialogClosed(tenant);
               return true;
             }}
           />
         ) : (
           <View style={style.container}>
+            <FAB color={commonColors.light} onPress={() => this.setState({ showAddTenantDialog: true })} icon={'plus'} style={style.fab} />
+            {showAddTenantManuallyDialog && (
+              <AddEditTenantDialog
+                mode={TenantDialogMode.ADD}
+                navigation={navigation}
+                tenants={Utils.cloneObject(this.state.tenants)}
+                back={() => this.setState({ showAddTenantManuallyDialog: false, showAddTenantDialog: true })}
+                close={(newTenantAdded: TenantConnection) => {
+                  this.addEditTenantDialogClosed(newTenantAdded);
+                }}
+              />
+            )}
             <HeaderComponent
               navigation={this.props.navigation}
               title={I18n.t('general.tenants')}
-              rightActionIcon={null}
+              sideBar={false}
               hideHomeAction
-              leftActionIcon="navigate-before"
-              leftActionIconType="MaterialIcons"
-              leftAction={() => {
-                this.props.navigation.goBack();
-                return true;
-              }}
             />
-            <View>
-              <View style={style.toolBar}>
-                <TouchableOpacity style={style.addTenantButton} onPress={() => this.setState({ showAddTenantDialog: true })}>
-                  <Icon style={style.icon} type={'MaterialIcons'} name="add" />
-                </TouchableOpacity>
-                {showAddTenantManuallyDialog && (
-                  <AddEditTenantDialog
-                    mode={TenantDialogMode.ADD}
-                    navigation={navigation}
-                    tenants={Utils.cloneObject(this.state.tenants)}
-                    back={() => this.setState({ showAddTenantManuallyDialog: false, showAddTenantDialog: true })}
-                    close={(newTenantCreated: TenantConnection) => {
-                      this.tenantCreated(newTenantCreated);
-                    }}
-                  />
-                )}
-              </View>
+            <View style={style.listContainer}>
               <FlatList
                 data={tenants}
                 keyExtractor={(item) => item.subdomain}
@@ -197,7 +189,7 @@ export default class Tenants extends BaseScreen<Props, State> {
         tenants={Utils.cloneObject(this.state.tenants)}
         back={() => this.setState({ tenantToBeEditedIndex: null })}
         close={(newTenantCreated: TenantConnection) => {
-          this.addEditTenantDialogClosed();
+          this.addEditTenantDialogClosed(null);
         }}
       />
     );
@@ -239,11 +231,6 @@ export default class Tenants extends BaseScreen<Props, State> {
     );
   }
 
-  private tenantCreated(newTenant?: TenantConnection): void {
-    this.addEditTenantDialogClosed(newTenant);
-    this.setState({ showNewTenantAddedDialog: true });
-  }
-
   private async addEditTenantDialogClosed(newTenant?: TenantConnection): Promise<void> {
     // Always close pop-up
     const newTenants = await this.centralServerProvider.getTenants();
@@ -251,6 +238,7 @@ export default class Tenants extends BaseScreen<Props, State> {
       showAddTenantWithQRCode: false,
       showAddTenantManuallyDialog: false,
       tenantToBeEditedIndex: null,
+      showNewTenantAddedDialog: !!newTenant,
       tenants: newTenants,
       newTenant
     });

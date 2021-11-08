@@ -353,7 +353,9 @@
     "noChargers": "Dieser Standortbereich hat keine Ladestationen",
     "noSiteAreas": "Kein Standortbereich gefunden",
     "siteAreaUnexpectedError": "Standortbereich wurde nicht erkannt",
-    "siteAreas": "Site Area(s)"
+    "siteAreas": "Site Areas",
+    "siteArea": "Site Area"
+
   },
   "chargers": {
     "title": "Ladestationen",

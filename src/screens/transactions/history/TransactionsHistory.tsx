@@ -1,10 +1,10 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList, { ItemsSeparatorType } from '../../../components/list/ItemsList';
+import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import TransactionHistoryComponent from '../../../components/transaction/history/TransactionHistoryComponent';
 import I18nManager from '../../../I18n/I18nManager';
@@ -146,7 +146,6 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   public async refresh() {
     // Component Mounted?
     if (this.isMounted()) {
-      this.setState({ refreshing: true });
       const { skip, limit, filters } = this.state;
       // Refresh All
       const transactions = await this.getTransactions(this.searchText, 0, skip + limit, filters.startDateTime, filters.endDateTime);
@@ -188,6 +187,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   };
 
   public search = async (searchText: string) => {
+    this.setState({ refreshing: true })
     this.searchText = searchText;
     await this.refresh();
   };
@@ -204,15 +204,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           }}
           navigation={navigation}
           title={I18n.t('transactions.transactionsHistory')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-          filters={filters}
+          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
         <View style={style.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
@@ -224,7 +216,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
             <TransactionsHistoryFilters
               initialFilters={initialFilters}
               onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>
-                this.setState({ filters: newFilters }, async () => this.refresh())
+                this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh())
               }
               ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters)}
             />

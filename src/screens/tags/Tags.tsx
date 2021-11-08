@@ -1,6 +1,6 @@
 import { DrawerActions } from '@react-navigation/native';
 import i18n, { default as I18n } from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -129,6 +129,7 @@ export default class Tags extends SelectableList<Tag> {
       // Set
       this.setState({
         loading: false,
+        refreshing: false,
         tags: tags ? tags.result : [],
         projectFields: tags ? tags.projectFields : [],
         count: tags ? tags.count : 0
@@ -137,6 +138,7 @@ export default class Tags extends SelectableList<Tag> {
   }
 
   public search = async (searchText: string) => {
+    this.setState({ refreshing: true });
     this.searchText = searchText;
     await this.refresh();
   };
@@ -150,12 +152,11 @@ export default class Tags extends SelectableList<Tag> {
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
+          modalized={isModal}
+          backArrow={!isModal}
+          sideBar={!isModal}
           navigation={this.props.navigation}
-          leftAction={isModal ? null : this.onBack}
           displayTenantLogo={false}
-          leftActionIcon={isModal ? null : 'navigate-before'}
-          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
-          rightActionIcon={isModal ? null : 'menu'}
         />
         <View style={style.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
@@ -177,7 +178,7 @@ export default class Tags extends SelectableList<Tag> {
               renderItem={(item: Tag, selected: boolean) => (
                 <TagComponent
                   tag={item}
-                  canReadUser={projectFields.includes('user.name') && projectFields.includes('user.firstName')}
+                  canReadUser={projectFields?.includes('user.name') && projectFields?.includes('user.firstName')}
                   selected={selected}
                   navigation={navigation}
                 />

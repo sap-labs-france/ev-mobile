@@ -1,6 +1,6 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
 import { Platform } from 'react-native';
 import { ClusterMap } from 'react-native-cluster-map';
@@ -11,7 +11,7 @@ import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
+import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
 import ThemeManager from '../../custom-theme/ThemeManager';
@@ -186,6 +186,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       // Add sites
       this.setState({
         loading: false,
+        refreshing: false,
         sites: sites ? sites.result : [],
         count: sites ? sites.count : 0
       });
@@ -217,6 +218,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public search = async (searchText: string) => {
+    this.setState({ refreshing: true });
     this.searchText = searchText;
     delete this.currentRegion;
     await this.refresh();
@@ -228,7 +230,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public filterChanged(newFilters: SitesFiltersDef) {
     delete this.currentRegion;
-    this.setState({ filters: newFilters }, async () => this.refresh());
+    this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh());
   }
 
   public toggleDisplayMap = () => {
@@ -280,17 +282,10 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <HeaderComponent
           navigation={navigation}
           title={I18n.t('sidebar.sites')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('sites.sites')}` : null}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-          displayMap={!Utils.isEmptyArray(this.state.sites)}
-          mapIsDisplayed={mapIsDisplayed}
-          displayMapAction={() => this.toggleDisplayMap()}
+          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
+          actions={[
+            {renderIcon: () => <Icon type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />, onPress: () => this.setState({showMap: !this.state.showMap})}
+          ]}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />

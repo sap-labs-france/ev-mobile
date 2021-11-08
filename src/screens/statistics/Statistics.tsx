@@ -18,6 +18,9 @@ import Utils from '../../utils/Utils';
 import computeStyleSheet from './StatisticsStyles';
 import { View } from 'react-native';
 import StatisticsComponent from '../../components/statistics/StatisticsComponent';
+import computeActivityIndicatorCommonStyles from '../../components/activity-indicator/ActivityIndicatorCommonStyle';
+import { ActivityIndicator } from 'react-native-paper';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -27,6 +30,7 @@ interface State {
   totalConsumptionWattHours?: number;
   totalDurationSecs?: number;
   totalInactivitySecs?: number;
+  filterLoading?: boolean;
   totalPrice?: number;
   priceCurrency?: string;
   isPricingActive?: boolean;
@@ -52,7 +56,8 @@ export default class Statistics extends BaseScreen<Props, State> {
       isPricingActive: false,
       showFilter: false,
       initialFilters: {},
-      filters: {}
+      filters: {},
+      filterLoading: false
     };
   }
 
@@ -113,7 +118,8 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalPrice: transactionsStats.stats.totalPrice,
       isPricingActive: this.securityProvider?.isComponentPricingActive(),
       priceCurrency: transactionsStats.stats.currency,
-      loading: false
+      loading: false,
+      filterLoading: false
     });
   };
 
@@ -154,6 +160,7 @@ export default class Statistics extends BaseScreen<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
+    const activityIndicatorCommonStyles = computeActivityIndicatorCommonStyles();
     const { navigation } = this.props;
     const commonColors = Utils.getCurrentCommonColor();
     const {
@@ -166,7 +173,8 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalInactivitySecs,
       priceCurrency,
       totalPrice,
-      isPricingActive
+      isPricingActive,
+      filterLoading
     } = this.state;
     const totalConsumption = I18nManager.formatNumberWithCompacts(totalConsumptionWattHours, {
       notation: NumberFormatNotationEnum.COMPACT,
@@ -193,18 +201,11 @@ export default class Statistics extends BaseScreen<Props, State> {
     });
     return (
       <Container style={style.container}>
+        {filterLoading && <ActivityIndicator color={'black'} size={scale(20)} style={activityIndicatorCommonStyles.activityIndicator} animating={filterLoading} />}
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('home.statistics')}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-          filters={filters}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
@@ -213,7 +214,7 @@ export default class Statistics extends BaseScreen<Props, State> {
             <TransactionsHistoryFilters
               initialFilters={initialFilters}
               onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>
-                this.setState({ filters: newFilters }, async () => this.refresh())
+                this.setState({ filters: newFilters, filterLoading: true }, async () => this.refresh())
               }
               ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters)}
             />
