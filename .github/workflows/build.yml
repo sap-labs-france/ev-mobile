@@ -63,5 +63,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: npm install
+        run: npm ci
+      - name: npm run pod:install
+        run: npm run pod:install
       - name: npm test
         run: npm test
