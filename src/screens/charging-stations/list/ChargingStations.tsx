@@ -91,7 +91,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     // Enable swipe for opening sidebar
     this.parent = navigation.getParent();
     this.parent.setOptions({
-      swipeEnabled: true
+      swipeEnabled: !this.siteArea
     });
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
@@ -113,7 +113,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     // Enable swipe for opening sidebar
     this.parent.setOptions({
-      swipeEnabled: true
+      swipeEnabled: !this.siteArea
     });
   }
 

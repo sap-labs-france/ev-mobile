@@ -86,8 +86,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     links: {
       borderBottomWidth: 0,
-      paddingTop: '10@s',
-      paddingBottom: '10@s',
+      paddingTop: '13@s',
+      paddingBottom: '13@s'
     },
     focused: {
       opacity: 0.7,

@@ -42,12 +42,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontSize: '17@s',
       textAlign: 'left',
-      marginLeft: '2.5%'
+      marginLeft: '2.5%',
+      flex: 1
     },
     actionsContainer: {
       flexDirection: 'row',
       marginRight: '2.5%',
-      marginLeft: '40@s'
+      marginLeft: '10@s'
     },
     action: {
       marginHorizontal: '5@s'
