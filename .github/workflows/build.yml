@@ -63,9 +63,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: npm install
         run: npm ci
       - name: npm run pod:install
         run: npm run pod:install
+      - name: npm run build:prepare
+        run: npm run build:prepare
       - name: npm test
         run: npm test
