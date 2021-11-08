@@ -54,18 +54,6 @@ jobs:
         npm run build:prepare
         cd ios && xcodebuild -workspace eMobility.xcworkspace -scheme eMobility -configuration Debug CODE_SIGNING_ALLOWED=NO
 
-name: Test CI
-
-on:
-  push:
-    branches:
-      - master
-      - master-qa
-  pull_request:
-    branches:
-      - master-qa
-
-jobs:
   test:
     runs-on: ubuntu-latest
 
