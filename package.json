@@ -2,7 +2,7 @@
   "name": "eMobility",
   "version": "2.0.5",
   "engines": {
-    "npm": "6.x.x"
+    "npm": "8.x.x"
   },
   "repository": {
     "type": "git",
@@ -43,7 +43,7 @@
     "lint:fix": "cross-env TIMING=1 eslint src __tests__ types App.tsx --fix --ext .js,.ts,.tsx",
     "tsc": "tsc",
     "tsc-stats": "tsc --diagnostics --listFiles",
-    "clean-install": "rimraf package-lock.json && rimraf node_modules && npm cache clear --force && npm install",
+    "clean-install": "rimraf package-lock.json && rimraf node_modules && npm cache clear --force && npm install --force",
     "ios:bundle": "react-native bundle --platform='ios' --dev=false --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --assets-dest='./ios'",
     "android:bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "android:clean": "cd android && ./gradlew clean",
@@ -58,7 +58,7 @@
     "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/GoogleService-Info.plist; fi",
     "import-sort": "npx import-sort-cli --write '{src,__tests__,types}/**/*.ts{,x}' *.ts{,x}",
     "check:i18n": "cross-env TS_NODE_FILES=true ts-node-dev --project tsconfig-i18n.json --files test/I18nChecker.ts",
-    "react-native:install": "npm install && npm clean-install && cd ios && pod install"
+    "react-native:install": "npm install --force && npm clean-install && cd ios && pod install"
   },
   "jest": {
     "preset": "react-native"

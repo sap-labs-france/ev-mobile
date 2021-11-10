@@ -25,7 +25,6 @@ export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
   endpoint: string;
   ocppVersion: string;
   ocppProtocol: string;
-  cfApplicationIDAndInstanceIndex: string;
   lastSeen: Date;
   deleted: boolean;
   inactive: boolean;
