@@ -1,16 +1,14 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { Platform, ScrollView } from 'react-native';
+import { BackHandler, Image, ImageStyle, NativeEventSubscription, Platform, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { ClusterMap } from 'react-native-cluster-map';
 import { Location } from 'react-native-location';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
-import ChargingStationComponent
-  from '../../../components/charging-station/ChargingStationComponent';
+import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList, { ItemsSeparatorType } from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
@@ -30,6 +28,10 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
+import { FAB } from 'react-native-paper';
+import standardLayout from '../../../../assets/map/standard.png';
+import satelliteLayout from '../../../../assets/map/satellite.png';
+
 
 export interface Props extends BaseProps {}
 
@@ -45,6 +47,7 @@ interface State {
   filters?: ChargingStationsFiltersDef;
   showMap?: boolean;
   visible?: boolean;
+  satelliteMap?: boolean;
   chargingStationSelected?: ChargingStation;
 }
 
@@ -56,7 +59,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
+  private parent: any;
   private darkMapTheme = require('../../../utils/map/google-maps-night-style.json');
+  private backHandler: NativeEventSubscription;
 
   public constructor(props: Props) {
     super(props);
@@ -71,17 +76,54 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
-      showMap: false,
+      showMap: true,
       visible: false,
-      chargingStationSelected: null
+      chargingStationSelected: null,
+      satelliteMap: true
     };
   }
 
   public async componentDidMount() {
     // Get initial filters
+    const { route, navigation } = this.props;
     await this.loadInitialFilters();
-    this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
+    this.siteArea = Utils.getParamFromNavigation(route, 'siteArea', null) as unknown as SiteArea;
+    // Enable swipe for opening sidebar
+    this.parent = navigation.getParent();
+    this.parent.setOptions({
+      swipeEnabled: !this.siteArea
+    });
+    // Bind the back button to the onBack method (Android)
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     await super.componentDidMount();
+  }
+
+  public componentWillUnmount() {
+    super.componentWillUnmount();
+    // Unbind the back button and reset its default behavior (Android)
+    this.backHandler.remove();
+    // Disable swipe for opening sidebar
+    this.parent.setOptions({
+      swipeEnabled: false
+    });
+  }
+
+  public componentDidFocus(): void {
+    // Bind the back button to the onBack method (Android)
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+    // Enable swipe for opening sidebar
+    this.parent.setOptions({
+      swipeEnabled: !this.siteArea
+    });
+  }
+
+  public componentDidBlur(): void {
+    // Unbind the back button and reset its default behavior (Android)
+    this.backHandler.remove();
+    // Disable swipe for opening sidebar
+    this.parent.setOptions({
+      swipeEnabled: false
+    });
   }
 
   public setState = (
@@ -98,15 +140,12 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS
     )) as ChargePointStatus;
     const connectorType = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
-    let location = Utils.convertToBoolean(
+    const location = Utils.convertToBoolean(
       await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.LOCATION)
     );
-    if (!location) {
-      location = false;
-    }
     this.setState({
-      initialFilters: { connectorStatus, connectorType, location },
-      filters: { connectorStatus, connectorType, location }
+      initialFilters: { connectorStatus, connectorType, location: location ?? true },
+      filters: { connectorStatus, connectorType, location: location ?? true }
     });
   }
 
@@ -114,7 +153,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const { filters } = this.state;
     // Get the current location
     let currentLocation = (await LocationManager.getInstance()).getLocation();
-    this.locationEnabled = currentLocation ? true : false;
+    this.locationEnabled = !!currentLocation;
     // Bypass location
     if (!filters.location) {
       currentLocation = null;
@@ -175,13 +214,15 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   };
 
   public onBack = (): boolean => {
-    if (this.state.showMap && !Utils.isEmptyArray(this.state.chargingStations)) {
-      this.setState({ showMap: false });
-    } else {
-      // Go back to the top
-      this.props.navigation.goBack();
+    if (!this.state.showMap) {
+      this.setState({ showMap: true });
+      return true;
     }
-    // Do not bubble up
+    if (!!this.siteArea) {
+      this.props.navigation.goBack();
+      return true;
+    }
+    BackHandler.exitApp();
     return true;
   };
 
@@ -195,8 +236,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       this.currentRegion = {
         longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
         latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
-        latitudeDelta: 0.003,
-        longitudeDelta: 0.003
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01
       };
     }
   }
@@ -259,13 +300,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     delete this.currentRegion;
     this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh());
   }
-
-  public toggleDisplayMap = () => {
-    // Refresh region
-    this.refreshCurrentRegion(this.state.chargingStations, true);
-    // Toggle map
-    this.setState({ showMap: !this.state.showMap });
-  };
 
   public showMapChargingStationDetail = (chargingStation: ChargingStation) => {
     this.setState({
@@ -334,10 +368,10 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       skip,
       count,
       limit,
-      filters,
       showMap,
       chargingStationSelected,
-      refreshing
+      refreshing,
+      satelliteMap
     } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
     const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
@@ -346,14 +380,34 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
       <Container style={style.container}>
+        <View style={style.fabContainer}>
+          {showMap && (
+            <TouchableOpacity style={style.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
+              <Image
+                source={satelliteMap ? standardLayout : satelliteLayout}
+                style={style.imageStyle as ImageStyle}
+              />
+            </TouchableOpacity>
+          )}
+          <FAB
+            icon={showMap ? 'format-list-bulleted' : 'map'}
+            style={style.fab}
+            onPress={() => this.setState({ showMap: !this.state.showMap })}
+          />
+        </View>
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={this.siteArea?.name ?? I18n.t('chargers.title')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
           actions={[
-            {renderIcon: () => <Icon type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />, onPress: () => this.setState({showMap: !this.state.showMap})}
+            {
+              onPress: () => navigation.navigate('QRCodeScanner'),
+              renderIcon: () => <Icon type={'MaterialIcons'} name={'qr-code-scanner'} style={style.icon} />
+            }
           ]}
+          sideBar={!this.siteArea}
+          backArrow={!!this.siteArea}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
@@ -372,13 +426,25 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               <View style={style.map}>
                 {this.currentRegion && (
                   <ClusterMap
-                    provider={'google'}
-                    customMapStyle={isDarkModeEnabled && this.darkMapTheme}
+                    customMapStyle={isDarkModeEnabled ? this.darkMapTheme : null}
                     style={style.map}
+                    provider={null}
+                    showsCompass={false}
+                    showsUserLocation={true}
+                    isClusterExpandClick={true}
+                    renderClusterMarker={({ pointCount, clusterId }) => (
+                      <View style={style.cluster}>
+                        <Text style={style.text}>{pointCount}</Text>
+                      </View>
+                    )}
+                    zoomControlEnabled={false}
+                    toolbarEnabled={false}
+                    mapType={satelliteMap ? 'satellite' : 'standard'}
                     region={this.currentRegion}
                     onRegionChange={this.onMapRegionChange}>
                     {chargingStationsWithGPSCoordinates.map((chargingStation) => (
                       <Marker
+                        style={{height: 20, width: 20}}
                         image={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)}
                         key={chargingStation.id}
                         coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}

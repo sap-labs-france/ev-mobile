@@ -1,8 +1,7 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { scale } from 'react-native-size-matters';
 
@@ -103,13 +102,6 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     }
     return null;
   }
-
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
-    // Do not bubble up
-    return true;
-  };
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;

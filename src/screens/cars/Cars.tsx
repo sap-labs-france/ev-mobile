@@ -1,8 +1,7 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -106,13 +105,6 @@ export default class Cars extends SelectableList<Car> {
     return null;
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
-    // Do not bubble up
-    return true;
-  };
-
   public onEndScroll = async (): Promise<void> => {
     const { count, skip, limit } = this.state;
     // No reached the end?
@@ -166,9 +158,7 @@ export default class Cars extends SelectableList<Car> {
           subTitle={this.buildHeaderSubtitle()}
           modalized={isModal}
           backArrow={!isModal}
-          sideBar={!isModal}
           navigation={this.props.navigation}
-          displayTenantLogo={false}
         />
         <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
