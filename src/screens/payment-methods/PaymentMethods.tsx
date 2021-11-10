@@ -67,7 +67,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     await super.componentDidMount();
     const billingSettings: BillingSettings = await this.centralServerProvider.getBillingSettings();
     if (billingSettings) {
-      this.setState({ billingSettings });
+      this.setState({ billingSettings }, this.refresh);
     }
   }
 
