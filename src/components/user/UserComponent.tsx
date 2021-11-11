@@ -13,7 +13,6 @@ import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 export interface Props extends BaseProps {
   user: User;
   selected?: boolean;
-  shadowed?: boolean;
 }
 
 interface State {}
@@ -38,7 +37,7 @@ export default class UserComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
     const chipStyle = computeChipStyleSheet();
-    const { user, navigation, selected, shadowed } = this.props;
+    const { user, navigation, selected } = this.props;
     const userFullName = Utils.buildUserName(user);
     const userRole = user ? user.role : '';
     const userStatus = user ? user.status : '';

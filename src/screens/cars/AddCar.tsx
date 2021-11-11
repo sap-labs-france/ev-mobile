@@ -2,7 +2,6 @@ import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
-import { DrawerActions } from '@react-navigation/native';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './AddCarStyle';
 import ModalSelect from '../../components/modal/ModalSelect';
@@ -83,30 +82,6 @@ export default class AddCar extends BaseScreen<Props, State> {
     Orientation.unlockAllOrientations();
   }
 
-  public onBack(): boolean {
-    const { navigation } = this.props;
-    const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as unknown as number;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as unknown as string;
-    if (connectorID !== null && chargingStationID) {
-      navigation.navigate('ChargingStationsNavigator', {
-        screen: 'ChargingStationConnectorDetailsTabs',
-        params: {
-          params: {
-            chargingStationID,
-            connectorID,
-            user: this.user,
-            tag: Utils.getParamFromNavigation(this.props.route, 'tag', null),
-            showChargingSettings: true
-          }
-        }
-      });
-      return true;
-    } else {
-      navigation.goBack();
-      return true;
-    }
-  }
-
   public render() {
     const { navigation } = this.props;
     const {
@@ -128,13 +103,6 @@ export default class AddCar extends BaseScreen<Props, State> {
         <HeaderComponent
           title={I18n.t('cars.addCarTitle')}
           navigation={navigation}
-          leftAction={this.onBack.bind(this)}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         <ScrollView style={style.scrollview} contentContainerStyle={style.content}>
           <Input
@@ -363,7 +331,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         disabled={true}
         data={[]}
         defaultValue={null}
-        renderCustomizedButtonChild={() => <CarCatalogComponent shadowed={true} carCatalog={carCatalog} navigation={null} />}
+        renderCustomizedButtonChild={() => <CarCatalogComponent carCatalog={carCatalog} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
         renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
@@ -377,7 +345,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         disabled={true}
         data={[]}
         defaultValue={null}
-        renderCustomizedButtonChild={() => <UserComponent shadowed={true} user={user} navigation={null} />}
+        renderCustomizedButtonChild={() => <UserComponent user={user} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
         renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
@@ -403,7 +371,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         const response = await this.centralServerProvider.createCar(car, forced);
         if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
-          this.onBack();
+          this.props.navigation.goBack();
         } else {
           Message.showError(I18n.t('cars.addError'));
         }

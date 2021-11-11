@@ -91,7 +91,8 @@
     "badges": "Badges",
     "cars": "Cars",
     "invoices": "Invoices",
-    "paymentMethods": "Payment Methods"
+    "paymentMethods": "Payment Methods",
+    "qrCodeScanner": "QR-Code Scanner"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -452,6 +453,7 @@
     "cumulatedChartLabel": "Acomulada (kW.h)",
     "batteryChartLabel": "Nível de Bateria (%)",
     "gridLimitChartLabel": "Grid Limit (kW)",
+    "cumulatedConsumptionLabel": "Energy Delivered (kW.h)",
     "connectorMax": "Maximo poder de conexão (kW)",
     "noData": "Sem dados",
     "noSessionInProgress": "Nenhuma sessão em progresso",

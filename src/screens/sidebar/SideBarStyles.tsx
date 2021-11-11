@@ -12,8 +12,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor,
-      borderColor: commonColor.listBorderColor,
-      borderLeftWidth: 1,
       padding: '10@s'
     },
     background: {
@@ -25,8 +23,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     header: {
       flexDirection: 'column',
       backgroundColor: commonColor.containerBgColor,
-      borderBottomColor: commonColor.listBorderColor,
-      borderBottomWidth: 1,
       height: '150@s',
       marginTop: Platform.OS === 'ios' ? '-5@s' : '5@s'
     },
@@ -90,25 +86,28 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     links: {
       borderBottomWidth: 0,
-      paddingTop: '10@s',
-      paddingBottom: '10@s'
+      paddingTop: '13@s',
+      paddingBottom: '13@s'
+    },
+    focused: {
+      opacity: 0.7,
+      borderTopEndRadius: '8@s',
+      borderBottomEndRadius: '8@s'
     },
     linkIcon: {
-      fontSize: '30@s',
+      fontSize: '22@s',
       color: commonColor.textColor
     },
     linkText: {
       color: commonColor.textColor,
       fontSize: '16@s',
-      paddingLeft: '10@s'
+      paddingLeft: '15@s'
     },
     logoutContainer: {
       paddingBottom: Platform.OS === 'ios' ? '25@s' : '10@s',
       paddingLeft: '10@s',
       paddingRight: '10@s',
-      paddingTop: 0,
-      borderTopWidth: 1,
-      borderTopColor: commonColor.listBorderColor
+      paddingTop: 0
     },
     logoutButton: {
       paddingTop: '10@s',

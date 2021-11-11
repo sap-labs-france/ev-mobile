@@ -146,17 +146,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     this.refresh();
   }
 
-  public async componentDidFocus(): Promise<void> {
+  public componentDidFocus(): void {
     super.componentDidFocus();
     Orientation.lockToPortrait();
   }
 
-  public async componentDidBlur(): Promise<void> {
+  public componentDidBlur(): void {
     super.componentDidBlur();
     Orientation.unlockAllOrientations();
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     super.componentWillUnmount();
     Orientation.unlockAllOrientations();
   }
@@ -312,7 +312,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // When Scanning a QR-Code, redirect if a session is already in progress. (if the connector has a non null userID)
     if (startTransactionFromQRCode && connector?.currentUserID) {
       Message.showWarning(I18n.t('transactions.sessionAlreadyInProgressError'));
-      this.onBack();
+      this.props.navigation.goBack();
       return;
     }
     // Get the site image if not already fetched
@@ -573,7 +573,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         }
         // Soft Stop Transaction
       } else {
-        const response = await this.centralServerProvider.softStopstopTransaction(connector.currentTransactionID);
+        const response = await this.centralServerProvider.softStopTransaction(connector.currentTransactionID);
         if (response?.status === 'Invalid') {
           Message.showError(I18n.t('details.denied'));
         } else {
@@ -857,15 +857,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   };
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.reset({index: 0, routes: [{name: 'ChargingStations'}]});
-    // Do not bubble up
-    return true;
-  };
-
   public render() {
-    const { navigation } = this.props;
     const { showChargingSettings } = this.state;
     const style = computeStyleSheet();
     const {
@@ -998,8 +990,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         this.props.navigation,
         this.refresh.bind(this)
       );
+      return null;
     }
-    return null;
   }
 
   private renderAdviceMessage(style: any) {
@@ -1014,7 +1006,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   private renderBillingErrorMessages(style: any) {
-    const { userDefaultTagCar, selectedUser, selectedTag, connector, chargingStation } = this.state;
+    const { userDefaultTagCar, selectedUser } = this.state;
     const { navigation } = this.props;
     const listItemCommonStyle = computeListItemCommonStyle();
     // Check the error code
@@ -1029,18 +1021,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 {I18n.t('transactions.noPaymentMethodError')}
               </Text>
               {selectedUser?.id === this.currentUser.id && (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('PaymentMethodsNavigator', {
-                      screen: 'StripePaymentMethodCreationForm',
-                      params: {
-                        connectorID: connector?.connectorId,
-                        chargingStationID: chargingStation?.id,
-                        user: selectedUser,
-                        tag: selectedTag
-                      }
-                    })
-                  }>
+                <TouchableOpacity onPress={() => navigation.navigate('AddPaymentMethod')}>
                   <View style={style.addItemContainer}>
                     <Text style={[style.linkText, style.plusSign]}>+</Text>
                     <Text ellipsizeMode={'tail'} style={[style.messageText, style.linkText, style.linkLabel]}>
@@ -1067,7 +1048,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <ModalSelect<User>
             disabled={disabled}
             openable={isAdmin}
-            renderItem={() => <UserComponent shadowed={true} user={selectedUser} navigation={navigation}/>}
+            renderItem={() => <UserComponent user={selectedUser} navigation={navigation} />}
             defaultItem={selectedUser}
             onItemsSelected={this.onUserSelected.bind(this)}
             navigation={navigation}
@@ -1090,7 +1071,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           disabled={disabled}
           openable={true}
           renderNoItem={this.renderNoCar.bind(this)}
-          renderItem={() => <CarComponent shadowed={true} car={selectedCar} navigation={navigation} />}
+          renderItem={() => <CarComponent car={selectedCar} navigation={navigation} />}
           ref={this.carModalRef}
           defaultItem={selectedCar}
           defaultItemLoading={tagCarLoading}
@@ -1106,7 +1087,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private renderNoCar() {
     const listItemCommonStyle = computeListItemCommonStyle();
     const style = computeStyleSheet();
-    const { selectedUser, connector, chargingStation, selectedTag } = this.state;
+    const { selectedUser } = this.state;
     const { navigation } = this.props;
     return (
       <View style={[listItemCommonStyle.container, style.noItemContainer, style.noCarContainer]}>
@@ -1115,17 +1096,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
           {(this.currentUser?.id === selectedUser?.id || this.securityProvider.canListUsers()) && (
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('CarsNavigator', {
-                  screen: 'AddCar',
-                  params: {
-                    connectorID: connector?.connectorId,
-                    chargingStationID: chargingStation?.id,
-                    user: selectedUser,
-                    tag: selectedTag
-                  }
-                })
-              }
+              onPress={() => navigation.navigate('AddCar', { params: { user: selectedUser } })}
               style={style.addItemContainer}>
               <Text style={[style.linkText, style.plusSign]}>+</Text>
               <Text style={[style.messageText, style.linkText, style.linkLabel]}>{I18n.t('cars.addCarTitle')}</Text>
@@ -1143,7 +1114,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <ModalSelect<Tag>
-          renderItem={() => <TagComponent outlinedInactive={true} shadowed={true} tag={selectedTag} navigation={navigation} />}
+          renderItem={() => <TagComponent outlinedInactive={true} tag={selectedTag} navigation={navigation} />}
           disabled={disabled}
           openable={true}
           renderNoItem={this.renderNoTag.bind(this)}
@@ -1173,7 +1144,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  private async onUserSelected(selectedUsers: User[]): Promise<void> {
+  private onUserSelected(selectedUsers: User[]): void {
     const selectedUser = selectedUsers?.[0];
     // Reset errors and selected fields when new user selected
     this.setState(
@@ -1195,18 +1166,22 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private async loadSelectedUserDefaultTagAndCar(selectedUser: User): Promise<void> {
     this.setState({ tagCarLoading: true });
-    const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser);
-    this.carModalRef.current?.clearInput();
-    this.tagModalRef.current?.clearInput();
-    // Temporary workaround to ensure that the default property is set (server-side changes are to be done)
-    if (userDefaultTagCar.tag) {
-      userDefaultTagCar.tag.default = true;
+    try {
+      const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser);
+      this.carModalRef.current?.clearInput();
+      this.tagModalRef.current?.clearInput();
+      // Temporary workaround to ensure that the default property is set (server-side changes are to be done)
+      if (userDefaultTagCar?.tag) {
+        userDefaultTagCar.tag.default = true;
+      }
+      // Temporary workaround to ensure that the default car has all the needed properties (server-side changes are to be done)
+      if (userDefaultTagCar?.car) {
+        userDefaultTagCar.car.user = selectedUser;
+      }
+      this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
+    } catch (error) {
+      this.setState({ tagCarLoading: false });
     }
-    // Temporary workaround to ensure that the default car has all the needed properties (server-side changes are to be done)
-    if (userDefaultTagCar.car) {
-      userDefaultTagCar.car.user = selectedUser;
-    }
-    this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
   }
 
   private renderStartTransactionDialog() {
@@ -1222,10 +1197,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         buttons={[
           {
             text: I18n.t('general.yes'),
-            action: () =>
-              this.setState({ showStartTransactionDialog: false }, async () =>
-                this.startTransaction()
-              ),
+            action: () => this.setState({ showStartTransactionDialog: false }, async () => this.startTransaction()),
             buttonTextStyle: modalCommonStyle.primaryButton,
             buttonStyle: modalCommonStyle.primaryButton
           },

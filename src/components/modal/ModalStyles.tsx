@@ -73,7 +73,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       alignItems: 'center',
       padding: '5@s',
-      backgroundColor: commonColor.listBg,
+      backgroundColor: commonColor.containerBgColor,
       borderTopLeftRadius: '20@s',
       borderTopRightRadius: '20@s'
     },

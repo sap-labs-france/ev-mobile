@@ -213,7 +213,6 @@ export default {
   lineHeight: platform === PLATFORM.IOS ? 20 : 24,
 
   // List
-  listBg: 'transparent',
   listBorderColor: '#c9c9c9',
   listDividerBg: '#f4f4f4',
   listBtnUnderlayColor: '#DDD',
