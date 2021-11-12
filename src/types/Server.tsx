@@ -9,35 +9,35 @@ export enum ServerAction {
 
   OBJECT_CLONE = 'ObjectClone',
 
-  CHARGING_STATION_CLIENT_INITIALIZATION = 'ChargingStationClientInitialization',
-  CHARGING_STATION_RESET = 'RestChargingStationReset',
-  CHARGING_STATION_REQUEST_OCPP_PARAMETERS = 'RestChargingStationRequestOcppParameters',
-  CHARGING_STATION_CLEAR_CACHE = 'RestChargingStationClearCache',
-  CHARGING_STATION_TRIGGER_DATA_TRANSFER = 'RestChargingStationDataTransfer',
-  CHARGING_STATION_GET_CONFIGURATION = 'RestChargingStationGetConfiguration',
-  CHARGING_STATION_CHANGE_CONFIGURATION = 'RestChargingStationChangeConfiguration',
-  CHARGING_STATION_DATA_TRANSFER = 'ChargingStationChangeDataTransfer',
-  CHARGING_STATION_REMOTE_START_TRANSACTION = 'RestChargingStationRemoteStartTransaction',
-  CHARGING_STATION_REMOTE_STOP_TRANSACTION = 'RestChargingStationRemoteStopTransaction',
-  CHARGING_STATION_UNLOCK_CONNECTOR = 'RestChargingStationUnlockConnector',
-  CHARGING_STATION_SET_CHARGING_PROFILE = 'ChargingStationSetChargingProfile',
-  CHARGING_STATION_GET_COMPOSITE_SCHEDULE = 'RestChargingStationGetCompositeSchedule',
-  CHARGING_STATION_CLEAR_CHARGING_PROFILE = 'ChargingStationClearChargingProfile',
-  CHARGING_STATION_GET_DIAGNOSTICS = 'RestChargingStationGetDiagnostics',
-  CHARGING_STATION_UPDATE_FIRMWARE = 'RestChargingStationUpdateFirmware',
-  CHARGING_STATION_CHANGE_AVAILABILITY = 'RestChargingStationChangeAvailability',
-  CHARGING_STATION_DOWNLOAD_QR_CODE_PDF = 'RestChargingStationDownloadQrCodePdf',
+  CHARGING_STATION_RESET = 'OcppReset',
+  CHARGING_STATION_CLEAR_CACHE = 'OcppClearCache',
+  CHARGING_STATION_TRIGGER_DATA_TRANSFER = 'OcppDataTransfer',
+  CHARGING_STATION_GET_CONFIGURATION = 'OcppGetConfiguration',
+  CHARGING_STATION_CHANGE_CONFIGURATION = 'OcppChangeConfiguration',
+  CHARGING_STATION_DATA_TRANSFER = 'OcppChangeDataTransfer',
+  CHARGING_STATION_REMOTE_START_TRANSACTION = 'OcppRemoteStartTransaction',
+  CHARGING_STATION_REMOTE_STOP_TRANSACTION = 'OcppRemoteStopTransaction',
+  CHARGING_STATION_UNLOCK_CONNECTOR = 'OcppUnlockConnector',
+  CHARGING_STATION_SET_CHARGING_PROFILE = 'OcppSetChargingProfile',
+  CHARGING_STATION_GET_COMPOSITE_SCHEDULE = 'OcppGetCompositeSchedule',
+  CHARGING_STATION_CLEAR_CHARGING_PROFILE = 'OcppClearChargingProfile',
+  CHARGING_STATION_GET_DIAGNOSTICS = 'OcppGetDiagnostics',
+  CHARGING_STATION_UPDATE_FIRMWARE = 'OcppUpdateFirmware',
+  CHARGING_STATION_CHANGE_AVAILABILITY = 'OcppChangeAvailability',
 
-  CHARGING_STATIONS_EXPORT = 'RestChargingStationsExport',
-  CHARGING_STATIONS_OCPP_PARAMS_EXPORT = 'RestChargingStationsOcppParamsExport',
-  CHARGING_STATION = 'RestChargingStation',
-  CHARGING_STATIONS_OCPP_PARAMETERS = 'RestChargingStationOcppParameters',
-  CHARGING_STATIONS_IN_ERROR = 'RestChargingStationsInError',
-  CHARGING_STATION_UPDATE_PARAMS = 'RestChargingStationUpdateParams',
-  CHARGING_STATION_LIMIT_POWER = 'RestChargingStationLimitPower',
-  CHARGING_STATION_DELETE = 'RestChargingStationDelete',
-  CHARGING_STATION_RESERVE_NOW = 'RestChargingStationReserveNow',
-  CHARGING_STATION_CANCEL_RESERVATION = 'RestChargingStationCancelReservation',
+  CHARGING_STATION_REQUEST_OCPP_PARAMETERS = 'ChargingStationRequestOcppParameters',
+  CHARGING_STATION_CLIENT_INITIALIZATION = 'ChargingStationClientInitialization',
+  CHARGING_STATION_DOWNLOAD_QR_CODE_PDF = 'ChargingStationDownloadQrCodePdf',
+  CHARGING_STATIONS_EXPORT = 'ChargingStationsExport',
+  CHARGING_STATIONS_OCPP_PARAMS_EXPORT = 'ChargingStationsOcppParamsExport',
+  CHARGING_STATION = 'ChargingStation',
+  CHARGING_STATIONS_OCPP_PARAMETERS = 'ChargingStationOcppParameters',
+  CHARGING_STATIONS_IN_ERROR = 'ChargingStationsInError',
+  CHARGING_STATION_UPDATE_PARAMS = 'ChargingStationUpdateParams',
+  CHARGING_STATION_LIMIT_POWER = 'ChargingStationLimitPower',
+  CHARGING_STATION_DELETE = 'ChargingStationDelete',
+  CHARGING_STATION_RESERVE_NOW = 'ChargingStationReserveNow',
+  CHARGING_STATION_CANCEL_RESERVATION = 'ChargingStationCancelReservation',
 
   CHECK_SMART_CHARGING_CONNECTION = 'RestCheckSmartChargingConnection',
   TRIGGER_SMART_CHARGING = 'RestTriggerSmartCharging',
@@ -54,14 +54,13 @@ export enum ServerAction {
   TRANSACTION_SOFT_STOP = 'TransactionSoftStop',
   TRANSACTION_DELETE = 'TransactionDelete',
   TRANSACTIONS_DELETE = 'TransactionsDelete',
-  ASSIGN_TRANSACTIONS_TO_USER = 'AssignTransactionsToUser',
   UPDATE_TRANSACTION = 'UpdateTransaction',
 
   LOGGINGS = 'Loggings',
   LOGGING = 'Logging',
   LOGGINGS_EXPORT = 'LoggingsExport',
 
-  CHARGING_STATIONS = 'RestChargingStations',
+  CHARGING_STATIONS = 'ChargingStations',
 
   CAR_CATALOGS = 'CarCatalogs',
   CAR_CATALOG = 'CarCatalog',
@@ -251,6 +250,7 @@ export enum ServerAction {
   WS_REST_CLIENT_ERROR_RESPONSE = 'WSRestClientErrorResponse',
   WS_REST_CLIENT_MESSAGE = 'WSRestClientMessage',
   WS_REST_CLIENT_SEND_MESSAGE = 'WSRestClientSendMessage',
+  WS_REST_CLIENT_CONNECTION = 'WSRestClientConnection',
   WS_REST_CLIENT_CONNECTION_CLOSED = 'WSRestClientConnectionClosed',
   WS_REST_CLIENT_CONNECTION_OPENED = 'WSRestClientConnectionOpened',
   WS_REST_CLIENT_CONNECTION_ERROR = 'WSRestClientConnectionError',
@@ -299,7 +299,6 @@ export enum ServerAction {
   TRANSACTIONS_ACTIVE = 'TransactionsActive',
   TRANSACTIONS_IN_ERROR = 'TransactionsInError',
   TRANSACTION_YEARS = 'TransactionYears',
-  UNASSIGNED_TRANSACTIONS_COUNT = 'UnassignedTransactionsCount',
   TRANSACTION = 'Transaction',
   TRANSACTIONS = 'Transactions',
   TRANSACTION_CONSUMPTION = 'TransactionConsumption',
@@ -318,7 +317,7 @@ export enum ServerAction {
   USER_TRANSACTIONS_STATISTICS = 'UserTransactionsStatistics',
   USER_PRICING_STATISTICS = 'UserPricingStatistics',
 
-  CHARGING_STATION_TRANSACTIONS = 'RestChargingStationTransactions',
+  CHARGING_STATION_TRANSACTIONS = 'ChargingStationTransactions',
 
   ADD_CHARGING_STATIONS_TO_SITE_AREA = 'AddChargingStationsToSiteArea',
   REMOVE_CHARGING_STATIONS_FROM_SITE_AREA = 'RemoveChargingStationsFromSiteArea',
@@ -447,7 +446,9 @@ export enum ServerAction {
 
   HTTP_REQUEST = 'HttpRequest',
   HTTP_RESPONSE = 'HttpResponse',
-  HTTP_ERROR = 'HttpError'
+  HTTP_ERROR = 'HttpError',
+
+  EXPORT_TO_CSV = 'ExportToCSV'
 }
 
 // RESTful API
@@ -477,7 +478,7 @@ export enum ServerRoute {
   REST_CHARGING_STATIONS_FIRMWARE_UPDATE = 'charging-stations/:id/firmware/update',
   REST_CHARGING_STATIONS_CHANGE_AVAILABILITY = 'charging-stations/:id/availability/change',
   REST_CHARGING_STATIONS_RESERVE_NOW = 'charging-stations/:id/reserve/now',
-  REST_CHARGING_STATIONS_CANCEL_RESERVATION = 'charging-stations/:id/cancel/reservation',
+  REST_CHARGING_STATIONS_CANCEL_RESERVATION = 'charging-stations/:id/reservation/cancel',
 
   REST_CHARGING_STATIONS_DOWNLOAD_FIRMWARE = 'charging-stations/firmware/download',
   REST_CHARGING_STATIONS_QRCODE_GENERATE = 'charging-stations/:id/connectors/:connectorId/qrcode/generate',
@@ -501,13 +502,10 @@ export enum ServerRoute {
   REST_CHARGING_PROFILES = 'charging-profiles',
   REST_CHARGING_PROFILE = 'charging-profiles/:id',
 
-  REST_CARS = 'cars',
-
   REST_TRANSACTIONS = 'transactions',
   REST_TRANSACTIONS_IN_ERROR = 'transactions/status/in-error',
   REST_TRANSACTIONS_ACTIVE = 'transactions/status/active',
   REST_TRANSACTIONS_COMPLETED = 'transactions/status/completed',
-  REST_TRANSACTIONS_UNASSIGNED_COUNT = 'transactions/status/unassigned/count',
   REST_TRANSACTION = 'transactions/:id',
   REST_TRANSACTIONS_EXPORT = 'transactions/action/export',
   REST_TRANSACTION_CDR = 'transactions/:id/ocpi/cdr',
@@ -517,7 +515,6 @@ export enum ServerRoute {
   REST_TRANSACTIONS_REFUND_ACTION = 'transactions/action/refund',
   REST_TRANSACTIONS_REFUND = 'transactions/status/refund',
   REST_TRANSACTIONS_REFUND_EXPORT = 'transactions/status/refund/export',
-  REST_TRANSACTIONS_ASSIGN_USER = 'transactions/action/assign-user',
   REST_TRANSACTIONS_SYNCHRONIZE_REFUNDED = 'transactions/status/refund/synchronize',
   REST_TRANSACTIONS_REFUND_REPORTS = 'transactions/status/refund/reports',
 
@@ -617,11 +614,18 @@ export enum ServerProtocol {
   WSS = 'wss'
 }
 
+export enum ServerType {
+  REST_SERVER = 'Rest',
+  SOAP_SERVER = 'Soap',
+  JSON_SERVER = 'Json',
+  OCPI_SERVER = 'Ocpi',
+  OICP_SERVER = 'Oicp',
+  ODATA_SERVER = 'OData',
+  BATCH_SERVER = 'Batch',
+  CENTRAL_SERVER = 'CentralServer',
+}
+
 export enum WSServerProtocol {
   OCPP16 = 'ocpp1.6',
   REST = 'rest'
-}
-
-export enum RestResponse {
-  SUCCESS = 'Success'
 }
