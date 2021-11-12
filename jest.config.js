@@ -3,7 +3,7 @@ module.exports = {
   globals: {
     'ts-jest': {
       // Tell ts-jest about our typescript config.
-      tsconfig: 'tsconfig.spec.json',
+      tsconfig: 'tsconfig.spec.json'
     },
   },
   // Transforms tell jest how to process our non-javascript files.
@@ -18,8 +18,8 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   // Tells Jest what folders to ignore for tests
-  testPathIgnorePatterns: [`node_modules`, `\\.cache`]
-  //transformIgnorePatterns: [
-  //  'node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation)',
-  //]
+  testPathIgnorePatterns: [`node_modules`, `\\.cache`],
+  transformIgnorePatterns: [
+    'node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation)',
+  ]
 }

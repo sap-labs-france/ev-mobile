@@ -118,7 +118,8 @@ export default class I18nManager {
     return '-';
   }
 
-  public static formatNumberWithCompacts(value: number, options: FormatNumberOptions = {}): FormatNumberResult {
+  public static formatNumberWithCompacts(value: number, options: FormatNumberOptions = {}, locale: string = i18n.locale): FormatNumberResult {
+    options = {... options };
     const isCompactForm =
       options.notation === NumberFormatNotationEnum.COMPACT &&
       (!options.compactThreshold || (options.compactThreshold && value > options.compactThreshold));
@@ -131,7 +132,7 @@ export default class I18nManager {
       delete options.notation;
     }
     // Format the given value with the given options
-    const parts = Intl.NumberFormat(i18n.locale, options).formatToParts(value);
+    const parts = Intl.NumberFormat(locale, options).formatToParts(value);
 
     // Compute the compact (prefix) if needed (Intl namespace does not supports metric compacts yet)
     let compact = this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.COMPACT);
@@ -180,14 +181,15 @@ export default class I18nManager {
     return !isNaN(new Date(date).getTime());
   }
 
-  private static concatenateNumberFormatParts(parts: Intl.NumberFormatPart[] = []): string {
+ static concatenateNumberFormatParts(parts: Intl.NumberFormatPart[] = []): string {
     return parts
       .filter((p) => !(p.type.toUpperCase() in NumberFormatSymbolsEnum))
       .map((p) => p.value)
-      .join('');
+      .join('')
+      .trim();
   }
 
-  private static getNumberFormatPartValue(parts: Intl.NumberFormatPart[], type: string) {
+  static getNumberFormatPartValue(parts: Intl.NumberFormatPart[], type: string) {
     return parts.find((p) => p.type === type)?.value;
   }
 
