@@ -72,4 +72,4 @@ jobs:
       - name: npm install
         run: npm ci
       - name: npm test
-        run: jest -u --coverage
+        run: npm test -u
