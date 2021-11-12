@@ -1,4 +1,4 @@
-name: Build CI
+name: CI
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - master-qa
 
 jobs:
-  build-android:
+  Build-android:
     runs-on: ubuntu-latest
 
     strategy:
@@ -32,7 +32,7 @@ jobs:
         npm run build:prepare
         npm run android:assembleDebug
 
-  build-ios:
+  Build-ios:
     runs-on: macos-latest
 
     strategy:
@@ -54,7 +54,7 @@ jobs:
         npm run build:prepare
         cd ios && xcodebuild -workspace eMobility.xcworkspace -scheme eMobility -configuration Debug CODE_SIGNING_ALLOWED=NO
 
-  test:
+  Test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -73,3 +73,8 @@ jobs:
         run: npm ci
       - name: npm test
         run: npm test
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: test-results/**/*.xml
