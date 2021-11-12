@@ -1,5 +1,7 @@
 module.exports = {
   preset: 'react-native',
+  reporters: [ "default", "jest-junit" ],
+  testResultsProcessor: "jest-junit",
   globals: {
     'ts-jest': {
       // Tell ts-jest about our typescript config.
