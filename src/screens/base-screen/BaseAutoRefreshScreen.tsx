@@ -43,8 +43,8 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     this.clearRefreshTimer();
   }
 
-  public async componentDidFocus() {
-    await super.componentDidFocus();
+  public componentDidFocus(): void {
+    super.componentDidFocus();
     // Refresh
     if (this.isMounted() && this.props.navigation.isFocused() && this.canRefresh()) {
       this.refresh();
@@ -54,8 +54,8 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     this.startRefreshTimer();
   }
 
-  public async componentDidBlur() {
-    await super.componentDidBlur();
+  public componentDidBlur(): void {
+    super.componentDidBlur();
     // Clear the timer
     this.clearRefreshTimer();
   }

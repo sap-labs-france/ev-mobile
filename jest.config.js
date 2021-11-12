@@ -12,9 +12,14 @@ module.exports = {
   // you already have babel set up to compile typescript files.
   transform: {
     "^.+\\.jsx?$": "babel-jest",
+    "^.+\\.js?$": "babel-jest",
     '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.ts?$': 'ts-jest'
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   // Tells Jest what folders to ignore for tests
   testPathIgnorePatterns: [`node_modules`, `\\.cache`]
+  //transformIgnorePatterns: [
+  //  'node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation)',
+  //]
 }

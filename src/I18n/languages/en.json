@@ -91,7 +91,8 @@
     "badges": "RFID Cards",
     "cars": "Cars",
     "invoices": "Invoices",
-    "paymentMethods": "Payment Methods"
+    "paymentMethods": "Payment Methods",
+    "qrCodeScanner": "QR-Code Scanner"
   },
   "authentication": {
     "noTenantFoundTitle": "No organization found",
@@ -452,6 +453,7 @@
     "cumulatedChartLabel": "Cumulated (kW.h)",
     "batteryChartLabel": "Battery Level (%)",
     "gridLimitChartLabel": "Grid Limit (kW)",
+    "cumulatedConsumptionLabel": "Energy Delivered (kW.h)",
     "connectorMax": "Connector Max Power (kW)",
     "noData": "No Data",
     "noSessionInProgress": "No Session in progress",

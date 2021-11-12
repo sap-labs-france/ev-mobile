@@ -1,12 +1,12 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, View } from 'native-base';
+import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
-import TransactionHistoryComponent from '../../../components/transaction/history/TransactionHistoryComponent';
+import TransactionHistoryComponent
+  from '../../../components/transaction/history/TransactionHistoryComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseScreen from '../../../screens/base-screen/BaseScreen';

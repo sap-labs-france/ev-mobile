@@ -12,7 +12,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingLeft: 10,
       paddingRight: 10,
       paddingBottom: 10,
-      backgroundColor: 'white'
+      backgroundColor: commonColor.containerBgColor
     },
     spinner: {
       flex: 2,

@@ -783,7 +783,7 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params: { UserID: userID }
     });
-    return res.data as UserDefaultTagCar;
+    return res?.data as UserDefaultTagCar;
   }
 
   public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Tag>> {

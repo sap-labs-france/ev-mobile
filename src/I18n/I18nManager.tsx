@@ -9,7 +9,7 @@ import 'moment/locale/pt-br';
 import i18n from 'i18n-js';
 import moment from 'moment';
 import { I18nManager as I18nReactNativeManager } from 'react-native';
-import * as RNLocalize from 'react-native-localize';
+import { findBestAvailableLanguage, usesMetricSystem } from 'react-native-localize';
 
 import Constants from '../utils/Constants';
 import Utils from '../utils/Utils';
@@ -85,7 +85,7 @@ export default class I18nManager {
     i18n.fallbacks = true;
     const fallback = { languageTag: Constants.DEFAULT_LANGUAGE, isRTL: false };
     // Get current locale
-    const { languageTag, isRTL } = RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)) || fallback;
+    const { languageTag, isRTL } = findBestAvailableLanguage(Object.keys(translationGetters)) || fallback;
     // Set translation files
     i18n.translations.en = enJsonLanguage;
     i18n.translations.fr = frJsonLanguage;
@@ -166,7 +166,7 @@ export default class I18nManager {
   }
 
   public static isMetricsSystem(): boolean {
-    return RNLocalize.usesMetricSystem();
+    return usesMetricSystem();
   }
 
   public static formatDateTime(value: Date, format: string = 'LLL'): string {
@@ -191,7 +191,7 @@ export default class I18nManager {
     return parts.find((p) => p.type === type)?.value;
   }
 
-  private static computeMetricCompact(value: number): MetricCompactEnum {
+  static computeMetricCompact(value: number): MetricCompactEnum {
     if (value < 1000) {
       return null;
     }

@@ -14,7 +14,6 @@ interface State {}
 export interface Props extends BaseProps {
   carCatalog: CarCatalog;
   selected?: boolean;
-  shadowed?: boolean;
 }
 
 export default class CarCatalogComponent extends React.Component<Props, State> {

@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Content, Icon, Spinner } from 'native-base';
 import React from 'react';
@@ -151,13 +150,6 @@ export default class Statistics extends BaseScreen<Props, State> {
     return null;
   };
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
-    // Do not bubble up
-    return true;
-  };
-
   public render = () => {
     const style = computeStyleSheet();
     const activityIndicatorCommonStyles = computeActivityIndicatorCommonStyles();
@@ -168,7 +160,6 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalNumberOfSession,
       totalConsumptionWattHours,
       initialFilters,
-      filters,
       totalDurationSecs,
       totalInactivitySecs,
       priceCurrency,

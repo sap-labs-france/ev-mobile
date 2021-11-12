@@ -1,6 +1,5 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container,Spinner } from 'native-base';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -155,13 +154,7 @@ export default class CarCatalogs extends SelectableList<Car> {
           subTitle={this.buildHeaderSubtitle()}
           modalized={isModal}
           backArrow={!isModal}
-          sideBar={!isModal}
           navigation={this.props.navigation}
-          leftAction={isModal ? null : this.onBack}
-          leftActionIcon={isModal ? null : 'navigate-before'}
-          displayTenantLogo={false}
-          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
-          rightActionIcon={isModal ? null : 'menu'}
         />
         <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
