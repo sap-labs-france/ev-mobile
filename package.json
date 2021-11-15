@@ -98,6 +98,7 @@
     "buffer": "^6.0.3",
     "color": "^3.2.1",
     "deepmerge": "^4.2.2",
+    "eslint-plugin-prettier": "^4.0.0",
     "http-status-codes": "^2.1.4",
     "i18n-js": "^3.8.0",
     "intl": "^1.2.5",
