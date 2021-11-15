@@ -160,7 +160,6 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalNumberOfSession,
       totalConsumptionWattHours,
       initialFilters,
-      filters,
       totalDurationSecs,
       totalInactivitySecs,
       priceCurrency,

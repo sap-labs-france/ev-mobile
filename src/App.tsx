@@ -566,7 +566,7 @@ export default class App extends React.Component<Props, State> {
           {showAppUpdateDialog && (
             <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />
           )}
-          <StatusBar barStyle={commonColors.statusBar} translucent backgroundColor="transparent" />
+          <StatusBar translucent backgroundColor="transparent" />
           {createRootNavigator(this, this.state.navigationState)}
         </RootSiblingParent>
       )

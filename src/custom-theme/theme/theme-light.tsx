@@ -33,5 +33,6 @@ export default {
   selectFieldBackgroundColor: '#eeeeee',
   selectDropdownBackgroundColor: '#eeeeee',
   listHeaderBackground: palette.light,
-  listItemBackground: palette.light
+  listItemBackground: palette.light,
+  lightDark: null
 };
