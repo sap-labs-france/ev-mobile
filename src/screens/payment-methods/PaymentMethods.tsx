@@ -20,7 +20,7 @@ import { BillingSettings } from '../../types/Setting';
 import SelectableList, { SelectableState } from '../base-screen/SelectableList';
 import DialogModal from '../../components/modal/DialogModal';
 import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
-import { FAB } from 'react-native-paper';
+import computeFabStyles from '../../components/fab/FabComponentStyles';
 
 export interface Props extends BaseProps {}
 
@@ -137,16 +137,13 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     const style = computeStyleSheet();
     const { paymentMethods, count, skip, limit, refreshing, loading, billingSettings, paymentMethodToBeDeleted } = this.state;
     const { navigation } = this.props;
-    const commonColors = Utils.getCurrentCommonColor();
+    const fabStyles = computeFabStyles();
     return (
       <Container style={style.container}>
         {billingSettings?.stripe?.publicKey && (
-          <FAB
-            color={commonColors.light}
-            onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })}
-            icon={'plus'}
-            style={style.fab}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })} style={[fabStyles.fab, fabStyles.placedFab]}>
+            <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
+          </TouchableOpacity>
         )}
         <HeaderComponent
           title={this.buildHeaderTitle()}

@@ -50,6 +50,7 @@ import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
 import AppUpdateDialog from './components/modal/app-update/AppUpdateDialog';
 import AddCar from './screens/cars/AddCar';
 import ChargingStationQrCode from './screens/home/ChargingStationQrCode';
+import ThemeManager from './custom-theme/ThemeManager';
 
 // Init i18n
 I18nManager.initialize();
@@ -423,7 +424,6 @@ function createAppDrawerNavigator(props: BaseProps) {
         swipeEdgeWidth: 20,
         unmountOnBlur: true
       })}
-      drawerStyle={appStyles.sideMenu}
       backBehavior={'history'}
       drawerPosition="left"
       drawerContent={(drawerProps) => <Sidebar {...drawerProps} />}>
@@ -566,7 +566,7 @@ export default class App extends React.Component<Props, State> {
           {showAppUpdateDialog && (
             <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />
           )}
-          <StatusBar translucent backgroundColor="transparent" />
+          <StatusBar barStyle={ThemeManager.getInstance()?.isThemeTypeIsDark() ? 'light-content' : 'dark-content'} translucent backgroundColor="transparent" />
           {createRootNavigator(this, this.state.navigationState)}
         </RootSiblingParent>
       )

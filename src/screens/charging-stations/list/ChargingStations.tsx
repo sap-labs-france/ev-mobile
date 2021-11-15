@@ -28,8 +28,9 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
-import { FAB } from 'react-native-paper';
-import standardLayout from '../../../../assets/map/standard.png';
+import computeFabStyles from '../../../components/fab/FabComponentStyles';
+import standardDarkLayout from '../../../../assets/map/standard-dark.png';
+import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
 
 
@@ -79,7 +80,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       showMap: true,
       visible: false,
       chargingStationSelected: null,
-      satelliteMap: true
+      satelliteMap: false
     };
   }
 
@@ -378,22 +379,24 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       Utils.containsGPSCoordinates(chargingStation.coordinates)
     );
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    const fabStyles = computeFabStyles();
     return (
       <Container style={style.container}>
         <View style={style.fabContainer}>
           {showMap && (
-            <TouchableOpacity style={style.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
+            <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
               <Image
-                source={satelliteMap ? standardLayout : satelliteLayout}
-                style={style.imageStyle as ImageStyle}
+                source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
+                style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
               />
             </TouchableOpacity>
           )}
-          <FAB
-            icon={showMap ? 'format-list-bulleted' : 'map'}
+          <TouchableOpacity
             style={style.fab}
             onPress={() => this.setState({ showMap: !this.state.showMap })}
-          />
+          >
+            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
+          </TouchableOpacity>
         </View>
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}

@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -17,7 +17,7 @@ import computeTransactionStyles from '../transactions/TransactionsStyles'
 
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
-import { FAB } from 'react-native-paper';
+import computeFabStyles from '../../components/fab/FabComponentStyles';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];
@@ -147,11 +147,14 @@ export default class Cars extends SelectableList<Car> {
     const style = computeStyleSheet();
     const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
-    const commonColors = Utils.getCurrentCommonColor();
+    const fabStyles = computeFabStyles();
     return (
       <Container style={transactionStyles.container}>
         {!isModal && (
-          <FAB color={commonColors.light} onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} icon={'plus'} style={style.fab} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={[fabStyles.fab, fabStyles.placedFab]}>
+            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={'plus'} />
+          </TouchableOpacity>
         )}
         <HeaderComponent
           title={this.buildHeaderTitle()}

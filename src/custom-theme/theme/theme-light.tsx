@@ -34,5 +34,6 @@ export default {
   selectDropdownBackgroundColor: '#eeeeee',
   listHeaderBackground: palette.light,
   listItemBackground: palette.light,
+  mapClusterBorder: palette.primaryDark,
   lightDark: null
 };
