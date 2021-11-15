@@ -55,26 +55,35 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       zIndex: 1,
       bottom: 0,
       right: 0,
-      margin: '14@s',
-      flexDirection: 'column'
+      margin: '12@s',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: 0
     },
     imageStyle: {
       height: '100%',
       width: '100%',
       padding: 0,
-      borderRadius: '60@s'
+      borderRadius: '60@s',
+    },
+    outlinedImage: {
+      borderColor: commonColor.listItemBackground,
+      borderWidth: 2
     },
     cluster: {
-      backgroundColor: commonColor.containerBgColor,
+      backgroundColor: commonColor.listItemBackground,
       padding: '10@s',
       width: '50@s',
       height: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: '50@s',
-      borderWidth: 1,
-      borderColor: commonColor.textColor,
+      borderWidth: 2,
+      borderColor: commonColor.mapClusterBorder,
       zIndex: 1
+    },
+    outlinedCluster: {
+      borderColor: commonColor.mapClusterBorder
     },
     text: {
       color: commonColor.textColor,

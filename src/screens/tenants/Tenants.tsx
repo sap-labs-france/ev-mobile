@@ -17,7 +17,7 @@ import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
 import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
 import TenantComponent from '../../components/tenant/TenantComponent';
-import { FAB } from 'react-native-paper';
+import computeFabStyles from '../../components/fab/FabComponentStyles';
 
 export interface Props extends BaseProps {}
 
@@ -77,7 +77,7 @@ export default class Tenants extends BaseScreen<Props, State> {
     } = this.state;
     const style = computeTenantStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
-    const commonColors = Utils.getCurrentCommonColor();
+    const fabStyles = computeFabStyles();
     return (
       <View style={{ flex: 1 }}>
         {showAddTenantDialog && this.renderAddTenantDialog(style)}
@@ -94,7 +94,9 @@ export default class Tenants extends BaseScreen<Props, State> {
           />
         ) : (
           <View style={style.container}>
-            <FAB color={commonColors.light} onPress={() => this.setState({ showAddTenantDialog: true })} icon={'plus'} style={style.fab} />
+            <TouchableOpacity onPress={() => this.setState({ showAddTenantDialog: true })} style={[fabStyles.fab, fabStyles.placedFab]}>
+              <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
+            </TouchableOpacity>
             {showAddTenantManuallyDialog && (
               <AddEditTenantDialog
                 mode={TenantDialogMode.ADD}

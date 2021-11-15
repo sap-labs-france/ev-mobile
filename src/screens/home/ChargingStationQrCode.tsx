@@ -3,7 +3,7 @@ import base64 from 'base-64';
 import I18n from 'i18n-js';
 import { Container } from 'native-base';
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
@@ -17,6 +17,7 @@ import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import Configuration from '../../config/Configuration';
+import { buildCommonColor } from '../../custom-theme/customCommonColor';
 
 export interface Props extends BaseProps {
   currentTenantSubDomain: string;
@@ -188,28 +189,19 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
   }
 
   public render() {
-    const { navigation } = this.props;
     const { activateQrCode } = this.state;
+    const commonColor = Utils.getCurrentCommonColor();
     return (
       <Container>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanChargingStationQrCodeTitle')}
-          leftAction={() => {
-            this.close();
-            return true;
-          }}
-          leftActionIcon={'navigate-before'}
-          hideHomeAction
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
+          backArrow={true}
         />
-        {activateQrCode && (
+       {activateQrCode && (
           <QRCodeScanner
             cameraProps={{ captureAudio: false }}
+            markerStyle={{borderColor: commonColor.primaryLight}}
             showMarker
             reactivate
             reactivateTimeout={1000}

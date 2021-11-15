@@ -35,5 +35,5 @@ export default interface ThemeDefinition {
   selectDropdownBackgroundColor: string;
   listItemBackground: string;
   listHeaderBackground: string;
-  statusBar: string;
+  mapClusterBorder: string;
 }

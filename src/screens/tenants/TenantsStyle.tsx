@@ -44,24 +44,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontSize: '27@s'
     },
-    addTenantButton: {
-      width: '35@s',
-      height: '35@s',
-      borderRadius: '8@s',
-      padding: '5@s',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'row',
-      backgroundColor: commonColor.listItemBackground,
-      elevation: 4,
-      shadowColor: commonColor.cardShadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 1
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62
-    },
     rightActionsContainer: {
       flexDirection: 'row',
       marginLeft: '2.5%'
@@ -97,21 +79,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderColor: commonColor.textColor,
       color: commonColor.textColor
     },
-    fab: {
-      position: 'absolute',
-      bottom: 0,
-      right: 0,
-      margin: '18@s',
-      zIndex: 1,
-      elevation: 4,
-      backgroundColor: commonColor.primary,
-      shadowOffset: {
-        width: 0,
-        height: 1
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62
-    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};
