@@ -691,7 +691,7 @@ export default class Utils {
     centralServerProvider: CentralServerProvider,
     error: RequestError,
     defaultErrorMessage: string,
-    navigation?: NavigationContainerRef,
+    navigation?: NavigationContainerRef<any>,
     fctRefresh?: () => void
   ): Promise<void> {
     console.error('HTTP request error', error);
