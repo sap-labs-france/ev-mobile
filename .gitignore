@@ -108,3 +108,4 @@ assets/config.json
 # tests
 coverage/
 __tests__/__snapshots__/
+test-results/
