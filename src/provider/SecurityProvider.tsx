@@ -107,7 +107,9 @@ export default class SecurityProvider {
   }
 
   public canAccess(resource: string, action: string): boolean {
-    return this.loggedUser && this.loggedUser.scopes && this.loggedUser.scopes.includes(`${resource}:${action}`);
+    return this.loggedUser && this.loggedUser.scopes && (this.loggedUser.scopes.includes(`${resource}:${action}`)
+      //TODO remove the plural (s) when backend new authorization deployed
+      || this.loggedUser.scopes.includes(`${resource}s:${action}`));
   }
 
   public canListUsers(): boolean {
@@ -115,11 +117,11 @@ export default class SecurityProvider {
   }
 
   public canListTags(): boolean {
-    return this.canAccess(Entity.TAGS, Action.LIST);
+    return this.canAccess(Entity.TAG, Action.LIST);
   }
 
   public canListCars(): boolean {
-    return this.canAccess(Entity.CARS, Action.LIST);
+    return this.canAccess(Entity.CAR, Action.LIST);
   }
 
   public canListInvoices(): boolean {
