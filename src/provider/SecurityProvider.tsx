@@ -111,7 +111,7 @@ export default class SecurityProvider {
   }
 
   public canListUsers(): boolean {
-    return this.canAccess(Entity.USERS, Action.LIST);
+    return this.canAccess(Entity.USER, Action.LIST);
   }
 
   public canListTags(): boolean {
@@ -123,10 +123,10 @@ export default class SecurityProvider {
   }
 
   public canListInvoices(): boolean {
-    return this.canAccess(Entity.INVOICES, Action.LIST);
+    return this.canAccess(Entity.INVOICE, Action.LIST);
   }
 
   public canListPaymentMethods(): boolean {
-    return this.canAccess(Entity.PAYMENT_METHODS, Action.LIST);
+    return this.canAccess(Entity.PAYMENT_METHOD, Action.LIST);
   }
 }
