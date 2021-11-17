@@ -36,7 +36,7 @@
     "ios-ipad-pro": "cross-env TSC_WATCHFILE=UseFsEventsWithFallbackDynamicPolling react-native run-ios --simulator='iPad Pro (12.9-inch) (2nd generation)'",
     "ios:release": "react-native run-ios --configuration Release",
     "pod:install": "cd ios && pod install",
-    "pod:deintegrate": "cd ios && pod deintegrate",
+    "pod:deintegrate": "cd ios && pod repo update && pod deintegrate",
     "test": "jest -u --ci --testResultsProcessor='jest-junit' --reporters='default' --reporters='jest-junit'",
     "precommit": "npm test",
     "lint": "cross-env TIMING=1 eslint src __tests__ types App.tsx --ext .js,.ts,.tsx",
