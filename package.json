@@ -58,7 +58,10 @@
     "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/GoogleService-Info.plist; fi",
     "import-sort": "npx import-sort-cli --write '{src,__tests__,types}/**/*.ts{,x}' *.ts{,x}",
     "check:i18n": "cross-env TS_NODE_FILES=true ts-node-dev --project tsconfig-i18n.json --files test/I18nChecker.ts",
-    "react-native:install": "npm install --force && npm clean-install && cd ios && pod install"
+    "react-native:install": "npm install --force && npm clean-install && cd ios && pod install",
+    "clean:android": "cd android && ./gradlew clean && cd ..",
+    "clean:ios": "cd ios && xcodebuild clean && rm -rf ~/Library/Developer/Xcode/DerivedData && rm -rf Pods/ && pod install && cd ..",
+    "clean:project": "npm run clean:android && npm run clean:ios"
   },
   "importSort": {
     ".js, .jsx, .es6, .es, .mjs": {
