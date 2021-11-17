@@ -59,7 +59,9 @@
     "import-sort": "npx import-sort-cli --write '{src,__tests__,types}/**/*.ts{,x}' *.ts{,x}",
     "check:i18n": "cross-env TS_NODE_FILES=true ts-node-dev --project tsconfig-i18n.json --files test/I18nChecker.ts",
     "react-native:install": "npm install --force && npm clean-install && cd ios && pod install",
-    "clean:project": "rm -rf node_modules && cd android && ./gradlew clean && cd ../ios && xcodebuild clean && rm -rf ~/Library/Developer/Xcode/DerivedData && cd .. && npm start -- --reset-cache "
+    "clean:android": "cd android && ./gradlew clean && cd ..",
+    "clean:ios": "cd ios && xcodebuild clean && rm -rf ~/Library/Developer/Xcode/DerivedData && rm -rf Pods/ && pod install && cd ..",
+    "clean:project": "npm run clean:android && npm run clean:ios"
   },
   "importSort": {
     ".js, .jsx, .es6, .es, .mjs": {
