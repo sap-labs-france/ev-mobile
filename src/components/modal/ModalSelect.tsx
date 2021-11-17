@@ -17,8 +17,12 @@ export interface Props<T> extends BaseProps {
   disabled?: boolean;
   label?: string;
   renderItem?: (item?: T) => React.ReactElement;
+  // Render a generic item when the items list is empty (only if renderItemPlaceholder is null)
   renderNoItem?: () => React.ReactElement;
+  // Render a generic item when nothing is selected
   renderItemPlaceholder?: () => React.ReactElement;
+  // Whether or not to display the button to cleat the input
+  canClearInput?: boolean;
   selectionMode: ItemSelectionMode;
   onItemsSelected: (selectedItems: T[]) => void;
   defaultItemLoading?: boolean;
@@ -26,6 +30,7 @@ export interface Props<T> extends BaseProps {
 }
 interface State<T> {
   isVisible: boolean;
+  noneSelected: boolean;
   selectedItems: T[];
   selectedItemsCount: number;
 }
@@ -42,12 +47,29 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     this.state = {
       isVisible: false,
       selectedItems: [],
-      selectedItemsCount: 0
+      selectedItemsCount: 0,
+      noneSelected: false
     };
   }
 
-  public clearInput() {
-    this.setState({ selectedItems: [] });
+  public componentDidMount() {
+    this.setState({ selectedItems: [this.props.defaultItem] });
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props<T>>, prevState: Readonly<State<T>>, snapshot?: any) {
+    if(this.state.selectedItems[0]?.id !== this.props.defaultItem?.id && this.state.noneSelected === false) {
+      this.setState({ selectedItems: [this.props.defaultItem, ...this.state.selectedItems.slice(1)] });
+    }
+  }
+
+  public resetInput(noneSelected: boolean = false): void {
+    this.itemsListRef?.current?.clearSelectedItems();
+    this.setState({noneSelected, selectedItems: [], selectedItemsCount: 0, isVisible: false});
+  }
+
+  private clearInput(): void {
+    this.resetInput(true);
+
   }
 
   public render() {
@@ -88,7 +110,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
             </View>
             {selectionMode === ItemSelectionMode.MULTI && (
               <View style={style.bottomButtonContainer}>
-                <Button style={style.modalButton} block light onPress={() => this.clearSelection()}>
+                <Button style={style.modalButton} block light onPress={() => this.resetInput()}>
                   <Text style={style.buttonText}>{I18n.t('general.reset')}</Text>
                 </Button>
                 <Button
@@ -105,11 +127,6 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
         </Modal>
       </View>
     );
-  }
-
-  private clearSelection(): void {
-    this.itemsListRef?.current?.clearSelectedItems();
-    this.setState(this.state);
   }
 
   private validateSelection(): void {
@@ -130,8 +147,8 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
   }
 
   private renderButton(style: any) {
-    const { defaultItemLoading, defaultItem, renderNoItem, renderItem, renderItemPlaceholder, openable, disabled } = this.props;
-    const { selectedItems } = this.state;
+    const { defaultItemLoading, renderNoItem, renderItem, renderItemPlaceholder, openable, disabled, canClearInput } = this.props;
+    const { selectedItems, noneSelected } = this.state;
     const listItemCommonStyle = computeListItemCommonStyle();
     const commonColors = Utils.getCurrentCommonColor();
     if (defaultItemLoading) {
@@ -141,16 +158,21 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
         </View>
       );
     }
-    if (defaultItem || selectedItems[0]) {
+    if (selectedItems[0]) {
       return (
         <TouchableOpacity
           disabled={disabled || !openable}
           onPress={() => this.setState({ isVisible: true })}
           style={[style.itemContainer, disabled && style.buttonDisabled]}>
-          {renderItem?.(selectedItems.length > 0 ? selectedItems[0] : defaultItem)}
+          {canClearInput && (
+            <TouchableOpacity style={style.clearContainer} onPress={() => this.clearInput()}>
+              <Text style={{textAlign: 'right', color: commonColors.primary}}>Clear field</Text>
+            </TouchableOpacity>
+          )}
+          {renderItem?.(selectedItems[0])}
         </TouchableOpacity>
       );
-    } else if (renderItemPlaceholder) {
+    } else if (renderItemPlaceholder && noneSelected !== false) {
       return (
         <TouchableOpacity onPress={() => this.setState({ isVisible: true })} style={style.itemContainer}>
           {renderItemPlaceholder?.()}

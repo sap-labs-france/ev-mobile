@@ -120,6 +120,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginLeft: '5%',
       marginBottom: '6@s',
       textAlign: 'left'
+    },
+    clearContainer: {
+      width: '100%',
+      paddingBottom: '3@s'
     }
   });
   const portraitStyles = {};
