@@ -14,6 +14,10 @@ It's linked to the Open e-Mobility backend: https://github.com/sap-labs-france/e
 
 **Contact the author** <a href="https://www.linkedin.com/in/serge-fabiano-a420a218/" target="_blank">Serge FABIANO</a>
 
+## NPM and Cocoapods
+
+The project now uses npm 8.x and cocoapods 1.11.2
+
 ## Installation
 
 * Install NodeJS: https://nodejs.org/ (install the LTS version)

@@ -118,6 +118,7 @@
     "registerUnexpectedError": "A conta não pode ser criada",
     "accountLocked": "A sua conta está bloqueada",
     "accountNotActive": "A sua conta não está ativa",
+    "technicalUserCannotLoginToUI": "Technical user and cannot login using the application",
     "accountAlreadyActive": "A sua conta já está ativa",
     "accountVerifiedSuccess": "A sua conta foi ativada com sucesso!",
     "accountPending": "A sua conta está pendendte! Por favor Verifique o seu email",

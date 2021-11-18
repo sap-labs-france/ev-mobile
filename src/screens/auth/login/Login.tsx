@@ -11,6 +11,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import DialogModal from '../../../components/modal/DialogModal';
+import ExitAppDialog from '../../../components/modal/exit-app/ExitAppDialog';
+import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
@@ -21,9 +24,6 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
-import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
-import ExitAppDialog from '../../../components/modal/exit-app/ExitAppDialog';
-import DialogModal from '../../../components/modal/DialogModal';
 
 export interface Props extends BaseProps {}
 
@@ -268,6 +268,10 @@ export default class Login extends BaseScreen<Props, State> {
             // Account not Active
             case HTTPError.USER_ACCOUNT_INACTIVE_ERROR:
               Message.showError(I18n.t('authentication.accountNotActive'));
+              break;
+            // Technical User
+            case HTTPError.TECHNICAL_USER_CANNOT_LOG_TO_UI_ERROR:
+              Message.showError(I18n.t('authentication.technicalUserCannotLoginToUI'));
               break;
             // Account Pending
             case HTTPError.USER_ACCOUNT_PENDING_ERROR:
