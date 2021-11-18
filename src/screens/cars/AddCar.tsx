@@ -242,7 +242,7 @@ export default class AddCar extends BaseScreen<Props, State> {
             buttonStyle={modalCommonStyles.primaryButton}
             onPress={this.addCar.bind(this)}
             loading={addCarPending}
-            title={I18n.t('cars.addCarButton').toUpperCase()}
+            title={I18n.t('cars.addCarButton')}
           />
         </ScrollView>
       </View>

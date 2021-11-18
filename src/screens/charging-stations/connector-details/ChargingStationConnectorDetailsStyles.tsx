@@ -133,7 +133,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginHorizontal: '2.5%',
       justifyContent: 'center',
       alignItems: 'center',
-      height: 'auto'
+      height: 'auto',
+      paddingTop: '10@s'
     },
     rowContainer: {
       flexDirection: 'row',
@@ -145,9 +146,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     rowUserCarBadgeContainer: {
       width: '100%',
       justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: '5@s',
-      paddingTop: '5@s'
+      alignItems: 'center'
     },
     columnContainer: {
       flexDirection: 'column',

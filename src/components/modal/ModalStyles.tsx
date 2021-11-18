@@ -122,8 +122,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       textAlign: 'left'
     },
     clearContainer: {
-      width: '100%',
-      paddingBottom: '3@s'
+      width: '100%'
     }
   });
   const portraitStyles = {};
