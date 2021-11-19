@@ -18,12 +18,12 @@ import UserComponent from '../../components/user/UserComponent';
 import Users from '../users/list/Users';
 import computeModalCommonStyle from '../../components/modal/ModalCommonStyle';
 import Orientation from 'react-native-orientation-locker';
-import { RestResponse } from '../../types/Server';
 import Message from '../../utils/Message';
 import { HTTPError } from '../../types/HTTPError';
 import I18n from 'i18n-js';
 import { RadioButton } from 'react-native-paper';
 import Constants from '../../utils/Constants';
+import { RestResponse } from '../../types/ActionResponse';
 
 interface State {
   selectedCarCatalog: CarCatalog;
@@ -372,10 +372,11 @@ export default class AddCar extends BaseScreen<Props, State> {
         if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
           this.props.navigation.goBack();
+          return;
         } else {
           Message.showError(I18n.t('cars.addError'));
+          return;
         }
-        return;
       } catch (error) {
         switch (error?.status) {
           case HTTPError.CAR_ALREADY_EXIST_ERROR:

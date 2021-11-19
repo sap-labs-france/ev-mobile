@@ -8,3 +8,7 @@ export interface BillingOperationResult {
   error?: Error;
   internalData?: unknown;
 }
+
+export enum RestResponse {
+  SUCCESS = 'Success',
+}
