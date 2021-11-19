@@ -1,10 +1,9 @@
-
 export enum ServerAction {
   UNKNOWN_ACTION = 'Unknown',
 
-  LOGIN = 'Login',
-  LOGOUT = 'Logout',
-  PASSWORD_RESET = 'Reset',
+  LOGIN = 'RestLogin',
+  LOGOUT = 'RestLogout',
+  PASSWORD_RESET = 'RestReset',
   PING = 'Ping',
   CHECK_CONNECTION = 'CheckConnection',
 
@@ -40,8 +39,8 @@ export enum ServerAction {
   CHARGING_STATION_RESERVE_NOW = 'ChargingStationReserveNow',
   CHARGING_STATION_CANCEL_RESERVATION = 'ChargingStationCancelReservation',
 
-  CHECK_SMART_CHARGING_CONNECTION = 'CheckSmartChargingConnection',
-  TRIGGER_SMART_CHARGING = 'TriggerSmartCharging',
+  CHECK_SMART_CHARGING_CONNECTION = 'RestCheckSmartChargingConnection',
+  TRIGGER_SMART_CHARGING = 'RestTriggerSmartCharging',
 
   REGISTRATION_TOKEN = 'RegistrationToken',
   REGISTRATION_TOKENS = 'RegistrationTokens',
@@ -49,8 +48,8 @@ export enum ServerAction {
   REGISTRATION_TOKEN_REVOKE = 'RegistrationTokenRevoke',
   REGISTRATION_TOKEN_UPDATE = 'RegistrationTokenUpdate',
 
-  BOOT_NOTIFICATIONS = 'BootNotifications',
-  STATUS_NOTIFICATIONS = 'StatusNotifications',
+  BOOT_NOTIFICATIONS = 'RestBootNotifications',
+  STATUS_NOTIFICATIONS = 'RestStatusNotifications',
 
   TRANSACTION_SOFT_STOP = 'TransactionSoftStop',
   TRANSACTION_DELETE = 'TransactionDelete',
@@ -76,18 +75,18 @@ export enum ServerAction {
   SYNCHRONIZE_CAR_CATALOGS = 'SynchronizeCarCatalogs',
 
   GET_CONNECTOR_CURRENT_LIMIT = 'GetConnectorCurrentLimit',
-  REGISTER_USER = 'RegisterUser',
-  CHARGING_PROFILES = 'ChargingProfiles',
-  CHARGING_PROFILE_DELETE = 'ChargingProfileDelete',
-  CHARGING_PROFILE_UPDATE = 'ChargingProfileUpdate',
-  CHARGING_PROFILE_CREATE = 'ChargingProfileCreate',
-  GENERATE_QR_CODE_FOR_CONNECTOR = 'GenerateQrCodeForConnector',
+  REGISTER_USER = 'RestRegisterUser',
+  CHARGING_PROFILES = 'RestChargingProfiles',
+  CHARGING_PROFILE_DELETE = 'RestChargingProfileDelete',
+  CHARGING_PROFILE_UPDATE = 'RestChargingProfileUpdate',
+  CHARGING_PROFILE_CREATE = 'RestChargingProfileCreate',
+  GENERATE_QR_CODE_FOR_CONNECTOR = 'RestGenerateQrCodeForConnector',
   OCPP_PARAM_UPDATE = 'OcppParamUpdate',
-  RESEND_VERIFICATION_MAIL = 'ResendVerificationEmail',
-  END_USER_LICENSE_AGREEMENT = 'EndUserLicenseAgreement',
-  CHECK_END_USER_LICENSE_AGREEMENT = 'CheckEndUserLicenseAgreement',
-  VERIFY_EMAIL = 'VerifyEmail',
-  FIRMWARE_DOWNLOAD = 'FirmwareDownload',
+  RESEND_VERIFICATION_MAIL = 'RestResendVerificationEmail',
+  END_USER_LICENSE_AGREEMENT = 'RestEndUserLicenseAgreement',
+  CHECK_END_USER_LICENSE_AGREEMENT = 'RestCheckEndUserLicenseAgreement',
+  VERIFY_EMAIL = 'RestVerifyEmail',
+  FIRMWARE_DOWNLOAD = 'RestFirmwareDownload',
 
   OFFLINE_CHARGING_STATION = 'OfflineChargingStation',
 
@@ -350,8 +349,8 @@ export enum ServerAction {
   COMPANY_DELETE = 'CompanyDelete',
 
   SITE_CREATE = 'SiteCreate',
-  ADD_SITES_TO_USER = 'AddSitesToUser',
-  REMOVE_SITES_FROM_USER = 'RemoveSitesFromUser',
+  ADD_SITES_TO_USER = 'RestAddSitesToUser',
+  REMOVE_SITES_FROM_USER = 'RestRemoveSitesFromUser',
   SITES = 'Sites',
   SITE = 'Site',
   SITE_IMAGE = 'SiteImage',
@@ -387,18 +386,18 @@ export enum ServerAction {
   CAR_CONNECTOR = 'CarConnector',
 
   USER_READ = 'UserRead',
-  USER_CREATE = 'UserCreate',
-  USER_DELETE = 'UserDelete',
-  USER_UPDATE = 'UserUpdate',
-  USER_UPDATE_MOBILE_TOKEN = 'UpdateUserMobileToken',
-  USERS = 'Users',
-  USER_SITES = 'UserSites',
-  USERS_IN_ERROR = 'UsersInError',
-  USER_IMAGE = 'UserImage',
+  USER_CREATE = 'RestUserCreate',
+  USER_DELETE = 'RestUserDelete',
+  USER_UPDATE = 'RestUserUpdate',
+  USER_UPDATE_MOBILE_TOKEN = 'RestUpdateUserMobileToken',
+  USERS = 'RestUsers',
+  USER_SITES = 'RestUserSites',
+  USERS_IN_ERROR = 'RestUsersInError',
+  USER_IMAGE = 'RestUserImage',
   TAGS = 'Tags',
   TAG = 'Tag',
   TAG_BY_VISUAL_ID= 'TagByVisualID',
-  USER_DEFAULT_TAG_CAR = 'UserDefaultTagCar',
+  USER_DEFAULT_TAG_CAR = 'RestUserDefaultTagCar',
   TAG_CREATE = 'TagCreate',
   TAG_UPDATE = 'TagUpdate',
   TAG_UPDATE_BY_VISUAL_ID = 'TagUpdateByVisualID',
@@ -409,9 +408,9 @@ export enum ServerAction {
   TAGS_DELETE = 'TagsDelete',
   TAGS_IMPORT = 'TagsImport',
   TAGS_EXPORT = 'TagsExport',
-  USER = 'User',
-  USERS_EXPORT = 'UsersExport',
-  USERS_IMPORT = 'UsersImport',
+  USER = 'RestUser',
+  USERS_EXPORT = 'RestUsersExport',
+  USERS_IMPORT = 'RestUsersImport',
 
   NOTIFICATIONS = 'Notifications',
 
@@ -593,6 +592,23 @@ export enum ServerRoute {
   REST_OCPI_ENDPOINT_REGISTER = 'ocpi/endpoints/:id/register',
   REST_OCPI_ENDPOINT_UNREGISTER = 'ocpi/endpoints/:id/unregister',
 
+  REST_OICP_ENDPOINTS = 'oicp/endpoints',
+  REST_OICP_ENDPOINT = 'oicp/endpoints/:id',
+  REST_OICP_ENDPOINT_PING = 'oicp/endpoints/:id/ping',
+  REST_OICP_ENDPOINT_SEND_EVSE_STATUSES = 'oicp/endpoints/:id/evses/statuses/send',
+  REST_OICP_ENDPOINT_SEND_EVSES = 'oicp/endpoints/:id/evses/send',
+  REST_OICP_ENDPOINT_REGISTER = 'oicp/endpoints/:id/register',
+  REST_OICP_ENDPOINT_UNREGISTER = 'oicp/endpoints/:id/unregister',
+
+  REST_SITE_AREAS = 'site-areas',
+  REST_SITE_AREA = 'site-areas/:id',
+  REST_SITE_AREA_CONSUMPTION = 'site-areas/:id/consumptions',
+  REST_SITE_AREA_IMAGE = 'site-areas/:id/image',
+  REST_SITE_AREA_ASSIGN_CHARGING_STATIONS = 'site-areas/:id/charging-stations/assign',
+  REST_SITE_AREA_REMOVE_CHARGING_STATIONS = 'site-areas/:id/charging-stations/unassign',
+  REST_SITE_AREA_ASSIGN_ASSETS = 'site-areas/:id/assets/assign',
+  REST_SITE_AREA_REMOVE_ASSETS = 'site-areas/:id/assets/unassign',
+
   // BILLING URLs for CRUD operations on PAYMENT METHODS
   REST_BILLING_PAYMENT_METHODS = 'users/:userID/payment-methods',
   REST_BILLING_PAYMENT_METHOD = 'users/:userID/payment-methods/:paymentMethodID',
@@ -612,6 +628,10 @@ export enum ServerRoute {
 
   // BILLING URLs for Non-CRUD operations on INVOICES
   REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download',
+
+  // PRICING URLs for CRUD operations
+  REST_PRICING_DEFINITIONS = 'pricing-definitions',
+  REST_PRICING_DEFINITION = 'pricing-definitions/:id'
 }
 
 export enum ServerProtocol {
