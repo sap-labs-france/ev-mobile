@@ -1081,7 +1081,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           disabled={disabled}
           openable={true}
           renderNoItem={this.renderNoCar.bind(this)}
-          canClearInput={true}
+          clearable={true}
           renderItem={() => <CarComponent car={selectedCar} navigation={navigation} />}
           ref={this.carModalRef}
           defaultItem={selectedCar}

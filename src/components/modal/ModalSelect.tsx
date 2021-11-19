@@ -24,7 +24,7 @@ export interface Props<T> extends BaseProps {
   // Render a generic item when nothing is selected
   renderItemPlaceholder?: () => React.ReactElement;
   // Whether or not to display the button to clear the input
-  canClearInput?: boolean;
+  clearable?: boolean;
   selectionMode: ItemSelectionMode;
   onItemsSelected: (selectedItems: T[]) => void;
   defaultItemLoading?: boolean;
@@ -137,7 +137,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
   }
 
   private renderButton(style: any) {
-    const { defaultItemLoading, renderNoItem, renderItem, renderItemPlaceholder, openable, disabled, canClearInput, defaultItem } = this.props;
+    const { defaultItemLoading, renderNoItem, renderItem, renderItemPlaceholder, openable, disabled, clearable, defaultItem } = this.props;
     const { selectedItems, noneSelected } = this.state;
     const listItemCommonStyle = computeListItemCommonStyle();
 
@@ -149,13 +149,13 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
         </View>
       );
     }
-    if ((defaultItem || selectedItems[0]) && !noneSelected) {
+    if ((selectedItems[0] || defaultItem)) {
       return (
         <TouchableOpacity
           disabled={disabled || !openable}
           onPress={() => this.setState({ isVisible: true })}
           style={[style.itemContainer, disabled && style.buttonDisabled]}>
-          {canClearInput && (
+          {clearable && (
             <TouchableOpacity style={style.clearContainer} onPress={() => this.resetInput(true)}>
               <Text style={{textAlign: 'right', color: commonColors.primary}}>{I18n.t('cars.clearCar')}</Text>
             </TouchableOpacity>
@@ -163,13 +163,14 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           {renderItem?.(selectedItems[0] ?? defaultItem)}
         </TouchableOpacity>
       );
-    } else if (renderItemPlaceholder && noneSelected !== false) {
+    } if (renderItemPlaceholder && (noneSelected || !renderNoItem)) {
       return (
         <TouchableOpacity onPress={() => this.setState({ isVisible: true })} style={style.itemContainer}>
           {renderItemPlaceholder?.()}
         </TouchableOpacity>
       );
-    } else {
+    }
+    else {
       return <View style={style.itemContainer}>{renderNoItem?.()}</View>;
     }
   }
