@@ -152,7 +152,7 @@ export default class AddCar extends BaseScreen<Props, State> {
             autoCapitalize={'none'}
             autoCorrect={false}
             label={`${Constants.VIN}*`}
-            errorMessage={!this.checkVIN() && vin && I18n.t('cars.invalidVIN')}
+            errorMessage={!this.checkVIN() ? vin && I18n.t('cars.invalidVIN'): null}
             errorStyle={style.errorText}
             inputStyle={style.selectDropdownRowText}
             onChangeText={(newVin: string) => this.setState({ vin: newVin })}
@@ -166,7 +166,7 @@ export default class AddCar extends BaseScreen<Props, State> {
             autoCapitalize={'none'}
             autoCorrect={false}
             errorStyle={style.errorText}
-            errorMessage={!this.checkLicensePlate() && licensePlate && I18n.t('cars.invalidLicensePlate')}
+            errorMessage={!this.checkLicensePlate() ? licensePlate && I18n.t('cars.invalidLicensePlate') : null}
             inputStyle={style.selectDropdownRowText}
             onChangeText={(newLicensePlate: string) => this.setState({ licensePlate: newLicensePlate })}
           />
@@ -378,9 +378,9 @@ export default class AddCar extends BaseScreen<Props, State> {
           return;
         }
       } catch (error) {
-        switch (error?.status) {
+        switch (error?.response?.status) {
           case HTTPError.CAR_ALREADY_EXIST_ERROR:
-            Message.showError(I18n.t('users.carAlreadyExistError'));
+            Message.showError(I18n.t('cars.carAlreadyExistError'));
             break;
           case HTTPError.USER_ALREADY_ASSIGNED_TO_CAR:
             Message.showError(I18n.t('cars.userAlreadyAssignedError'));

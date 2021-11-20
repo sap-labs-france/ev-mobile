@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Button, CheckBox, Spinner, View } from 'native-base';
