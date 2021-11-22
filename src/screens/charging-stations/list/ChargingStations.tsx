@@ -86,6 +86,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public async componentDidMount() {
     // Get initial filters
+    await super.componentDidMount();
     const { route, navigation } = this.props;
     await this.loadInitialFilters();
     this.siteArea = Utils.getParamFromNavigation(route, 'siteArea', null) as unknown as SiteArea;
@@ -96,7 +97,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     });
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
-    await super.componentDidMount();
+    this.refresh();
   }
 
   public componentWillUnmount() {
@@ -112,6 +113,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public componentDidFocus(): void {
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+    this.refresh();
     // Enable swipe for opening sidebar
     this.parent.setOptions({
       swipeEnabled: !this.siteArea
