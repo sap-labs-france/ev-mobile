@@ -92,7 +92,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.siteArea = Utils.getParamFromNavigation(route, 'siteArea', null) as unknown as SiteArea;
     // Enable swipe for opening sidebar
     this.parent = navigation.getParent();
-    this.parent.setOptions({
+    this.parent?.setOptions({
       swipeEnabled: !this.siteArea
     });
     // Bind the back button to the onBack method (Android)
@@ -105,7 +105,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     // Unbind the back button and reset its default behavior (Android)
     this.backHandler.remove();
     // Disable swipe for opening sidebar
-    this.parent.setOptions({
+    this.parent?.setOptions({
       swipeEnabled: false
     });
   }
@@ -115,7 +115,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     this.refresh();
     // Enable swipe for opening sidebar
-    this.parent.setOptions({
+    this.parent?.setOptions({
       swipeEnabled: !this.siteArea
     });
   }
@@ -124,7 +124,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     // Unbind the back button and reset its default behavior (Android)
     this.backHandler.remove();
     // Disable swipe for opening sidebar
-    this.parent.setOptions({
+    this.parent?.setOptions({
       swipeEnabled: false
     });
   }
@@ -143,24 +143,17 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS
     )) as ChargePointStatus;
     const connectorType = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
-    const location = Utils.convertToBoolean(
-      await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.LOCATION)
-    );
     this.setState({
-      initialFilters: { connectorStatus, connectorType, location: location ?? true },
-      filters: { connectorStatus, connectorType, location: location ?? true }
+      initialFilters: { connectorStatus, connectorType, location: true },
+      filters: { connectorStatus, connectorType, location: true }
     });
   }
 
   public async getCurrentLocation(): Promise<Location> {
-    const { filters } = this.state;
     // Get the current location
     let currentLocation = (await LocationManager.getInstance()).getLocation();
     this.locationEnabled = !!currentLocation;
     // Bypass location
-    if (!filters.location) {
-      currentLocation = null;
-    }
     return currentLocation;
   }
 

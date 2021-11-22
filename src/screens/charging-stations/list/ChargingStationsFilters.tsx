@@ -24,7 +24,6 @@ interface State extends ScreenFiltersState {
 }
 
 export interface ChargingStationsFiltersDef {
-  location?: boolean;
   connectorStatus?: ChargePointStatus;
   connectorType?: string;
 }
@@ -58,7 +57,7 @@ export default class ChargingStationsFilters extends ScreenFilters {
   };
 
   public render = () => {
-    const { initialFilters, locationEnabled } = this.props;
+    const { initialFilters } = this.props;
     const { filters } = this.state;
     const style = computeStyleSheet();
     const controlStyle = computeControlStyleSheet();
@@ -81,18 +80,6 @@ export default class ChargingStationsFilters extends ScreenFilters {
             ) => this.addVisibleFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
           />
           <Animatable.View style={style.filtersHidden} ref={this.setExpandableView}>
-            {locationEnabled && (
-              <LocationSwitchFilterControlComponent
-                filterID={'location'}
-                internalFilterID={GlobalFilters.LOCATION}
-                initialValue={filters.hasOwnProperty('location') ? filters.location : initialFilters.location}
-                label={I18n.t('general.location')}
-                onFilterChanged={async (id: string, value: boolean) => this.getFilterVisibleContainerComponent().setFilter(id, value)}
-                ref={async (locationSwitchFilterControlComponent: LocationSwitchFilterControlComponent) =>
-                  this.addVisibleFilter(locationSwitchFilterControlComponent)
-                }
-              />
-            )}
             <ConnectorTypeFilterControlComponent
               filterID={'connectorType'}
               internalFilterID={GlobalFilters.CONNECTOR_TYPES}
