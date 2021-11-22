@@ -77,7 +77,9 @@
     "result": "Result",
     "optional": "Optional",
     "defaultSettings": "Default Settings",
-    "notApplicable": "N/A"
+    "notApplicable": "N/A",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "sidebar": {
     "home": "Domovská stránka",

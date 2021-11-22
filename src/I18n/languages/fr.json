@@ -77,7 +77,9 @@
     "result": "Résultat",
     "optional": "Optionnel",
     "defaultSettings": "Paramètres par défaut",
-    "notApplicable": "N/A"
+    "notApplicable": "N/A",
+    "showMore": "Voir plus",
+    "showLess": "Voir moins"
   },
   "sidebar": {
     "home": "Home",

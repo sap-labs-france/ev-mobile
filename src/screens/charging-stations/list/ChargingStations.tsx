@@ -18,7 +18,7 @@ import LocationManager from '../../../location/LocationManager';
 import computeModalStyle from '../../../ModalStyles';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
+import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
 import SiteArea from '../../../types/SiteArea';
