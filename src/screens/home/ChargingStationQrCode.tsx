@@ -1,9 +1,9 @@
-import { DrawerActions, StackActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 import base64 from 'base-64';
 import I18n from 'i18n-js';
 import { Container } from 'native-base';
 import React from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Alert } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
@@ -17,7 +17,6 @@ import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import Configuration from '../../config/Configuration';
-import { buildCommonColor } from '../../custom-theme/customCommonColor';
 
 export interface Props extends BaseProps {
   currentTenantSubDomain: string;
@@ -33,6 +32,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
   public state: State;
   public props: Props;
   private tenantEndpointClouds: EndpointCloud[];
+  private currentTenant: TenantConnection;
 
   public constructor(props: Props) {
     super(props);
@@ -44,6 +44,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
 
   public async componentDidMount() {
     await super.componentDidMount();
+    this.currentTenant = this.centralServerProvider?.getUserTenant();
     Orientation.lockToPortrait();
   }
 
@@ -112,10 +113,12 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       // Check Tenant
       const tenant = await this.centralServerProvider.getTenant(chargingStationQrCode.tenantSubDomain);
       // Scanned Tenant is not the current one where the user is logged
-      if (chargingStationQrCode.tenantSubDomain !== this.props.currentTenantSubDomain) {
+      if (chargingStationQrCode.tenantSubDomain !== this.currentTenant?.subdomain) {
         // User in wrong tenant!
         // Check if the tenant already exists
         if (tenant) {
+          console.log(tenant);
+          console.log(chargingStationQrCode?.tenantSubDomain);
           // Tenant exists: Propose the user to switch to the existing one and log off
           this.setState(
             {
