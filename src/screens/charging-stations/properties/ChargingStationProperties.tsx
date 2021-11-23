@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, Text, View } from 'native-base';
 import React from 'react';
@@ -151,13 +150,6 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  };
-
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
   };
 
   public render() {

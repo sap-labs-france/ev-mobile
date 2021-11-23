@@ -148,13 +148,13 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    if (this.state.showMap && !Utils.isEmptyArray(this.state.siteAreas)) {
+    if (this.state.showMap) {
       this.setState({ showMap: false });
+      return true;
     } else {
       this.props.navigation.goBack();
+      return true;
     }
-    // Do not bubble up
-    return true;
   };
 
   public refreshCurrentRegion(siteAreas: SiteArea[], force = false) {

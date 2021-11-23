@@ -6,6 +6,7 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
+import { BackHandler, NativeEventSubscription } from 'react-native';
 
 export interface Props extends BaseProps {}
 
@@ -19,6 +20,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   private screenFilters: ScreenFilters;
   private componentFocusUnsubscribe: () => void;
   private componentBlurUnsubscribe: () => void;
+  backHandler: NativeEventSubscription;
 
   public constructor(props: Props) {
     super(props);
@@ -36,6 +38,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     // Add listeners
     this.componentFocusUnsubscribe = this.props.navigation.addListener('focus', this.componentDidFocus.bind(this));
     this.componentBlurUnsubscribe = this.props.navigation.addListener('blur', this.componentDidBlur.bind(this));
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     // Ok
     this.mounted = true;
   }
@@ -44,6 +47,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.mounted = false;
     this.componentFocusUnsubscribe?.();
     this.componentBlurUnsubscribe?.();
+    this.backHandler.remove();
   }
 
   public setHeaderComponent(headerComponent: HeaderComponent) {
@@ -75,11 +79,15 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public onBack(): boolean {
-    // Not Handled: has to be taken in the sub-classes
+    this.props.navigation.goBack();
     return true;
   }
 
-  public componentDidFocus(): void {}
+  public componentDidFocus(): void {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+  }
 
-  public componentDidBlur(): void {}
+  public componentDidBlur(): void {
+    this.backHandler.remove();
+  }
 }

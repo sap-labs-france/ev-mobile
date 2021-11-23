@@ -149,13 +149,13 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    if (this.state.showMap && !Utils.isEmptyArray(this.state.sites)) {
+    if (this.state.showMap) {
       this.setState({ showMap: false });
+      return true;
     } else {
-      this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
+      this.props.navigation.goBack();
+      return true;
     }
-    // Do not bubble up
-    return true;
   };
 
   public refreshCurrentRegion(sites: Site[], force = false) {

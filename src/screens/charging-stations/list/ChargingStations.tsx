@@ -62,7 +62,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private currentRegion: Region;
   private parent: any;
   private darkMapTheme = require('../../../utils/map/google-maps-night-style.json');
-  private backHandler: NativeEventSubscription;
 
   public constructor(props: Props) {
     super(props);
@@ -96,7 +95,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       swipeEnabled: !this.siteArea
     });
     // Bind the back button to the onBack method (Android)
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+    //this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     this.refresh();
   }
 
@@ -385,7 +384,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           )}
           <TouchableOpacity
             style={style.fab}
-            onPress={() => this.setState({ showMap: !this.state.showMap })}
+            onPress={() => this.setState({ showMap: !showMap })}
           >
             <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
           </TouchableOpacity>

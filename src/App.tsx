@@ -171,7 +171,8 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
       inactiveColor={commonColor.topTabBarActiveTextColor}
       barStyle={barStyle}
       labeled
-      backBehavior="none">
+      shifting={true}
+      backBehavior="history">
       <ChargingStationDetailsTabs.Screen
         name="ChargingStationActions"
         component={ChargingStationActions}
@@ -213,7 +214,9 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
       inactiveColor={commonColor.topTabBarActiveTextColor}
       barStyle={barStyle}
       labeled
-      shifting={true}>
+      shifting={true}
+      backBehavior="history"
+    >
       <ChargingStationConnectorDetailsTabs.Screen
         name="ChargingStationConnectorDetails"
         component={ChargingStationConnectorDetails}
@@ -247,7 +250,8 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
       inactiveColor={commonColor.topTabBarTextColor}
       barStyle={barStyle}
       labeled
-      backBehavior="history">
+      backBehavior="history"
+    >
       <TransactionDetailsTabs.Screen
         name="TransactionDetails"
         component={TransactionDetails}
@@ -263,7 +267,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
         options={{
           title: I18n.t('details.graph'),
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'AntDesign', 'linechart')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'MaterialCommunityIcons', 'chart-line')
         }}
       />
     </TransactionDetailsTabs.Navigator>
@@ -276,6 +280,12 @@ function createSitesNavigator(props: BaseProps) {
       <SitesStack.Screen name="Sites" component={Sites} initialParams={props?.route?.params?.params} />
       <SitesStack.Screen name="SiteAreas" component={SiteAreas} initialParams={props?.route?.params?.params} />
       <SitesStack.Screen name="ChargingStations" component={ChargingStations} initialParams={props?.route?.params?.params} />
+      <ChargingStationsStack.Screen name="AddCar" component={AddCar} initialParams={props?.route?.params?.params} />
+      <ChargingStationsStack.Screen
+        name="AddPaymentMethod"
+        component={StripePaymentMethodCreationForm}
+        initialParams={props?.route?.params?.params}
+      />
       <SitesStack.Screen
         name="ChargingStationDetailsTabs"
         component={createChargingStationDetailsTabsNavigator}
@@ -350,11 +360,6 @@ function createTransactionInProgressNavigator(props: BaseProps) {
       <TransactionInProgressStack.Screen
         name="TransactionsInProgress"
         component={TransactionsInProgress}
-        initialParams={props?.route?.params?.params}
-      />
-      <TransactionInProgressStack.Screen
-        name="ChargingStationDetailsTabs"
-        component={createChargingStationDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <TransactionInProgressStack.Screen
