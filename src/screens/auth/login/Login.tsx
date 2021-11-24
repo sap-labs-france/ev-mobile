@@ -5,7 +5,6 @@ import {
   BackHandler,
   Keyboard,
   KeyboardAvoidingView,
-  NativeEventSubscription,
   ScrollView,
   TextInput,
   TouchableOpacity
@@ -53,7 +52,6 @@ export default class Login extends BaseScreen<Props, State> {
   public props: Props;
   private tenants: TenantConnection[] = [];
   private passwordInput: TextInput;
-  private backHandler: NativeEventSubscription;
   private formValidationDef = {
     tenantSubDomain: {
       presence: {
@@ -114,8 +112,6 @@ export default class Login extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
-    // Bind the back button to the onBack method (Android)
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     let email = (this.state.email = '');
     let password = (this.state.password = '');
     let tenant: TenantConnection;
@@ -174,8 +170,6 @@ export default class Login extends BaseScreen<Props, State> {
 
   public async componentDidFocus() {
     super.componentDidFocus();
-    // Bind the back button to the onBack method (Android)
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain);
     // Check if current Tenant selection is still valid (handle delete tenant usee case)
     if (tenantSubDomain) {
@@ -200,18 +194,6 @@ export default class Login extends BaseScreen<Props, State> {
         });
       }
     }
-  }
-
-  public componentWillUnmount() {
-    super.componentWillUnmount();
-    // Unbind the back button and reset its default behavior (Android)
-    this.backHandler.remove();
-  }
-
-  public componentDidBlur() {
-    super.componentDidBlur();
-    // Unbind the back button and reset its default behavior (Android)
-    this.backHandler.remove();
   }
 
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
@@ -290,7 +272,7 @@ export default class Login extends BaseScreen<Props, State> {
     }
   };
 
-  public onBack(): boolean {
+  public onBack = (): boolean => {
     BackHandler.exitApp();
     return true;
   }

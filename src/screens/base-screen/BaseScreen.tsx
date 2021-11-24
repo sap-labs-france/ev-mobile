@@ -6,7 +6,7 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
-import { BackHandler, NativeEventSubscription } from 'react-native';
+import { AppState, AppStateStatus, BackHandler, NativeEventSubscription } from 'react-native';
 
 export interface Props extends BaseProps {}
 
@@ -21,6 +21,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   private componentFocusUnsubscribe: () => void;
   private componentBlurUnsubscribe: () => void;
   backHandler: NativeEventSubscription;
+  appStateUnsubscribe: NativeEventSubscription;
 
   public constructor(props: Props) {
     super(props);
@@ -38,7 +39,9 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     // Add listeners
     this.componentFocusUnsubscribe = this.props.navigation.addListener('focus', this.componentDidFocus.bind(this));
     this.componentBlurUnsubscribe = this.props.navigation.addListener('blur', this.componentDidBlur.bind(this));
+    // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+    this.appStateUnsubscribe = AppState.addEventListener('change', (nextAppState) => this.onAppStateChange(nextAppState));
     // Ok
     this.mounted = true;
   }
@@ -47,7 +50,10 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.mounted = false;
     this.componentFocusUnsubscribe?.();
     this.componentBlurUnsubscribe?.();
+    // Unbind the back button and reset its default behavior (Android)
     this.backHandler.remove();
+    // Unsubscribe from App State change event.
+    this.appStateUnsubscribe?.remove();
   }
 
   public setHeaderComponent(headerComponent: HeaderComponent) {
@@ -57,6 +63,12 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
       if (this.headerComponent && this.screenFilters && this.screenFilters.getFilterModalContainerComponent()) {
         this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
       }
+    }
+  }
+
+  public onAppStateChange(nextAppState: AppStateStatus): void {
+    if(AppState.currentState.match(/inactive|background/) && nextAppState === 'active') {
+      this.componentDidFocus();
     }
   }
 
@@ -84,10 +96,12 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public componentDidFocus(): void {
+    // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
   }
 
   public componentDidBlur(): void {
+    // Unbind the back button and reset its default behavior (Android)
     this.backHandler.remove();
   }
 }

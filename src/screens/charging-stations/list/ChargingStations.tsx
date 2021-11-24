@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { BackHandler, Image, ImageStyle, NativeEventSubscription, Platform, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { BackHandler, Image, ImageStyle, Platform, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { ClusterMap } from 'react-native-cluster-map';
 import { Location } from 'react-native-location';
 import { Marker, Region } from 'react-native-maps';
@@ -94,15 +94,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.parent?.setOptions({
       swipeEnabled: !this.siteArea
     });
-    // Bind the back button to the onBack method (Android)
-    //this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     this.refresh();
   }
 
   public componentWillUnmount() {
     super.componentWillUnmount();
-    // Unbind the back button and reset its default behavior (Android)
-    this.backHandler.remove();
     // Disable swipe for opening sidebar
     this.parent?.setOptions({
       swipeEnabled: false
@@ -110,8 +106,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public componentDidFocus(): void {
-    // Bind the back button to the onBack method (Android)
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+    super.componentDidFocus();
     this.refresh();
     // Enable swipe for opening sidebar
     this.parent?.setOptions({
@@ -120,8 +115,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public componentDidBlur(): void {
-    // Unbind the back button and reset its default behavior (Android)
-    this.backHandler.remove();
+    super.componentDidBlur();
     // Disable swipe for opening sidebar
     this.parent?.setOptions({
       swipeEnabled: false
@@ -365,7 +359,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       refreshing,
       satelliteMap
     } = this.state;
-    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
     const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
       Utils.containsGPSCoordinates(chargingStation.coordinates)
     );
@@ -416,7 +409,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
               ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
             />
-            {mapIsDisplayed ? (
+            {showMap ? (
               <View style={style.map}>
                 {this.currentRegion && (
                   <ClusterMap
