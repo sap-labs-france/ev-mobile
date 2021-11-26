@@ -292,11 +292,11 @@ function createSitesNavigator(props: BaseProps) {
         component={ChargingStations}
         initialParams={props?.route?.params?.params}
       />
-      <ChargingStationsStack.Screen
+      <SitesStack.Screen
         name="AddCar" component={AddCar}
         initialParams={props?.route?.params?.params}
       />
-      <ChargingStationsStack.Screen
+      <SitesStack.Screen
         name="AddPaymentMethod"
         component={StripePaymentMethodCreationForm}
         initialParams={props?.route?.params?.params}
@@ -348,7 +348,7 @@ function createChargingStationsNavigator(props: BaseProps) {
         component={StripePaymentMethodCreationForm}
         initialParams={props?.route?.params?.params}
       />
-      <AppDrawer.Screen name="QRCodeScanner" component={ChargingStationQrCode} initialParams={props?.route?.params?.params} />
+      <ChargingStationsStack.Screen name="QRCodeScanner" component={ChargingStationQrCode} initialParams={props?.route?.params?.params} />
       <ChargingStationsStack.Screen
         name="TransactionDetailsTabs"
         component={createTransactionDetailsTabsNavigator}
