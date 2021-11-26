@@ -359,6 +359,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       refreshing,
       satelliteMap
     } = this.state;
+    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
     const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
       Utils.containsGPSCoordinates(chargingStation.coordinates)
     );
@@ -409,7 +410,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
               ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
             />
-            {showMap ? (
+            {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (
                   <ClusterMap

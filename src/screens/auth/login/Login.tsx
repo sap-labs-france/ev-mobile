@@ -1,15 +1,7 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import {
-  BackHandler,
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
-  TextInput,
-  TouchableOpacity
-} from 'react-native';
-
+import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import DialogModal from '../../../components/modal/DialogModal';
 import ExitAppDialog from '../../../components/modal/exit-app/ExitAppDialog';
 import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
@@ -23,7 +15,6 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
-import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 
 export interface Props extends BaseProps {}
 
@@ -48,7 +39,7 @@ interface State {
   showNoTenantFoundDialog: boolean;
 }
 
-export default class Login extends BaseAutoRefreshScreen<Props, State> {
+export default class Login extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private tenants: TenantConnection[] = [];

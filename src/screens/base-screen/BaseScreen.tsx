@@ -63,12 +63,6 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     }
   }
 
-  public onAppStateChange(nextAppState: AppStateStatus): void {
-    if(nextAppState === 'active') {
-    this.componentDidFocus();
-    }
-  }
-
   public getHeaderComponent(): HeaderComponent {
     return this.headerComponent;
   }
