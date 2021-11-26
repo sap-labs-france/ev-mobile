@@ -23,6 +23,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 
 export interface Props extends BaseProps {}
 
@@ -47,7 +48,7 @@ interface State {
   showNoTenantFoundDialog: boolean;
 }
 
-export default class Login extends BaseScreen<Props, State> {
+export default class Login extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private tenants: TenantConnection[] = [];
@@ -171,7 +172,7 @@ export default class Login extends BaseScreen<Props, State> {
   public async componentDidFocus() {
     super.componentDidFocus();
     const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain);
-    // Check if current Tenant selection is still valid (handle delete tenant usee case)
+    // Check if current Tenant selection is still valid (handle delete tenant use case)
     if (tenantSubDomain) {
       // Get the current Tenant
       const tenant = await this.centralServerProvider.getTenant(tenantSubDomain.toString());
@@ -272,7 +273,7 @@ export default class Login extends BaseScreen<Props, State> {
     }
   };
 
-  public onBack = (): boolean => {
+  public onBack(): boolean {
     BackHandler.exitApp();
     return true;
   }

@@ -1,7 +1,7 @@
 import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Button, CheckBox, Spinner, View } from 'native-base';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BackHandler, Text, TouchableOpacity } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { useFocusEffect } from '@react-navigation/native';

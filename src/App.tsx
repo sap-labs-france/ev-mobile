@@ -418,7 +418,6 @@ function createPaymentMethodsNavigator(props: BaseProps) {
 }
 
 function createAppDrawerNavigator(props: BaseProps) {
-  const appStyles = computeStyleSheet();
   return (
     <AppDrawer.Navigator
       initialRouteName="ChargingStationsNavigator"

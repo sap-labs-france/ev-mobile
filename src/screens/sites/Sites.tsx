@@ -147,7 +147,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     return null;
   };
 
-  public onBack = () => {
+  public onBack () {
     // Back mobile button: Force navigation
     if (this.state.showMap) {
       this.setState({ showMap: false });

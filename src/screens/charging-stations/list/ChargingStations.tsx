@@ -199,7 +199,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     }
   };
 
-  public onBack = (): boolean => {
+  public onBack (): boolean {
     if (!this.state.showMap) {
       this.setState({ showMap: true });
       return true;
