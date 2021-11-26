@@ -4,6 +4,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
 import computeStyleSheet from './FilterContainerComponentStyles';
+import { Text } from 'react-native';
+import I18n from 'i18n-js';
 
 export interface Props extends FilterContainerComponentProps {
   expanded?: boolean;
@@ -47,9 +49,15 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
         {onExpand && (
           <TouchableOpacity style={style.visibleExpandedContainer} onPress={this.toggleExpanded}>
             {expanded ? (
-              <Icon style={style.visibleExpandedIcon} type="MaterialIcons" name="keyboard-arrow-up" />
+              <View style={style.filterButtonContainer}>
+                <Text style={style.filterButtonText}>{I18n.t('general.showLess')}</Text>
+                <Icon style={style.filterButtonIcon} type={'MaterialIcons'} name={'keyboard-arrow-up'} />
+              </View>
             ) : (
-              <Icon style={style.visibleExpandedIcon} type="MaterialIcons" name="keyboard-arrow-down" />
+              <View style={style.filterButtonContainer}>
+                <Text style={style.filterButtonText}>{I18n.t('general.showMore')}</Text>
+                <Icon style={style.filterButtonIcon} type={'MaterialIcons'} name={'keyboard-arrow-down'} />
+              </View>
             )}
           </TouchableOpacity>
         )}

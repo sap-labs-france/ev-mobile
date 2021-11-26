@@ -710,7 +710,7 @@ export default class CentralServerProvider {
   public async createCar(car: Car, forced: boolean): Promise<ActionResponse> {
     this.debugMethod('createCar');
     // Execute
-    const response = await this.axiosInstance.post<ActionResponse>(
+    const response = await this.axiosInstance.post(
       this.buildRestEndpointUrl(ServerRoute.REST_CARS),
       { ...car, forced },
       {

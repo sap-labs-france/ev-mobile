@@ -24,6 +24,21 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     visibleExpandedIcon: {
       fontSize: '25@s',
       color: commonColor.textColor
+    },
+    filterButtonText: {
+      fontSize: "15@s",
+      color: commonColor.textColor,
+      textAlign: 'right'
+    },
+    filterButtonContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      width: '100%'
+    },
+    filterButtonIcon: {
+      fontSize: '25@s',
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
