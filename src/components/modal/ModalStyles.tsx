@@ -11,12 +11,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       width: '100%'
     },
-    button: {
-      width: '95%',
-      alignSelf: 'center',
-      height: '40@s',
-      backgroundColor: commonColor.buttonBg
-    },
     buttonDisabled: {
       opacity: 0.5
     },

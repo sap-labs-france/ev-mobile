@@ -69,17 +69,15 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     const itemsList = React.Children.only(this.props.children);
     return (
       <View style={style.container}>
-        <View style={style.buttonContainer}>
-          {label && <Text style={style.label}>{label}</Text>}
-          {this.renderButton(style)}
-        </View>
+        {label && <Text style={style.label}>{label}</Text>}
+        {this.renderButton(style)}
         <Modal
           propagateSwipe={true}
           supportedOrientations={['portrait', 'landscape']}
           style={style.modal}
           isVisible={isVisible}
           swipeDirection={'down'}
-          animationInTiming={1000}
+          animationInTiming={800}
           onSwipeComplete={() => this.setState({ isVisible: false })}
           onBackButtonPress={() => this.setState({ isVisible: false })}
           onBackdropPress={() => this.setState({ isVisible: false })}

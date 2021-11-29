@@ -247,7 +247,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     noTagContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      height: '80@s',
       borderColor: commonColor.dangerLight,
       borderTopWidth: 0.8,
       borderLeftWidth: 0.8,
