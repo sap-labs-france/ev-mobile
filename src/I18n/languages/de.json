@@ -405,9 +405,12 @@
     "finishing": "Vollendung",
     "unknown": "Unbekannt",
     "type2": "Type 2",
-    "comboCCS": "Kombo",
-    "chademo": "Chademo",
-    "domestic": "Hausanschluss"
+    "comboCCS": "Type 2 - kombo CCS",
+    "type1": "Type 1",
+    "chademo": "CHAdeMo",
+    "domestic": "Hausanschluss",
+    "type1CCS": "Type 1 - Kombo CCS",
+    "type3C": "Type 3C"
   },
   "tags": {
     "visualID": "Visual ID",

@@ -865,6 +865,12 @@ export default class Utils {
         return I18n.t('connector.chademo');
       case ConnectorType.DOMESTIC:
         return I18n.t('connector.domestic');
+      case ConnectorType.TYPE_1_CCS:
+        return I18n.t('connector.type1CCS');
+      case ConnectorType.TYPE_1:
+        return I18n.t('connector.type1');
+      case ConnectorType.TYPE_3C:
+        return I18n.t('connector.type3C');
       default:
         return I18n.t('connector.unknown');
     }

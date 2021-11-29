@@ -115,6 +115,7 @@ export enum ConnectorType {
   TYPE_1 = 'T1',
   TYPE_1_CCS = 'T1CCS',
   DOMESTIC = 'D',
+  TYPE_3C = 'T3C',
   UNKNOWN = 'U'
 }
 
