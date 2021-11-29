@@ -1071,6 +1071,10 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/v1/api';
   }
 
+  private buildUtilRestServerURL(): string {
+    return this.tenant?.endpoint + '/v1/util';
+  }
+
   private buildCentralRestServerServiceUtilURL(tenant: TenantConnection): string {
     return tenant?.endpoint + '/client/util';
   }
@@ -1079,13 +1083,17 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/client/api';
   }
 
-  private buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}) {
+  public buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}, urlPrefix = this.buildRestServerURL()): string {
     let resolvedUrlPattern = urlPatternAsString as string;
     for (const key in params) {
       if (Object.prototype.hasOwnProperty.call(params, key)) {
         resolvedUrlPattern = resolvedUrlPattern.replace(`:${key}`, encodeURIComponent(params[key]));
       }
     }
-    return `${this.buildRestServerURL()}/${resolvedUrlPattern}`;
+    return `${urlPrefix}/${resolvedUrlPattern}`;
+  }
+
+  public buildUtilRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}): string {
+    return this.buildRestEndpointUrl(urlPatternAsString, params, this.buildUtilRestServerURL());
   }
 }
