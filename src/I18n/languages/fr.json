@@ -405,9 +405,12 @@
     "finishing": "Finalisation",
     "unknown": "Unknown",
     "type2": "Type 2",
-    "comboCCS": "Combo",
-    "chademo": "Chademo",
-    "domestic": "Domestique"
+    "comboCCS": "Type 2 - Combo CCS",
+    "type1": "Type 1",
+    "chademo": "CHAdeMo",
+    "domestic": "Domestique",
+    "type1CCS": "Type 1 - Combo CCS",
+    "type3C": "Type 3C"
   },
   "tags": {
     "visualID": "ID Visuel",
