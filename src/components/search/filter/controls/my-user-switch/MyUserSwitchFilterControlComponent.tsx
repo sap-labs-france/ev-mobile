@@ -61,13 +61,9 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     // Set Filter
     if (onFilterChanged) {
       if (newValue) {
-        this.setValue(this.userID, () => {
-          onFilterChanged(this.getID(), this.userID);
-        });
+        onFilterChanged(this.getID(), this.userID);
       } else {
-        this.clearValue(() => {
-          onFilterChanged(this.getID(), null);
-        });
+        onFilterChanged(this.getID(), null);
       }
     }
     // Update

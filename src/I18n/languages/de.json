@@ -51,6 +51,7 @@
     "startDate": "Anfangsdatum",
     "endDate": "Enddatum",
     "onlyMyTransactions": "Meine Ladevorgäng",
+    "onlyMyCars": "My cars",
     "onlyAvailableChargers": "Verfügbare Ladestationen",
     "wrongTenant": "Sie sind mit der falschen Organisation verbunden",
     "tenantUnknown": "Unbekannte Organisation '{{tenantSubdomain}}'",
