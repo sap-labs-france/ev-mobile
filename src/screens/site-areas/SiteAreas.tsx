@@ -16,17 +16,14 @@ import ThemeManager from '../../custom-theme/ThemeManager';
 import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
-import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
-import { GlobalFilters } from '../../types/Filter';
 import Site from '../../types/Site';
 import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
-import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
+import { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
 
 export interface Props extends BaseProps {}
@@ -51,7 +48,6 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private searchText: string;
   private site: Site;
   private currentLocation: Location;
-  private locationEnabled: boolean;
   private currentRegion: Region;
   private darkMapTheme = require('../../utils/map/google-maps-night-style.json');
 
@@ -79,40 +75,16 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public async componentDidMount() {
-    // Get initial filters
-    await this.loadInitialFilters();
-    // Get initial filters
     this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
     await super.componentDidMount();
   }
 
-  public async loadInitialFilters() {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    let location = Utils.convertToBoolean(
-      await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.LOCATION)
-    );
-    if (!location) {
-      location = false;
-    }
-    this.setState({
-      initialFilters: { location },
-      filters: { location }
-    });
-  }
-
   public async getCurrentLocation(): Promise<Location> {
-    const { filters } = this.state;
     // Get the current location
-    let currentLocation = (await LocationManager.getInstance()).getLocation();
-    this.locationEnabled = currentLocation ? true : false;
-    // Bypass location
-    if (!filters.location) {
-      currentLocation = null;
-    }
-    return currentLocation;
+    return (await LocationManager.getInstance()).getLocation();
   }
 
-  public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
+  public getSiteAreas = async (searchText: string = '', skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     try {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
@@ -122,14 +94,13 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         Issuer: true,
         WithAvailableChargers: true,
         LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null
       };
       // Get the Site Areas
       const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
       // Get total number of records
       if (siteAreas.count === -1) {
-        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
+        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSiteAreas(params, Constants.ONLY_RECORD_COUNT);
         siteAreas.count = sitesAreasNbrRecordsOnly.count;
       }
       return siteAreas;
@@ -180,7 +151,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       // Refresh All
       const siteAreas = await this.getSiteAreas(this.searchText, 0, skip + limit);
       // Refresh region
-      this.refreshCurrentRegion(siteAreas.result);
+      this.refreshCurrentRegion(siteAreas?.result);
       // Set Site Areas
       this.setState({
         loading: false,
@@ -270,7 +241,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas, refreshing } = this.state;
+    const { loading, skip, count, limit, showMap, siteAreaSelected, siteAreas, refreshing } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
     const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
@@ -288,13 +259,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
-            <SiteAreasFilters
-              initialFilters={initialFilters}
-              locationEnabled={this.locationEnabled}
-              onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh())}
-              ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
-            />
+            <View style={style.searchBar}>
+              <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+            </View>
             {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (

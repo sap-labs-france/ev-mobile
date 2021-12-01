@@ -195,7 +195,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, initialFilters, filters, refreshing } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, initialFilters, refreshing } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent

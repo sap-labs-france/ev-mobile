@@ -17,16 +17,13 @@ import ThemeManager from '../../custom-theme/ThemeManager';
 import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
-import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
-import { GlobalFilters } from '../../types/Filter';
 import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
-import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import SitesFilters, { SitesFiltersDef } from './SitesFilters';
+import { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
 
 export interface Props extends BaseProps {}
@@ -50,7 +47,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
   private searchText: string;
   private currentLocation: Location;
-  private locationEnabled: boolean;
   private currentRegion: Region;
   private darkMapTheme = require('../../utils/map/google-maps-night-style.json');
 
@@ -78,8 +74,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public async componentDidMount() {
-    // Get initial filters
-    await this.loadInitialFilters();
     // Call parent
     await super.componentDidMount();
     // No Site Management: Go to chargers
@@ -88,30 +82,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     }
   }
 
-  public async loadInitialFilters() {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    let location = Utils.convertToBoolean(
-      await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.LOCATION)
-    );
-    if (!location) {
-      location = false;
-    }
-    this.setState({
-      initialFilters: { location },
-      filters: { location }
-    });
-  }
-
   public async getCurrentLocation(): Promise<Location> {
-    const { filters } = this.state;
     // Get the current location
-    let currentLocation = (await LocationManager.getInstance()).getLocation();
-    this.locationEnabled = currentLocation ? true : false;
-    // Bypass location
-    if (!filters.location) {
-      currentLocation = null;
-    }
-    return currentLocation;
+    return (await LocationManager.getInstance()).getLocation();
   }
 
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
@@ -123,8 +96,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         Issuer: true,
         WithAvailableChargers: true,
         LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null
       };
       // Get the Sites
       const sites = await this.centralServerProvider.getSites(params, { skip, limit }, ['name']);
@@ -181,7 +153,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       // Refresh All
       const sites = await this.getSites(this.searchText, 0, skip + limit);
       // Refresh region
-      this.refreshCurrentRegion(sites.result);
+      this.refreshCurrentRegion(sites?.result);
       // Add sites
       this.setState({
         loading: false,
@@ -232,13 +204,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh());
   }
 
-  public toggleDisplayMap = () => {
-    // Refresh region
-    this.refreshCurrentRegion(this.state.sites, true);
-    // Toggle map
-    this.setState({ showMap: !this.state.showMap });
-  };
-
   public showMapSiteDetail = (site: Site) => {
     this.setState({
       visible: true,
@@ -272,7 +237,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap, siteSelected, refreshing, sites } = this.state;
+    const { loading, skip, count, limit, showMap, siteSelected, refreshing, sites } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites);
     const sitesWithGPSCoordinates = sites.filter((site) => Utils.containsAddressGPSCoordinates(site.address));
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
@@ -293,12 +258,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             <View style={style.searchBar}>
               <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             </View>
-            <SitesFilters
-              initialFilters={initialFilters}
-              locationEnabled={this.locationEnabled}
-              onFilterChanged={(newFilters: SitesFiltersDef) => this.filterChanged(newFilters)}
-              ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
-            />
             {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (

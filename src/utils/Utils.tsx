@@ -947,6 +947,7 @@ export default class Utils {
 
   public static buildChargingStationStatusMarker(connectors: Connector[], inactive: boolean): any {
     if (inactive) {
+      //TODO handle reserved status when implemented
       return statusMarkerUnavailable;
     } else if (connectors.find((connector) => connector.status === ChargePointStatus.AVAILABLE)) {
       return statusMarkerAvailable;
@@ -968,6 +969,7 @@ export default class Utils {
     } else if (connectors.find((connector) => connector.status === ChargePointStatus.FAULTED)) {
       return statusMarkerFaulted;
     }
+    return statusMarkerUnavailable;
   }
 
   public static buildSiteStatusMarker(connectorStats: ConnectorStats): any {

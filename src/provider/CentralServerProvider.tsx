@@ -560,7 +560,7 @@ export default class CentralServerProvider {
     // Build Sorting
     this.buildSorting(sorting, params);
     // Call
-    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_SITE_AREAS), {
+    const result = await this.axiosInstance.get(this.buildCentralRestServerServiceSecuredURL() + '/SiteAreas', {
       headers: this.buildSecuredHeaders(),
       params
     });

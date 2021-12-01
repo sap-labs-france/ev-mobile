@@ -92,6 +92,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     icon: {
       color: commonColor.textColor,
       fontSize: '20@s'
+    },
+    chargingStationMarker: {
+      fontSize: '28@s'
     }
   });
   const portraitStyles = {};

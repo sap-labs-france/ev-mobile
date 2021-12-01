@@ -1,12 +1,22 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { BackHandler, Image, ImageStyle, NativeEventSubscription, Platform, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { ClusterMap } from 'react-native-cluster-map';
+import {
+  BackHandler,
+  Image,
+  ImageStyle,
+  NativeEventSubscription,
+  Platform,
+  ScrollView,
+  Text,
+  TouchableOpacity
+} from 'react-native';
 import { Location } from 'react-native-location';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
+import MapView from 'react-native-map-clustering';
+import computeConnectorStatusStyles from '../../../components/connector-status/ConnectorStatusComponentStyles';
 
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -18,7 +28,7 @@ import LocationManager from '../../../location/LocationManager';
 import computeModalStyle from '../../../ModalStyles';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { Connector } from '../../../types/ChargingStation';
+import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
 import SiteArea from '../../../types/SiteArea';
@@ -32,6 +42,7 @@ import computeFabStyles from '../../../components/fab/FabComponentStyles';
 import standardDarkLayout from '../../../../assets/map/standard-dark.png';
 import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
+import statusMarkerFaulted from '../../../../assets/icon/charging_station_faulted.png';
 
 
 export interface Props extends BaseProps {}
@@ -58,11 +69,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private searchText: string;
   private siteArea: SiteArea;
   private currentLocation: Location;
-  private locationEnabled: boolean;
   private currentRegion: Region;
   private parent: any;
   private darkMapTheme = require('../../../utils/map/google-maps-night-style.json');
   private backHandler: NativeEventSubscription;
+  private onRegionChangeFreezed: boolean;
 
   public constructor(props: Props) {
     super(props);
@@ -75,7 +86,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       initialFilters: {},
       filters: {},
       skip: 0,
-      limit: Constants.PAGING_SIZE,
+      limit: 500, //Constants.PAGING_SIZE,
       count: 0,
       showMap: true,
       visible: false,
@@ -97,6 +108,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     });
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+    this.currentLocation = await this.getCurrentLocation();
+    this.currentRegion = {latitude: this.currentLocation.latitude, longitude: this.currentLocation.longitude, latitudeDelta: 0.01, longitudeDelta: 0.01 };
     this.refresh();
   }
 
@@ -141,25 +154,20 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const connectorStatus = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS);
     const connectorType = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
     this.setState({
-      initialFilters: { connectorStatus, connectorType, location: true },
-      filters: { connectorStatus, connectorType, location: true }
+      initialFilters: { connectorStatus, connectorType },
+      filters: { connectorStatus, connectorType }
     });
   }
 
   public async getCurrentLocation(): Promise<Location> {
     // Get the current location
-    let currentLocation = (await LocationManager.getInstance()).getLocation();
-    this.locationEnabled = !!currentLocation;
-    // Bypass location
-    return currentLocation;
+   return (await LocationManager.getInstance()).getLocation();
   }
 
   public getChargingStations = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     let chargingStations: DataResult<ChargingStation>;
     const { filters } = this.state;
     try {
-      // Get current location
-      this.currentLocation = await this.getCurrentLocation();
       const params = {
         Search: searchText,
         SiteAreaID: this.siteArea?.id,
@@ -167,9 +175,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         ConnectorStatus: filters.connectorStatus,
         ConnectorType: filters.connectorType,
         WithSiteArea: true,
-        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+        LocLatitude: this.currentRegion?.latitude ?? null,
+        LocLongitude: this.currentRegion?.longitude ?? null,
+        LocMaxDistanceMeters: this.computeMaxBoundaryDistance(this.currentRegion)
       };
       // Get with the Site Area
       chargingStations = await this.centralServerProvider.getChargingStations(params, { skip, limit }, ['id']);
@@ -219,19 +227,29 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     return true;
   };
 
-  public refreshCurrentRegion(chargingStations: ChargingStation[], force = false) {
-    // Set current region
-    if (!this.currentRegion || force) {
-      let gpsCoordinates: number[];
-      if (!Utils.isEmptyArray(chargingStations) && Utils.containsGPSCoordinates(chargingStations[0].coordinates)) {
-        gpsCoordinates = chargingStations[0].coordinates;
+  public async refreshCurrentRegion(chargingStations: ChargingStation[], force = false) {
+    // Init current region with current location or coordinates of the first charging station if location is turned-off
+    if ( !this.currentRegion || force ) {
+      const currentLocation = await this.getCurrentLocation();
+      if ( currentLocation ) {
+        this.currentRegion = {
+          longitude: currentLocation.longitude,
+          latitude: currentLocation.latitude,
+          longitudeDelta: 0.01,
+          latitudeDelta: 0.01
+        }
+      } else {
+        let gpsCoordinates: number[];
+        if ( !Utils.isEmptyArray(chargingStations) && Utils.containsGPSCoordinates(chargingStations[0].coordinates) ) {
+          gpsCoordinates = chargingStations[0].coordinates;
+        }
+        this.currentRegion = {
+          longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
+          latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01
+        };
       }
-      this.currentRegion = {
-        longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
-        latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01
-      };
     }
   }
 
@@ -286,8 +304,21 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   };
 
   public onMapRegionChange = (region: Region) => {
-    this.currentRegion = region;
+    if(!this.onRegionChangeFreezed) {
+      console.log('region changed!!')
+      this.onRegionChangeFreezed = true;
+      setTimeout(() => {
+        this.currentRegion = region;
+        this.onRegionChangeFreezed = false
+        this.refresh();
+      }, 5000)
+    }
   };
+
+  public onMapRegionChangeComplete = (region: Region) => {
+    this.currentRegion = region;
+    this.refresh();
+  }
 
   public filterChanged(newFilters: ChargingStationsFiltersDef) {
     delete this.currentRegion;
@@ -366,10 +397,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       refreshing,
       satelliteMap
     } = this.state;
-    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
-    const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
-      Utils.containsGPSCoordinates(chargingStation.coordinates)
-    );
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     const fabStyles = computeFabStyles();
     return (
@@ -413,42 +440,12 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             </View>
             <ChargingStationsFilters
               initialFilters={initialFilters}
-              locationEnabled={this.locationEnabled}
               onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
               ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
             />
-            {mapIsDisplayed ? (
+            {showMap ? (
               <View style={style.map}>
-                {this.currentRegion && (
-                  <ClusterMap
-                    customMapStyle={isDarkModeEnabled ? this.darkMapTheme : null}
-                    style={style.map}
-                    provider={null}
-                    showsCompass={false}
-                    showsUserLocation={true}
-                    isClusterExpandClick={true}
-                    renderClusterMarker={({ pointCount, clusterId }) => (
-                      <View style={style.cluster}>
-                        <Text style={style.text}>{pointCount}</Text>
-                      </View>
-                    )}
-                    zoomControlEnabled={false}
-                    toolbarEnabled={false}
-                    mapType={satelliteMap ? 'satellite' : 'standard'}
-                    region={this.currentRegion}
-                    onRegionChange={this.onMapRegionChange}>
-                    {chargingStationsWithGPSCoordinates.map((chargingStation) => (
-                      <Marker
-                        style={{height: 20, width: 20}}
-                        image={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)}
-                        key={chargingStation.id}
-                        coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
-                        title={chargingStation.id}
-                        onPress={() => this.showMapChargingStationDetail(chargingStation)}
-                      />
-                    ))}
-                  </ClusterMap>
-                )}
+                {this.currentRegion && this.renderMap()}
                 {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
               </View>
             ) : (
@@ -477,5 +474,94 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         )}
       </Container>
     );
+  }
+
+  private renderMap() {
+    const style = computeStyleSheet();
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    const { satelliteMap, chargingStations } = this.state
+    const commonColors = Utils.getCurrentCommonColor();
+    const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
+      Utils.containsGPSCoordinates(chargingStation.coordinates)
+    );
+    return (
+      <View style={style.map}>
+        <MapView
+          customMapStyle={isDarkModeEnabled ? this.darkMapTheme : null}
+          style={style.map}
+          provider={null}
+          showsCompass={false}
+          showsUserLocation={true}
+          zoomControlEnabled={false}
+          toolbarEnabled={false}
+          spiralEnabled={true}
+          tracksViewChanges={false}
+          minPoints={1}
+          renderCluster={(cluster) => this.renderCluster(cluster, style)}
+          spiderLineColor={commonColors.textColor}
+          mapType={satelliteMap ? 'satellite' : 'standard'}
+          initialRegion={this.currentRegion}
+          onRegionChangeComplete={this.onMapRegionChangeComplete}
+        >
+          {chargingStationsWithGPSCoordinates.map((chargingStation, index) => (
+            <Marker
+              key={`${chargingStation.id}${index}`}
+              tracksViewChanges={false}
+              coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
+              title={chargingStation.id}
+              onPress={() => this.showMapChargingStationDetail(chargingStation)}
+            >
+              <Icon type={'FontAwesome5'} name={'charging-station'} style={[style.chargingStationMarker, this.buildMarkerStyle(chargingStation?.connectors, chargingStation?.inactive)]} />
+            </Marker>
+          ))}
+        </MapView>
+      </View>
+    )
+  }
+
+  private renderCluster(cluster: any, style: any): React.ReactNode {
+    const { geometry, onPress, id, properties } = cluster;
+    return (
+      <Marker onPress={onPress} tracksViewChanges={false} key={id} coordinate={{longitude: geometry.coordinates[0], latitude: geometry.coordinates[1]}}>
+        <View style={style.cluster}><Text>{properties?.point_count}</Text></View>
+      </Marker>
+    );
+  }
+
+  private buildMarkerStyle(connectors: Connector[], inactive: boolean) {
+    const connectorStatusStyles = computeConnectorStatusStyles();
+    if (inactive) {
+      //TODO handle reserved status when implemented
+      return connectorStatusStyles.unavailableConnectorValue;
+    } else if (connectors.find((connector) => connector.status === ChargePointStatus.AVAILABLE)) {
+      return connectorStatusStyles.availableConnectorValue;
+    } else if (
+      connectors.find((connector) => connector.status === ChargePointStatus.FINISHING) ||
+      connectors.find((connector) => connector.status === ChargePointStatus.PREPARING)
+    ) {
+      return connectorStatusStyles.preparingConnectorValue;
+    } else if (
+      connectors.find((connector) => connector.status === ChargePointStatus.CHARGING) ||
+      connectors.find((connector) => connector.status === ChargePointStatus.OCCUPIED)
+    ) {
+      return connectorStatusStyles.chargingConnectorValue;
+    } else if (
+      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EVSE) ||
+      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EV)
+    ) {
+      return connectorStatusStyles.suspendedConnectorValue;
+    } else if (connectors.find((connector) => connector.status === ChargePointStatus.FAULTED)) {
+      return statusMarkerFaulted;
+    }
+    return connectorStatusStyles.unavailableConnectorValue;
+  }
+
+  private computeMaxBoundaryDistance(region: Region) {
+    if (region) {
+      const height = region.latitudeDelta * 111;
+      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360
+      return Math.sqrt(height**2 + width**2)/2 * 1000;
+    }
+    return null;
   }
 }

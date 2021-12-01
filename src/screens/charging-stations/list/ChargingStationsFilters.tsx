@@ -15,7 +15,6 @@ import computeStyleSheet from './ChargingStationsStyles';
 export interface Props {
   onFilterChanged?: (filters: ChargingStationsFiltersDef) => void;
   initialFilters?: ChargingStationsFiltersDef;
-  locationEnabled?: boolean;
 }
 
 interface State extends ScreenFiltersState {
