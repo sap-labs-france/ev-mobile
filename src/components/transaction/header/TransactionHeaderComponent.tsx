@@ -2,7 +2,6 @@ import { Text, View } from 'native-base';
 import React from 'react';
 
 import I18nManager from '../../../I18n/I18nManager';
-import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import Utils from '../../../utils/Utils';
@@ -16,7 +15,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {}
-export default class TransactionHeaderComponent extends BaseScreen<Props, State> {
+export default class TransactionHeaderComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
 

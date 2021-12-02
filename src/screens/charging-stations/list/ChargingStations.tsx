@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { BackHandler, Image, ImageStyle, NativeEventSubscription, Platform, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { BackHandler, Image, ImageStyle, Platform, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { ClusterMap } from 'react-native-cluster-map';
 import { Location } from 'react-native-location';
 import { Marker, Region } from 'react-native-maps';
@@ -62,7 +62,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private currentRegion: Region;
   private parent: any;
   private darkMapTheme = require('../../../utils/map/google-maps-night-style.json');
-  private backHandler: NativeEventSubscription;
 
   public constructor(props: Props) {
     super(props);
@@ -95,15 +94,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.parent?.setOptions({
       swipeEnabled: !this.siteArea
     });
-    // Bind the back button to the onBack method (Android)
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     this.refresh();
   }
 
   public componentWillUnmount() {
     super.componentWillUnmount();
-    // Unbind the back button and reset its default behavior (Android)
-    this.backHandler.remove();
     // Disable swipe for opening sidebar
     this.parent?.setOptions({
       swipeEnabled: false
@@ -111,8 +106,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public componentDidFocus(): void {
-    // Bind the back button to the onBack method (Android)
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+    super.componentDidFocus();
     this.refresh();
     // Enable swipe for opening sidebar
     this.parent?.setOptions({
@@ -121,8 +115,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public componentDidBlur(): void {
-    // Unbind the back button and reset its default behavior (Android)
-    this.backHandler.remove();
+    super.componentDidBlur();
     // Disable swipe for opening sidebar
     this.parent?.setOptions({
       swipeEnabled: false
@@ -206,7 +199,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     }
   };
 
-  public onBack = (): boolean => {
+  public onBack (): boolean {
     if (!this.state.showMap) {
       this.setState({ showMap: true });
       return true;
@@ -385,7 +378,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           )}
           <TouchableOpacity
             style={style.fab}
-            onPress={() => this.setState({ showMap: !this.state.showMap })}
+            onPress={() => this.setState({ showMap: !showMap })}
           >
             <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
           </TouchableOpacity>
