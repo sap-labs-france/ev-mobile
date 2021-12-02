@@ -542,7 +542,7 @@ export default class CentralServerProvider {
     // Build Sorting
     this.buildSorting(sorting, params);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.SITES}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_SITES), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -878,11 +878,10 @@ export default class CentralServerProvider {
     let foundSiteImage = this.siteImagesCache.get(id);
     if (!foundSiteImage) {
       // Call backend
-      const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(this.tenant)}/${ServerAction.SITE_IMAGE}`, {
+      const result = await this.axiosInstance.get(this.buildUtilRestEndpointUrl(ServerRoute.REST_SITE_IMAGE, { id }), {
         headers: this.buildHeaders(),
         responseType: 'arraybuffer',
         params: {
-          ID: id,
           TenantID: this.decodedToken?.tenantID
         }
       });
