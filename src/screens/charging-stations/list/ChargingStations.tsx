@@ -73,7 +73,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private parent: any;
   private darkMapTheme = require('../../../utils/map/google-maps-night-style.json');
   private backHandler: NativeEventSubscription;
-  private onRegionChangeFreezed: boolean;
 
   public constructor(props: Props) {
     super(props);
@@ -166,7 +165,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public getChargingStations = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     let chargingStations: DataResult<ChargingStation>;
-    const { filters } = this.state;
+    const { filters, showMap } = this.state;
     try {
       const params = {
         Search: searchText,
@@ -177,7 +176,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         WithSiteArea: true,
         LocLatitude: this.currentRegion?.latitude ?? null,
         LocLongitude: this.currentRegion?.longitude ?? null,
-        LocMaxDistanceMeters: this.computeMaxBoundaryDistance(this.currentRegion)
+        LocMaxDistanceMeters: showMap ? this.computeMaxBoundaryDistanceKm(this.currentRegion) : null
       };
       // Get with the Site Area
       chargingStations = await this.centralServerProvider.getChargingStations(params, { skip, limit }, ['id']);
@@ -216,7 +215,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public onBack = (): boolean => {
     if (!this.state.showMap) {
-      this.setState({ showMap: true });
+      this.setState({ showMap: true }, () => this.refresh());
       return true;
     }
     if (!!this.siteArea) {
@@ -238,7 +237,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           longitudeDelta: 0.01,
           latitudeDelta: 0.01
         }
-      } else {
+      } else if (!Utils.isEmptyArray(chargingStations)) {
         let gpsCoordinates: number[];
         if ( !Utils.isEmptyArray(chargingStations) && Utils.containsGPSCoordinates(chargingStations[0].coordinates) ) {
           gpsCoordinates = chargingStations[0].coordinates;
@@ -260,9 +259,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       // Refresh All
       const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
       // Refresh region
-      if (chargingStations) {
-        this.refreshCurrentRegion(chargingStations.result);
-      }
+      this.refreshCurrentRegion(chargingStations.result);
       // Add ChargingStations
       this.setState(() => ({
         loading: false,
@@ -299,20 +296,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public search = async (searchText: string) => {
     this.setState({ refreshing: true });
     this.searchText = searchText;
-    delete this.currentRegion;
     await this.refresh();
-  };
-
-  public onMapRegionChange = (region: Region) => {
-    if(!this.onRegionChangeFreezed) {
-      console.log('region changed!!')
-      this.onRegionChangeFreezed = true;
-      setTimeout(() => {
-        this.currentRegion = region;
-        this.onRegionChangeFreezed = false
-        this.refresh();
-      }, 5000)
-    }
   };
 
   public onMapRegionChangeComplete = (region: Region) => {
@@ -321,7 +305,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public filterChanged(newFilters: ChargingStationsFiltersDef) {
-    delete this.currentRegion;
     this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh());
   }
 
@@ -412,7 +395,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           )}
           <TouchableOpacity
             style={style.fab}
-            onPress={() => this.setState({ showMap: !this.state.showMap })}
+            onPress={() => this.setState({ showMap: !this.state.showMap }, () => this.refresh()) }
           >
             <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
           </TouchableOpacity>
@@ -495,8 +478,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           zoomControlEnabled={false}
           toolbarEnabled={false}
           spiralEnabled={true}
+          radius={50}
           tracksViewChanges={false}
-          minPoints={1}
           renderCluster={(cluster) => this.renderCluster(cluster, style)}
           spiderLineColor={commonColors.textColor}
           mapType={satelliteMap ? 'satellite' : 'standard'}
@@ -532,31 +515,31 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const connectorStatusStyles = computeConnectorStatusStyles();
     if (inactive) {
       //TODO handle reserved status when implemented
-      return connectorStatusStyles.unavailableConnectorValue;
+      return connectorStatusStyles.unavailableConnectorDescription;
     } else if (connectors.find((connector) => connector.status === ChargePointStatus.AVAILABLE)) {
-      return connectorStatusStyles.availableConnectorValue;
+      return connectorStatusStyles.availableConnectorDescription;
     } else if (
       connectors.find((connector) => connector.status === ChargePointStatus.FINISHING) ||
       connectors.find((connector) => connector.status === ChargePointStatus.PREPARING)
     ) {
-      return connectorStatusStyles.preparingConnectorValue;
+      return connectorStatusStyles.preparingConnectorDescription;
     } else if (
       connectors.find((connector) => connector.status === ChargePointStatus.CHARGING) ||
       connectors.find((connector) => connector.status === ChargePointStatus.OCCUPIED)
     ) {
-      return connectorStatusStyles.chargingConnectorValue;
+      return connectorStatusStyles.chargingConnectorDescription;
     } else if (
       connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EVSE) ||
       connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EV)
     ) {
-      return connectorStatusStyles.suspendedConnectorValue;
+      return connectorStatusStyles.suspendedConnectorDescription;
     } else if (connectors.find((connector) => connector.status === ChargePointStatus.FAULTED)) {
       return statusMarkerFaulted;
     }
-    return connectorStatusStyles.unavailableConnectorValue;
+    return connectorStatusStyles.unavailableConnectorDescription;
   }
 
-  private computeMaxBoundaryDistance(region: Region) {
+  private computeMaxBoundaryDistanceKm(region: Region) {
     if (region) {
       const height = region.latitudeDelta * 111;
       const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360

@@ -1,10 +1,9 @@
 import { Icon } from 'native-base';
 import React from 'react';
-import { View, TouchableOpacity, Text, BackHandler } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
-import { IconType } from '../../types/Icon';
 import computeStyleSheet from './HeaderComponentStyles';
 import { DrawerActions } from '@react-navigation/native';
 
