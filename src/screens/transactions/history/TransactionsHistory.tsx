@@ -136,13 +136,6 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     return null;
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator', { screen: 'Home' });
-    // Do not bubble up
-    return true;
-  };
-
   public async refresh() {
     // Component Mounted?
     if (this.isMounted()) {

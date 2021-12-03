@@ -120,15 +120,15 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     return null;
   };
 
-  public onBack = () => {
+  public onBack () {
     // Back mobile button: Force navigation
-    if (this.state.showMap && !Utils.isEmptyArray(this.state.siteAreas)) {
+    if (this.state.showMap) {
       this.setState({ showMap: false });
+      return true;
     } else {
       this.props.navigation.goBack();
+      return true;
     }
-    // Do not bubble up
-    return true;
   };
 
   public async computeRegion(siteAreas: SiteArea[]): Promise<Region> {

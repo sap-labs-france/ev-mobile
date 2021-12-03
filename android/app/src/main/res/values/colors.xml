@@ -3,6 +3,7 @@
   <color name="primary">#0a6ed1</color>
   <color name="modalBackground">#262626</color>
   <color name="status_bar_color">#00376C</color>
+  <color name="modalBackground">#262626</color>
   <color name="navigationBarBackground">#E7E7E7</color>
   <color name="white">#FFF</color>
 </resources>

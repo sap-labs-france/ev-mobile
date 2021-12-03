@@ -64,7 +64,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private siteArea: SiteArea;
   private currentRegion: Region;
   private parent: any;
-  private backHandler: NativeEventSubscription;
   private mapLimit = 500;
   private listLimit = 25;
 
@@ -97,15 +96,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.parent?.setOptions({
       swipeEnabled: !this.siteArea
     });
-    // Bind the back button to the onBack method (Android)
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
     this.refresh(true);
   }
 
   public componentWillUnmount() {
     super.componentWillUnmount();
-    // Unbind the back button and reset its default behavior (Android)
-    this.backHandler.remove();
     // Disable swipe for opening sidebar
     this.parent?.setOptions({
       swipeEnabled: false
@@ -113,8 +108,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public componentDidFocus(): void {
-    // Bind the back button to the onBack method (Android)
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+    super.componentDidFocus();
     this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     this.refresh(true);
     // Enable swipe for opening sidebar
@@ -124,6 +118,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public componentDidBlur(): void {
+    super.componentDidBlur();
     delete this.siteArea;
     // Unbind the back button and reset its default behavior (Android)
     this.backHandler.remove();
@@ -202,7 +197,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     }
   };
 
-  public onBack = (): boolean => {
+  public onBack (): boolean {
     if (!this.state.showMap) {
       this.setState({ showMap: true }, () => this.refresh());
       return true;
