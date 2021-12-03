@@ -152,7 +152,7 @@ export default class CentralServerProvider {
     let tenantLogo = this.tenantLogosCache.get(tenant.subdomain);
     if (!tenantLogo) {
       // Call backend
-      const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(tenant)}/${ServerAction.TENANT_LOGO}`, {
+      const result = await this.axiosInstance.get(this.buildUtilRestEndpointUrl(ServerRoute.REST_TENANT_LOGO), {
         headers: this.buildHeaders(),
         responseType: 'arraybuffer',
         params: {
