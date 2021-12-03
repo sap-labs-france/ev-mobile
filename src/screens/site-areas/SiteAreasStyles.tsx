@@ -29,6 +29,26 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       paddingTop: '10@s',
       alignSelf: 'center'
+    },
+    fabContainer: {
+      position: 'absolute',
+      zIndex: 1,
+      bottom: 0,
+      right: 0,
+      margin: '12@s',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: 0
+    },
+    imageStyle: {
+      height: '100%',
+      width: '100%',
+      padding: 0,
+      borderRadius: '60@s',
+    },
+    outlinedImage: {
+      borderColor: commonColor.listItemBackground,
+      borderWidth: 2
     }
   });
   const portraitStyles = {};

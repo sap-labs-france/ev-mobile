@@ -33,23 +33,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       opacity: 0,
       height: '0@s'
     },
-    fab: {
-      zIndex: 1,
-      elevation: 4,
-      backgroundColor: commonColor.primary,
-      shadowOffset: {
-        width: 0,
-        height: 1
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62,
-      marginTop: '15@s',
-      width: '55@s',
-      height: '55@s',
-      borderRadius: '55@s',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
     fabContainer: {
       position: 'absolute',
       zIndex: 1,
@@ -69,21 +52,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     outlinedImage: {
       borderColor: commonColor.listItemBackground,
       borderWidth: 2
-    },
-    cluster: {
-      backgroundColor: commonColor.listItemBackground,
-      padding: '10@s',
-      width: '50@s',
-      height: '50@s',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: '50@s',
-      borderWidth: 2,
-      borderColor: commonColor.mapClusterBorder,
-      zIndex: 1
-    },
-    outlinedCluster: {
-      borderColor: commonColor.mapClusterBorder
     },
     text: {
       color: commonColor.textColor,
