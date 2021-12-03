@@ -14,6 +14,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '5@s',
       flexDirection: 'row',
       justifyContent: 'space-between',
+      alignItems: 'flex-start',
       margin: 0,
       borderBottomWidth: 0,
       borderTopWidth: 0,
@@ -23,7 +24,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '20@s'
+      fontSize: '20@s',
+      paddingTop: '2@s'
     },
     leftIcon: {
       marginLeft: '2.5%',
@@ -35,19 +37,33 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     leftHeader: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'flex-start',
-      flex: 1
+      justifyContent: 'flex-start'
+    },
+    titlesContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start'
+    },
+    titleContainer: {
+      maxWidth: '100%',
+      marginRight: '5@s'
     },
     title: {
       color: commonColor.textColor,
       fontSize: '17@s',
       textAlign: 'left',
-      marginLeft: '2.5%',
-      flex: 1
+      width: '100%'
+    },
+    subTitle: {
+      width: '100%',
+      color: commonColor.textColor,
+      fontSize: '17@s',
+      textAlign: 'left',
     },
     actionsContainer: {
       flexDirection: 'row',
-      marginRight: '2.5%',
       marginLeft: '10@s'
     },
     action: {

@@ -85,9 +85,18 @@ export default class HeaderComponent extends React.Component<Props, State> {
               </TouchableOpacity>
             )
           )}
-          <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
-            {title} {subTitle}
-          </Text>
+        </View>
+        <View style={style.titlesContainer}>
+          <View style={style.titleContainer}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
+              {title}
+            </Text>
+          </View>
+          <View>
+            <Text numberOfLines={1}  style={style.subTitle}>
+              {subTitle}
+            </Text>
+          </View>
         </View>
         <View style={style.actionsContainer}>
           {actions?.map((action, index) => (
