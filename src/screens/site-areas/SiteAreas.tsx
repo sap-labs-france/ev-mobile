@@ -85,6 +85,11 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
   }
 
+  public componentDidBlur() {
+    super.componentDidBlur();
+    delete this.site
+  }
+
   public getSiteAreas = async (searchText: string = '', skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     try {
       // Get current location
