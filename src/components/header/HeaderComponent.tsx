@@ -23,7 +23,7 @@ interface State {
 
 export interface HeaderAction {
   onPress?: () => void;
-  renderIcon?: () => React.ReactElement;
+  renderAction?: () => React.ReactElement;
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
@@ -101,7 +101,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
         <View style={style.actionsContainer}>
           {actions?.map((action, index) => (
             <TouchableOpacity style={style.action} key={index} onPress={action.onPress}>
-              {action.renderIcon?.()}
+              {action.renderAction?.()}
             </TouchableOpacity>
           ))}
           {this.filterModalContainerComponent && (

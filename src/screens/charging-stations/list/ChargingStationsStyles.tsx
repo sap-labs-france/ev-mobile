@@ -58,12 +58,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '14@s'
     },
     icon: {
-      color: commonColor.textColor,
+      color: commonColor.light,
       fontSize: '20@s'
     },
     chargingStationMarker: {
       fontSize: '30@s',
       backgroundColor: commonColor.listBg
+    },
+    qrcodeButton: {
+      backgroundColor: commonColor.primary,
+      borderRadius: '8@s',
+      padding: '10@s'
     }
   });
   const portraitStyles = {};

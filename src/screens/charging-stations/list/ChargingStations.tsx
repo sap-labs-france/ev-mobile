@@ -396,7 +396,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           actions={[
             {
               onPress: () => navigation.navigate('QRCodeScanner'),
-              renderIcon: () => <Icon type={'MaterialIcons'} name={'qr-code-scanner'} style={style.icon} />
+              renderAction: () => (
+                <View style={style.qrcodeButton}>
+                  <Icon type={'MaterialIcons'} name={'qr-code-scanner'} style={style.icon} />
+                </View>
+              )
             }
           ]}
           sideBar={!this.siteArea}
