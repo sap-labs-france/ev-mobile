@@ -3,7 +3,6 @@ import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
 import {
   BackHandler, Image, ImageStyle,
-  NativeEventSubscription,
   Platform,
   ScrollView, TouchableOpacity,
 } from 'react-native';
@@ -475,7 +474,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           satelliteMap={satelliteMap}
           renderMarker={(chargingStation, index) => (
             <Marker
-              key={`${chargingStation.id}${index}${chargingStation.chargingStationURL}`}
+              key={chargingStation.id}
+              identifier={chargingStation.id}
               tracksViewChanges={false}
               coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
               title={chargingStation.id}

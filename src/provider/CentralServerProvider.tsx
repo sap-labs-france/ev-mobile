@@ -498,7 +498,7 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params
     });
-    return result.data;
+    return result?.data;
   }
 
   public async saveUserMobileToken(params: { id: string; mobileToken: string; mobileOS: string }): Promise<ActionResponse> {

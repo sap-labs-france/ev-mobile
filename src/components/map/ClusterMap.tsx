@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView from 'react-native-map-clustering';
-import MapCluster from './cluster/MapCluster';
+import ClusterComponent from './cluster/ClusterComponent';
 import { Region } from 'react-native-maps';
 import ChargingStation from '../../types/ChargingStation';
 import Site from '../../types/Site';
@@ -48,11 +48,11 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
             showsCompass={false}
             showsUserLocation={true}
             zoomControlEnabled={false}
+            radius={this.computeRadius(initialRegion.latitudeDelta)}
             toolbarEnabled={false}
             spiralEnabled={true}
-            radius={5}
             tracksViewChanges={false}
-            renderCluster={(cluster) => <MapCluster cluster={cluster} />}
+            renderCluster={(cluster) => <ClusterComponent key={cluster.id} cluster={cluster} />}
             spiderLineColor={commonColors.textColor}
             mapType={satelliteMap ? 'satellite' : 'standard'}
             initialRegion={initialRegion}
@@ -65,5 +65,14 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
         )}
       </View>
     )
+  }
+
+  private computeRadius(latitudeDelta: number): number {
+    if(latitudeDelta <= 0.0005) {
+      return 5
+    } else if(latitudeDelta <= 0.001 ) {
+      return 20
+    }
+    return 30
   }
 }
