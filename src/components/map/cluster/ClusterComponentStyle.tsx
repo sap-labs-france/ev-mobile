@@ -19,6 +19,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderWidth: 2,
       borderColor: commonColor.mapClusterBorder,
       zIndex: 1
+    },
+    text: {
+      fontSize: '15@s',
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
