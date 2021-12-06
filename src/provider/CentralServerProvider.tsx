@@ -152,7 +152,7 @@ export default class CentralServerProvider {
     let tenantLogo = this.tenantLogosCache.get(tenant.subdomain);
     if (!tenantLogo) {
       // Call backend
-      const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(tenant)}/${ServerAction.TENANT_LOGO}`, {
+      const result = await this.axiosInstance.get(this.buildUtilRestEndpointUrl(ServerRoute.REST_TENANT_LOGO), {
         headers: this.buildHeaders(),
         responseType: 'arraybuffer',
         params: {
@@ -542,7 +542,7 @@ export default class CentralServerProvider {
     // Build Sorting
     this.buildSorting(sorting, params);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.SITES}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_SITES), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -878,11 +878,10 @@ export default class CentralServerProvider {
     let foundSiteImage = this.siteImagesCache.get(id);
     if (!foundSiteImage) {
       // Call backend
-      const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(this.tenant)}/${ServerAction.SITE_IMAGE}`, {
+      const result = await this.axiosInstance.get(this.buildUtilRestEndpointUrl(ServerRoute.REST_SITE_IMAGE, { id }), {
         headers: this.buildHeaders(),
         responseType: 'arraybuffer',
         params: {
-          ID: id,
           TenantID: this.decodedToken?.tenantID
         }
       });
@@ -1071,6 +1070,10 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/v1/api';
   }
 
+  private buildUtilRestServerURL(): string {
+    return this.tenant?.endpoint + '/v1/util';
+  }
+
   private buildCentralRestServerServiceUtilURL(tenant: TenantConnection): string {
     return tenant?.endpoint + '/client/util';
   }
@@ -1079,13 +1082,17 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/client/api';
   }
 
-  private buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}) {
+  public buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}, urlPrefix = this.buildRestServerURL()): string {
     let resolvedUrlPattern = urlPatternAsString as string;
     for (const key in params) {
       if (Object.prototype.hasOwnProperty.call(params, key)) {
         resolvedUrlPattern = resolvedUrlPattern.replace(`:${key}`, encodeURIComponent(params[key]));
       }
     }
-    return `${this.buildRestServerURL()}/${resolvedUrlPattern}`;
+    return `${urlPrefix}/${resolvedUrlPattern}`;
+  }
+
+  public buildUtilRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}): string {
+    return this.buildRestEndpointUrl(urlPatternAsString, params, this.buildUtilRestServerURL());
   }
 }

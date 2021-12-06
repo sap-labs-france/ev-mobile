@@ -231,15 +231,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     );
   };
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
-  };
-
   public render() {
-    const { navigation } = this.props;
     const style = computeStyleSheet();
     const { transaction } = this.state;
     const { loading, siteImage, isPricingActive } = this.state;

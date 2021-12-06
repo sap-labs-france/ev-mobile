@@ -13,8 +13,10 @@ import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
 import UserToken from '../../types/UserToken';
 import Utils from '../../utils/Utils';
-import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
+import CentralServerProvider from '../../provider/CentralServerProvider';
+import ProviderFactory from '../../provider/ProviderFactory';
+import SecurityProvider from '../../provider/SecurityProvider';
 
 export interface Props extends BaseProps {}
 
@@ -27,12 +29,18 @@ interface State {
   appVersion?: CheckVersionResponse;
 }
 
-export default class SideBar extends BaseScreen<Props, State> {
+export default class SideBar extends React.Component<Props, State> {
   public state: State;
   public props: Props;
+  private centralServerProvider: CentralServerProvider;
+  private securityProvider: SecurityProvider;
+  private componentFocusUnsubscribe: () => void;
+  private componentBlurUnsubscribe: () => void;
 
   public constructor(props: Props) {
     super(props);
+    this.componentFocusUnsubscribe = this.props.navigation?.addListener('focus', () => this.componentDidFocus());
+    this.componentBlurUnsubscribe = this.props.navigation?.addListener('blur', () => this.componentDidFocus());
     this.state = {
       userToken: null,
       tenantName: '',
@@ -50,11 +58,17 @@ export default class SideBar extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount() {
-    await super.componentDidMount();
+  public async componentDidFocus(): Promise<void> {
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    this.securityProvider = this.centralServerProvider?.getSecurityProvider();
     await this.getUpdateDate();
     // Init User (delay it)
     this.refresh();
+  }
+
+  public componentWillUnmount() {
+    this.componentFocusUnsubscribe?.();
+    this.componentBlurUnsubscribe?.();
   }
 
   public refresh = async () => {

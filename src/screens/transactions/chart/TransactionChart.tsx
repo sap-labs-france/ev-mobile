@@ -60,6 +60,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+  }
+
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
@@ -345,13 +349,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     // Return
     return chartDefinition;
   }
-
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
-  };
 
   public render() {
     const { navigation } = this.props;

@@ -69,6 +69,9 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           swipeDirection={'down'}
           animationInTiming={1000}
           onSwipeComplete={() => this.setState({ isVisible: false })}
+          // Modal component registers the given method for hardwareBackPress event and unregisters it when the modal inner content unmounts.
+          // Inner component list also unsubscribe on unmount, allowing the last subscriber to choose back implementation.
+          // Here the last subscriber is the parent component
           onBackButtonPress={() => this.setState({ isVisible: false })}
           onBackdropPress={() => this.setState({ isVisible: false })}
           hideModalContentWhileAnimating={true}>

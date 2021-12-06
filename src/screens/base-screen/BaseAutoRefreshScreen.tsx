@@ -60,10 +60,6 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     this.clearRefreshTimer();
   }
 
-  public onBack = (): boolean =>
-    // Not Handled: has to be taken in the sub-classes
-    false;
-
   public setActive(active: boolean) {
     this.timerRefreshActive = active;
   }

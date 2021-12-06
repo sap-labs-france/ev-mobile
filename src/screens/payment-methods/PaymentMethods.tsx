@@ -72,6 +72,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
   }
 
   public async componentDidFocus() {
+    super.componentDidFocus();
     this.setState({ refreshing: true });
     await this.refresh();
   }

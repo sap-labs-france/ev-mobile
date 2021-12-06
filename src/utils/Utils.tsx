@@ -30,6 +30,8 @@ import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
+import { Region } from 'react-native-maps';
+import LocationManager from '../location/LocationManager';
 
 export default class Utils {
   public static getEndpointCloud(): EndpointCloud[] {
@@ -865,6 +867,12 @@ export default class Utils {
         return I18n.t('connector.chademo');
       case ConnectorType.DOMESTIC:
         return I18n.t('connector.domestic');
+      case ConnectorType.TYPE_1_CCS:
+        return I18n.t('connector.type1CCS');
+      case ConnectorType.TYPE_1:
+        return I18n.t('connector.type1');
+      case ConnectorType.TYPE_3C:
+        return I18n.t('connector.type3C');
       default:
         return I18n.t('connector.unknown');
     }
@@ -941,6 +949,7 @@ export default class Utils {
 
   public static buildChargingStationStatusMarker(connectors: Connector[], inactive: boolean): any {
     if (inactive) {
+      //TODO handle reserved status when implemented
       return statusMarkerUnavailable;
     } else if (connectors.find((connector) => connector.status === ChargePointStatus.AVAILABLE)) {
       return statusMarkerAvailable;
@@ -962,6 +971,7 @@ export default class Utils {
     } else if (connectors.find((connector) => connector.status === ChargePointStatus.FAULTED)) {
       return statusMarkerFaulted;
     }
+    return statusMarkerUnavailable;
   }
 
   public static buildSiteStatusMarker(connectorStats: ConnectorStats): any {
@@ -996,5 +1006,19 @@ export default class Utils {
 
   private static getDeviceLanguage(): string {
     return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
+  }
+
+  public static computeMaxBoundaryDistanceKm(region: Region) {
+    if (region) {
+      const height = region.latitudeDelta * 111;
+      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360
+      return Math.sqrt(height**2 + width**2)/2 * 1000;
+    }
+    return null;
+  }
+
+  public static async getUserCurrentLocation() {
+    const location = await LocationManager.getInstance();
+    return location?.getLocation();
   }
 }

@@ -115,13 +115,6 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
     this.setState({ refreshing: false });
   };
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
-  };
-
   public requestChargingStationOcppParametersConfirm() {
     const { chargingStation } = this.state;
     Alert.alert(
