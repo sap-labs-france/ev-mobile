@@ -456,7 +456,7 @@ function createAppDrawerNavigator(props: BaseProps) {
         drawerType: 'front',
         swipeEnabled: false,
         swipeEdgeWidth: scale(50),
-        unmountOnBlur: false,
+        unmountOnBlur: false
       })}
       backBehavior={'history'}
       drawerPosition="left"
