@@ -299,8 +299,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   };
 
   public onMapRegionChangeComplete = (region: Region) => {
-    this.currentRegion = region;
-    this.refresh();
+    if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+      region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+      this.currentRegion = region;
+      this.refresh();
+    }
   }
 
   public filterChanged(newFilters: ChargingStationsFiltersDef) {
@@ -410,8 +413,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             </TouchableOpacity>
           )}
           <TouchableOpacity
+            delayPressIn={0}
             style={fabStyles.fab}
-            onPress={() => this.setState({ showMap: ! showMap}, () => this.refresh(true)) }
+            onPress={() => this.setState({ showMap: !showMap}, () => this.refresh(true)) }
           >
             <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
           </TouchableOpacity>
@@ -485,7 +489,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             </Marker>
           )}
           initialRegion={this.currentRegion}
-          onMapRegionChangeComplete={this.onMapRegionChangeComplete}
+          onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
         />
       </View>
     )

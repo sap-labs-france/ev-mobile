@@ -251,8 +251,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public onMapRegionChangeComplete = (region: Region) => {
-    this.currentRegion = region;
-    this.refresh();
+    if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+      region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+      this.currentRegion = region;
+      this.refresh();
+    }
   }
 
   public render() {
@@ -340,7 +343,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             />
           )}
           initialRegion={this.currentRegion}
-          onMapRegionChangeComplete={this.onMapRegionChangeComplete}
+          onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
         />
       </View>
     )
