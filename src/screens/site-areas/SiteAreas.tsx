@@ -340,14 +340,18 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             />
           )}
           initialRegion={this.currentRegion}
-          onMapRegionChangeComplete={this.onMapRegionChangeComplete}
+          onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
         />
       </View>
     )
   }
 
   private onMapRegionChangeComplete = (region: Region) => {
-    this.currentRegion = region;
-    this.refresh();
-  }
+      if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+        region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+        this.currentRegion = region;
+        this.refresh();
+      }
+    }
+
 }
