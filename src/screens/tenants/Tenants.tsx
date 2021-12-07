@@ -94,7 +94,7 @@ export default class Tenants extends BaseScreen<Props, State> {
           />
         ) : (
           <View style={style.container}>
-            <TouchableOpacity onPress={() => this.setState({ showAddTenantDialog: true })} style={[fabStyles.fab, fabStyles.placedFab]}>
+            <TouchableOpacity delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={[fabStyles.fab, fabStyles.placedFab]}>
               <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
             </TouchableOpacity>
             {showAddTenantManuallyDialog && (

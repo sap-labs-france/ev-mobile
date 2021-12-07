@@ -41,6 +41,7 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
     const style = computeStyleSheet();
     return (
       <View style={style.map}>
+        <View style={style.mapOverlay} />
         {initialRegion && (
           <MapView
             customMapStyle={isDarkModeEnabled ? this.darkMapTheme : null}
@@ -56,7 +57,7 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
             spiderLineColor={commonColors.textColor}
             mapType={satelliteMap ? 'satellite' : 'standard'}
             initialRegion={initialRegion}
-            onRegionChangeComplete={onMapRegionChangeComplete}
+            onRegionChangeComplete={(region) => onMapRegionChangeComplete(region)}
           >
             {items.map((item, index) => (
               renderMarker?.(item, index)
@@ -68,11 +69,9 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
   }
 
   private computeRadius(latitudeDelta: number): number {
-    if(latitudeDelta <= 0.0005) {
-      return 5
-    } else if(latitudeDelta <= 0.001 ) {
-      return 20
+    if (latitudeDelta <= 0.0005) {
+      return 5;
     }
-    return 30
+    return 30;
   }
 }

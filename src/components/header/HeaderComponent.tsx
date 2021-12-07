@@ -100,7 +100,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
         </View>
         <View style={style.actionsContainer}>
           {actions?.map((action, index) => (
-            <TouchableOpacity style={style.action} key={index} onPress={action.onPress}>
+            <TouchableOpacity delayPressIn={0} style={style.action} key={index} onPress={action.onPress}>
               {action.renderAction?.()}
             </TouchableOpacity>
           ))}
