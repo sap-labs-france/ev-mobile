@@ -98,13 +98,6 @@ export default class CarCatalogs extends SelectableList<Car> {
     return null;
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
-  };
-
   public onEndScroll = async (): Promise<void> => {
     const { count, skip, limit } = this.state;
     // No reached the end?

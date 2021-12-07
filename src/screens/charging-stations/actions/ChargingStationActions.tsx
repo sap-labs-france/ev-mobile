@@ -208,13 +208,6 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
     }
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
-  };
-
   public refresh = async () => {
     if (this.isMounted()) {
       const spinnerConnectors = new Map();

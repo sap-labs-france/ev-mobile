@@ -1,10 +1,9 @@
 import { Icon } from 'native-base';
 import React from 'react';
-import { View, TouchableOpacity, Text, BackHandler } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
-import { IconType } from '../../types/Icon';
 import computeStyleSheet from './HeaderComponentStyles';
 import { DrawerActions } from '@react-navigation/native';
 
@@ -24,7 +23,7 @@ interface State {
 
 export interface HeaderAction {
   onPress?: () => void;
-  renderIcon?: () => React.ReactElement;
+  renderAction?: () => React.ReactElement;
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
@@ -86,14 +85,23 @@ export default class HeaderComponent extends React.Component<Props, State> {
               </TouchableOpacity>
             )
           )}
-          <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
-            {title} {subTitle}
-          </Text>
+        </View>
+        <View style={style.titlesContainer}>
+          <View style={style.titleContainer}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
+              {title}
+            </Text>
+          </View>
+          <View>
+            <Text numberOfLines={1}  style={style.subTitle}>
+              {subTitle}
+            </Text>
+          </View>
         </View>
         <View style={style.actionsContainer}>
           {actions?.map((action, index) => (
-            <TouchableOpacity style={style.action} key={index} onPress={action.onPress}>
-              {action.renderIcon?.()}
+            <TouchableOpacity delayPressIn={0} style={style.action} key={index} onPress={action.onPress}>
+              {action.renderAction?.()}
             </TouchableOpacity>
           ))}
           {this.filterModalContainerComponent && (

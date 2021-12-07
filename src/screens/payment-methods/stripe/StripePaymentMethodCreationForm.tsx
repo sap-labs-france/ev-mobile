@@ -1,10 +1,10 @@
-import { DrawerActions } from '@react-navigation/native';
 import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Button, CheckBox, Spinner, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { BackHandler, Text, TouchableOpacity } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import { useFocusEffect } from '@react-navigation/native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
@@ -33,6 +33,17 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       console.error(I18n.t('paymentMethods.paymentMethodUnexpectedError'), error);
     });
   });
+
+  useFocusEffect(React.useCallback(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => onBack());
+    return () => backHandler.remove();
+  }, [])
+  );
+
+  function onBack(): boolean {
+    props.navigation.goBack();
+    return true;
+  }
 
   async function setUp(): Promise<void> {
     const csProvider = await ProviderFactory.getProvider();

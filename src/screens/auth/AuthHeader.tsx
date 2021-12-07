@@ -5,7 +5,6 @@ import { Image, ImageStyle } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import BaseProps from '../../types/BaseProps';
-import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './AuthStyles';
 
 export interface Props extends BaseProps {
@@ -15,14 +14,9 @@ export interface Props extends BaseProps {
 
 interface State {}
 
-export default class AuthHeader extends BaseScreen<Props, State> {
+export default class AuthHeader extends React.Component<Props, State>{
   public state: State;
   public props: Props;
-
-  // eslint-disable-next-line no-useless-constructor
-  public constructor(props: Props) {
-    super(props);
-  }
 
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,

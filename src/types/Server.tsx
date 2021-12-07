@@ -279,6 +279,7 @@ export enum ServerAction {
   USER_CREATE_PASSWORD = 'UserCreatePassword',
   ADMIN_ACCOUNT_VERIFICATION = 'AdminAccountVerificationNotification',
 
+  UPDATE_LOCAL_CAR_CATALOGS = 'UpdateLocalCarCatalogs',
   CAR_CATALOG_SYNCHRONIZATION_FAILED = 'CarCatalogSynchronizationFailed',
   CAR_CATALOG_SYNCHRONIZATION = 'CarCatalogSynchronization',
   SESSION_NOT_STARTED_AFTER_AUTHORIZE = 'SessionNotStartedAfterAuthorize',
@@ -561,6 +562,7 @@ export enum ServerRoute {
 
   REST_TENANTS = 'tenants',
   REST_TENANT = 'tenants/:id',
+  REST_TENANT_LOGO = 'tenants/logo',
 
   REST_COMPANIES = 'companies',
   REST_COMPANY = 'companies/:id',
@@ -593,6 +595,39 @@ export enum ServerRoute {
   REST_OCPI_ENDPOINT_REGISTER = 'ocpi/endpoints/:id/register',
   REST_OCPI_ENDPOINT_UNREGISTER = 'ocpi/endpoints/:id/unregister',
 
+  REST_OICP_ENDPOINTS = 'oicp/endpoints',
+  REST_OICP_ENDPOINT = 'oicp/endpoints/:id',
+  REST_OICP_ENDPOINT_PING = 'oicp/endpoints/:id/ping',
+  REST_OICP_ENDPOINT_SEND_EVSE_STATUSES = 'oicp/endpoints/:id/evses/statuses/send',
+  REST_OICP_ENDPOINT_SEND_EVSES = 'oicp/endpoints/:id/evses/send',
+  REST_OICP_ENDPOINT_REGISTER = 'oicp/endpoints/:id/register',
+  REST_OICP_ENDPOINT_UNREGISTER = 'oicp/endpoints/:id/unregister',
+
+  REST_SETTINGS = 'settings',
+  REST_SETTING = 'settings/:id',
+
+  REST_REGISTRATION_TOKENS = 'registration-tokens',
+  REST_REGISTRATION_TOKEN = 'registration-tokens/:id',
+  REST_REGISTRATION_TOKEN_REVOKE = 'registration-tokens/:id/revoke',
+
+  REST_SITE_AREAS = 'site-areas',
+  REST_SITE_AREA = 'site-areas/:id',
+  REST_SITE_AREA_CONSUMPTION = 'site-areas/:id/consumptions',
+  REST_SITE_AREA_IMAGE = 'site-areas/:id/image',
+  REST_SITE_AREA_ASSIGN_CHARGING_STATIONS = 'site-areas/:id/charging-stations/assign',
+  REST_SITE_AREA_REMOVE_CHARGING_STATIONS = 'site-areas/:id/charging-stations/unassign',
+  REST_SITE_AREA_ASSIGN_ASSETS = 'site-areas/:id/assets/assign',
+  REST_SITE_AREA_REMOVE_ASSETS = 'site-areas/:id/assets/unassign',
+
+  REST_SITES = 'sites',
+  REST_SITE = 'sites/:id',
+  REST_SITE_USERS = 'sites/:id/users',
+  REST_SITE_ADD_USERS = 'sites/:id/users/assign',
+  REST_SITE_REMOVE_USERS = 'sites/:id/users/unassign',
+  REST_SITE_ADMIN = 'sites/:id/users/admin',
+  REST_SITE_OWNER = 'sites/:id/users/owner',
+  REST_SITE_IMAGE = 'sites/:id/image',
+
   // BILLING URLs for CRUD operations on PAYMENT METHODS
   REST_BILLING_PAYMENT_METHODS = 'users/:userID/payment-methods',
   REST_BILLING_PAYMENT_METHOD = 'users/:userID/payment-methods/:paymentMethodID',
@@ -612,6 +647,10 @@ export enum ServerRoute {
 
   // BILLING URLs for Non-CRUD operations on INVOICES
   REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download',
+
+  // PRICING URLs for CRUD operations
+  REST_PRICING_DEFINITIONS = 'pricing-definitions',
+  REST_PRICING_DEFINITION = 'pricing-definitions/:id'
 }
 
 export enum ServerProtocol {

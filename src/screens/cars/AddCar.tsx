@@ -18,12 +18,12 @@ import UserComponent from '../../components/user/UserComponent';
 import Users from '../users/list/Users';
 import computeModalCommonStyle from '../../components/modal/ModalCommonStyle';
 import Orientation from 'react-native-orientation-locker';
-import { RestResponse } from '../../types/Server';
 import Message from '../../utils/Message';
 import { HTTPError } from '../../types/HTTPError';
 import I18n from 'i18n-js';
 import { RadioButton } from 'react-native-paper';
 import Constants from '../../utils/Constants';
+import { RestResponse } from '../../types/ActionResponse';
 
 interface State {
   selectedCarCatalog: CarCatalog;
@@ -152,7 +152,7 @@ export default class AddCar extends BaseScreen<Props, State> {
             autoCapitalize={'none'}
             autoCorrect={false}
             label={`${Constants.VIN}*`}
-            errorMessage={!this.checkVIN() && vin && I18n.t('cars.invalidVIN')}
+            errorMessage={!this.checkVIN() ? vin && I18n.t('cars.invalidVIN'): null}
             errorStyle={style.errorText}
             inputStyle={style.selectDropdownRowText}
             onChangeText={(newVin: string) => this.setState({ vin: newVin })}
@@ -166,7 +166,7 @@ export default class AddCar extends BaseScreen<Props, State> {
             autoCapitalize={'none'}
             autoCorrect={false}
             errorStyle={style.errorText}
-            errorMessage={!this.checkLicensePlate() && licensePlate && I18n.t('cars.invalidLicensePlate')}
+            errorMessage={!this.checkLicensePlate() ? licensePlate && I18n.t('cars.invalidLicensePlate') : null}
             inputStyle={style.selectDropdownRowText}
             onChangeText={(newLicensePlate: string) => this.setState({ licensePlate: newLicensePlate })}
           />
@@ -372,14 +372,15 @@ export default class AddCar extends BaseScreen<Props, State> {
         if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
           this.props.navigation.goBack();
+          return;
         } else {
           Message.showError(I18n.t('cars.addError'));
+          return;
         }
-        return;
       } catch (error) {
-        switch (error?.status) {
+        switch (error?.response?.status) {
           case HTTPError.CAR_ALREADY_EXIST_ERROR:
-            Message.showError(I18n.t('users.carAlreadyExistError'));
+            Message.showError(I18n.t('cars.carAlreadyExistError'));
             break;
           case HTTPError.USER_ALREADY_ASSIGNED_TO_CAR:
             Message.showError(I18n.t('cars.userAlreadyAssignedError'));

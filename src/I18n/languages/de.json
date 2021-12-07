@@ -77,7 +77,9 @@
     "result": "Result",
     "optional": "Optional",
     "defaultSettings": "Default Settings",
-    "notApplicable": "N/A"
+    "notApplicable": "N/A",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "sidebar": {
     "home": "Home",
@@ -404,9 +406,12 @@
     "finishing": "Vollendung",
     "unknown": "Unbekannt",
     "type2": "Type 2",
-    "comboCCS": "Kombo",
-    "chademo": "Chademo",
-    "domestic": "Hausanschluss"
+    "comboCCS": "Type 2 - kombo CCS",
+    "type1": "Type 1",
+    "chademo": "CHAdeMo",
+    "domestic": "Hausanschluss",
+    "type1CCS": "Type 1 - Kombo CCS",
+    "type3C": "Type 3C"
   },
   "tags": {
     "visualID": "Visual ID",
