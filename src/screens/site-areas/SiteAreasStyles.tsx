@@ -49,6 +49,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     outlinedImage: {
       borderColor: commonColor.listItemBackground,
       borderWidth: 2
+    },
+    siteAreaMarker: {
+      fontSize: '40@s'
     }
   });
   const portraitStyles = {};

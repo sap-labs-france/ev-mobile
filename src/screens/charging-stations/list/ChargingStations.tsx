@@ -87,7 +87,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public async componentDidMount() {
     // Get initial filters
-    await super.componentDidMount();
+    await super.componentDidMount()
+    this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     const { navigation } = this.props;
     await this.loadInitialFilters();
     // Enable swipe for opening sidebar
