@@ -6,7 +6,7 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
-import { AppStateStatus, BackHandler, NativeEventSubscription } from 'react-native';
+import { BackHandler, NativeEventSubscription } from 'react-native';
 
 export interface Props extends BaseProps {}
 

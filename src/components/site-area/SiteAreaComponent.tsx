@@ -20,7 +20,6 @@ interface State {}
 export default class SiteAreaComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  private counter = 0;
 
   // eslint-disable-next-line no-useless-constructor
   public constructor(props: Props) {

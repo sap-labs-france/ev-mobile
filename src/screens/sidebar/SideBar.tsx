@@ -39,8 +39,8 @@ export default class SideBar extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
-    this.componentFocusUnsubscribe = this.props.navigation?.addListener('focus', () => this.componentDidFocus());
-    this.componentBlurUnsubscribe = this.props.navigation?.addListener('blur', () => this.componentDidFocus());
+   // this.componentFocusUnsubscribe = this.props.navigation?.addListener('focus', () => this.componentDidFocus());
+   // this.componentBlurUnsubscribe = this.props.navigation?.addListener('blur', () => this.componentDidFocus());
     this.state = {
       userToken: null,
       tenantName: '',
@@ -58,7 +58,7 @@ export default class SideBar extends React.Component<Props, State> {
     super.setState(state, callback);
   };
 
-  public async componentDidFocus(): Promise<void> {
+  public async componentDidMount() {
     this.centralServerProvider = await ProviderFactory.getProvider();
     this.securityProvider = this.centralServerProvider?.getSecurityProvider();
     await this.getUpdateDate();
@@ -85,7 +85,6 @@ export default class SideBar extends React.Component<Props, State> {
   public getUserInfo = async () => {
     // Logoff
     const userInfo = this.centralServerProvider.getUserInfo();
-    // Add sites(
     this.setState({
       userToken: this.centralServerProvider.getUserInfo(),
       isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false,
