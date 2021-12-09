@@ -13,6 +13,7 @@ import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 export interface Props extends BaseProps {
   user: User;
   selected?: boolean;
+  outlinedInactive?: boolean;
 }
 
 interface State {}
@@ -37,13 +38,13 @@ export default class UserComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
     const chipStyle = computeChipStyleSheet();
-    const { user, navigation, selected } = this.props;
+    const { user, navigation, selected, outlinedInactive } = this.props;
     const userFullName = Utils.buildUserName(user);
     const userRole = user ? user.role : '';
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, chipStyle);
     return (
-      <View style={[listItemCommonStyle.container, style.container]}>
+      <View style={[listItemCommonStyle.container, style.container, outlinedInactive && userStatus !== UserStatus.ACTIVE && listItemCommonStyle.outlinedError]}>
         <View style={style.userContent}>
           <View style={style.avatarContainer}>
             {selected ? <UserAvatar isSelected={true} navigation={navigation} /> : <UserAvatar user={user} navigation={navigation} />}

@@ -245,6 +245,7 @@
     "car": "Car",
     "selectCar": "Select a car",
     "selectCars": "Select cars",
+    "clearCar": "Clear car",
     "noCarMessageTitle": "Indicate what car you are using to get better recharges",
     "addCarTitle": "Ajouter une voiture",
     "addCarButton": "Ajouter",

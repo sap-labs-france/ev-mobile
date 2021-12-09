@@ -67,6 +67,7 @@ export interface State {
   showNoBadgeErrorMessage?: boolean;
   showBadgeInactiveErrorMessage?: boolean;
   showBillingErrorMessage?: boolean;
+  userInactiveError?: boolean;
   transactionPending?: boolean;
   didPreparing?: boolean;
   showAdviceMessage?: boolean;
@@ -111,6 +112,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       showNoBadgeErrorMessage: false,
       showBadgeInactiveErrorMessage: false,
       showBillingErrorMessage: false,
+      userInactiveError: false,
       transactionPending: false,
       showAdviceMessage: false,
       didPreparing: false,
@@ -288,6 +290,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     let transaction = null;
     let showNoBadgeErrorMessage: boolean;
     let showBadgeInactiveErrorMessage: boolean;
+    let userInactiveError: boolean;
     let showBillingErrorMessage: boolean;
     let showStartTransactionDialog: boolean;
     let showAdviceMessage = false;
@@ -304,6 +307,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const transactionStillPending = this.isTransactionStillPending(connector);
     if (transactionStillPending) {
       buttonDisabled = true;
+      userInactiveError = true;
     } else {
       // if the transaction is no longer pending, reset the flags
       this.setState({ transactionPending: false, didPreparing: false });
@@ -324,6 +328,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       transaction = await this.getTransaction(connector.currentTransactionID);
     }
     const { selectedUser, selectedTag } = this.state;
+    // Check selected user is active
+    if (selectedUser?.status !== UserStatus.ACTIVE) {
+      buttonDisabled = true;
+      userInactiveError = true;
+    }
     // Get the default tag and car of the selected user (only to get errors codes)
     const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser);
     // If error codes, disabled the button
@@ -373,6 +382,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       showBillingErrorMessage,
       showNoBadgeErrorMessage,
       showBadgeInactiveErrorMessage,
+      userInactiveError,
       showAdviceMessage,
       buttonDisabled,
       chargingStation,
@@ -948,12 +958,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   private renderAccordion(style: any) {
-    const { showChargingSettings, showBillingErrorMessage, showNoBadgeErrorMessage, showBadgeInactiveErrorMessage } = this.state;
+    const { showChargingSettings, showBillingErrorMessage, showNoBadgeErrorMessage, showBadgeInactiveErrorMessage, userInactiveError } = this.state;
     return (
       <TouchableOpacity onPress={() => this.setState({ showChargingSettings: !showChargingSettings })} style={style.accordion}>
         <Text style={style.accordionText}>
           {I18n.t('transactions.chargingSettings')}
-          {(showBillingErrorMessage || showNoBadgeErrorMessage || showBadgeInactiveErrorMessage) && (
+          {(showBillingErrorMessage || showNoBadgeErrorMessage || showBadgeInactiveErrorMessage || userInactiveError) && (
             <Text style={style.errorAsterisque}>*</Text>
           )}
         </Text>
@@ -1048,7 +1058,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <ModalSelect<User>
             disabled={disabled}
             openable={isAdmin}
-            renderItem={() => <UserComponent user={selectedUser} navigation={navigation} />}
+            renderItem={() => <UserComponent outlinedInactive={true} user={selectedUser} navigation={navigation} />}
             defaultItem={selectedUser}
             onItemsSelected={this.onUserSelected.bind(this)}
             navigation={navigation}
@@ -1071,15 +1081,30 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           disabled={disabled}
           openable={true}
           renderNoItem={this.renderNoCar.bind(this)}
+          clearable={true}
           renderItem={() => <CarComponent car={selectedCar} navigation={navigation} />}
           ref={this.carModalRef}
           defaultItem={selectedCar}
+          renderItemPlaceholder={this.renderCarPlaceholder.bind(this)}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedCars: Car[]) => this.setState({ selectedCar: selectedCars?.[0] })}
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
           <Cars userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
+      </View>
+    );
+  }
+
+  private renderCarPlaceholder() {
+    const listItemCommonStyle = computeListItemCommonStyle();
+    const style = computeStyleSheet();
+    return (
+      <View style={[listItemCommonStyle.container, style.noItemContainer, style.noCarContainer]}>
+        <Icon style={style.noCarIcon} type={'MaterialCommunityIcons'} name={'car'} />
+        <View style={style.column}>
+          <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
+        </View>
       </View>
     );
   }
@@ -1118,6 +1143,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           disabled={disabled}
           openable={true}
           renderNoItem={this.renderNoTag.bind(this)}
+          itemsEquals={(a, b) => a?.visualID === b?.visualID}
           ref={this.tagModalRef}
           defaultItem={selectedTag}
           defaultItemLoading={tagCarLoading}
@@ -1168,8 +1194,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     this.setState({ tagCarLoading: true });
     try {
       const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser);
-      this.carModalRef.current?.clearInput();
-      this.tagModalRef.current?.clearInput();
+      this.carModalRef.current?.resetInput();
+      this.tagModalRef.current?.resetInput();
       // Temporary workaround to ensure that the default property is set (server-side changes are to be done)
       if (userDefaultTagCar?.tag) {
         userDefaultTagCar.tag.default = true;
