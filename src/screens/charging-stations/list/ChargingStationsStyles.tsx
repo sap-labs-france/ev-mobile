@@ -63,7 +63,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     chargingStationMarker: {
       fontSize: '30@s',
-      backgroundColor: commonColor.listBg
     },
     qrcodeButton: {
       backgroundColor: commonColor.primary,
