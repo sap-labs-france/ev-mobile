@@ -172,6 +172,7 @@ export default class Login extends BaseScreen<Props, State> {
         this.tenants = await this.centralServerProvider.getTenants();
         this.setState({
           tenantSubDomain: null,
+          tenantLogo: null,
           tenantName: I18n.t('authentication.tenant'),
           email: null,
           password: null
@@ -286,8 +287,8 @@ export default class Login extends BaseScreen<Props, State> {
         this.setState({
           email: credentials.email,
           password: credentials.password,
-          tenantSubDomain: tenant.subdomain,
-          tenantName: tenant.name,
+          tenantSubDomain: tenant?.subdomain,
+          tenantName: tenant?.name,
           tenantLogo
         });
       } else {
@@ -295,8 +296,8 @@ export default class Login extends BaseScreen<Props, State> {
         this.setState({
           email: null,
           password: null,
-          tenantSubDomain: tenant.subdomain,
-          tenantName: tenant.name,
+          tenantSubDomain: tenant?.subdomain,
+          tenantName: tenant?.name,
           tenantLogo
         });
       }
@@ -368,7 +369,7 @@ export default class Login extends BaseScreen<Props, State> {
             <Form style={formStyle.form}>
               <Button block style={formStyle.button} onPress={() => this.goToTenants()}>
                 <Text style={formStyle.buttonText} uppercase={false}>
-                  {this.state.tenantName}
+                  {this.state?.tenantName}
                 </Text>
               </Button>
               {this.state.errorTenantSubDomain &&

@@ -32,6 +32,8 @@ import Constants from './Constants';
 import Message from './Message';
 import { Region } from 'react-native-maps';
 import LocationManager from '../location/LocationManager';
+import computeConnectorStatusStyles
+  from '../components/connector-status/ConnectorStatusComponentStyles';
 
 export default class Utils {
   public static getEndpointCloud(): EndpointCloud[] {
@@ -947,42 +949,16 @@ export default class Utils {
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
 
-  public static buildChargingStationStatusMarker(connectors: Connector[], inactive: boolean): any {
-    if (inactive) {
-      //TODO handle reserved status when implemented
-      return statusMarkerUnavailable;
-    } else if (connectors.find((connector) => connector.status === ChargePointStatus.AVAILABLE)) {
-      return statusMarkerAvailable;
-    } else if (
-      connectors.find((connector) => connector.status === ChargePointStatus.FINISHING) ||
-      connectors.find((connector) => connector.status === ChargePointStatus.PREPARING)
-    ) {
-      return statusMarkerPreparingOrFinishing;
-    } else if (
-      connectors.find((connector) => connector.status === ChargePointStatus.CHARGING) ||
-      connectors.find((connector) => connector.status === ChargePointStatus.OCCUPIED)
-    ) {
-      return statusMarkerChargingOrOccupied;
-    } else if (
-      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EVSE) ||
-      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EV)
-    ) {
-      return statusMarkerSuspended;
-    } else if (connectors.find((connector) => connector.status === ChargePointStatus.FAULTED)) {
-      return statusMarkerFaulted;
-    }
-    return statusMarkerUnavailable;
-  }
-
-  public static buildSiteStatusMarker(connectorStats: ConnectorStats): any {
+  public static computeSiteMarkerStyle(connectorStats: ConnectorStats) {
+    const connectorStatusStyles = computeConnectorStatusStyles();
     if (connectorStats.availableConnectors > 0) {
-      return statusMarkerAvailable;
+      return connectorStatusStyles.availableConnectorDescription;
     } else if (connectorStats.chargingConnectors > 0) {
-      return statusMarkerChargingOrOccupied;
+      return connectorStatusStyles.chargingConnectorDescription;
     } else if (connectorStats.unavailableConnectors > 0) {
-      return statusMarkerUnavailable;
+      return connectorStatusStyles.unavailableConnectorDescription;
     } else {
-      return statusMarkerUnavailable;
+      return connectorStatusStyles.unavailableConnectorDescription;
     }
   }
 

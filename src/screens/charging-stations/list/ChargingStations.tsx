@@ -3,7 +3,6 @@ import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
 import {
   BackHandler, Image, ImageStyle,
-  NativeEventSubscription,
   Platform,
   ScrollView, TouchableOpacity,
 } from 'react-native';
@@ -88,7 +87,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public async componentDidMount() {
     // Get initial filters
-    await super.componentDidMount();
+    await super.componentDidMount()
+    this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     const { navigation } = this.props;
     await this.loadInitialFilters();
     // Enable swipe for opening sidebar
@@ -300,8 +300,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   };
 
   public onMapRegionChangeComplete = (region: Region) => {
-    this.currentRegion = region;
-    this.refresh();
+    if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+      region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+      this.currentRegion = region;
+      this.refresh();
+    }
   }
 
   public filterChanged(newFilters: ChargingStationsFiltersDef) {
@@ -411,8 +414,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             </TouchableOpacity>
           )}
           <TouchableOpacity
+            delayPressIn={0}
             style={fabStyles.fab}
-            onPress={() => this.setState({ showMap: ! showMap}, () => this.refresh(true)) }
+            onPress={() => this.setState({ showMap: !showMap}, () => this.refresh(true)) }
           >
             <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
           </TouchableOpacity>
@@ -475,7 +479,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           satelliteMap={satelliteMap}
           renderMarker={(chargingStation, index) => (
             <Marker
-              key={`${chargingStation.id}${index}${chargingStation.chargingStationURL}`}
+              key={chargingStation.id}
+              identifier={chargingStation.id}
               tracksViewChanges={false}
               coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
               title={chargingStation.id}
@@ -485,7 +490,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             </Marker>
           )}
           initialRegion={this.currentRegion}
-          onMapRegionChangeComplete={this.onMapRegionChangeComplete}
+          onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
         />
       </View>
     )

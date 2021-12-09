@@ -8,6 +8,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     map: {
       width: '100%',
       height: '100%'
+    },
+    mapOverlay: {
+      width: '50@s',
+      position: 'absolute',
+      zIndex: 1,
+      height: '100%'
     }
   });
   const portraitStyles = {};

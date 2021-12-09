@@ -27,6 +27,12 @@ import standardLightLayout from '../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../assets/map/satellite.png';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
+import ConnectorStats from '../../types/ConnectorStats';
+import statusMarkerAvailable from '../../../assets/icon/charging_station_available.png';
+import statusMarkerChargingOrOccupied from '../../../assets/icon/charging_station_charging.png';
+import statusMarkerUnavailable from '../../../assets/icon/charging_station_unavailable.png';
+import computeConnectorStatusStyles
+  from '../../components/connector-status/ConnectorStatusComponentStyles';
 
 export interface Props extends BaseProps {}
 
@@ -251,8 +257,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public onMapRegionChangeComplete = (region: Region) => {
-    this.currentRegion = region;
-    this.refresh();
+    if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+      region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+      this.currentRegion = region;
+      this.refresh();
+    }
   }
 
   public render() {
@@ -332,17 +341,20 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           renderMarker={(site, index) => (
             <Marker
               key={`${site.id}${index}${site.name}`}
-              image={Utils.buildSiteStatusMarker(site?.connectorStats)}
               tracksViewChanges={false}
               coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
               title={site.name}
               onPress={() => this.showMapSiteDetail(site)}
-            />
+            >
+              <Icon type={'MaterialIcons'} name={'location-pin'} style={[style.siteMarker, Utils.computeSiteMarkerStyle(site?.connectorStats)]} />
+            </Marker>
           )}
           initialRegion={this.currentRegion}
-          onMapRegionChangeComplete={this.onMapRegionChangeComplete}
+          onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
         />
       </View>
     )
   }
+
+
 }

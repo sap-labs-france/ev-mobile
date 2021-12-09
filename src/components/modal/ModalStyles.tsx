@@ -11,12 +11,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       width: '100%'
     },
-    button: {
-      width: '95%',
-      alignSelf: 'center',
-      height: '40@s',
-      backgroundColor: commonColor.buttonBg
-    },
     buttonDisabled: {
       opacity: 0.5
     },
@@ -120,6 +114,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginLeft: '5%',
       marginBottom: '6@s',
       textAlign: 'left'
+    },
+    clearContainer: {
+      width: '100%'
     }
   });
   const portraitStyles = {};

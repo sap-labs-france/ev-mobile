@@ -78,6 +78,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public async componentDidMount(triggerRefresh: boolean = true): Promise<void> {
     super.componentDidMount(triggerRefresh);
+    this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
   }
 
   public componentDidFocus() {
@@ -332,22 +333,27 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           renderMarker={(siteArea, index) => (
             <Marker
               key={`${siteArea.id}${index}${siteArea.name}`}
-              image={Utils.buildSiteStatusMarker(siteArea?.connectorStats)}
               tracksViewChanges={false}
               coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
               title={siteArea.name}
               onPress={() => this.showMapSiteAreaDetail(siteArea)}
-            />
+            >
+              <Icon type={'MaterialIcons'} name={'location-pin'} style={[style.siteAreaMarker, Utils.computeSiteMarkerStyle(siteArea?.connectorStats)]} />
+            </Marker>
           )}
           initialRegion={this.currentRegion}
-          onMapRegionChangeComplete={this.onMapRegionChangeComplete}
+          onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
         />
       </View>
     )
   }
 
   private onMapRegionChangeComplete = (region: Region) => {
-    this.currentRegion = region;
-    this.refresh();
-  }
+      if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+        region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+        this.currentRegion = region;
+        this.refresh();
+      }
+    }
+
 }

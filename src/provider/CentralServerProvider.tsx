@@ -152,7 +152,7 @@ export default class CentralServerProvider {
     let tenantLogo = this.tenantLogosCache.get(tenant.subdomain);
     if (!tenantLogo) {
       // Call backend
-      const result = await this.axiosInstance.get(this.buildUtilRestEndpointUrl(ServerRoute.REST_TENANT_LOGO), {
+      const result = await this.axiosInstance.get(this.buildUtilRestEndpointUrl(ServerRoute.REST_TENANT_LOGO, null, tenant), {
         headers: this.buildHeaders(),
         responseType: 'arraybuffer',
         params: {
@@ -498,7 +498,7 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params
     });
-    return result.data;
+    return result?.data;
   }
 
   public async saveUserMobileToken(params: { id: string; mobileToken: string; mobileOS: string }): Promise<ActionResponse> {
@@ -1070,12 +1070,8 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/v1/api';
   }
 
-  private buildUtilRestServerURL(): string {
-    return this.tenant?.endpoint + '/v1/util';
-  }
-
-  private buildCentralRestServerServiceUtilURL(tenant: TenantConnection): string {
-    return tenant?.endpoint + '/client/util';
+  private buildUtilRestServerURL(tenant?: TenantConnection): string {
+    return (tenant?.endpoint ?? this.tenant?.endpoint) + '/v1/util';
   }
 
   private buildCentralRestServerServiceSecuredURL(): string {
@@ -1092,7 +1088,7 @@ export default class CentralServerProvider {
     return `${urlPrefix}/${resolvedUrlPattern}`;
   }
 
-  public buildUtilRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}): string {
-    return this.buildRestEndpointUrl(urlPatternAsString, params, this.buildUtilRestServerURL());
+  public buildUtilRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}, tenant?: TenantConnection): string {
+    return this.buildRestEndpointUrl(urlPatternAsString, params, this.buildUtilRestServerURL(tenant));
   }
 }
