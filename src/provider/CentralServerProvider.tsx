@@ -795,7 +795,7 @@ export default class CentralServerProvider {
     // Force only local tags
     params.Issuer = true;
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TAGS}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TAGS), {
       headers: this.buildSecuredHeaders(),
       params
     });
