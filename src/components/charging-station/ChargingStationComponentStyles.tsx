@@ -12,8 +12,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       flexDirection: 'column',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.light
+      borderBottomColor: commonColor.listBorderColor
     },
     headerContent: {
       flexDirection: 'row',

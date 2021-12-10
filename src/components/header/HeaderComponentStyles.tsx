@@ -1,70 +1,73 @@
 import deepmerge from 'deepmerge';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { ScaledSheet } from 'react-native-size-matters';
+import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     header: {
-      height: '45@s',
       width: '100%',
-      padding: 0,
+      padding: '5@s',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
       margin: 0,
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.listHeaderBgColor
+      borderBottomWidth: 0,
+      borderTopWidth: 0,
+      paddingTop: scale(10) + getStatusBarHeight(),
+      backgroundColor: commonColor.containerBgColor,
+      elevation: 0
+    },
+    icon: {
+      color: commonColor.textColor,
+      fontSize: '20@s',
+      paddingTop: '2@s'
+    },
+    leftIcon: {
+      marginLeft: '2.5%',
+      marginRight: '13@s'
+    },
+    modalHeader: {
+      paddingTop: '10@s'
     },
     leftHeader: {
-      flexDirection: 'row'
-    },
-    rightHeader: {
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'flex-start'
     },
-    bodyHeader: {
-      flex: 3,
-      paddingLeft: Platform.OS === 'ios' ? 0 : '40@s',
-      height: '100%',
-      justifyContent: 'center'
+    titlesContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start'
     },
-    titleHeader: {
-      width: '90%',
+    titleContainer: {
+      maxWidth: '100%',
+      marginRight: '5@s'
+    },
+    title: {
       color: commonColor.textColor,
-      fontSize: '19@s'
+      fontSize: '17@s',
+      textAlign: 'left',
+      width: '100%'
     },
-    titleHeaderWithSubTitle: {
-      width: '90%',
-      fontSize: '16@s'
-    },
-    subTitleHeader: {
+    subTitle: {
+      width: '100%',
       color: commonColor.textColor,
-      fontWeight: 'bold',
-      fontSize: '12@s',
-      marginTop: Platform.OS === 'ios' ? 0 : '-3@s'
+      fontSize: '17@s',
+      textAlign: 'left',
     },
-    logoHeader: {
-      width: '45@s',
-      height: '45@s',
-      marginLeft: '5@s',
-      resizeMode: 'contain'
+    actionsContainer: {
+      flexDirection: 'row',
+      marginLeft: '10@s'
     },
-    iconLeftHeader: {
-      fontSize: '30@s',
-      color: commonColor.textColor,
-      width: '35@s'
-    },
-    mapListIcon: {
-      fontSize: '25@s',
-      color: commonColor.textColor,
-      width: '35@s'
-    },
-    iconRightHeader: {
-      fontSize: '30@s',
-      color: commonColor.textColor,
-      width: '35@s'
+    action: {
+      marginHorizontal: '5@s'
     }
   });
   const portraitStyles = {};

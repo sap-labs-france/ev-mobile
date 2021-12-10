@@ -12,6 +12,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
+    searchBar: {
+      marginVertical: '10@s'
+    },
     content: {
       flex: 1
     },
@@ -24,11 +27,47 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     filtersExpanded: {
       opacity: 1,
-      height: '180@s'
+      height: '140@s'
     },
     filtersHidden: {
       opacity: 0,
       height: '0@s'
+    },
+    fabContainer: {
+      position: 'absolute',
+      zIndex: 1,
+      bottom: 0,
+      right: 0,
+      margin: '12@s',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: 0
+    },
+    imageStyle: {
+      height: '100%',
+      width: '100%',
+      padding: 0,
+      borderRadius: '60@s',
+    },
+    outlinedImage: {
+      borderColor: commonColor.listItemBackground,
+      borderWidth: 2
+    },
+    text: {
+      color: commonColor.textColor,
+      fontSize: '14@s'
+    },
+    icon: {
+      color: commonColor.light,
+      fontSize: '20@s'
+    },
+    chargingStationMarker: {
+      fontSize: '30@s',
+    },
+    qrcodeButton: {
+      backgroundColor: commonColor.primary,
+      borderRadius: '8@s',
+      padding: '10@s'
     }
   });
   const portraitStyles = {};

@@ -1,10 +1,10 @@
-# e-Mobility React Native Mobile App
+# Open e-Mobility React-Native Mobile App
 
 ## Summary
 
 This application is the Electric Vehicle Charging Station (EVSE) mobile application for Android and iOS.
 
-It's linked to the ev-server backend: https://github.com/sap-labs-france/ev-server
+It's linked to the Open e-Mobility backend: https://github.com/sap-labs-france/ev-server
 
 **App Stores**
 
@@ -12,6 +12,11 @@ It's linked to the ev-server backend: https://github.com/sap-labs-france/ev-serv
 
 <a href="https://apps.apple.com/us/app/e-mobility/id1443813480?ls=1" target="_blank">Apple Store</a>
 
+**Contact the author** <a href="https://www.linkedin.com/in/serge-fabiano-a420a218/" target="_blank">Serge FABIANO</a>
+
+## NPM and Cocoapods
+
+The project now uses npm 8.x and cocoapods 1.11.2
 
 ## Installation
 

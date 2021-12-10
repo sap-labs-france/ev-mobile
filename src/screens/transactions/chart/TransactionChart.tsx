@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Spinner, Text } from 'native-base';
 import React from 'react';
@@ -17,6 +16,7 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './TransactionChartStyles';
+import { HttpChargingStationRequest } from '../../../types/requests/HTTPChargingStationRequests';
 
 export interface Props extends BaseProps {}
 
@@ -58,6 +58,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     };
     // Set Refresh
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
+  }
+
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
   }
 
   public setState = (
@@ -115,8 +119,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
+      const extraParams: HttpChargingStationRequest = {
+        WithSite: true
+      };
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID, extraParams);
       return chargingStation;
     } catch (error) {
       // Other common Error
@@ -206,13 +213,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     };
   };
 
-  public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
+  public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[], values: Consumption[]) {
     const commonColor = Utils.getCurrentCommonColor();
     const chartDefinition = {} as LineChartProps;
     // Add Data
     chartDefinition.data = { dataSets: [] };
     // Check Consumptions
-    if (consumptionValues && consumptionValues.length > 1) {
+    if (!Utils.isEmptyArray(consumptionValues)) {
       chartDefinition.data.dataSets.push({
         values: consumptionValues,
         label: I18n.t('details.instantPowerChartLabel'),
@@ -231,7 +238,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       });
     }
     // Check SoC
-    if (stateOfChargeValues && stateOfChargeValues.length > 1) {
+    if (!Utils.isEmptyArray(stateOfChargeValues)) {
       chartDefinition.data.dataSets.push({
         values: stateOfChargeValues,
         label: I18n.t('details.batteryChartLabel'),
@@ -246,6 +253,50 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           drawFilled: true,
           fillAlpha: 65,
           fillColor: processColor(commonColor.success),
+          valueTextSize: scale(8)
+        }
+      });
+    }
+    // Check isAdmin
+    if (this.state?.isAdmin) {
+      const gridLimitationValues = this.getDataSetFunctionOfTime(values, 'limitWatts', (y) => y / 1000);
+      // Check grid limitation
+      if (!Utils.isEmptyArray(gridLimitationValues)) {
+        chartDefinition.data.dataSets.push({
+          values: gridLimitationValues,
+          label: I18n.t('details.gridLimitChartLabel'),
+          config: {
+            axisDependency: 'LEFT',
+            mode: 'LINEAR',
+            drawValues: false,
+            lineWidth: 2,
+            drawCircles: false,
+            highlightColor: processColor('white'),
+            color: processColor(commonColor.danger),
+            drawFilled: true,
+            fillAlpha: 65,
+            fillColor: processColor(commonColor.danger),
+            valueTextSize: scale(8)
+          }
+        });
+      }
+    }
+    if (!Utils.isEmptyArray(values)) {
+      const cumulatedConsumptionValues = this.getDataSetFunctionOfTime(values, 'cumulatedConsumptionWh', (y) => y / 1000);
+      chartDefinition.data.dataSets.push({
+        values: cumulatedConsumptionValues,
+        label: I18n.t('details.cumulatedConsumptionLabel'),
+        config: {
+          axisDependency: 'LEFT',
+          mode: 'LINEAR',
+          drawValues: false,
+          lineWidth: 2,
+          drawCircles: false,
+          highlightColor: processColor('#0297a7'),
+          color: processColor('#0297a7'),
+          drawFilled: true,
+          fillAlpha: 65,
+          fillColor: processColor('#0297a7'),
           valueTextSize: scale(8)
         }
       });
@@ -299,13 +350,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     return chartDefinition;
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
-  };
-
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
@@ -320,9 +364,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       connector,
       consumptionValues,
       stateOfChargeValues,
+      values,
       canDisplayTransaction
     } = this.state;
-    const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);
+    const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues, values);
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return loading ? (
       <Spinner style={style.spinner} color="grey" />
@@ -332,13 +377,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
           subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         {showTransactionDetails && transaction && (
           <TransactionHeaderComponent
@@ -361,9 +399,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             }}
             marker={{
               enabled: true,
-              markerColor: processColor(commonColor.disabled),
+              markerColor: processColor(commonColor.listItemBackground),
               textSize: scale(12),
-              textColor: processColor(commonColor.inverseTextColor)
+              textColor: processColor(commonColor.textColor)
             }}
             xAxis={chartDefinition.xAxis}
             yAxis={chartDefinition.yAxis}
@@ -397,5 +435,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         )}
       </View>
     );
+  }
+
+  private getDataSetFunctionOfTime(values: { [key: string]: any }[], dataSet: string, transformValuesCallback?: (y: number) => number) {
+    return values
+      ?.filter((c) => c[dataSet] && c.startedAt)
+      ?.map((c) => ({ x: new Date(c.startedAt).getTime(), y: Utils.roundTo(transformValuesCallback(c[dataSet]), 2) }));
   }
 }

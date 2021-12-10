@@ -10,38 +10,69 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: commonColor.containerBgColor
+      width: '100%'
+    },
+    fab: {
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      margin: '16@s',
+      zIndex: 1,
+      elevation: 4,
+      backgroundColor: commonColor.primary,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62
     },
     content: {
-      flex: 1
+      flex: 1,
+      marginHorizontal: '2.5%',
+      marginTop: '10@s'
     },
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
     addPaymentMethodButton: {
-      width: '100%',
-      justifyContent: 'flex-start',
-      flexDirection: 'row'
+      width: '45@s',
+      height: '45@s',
+      borderRadius: '22.5@s',
+      padding: '5@s',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginLeft: '2.5%',
+      backgroundColor: commonColor.listItemBackground,
+      elevation: 4,
+      shadowColor: commonColor.cardShadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '25@s'
+      fontSize: '27@s'
     },
     toolBar: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderBottomWidth: 1,
-      borderColor: commonColor.textColor,
+      marginVertical: '10@s',
       borderRadius: 1,
-      height: '40@s',
-      padding: '5@s'
+      height: '40@s'
     },
     trashIconButton: {
-      height: '100%',
+      height: '85%',
       width: '80@s',
-      backgroundColor: commonColor.brandDanger,
+      borderRadius: '8@s',
+      marginLeft: '2.5%',
+      backgroundColor: commonColor.danger,
       justifyContent: 'center',
       alignItems: 'center'
     },
@@ -49,8 +80,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: 'white',
       fontSize: '20@s'
     },
+    swiperContainer: {
+      width: '100%',
+      alignItems: 'center'
+    },
     swiperChildrenContainer: {
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      width: '100%',
+      alignItems: 'center'
     }
   });
   const portraitStyles = {};

@@ -7,10 +7,18 @@ import ThemeManager from './ThemeManager';
 
 export const buildCommonColor = (currentTheme: ThemeDefinition) => ({
   ...commonColor,
+  light: currentTheme.light,
+
   primary: currentTheme.primary,
   brandPrimary: palette.primary,
   brandPrimaryLight: palette.primaryLight,
-  brandPrimaryDark: palette.primaryDark,
+  primaryDark: currentTheme.primaryDark,
+  primaryLight: currentTheme.primaryLight,
+
+  yellow: '#FFBE59',
+  purple: 'purple',
+
+  mapClusterBorder: currentTheme.mapClusterBorder,
 
   info: currentTheme.info,
   brandInfo: palette.info,
@@ -18,21 +26,26 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => ({
   brandInfoDark: palette.infoDark,
 
   success: currentTheme.success,
-  brandSuccess: palette.success,
+  brandSuccess: currentTheme.success,
   brandSuccessLight: palette.successLight,
   brandSuccessDark: palette.successDark,
 
   danger: currentTheme.danger,
+  dangerLight: currentTheme.dangerLight,
   brandDanger: palette.danger,
   brandDangerLight: palette.dangerLight,
   brandDangerDark: palette.dangerDark,
 
   warning: currentTheme.warning,
+  warningLight: currentTheme.warningLight,
+  warningDark: currentTheme.warningDark,
   brandWarning: palette.warning,
   brandWarningLight: palette.warningLight,
   brandWarningDark: palette.warningDark,
 
   disabled: currentTheme.disabled,
+  disabledLight: currentTheme.disabledLight,
+  disabledDark: currentTheme.disabledDark,
   brandDisabled: palette.disabled,
   brandDisabledLight: palette.disabledLight,
   brandDisabledDark: palette.disabledDark,
@@ -41,8 +54,12 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => ({
 
   brandDark: palette.dark,
   brandLight: palette.light,
+  lightDark: currentTheme.lightDark,
 
   listBorderColor: palette.disabledDark,
+  listItemSelected: currentTheme.listItemSelected,
+  listItemBackground: currentTheme.listItemBackground,
+  listHeaderBackground: currentTheme.listHeaderBackground,
   cardBorderColor: currentTheme.textColor,
 
   containerBgColor: currentTheme.background,
@@ -70,7 +87,14 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => ({
   buttonWarningBg: currentTheme.warning,
   buttonInfoBg: currentTheme.info,
   buttonSuccessBg: currentTheme.success,
-  buttonDisabledBg: palette.disabledDark
+  buttonDisabledBg: palette.disabledDark,
+
+  // Modal style
+  modalBackgroundColor: currentTheme.modalBackgroundColor,
+
+  // Select dropdown
+  selectFieldBackgroundColor: currentTheme.selectFieldBackgroundColor,
+  selectDropdownBackgroundColor: currentTheme.selectDropdownBackgroundColor
 });
 
 const themeManager = ThemeManager.getInstance();

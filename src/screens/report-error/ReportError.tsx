@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, Form, Icon, Item, Spinner } from 'native-base';
 import React from 'react';
@@ -135,7 +134,7 @@ export default class ReportError extends BaseScreen<Props, State> {
         // Init
         this.clearInput();
         // Get to the previous screen
-        this.onBack();
+        this.props.navigation.goBack();
       } catch (error) {
         // submit failed
         this.setState({ loading: false });
@@ -162,13 +161,6 @@ export default class ReportError extends BaseScreen<Props, State> {
     });
   };
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
-  };
-
   public changeMobileText(text: string) {
     if (!text) {
       this.setState({ mobile: null });
@@ -178,7 +170,6 @@ export default class ReportError extends BaseScreen<Props, State> {
   }
 
   public render() {
-    const { navigation } = this.props;
     const commonColor = Utils.getCurrentCommonColor();
     const style = computeStyleSheet();
     const { loading } = this.state;
@@ -189,15 +180,8 @@ export default class ReportError extends BaseScreen<Props, State> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('sidebar.reportError')}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
-        <ScrollView style={style.container}>
+        <View style={style.container}>
           <View style={style.iconContainer}>
             <Icon style={style.reportErrorIcon} type="MaterialIcons" name="error-outline" />
           </View>
@@ -270,12 +254,12 @@ export default class ReportError extends BaseScreen<Props, State> {
                 </Text>
               ))}
             <View style={style.buttonContainer}>
-              <Button style={style.sendButton} block onPress={async () => this.sendErrorReport()} danger>
+              <Button style={style.sendButton} block onPress={async () => this.sendErrorReport()}>
                 <Text style={style.sendTextButton}>{I18n.t('general.send')}</Text>
               </Button>
             </View>
           </Form>
-        </ScrollView>
+        </View>
       </Animatable.View>
     );
   }

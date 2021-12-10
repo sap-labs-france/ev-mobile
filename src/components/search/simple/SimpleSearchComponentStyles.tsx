@@ -12,21 +12,25 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      height: '40@s',
+      alignSelf: 'center',
+      width: '95%',
+      height: '35@s',
       paddingLeft: '5@s',
       paddingRight: '5@s',
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.headerBgColor
+      borderRadius: '8@s',
+      backgroundColor: commonColor.listHeaderBgColor
     },
     inputField: {
       flex: 1,
-      fontSize: '16@s'
+      fontSize: '14@s',
+      height: '100%',
+      paddingVertical: 0,
+      color: commonColor.textColor
     },
     icon: {
       paddingLeft: '5@s',
       paddingRight: '5@s',
-      fontSize: '25@s',
+      fontSize: '22@s',
       color: commonColor.textColor
     }
   });

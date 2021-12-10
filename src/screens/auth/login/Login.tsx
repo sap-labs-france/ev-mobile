@@ -1,8 +1,10 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-
+import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import DialogModal from '../../../components/modal/DialogModal';
+import ExitAppDialog from '../../../components/modal/exit-app/ExitAppDialog';
+import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
@@ -33,6 +35,8 @@ interface State {
   errorEmail?: Record<string, unknown>[];
   errorNewTenantName?: Record<string, unknown>[];
   errorNewTenantSubDomain?: Record<string, unknown>[];
+  showExitAppDialog: boolean;
+  showNoTenantFoundDialog: boolean;
 }
 
 export default class Login extends BaseScreen<Props, State> {
@@ -85,7 +89,9 @@ export default class Login extends BaseScreen<Props, State> {
       tenantName: I18n.t('authentication.tenant'),
       loading: false,
       initialLoading: true,
-      hidePassword: true
+      hidePassword: true,
+      showExitAppDialog: false,
+      showNoTenantFoundDialog: false
     };
   }
 
@@ -101,19 +107,10 @@ export default class Login extends BaseScreen<Props, State> {
     let email = (this.state.email = '');
     let password = (this.state.password = '');
     let tenant: TenantConnection;
-    let tenantLogo: string;
     // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
     if (Utils.isEmptyArray(this.tenants)) {
-      Alert.alert(I18n.t('authentication.noTenantFoundTitle'), I18n.t('authentication.noTenantFoundMessage'), [
-        {
-          text: I18n.t('general.yes'),
-          onPress: () => {
-            this.goToTenants(true);
-          }
-        },
-        { text: I18n.t('general.no'), style: 'cancel' }
-      ]);
+      this.setState({ showNoTenantFoundDialog: true });
     }
     // Check if sub-domain is provided
     if (!this.state.tenantSubDomain) {
@@ -137,9 +134,7 @@ export default class Login extends BaseScreen<Props, State> {
       }
     }
     // Get logo
-    if (tenant) {
-      tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
-    }
+    const tenantLogo = await this.getTenantLogo(tenant);
     // Set
     this.setState(
       {
@@ -154,10 +149,21 @@ export default class Login extends BaseScreen<Props, State> {
     );
   }
 
+  public getTenantLogo = async (tenant: TenantConnection): Promise<string> => {
+    try {
+      if (tenant) {
+        return await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+      }
+    } catch (error) {
+      // Tenant has no logo
+    }
+    return null;
+  };
+
   public async componentDidFocus() {
     super.componentDidFocus();
     const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain);
-    // Check if current Tenant selection is still valid (handle delete tenant usee case)
+    // Check if current Tenant selection is still valid (handle delete tenant use case)
     if (tenantSubDomain) {
       // Get the current Tenant
       const tenant = await this.centralServerProvider.getTenant(tenantSubDomain.toString());
@@ -166,12 +172,16 @@ export default class Login extends BaseScreen<Props, State> {
         this.tenants = await this.centralServerProvider.getTenants();
         this.setState({
           tenantSubDomain: null,
+          tenantLogo: null,
           tenantName: I18n.t('authentication.tenant'),
           email: null,
           password: null
         });
       } else {
+        // Get logo
+        const tenantLogo = await this.getTenantLogo(tenant);
         this.setState({
+          tenantLogo,
           tenantSubDomain,
           tenantName: tenant.name
         });
@@ -182,6 +192,7 @@ export default class Login extends BaseScreen<Props, State> {
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
     // Check if user can be logged
     if (
+      !__DEV__ &&
       !this.centralServerProvider.hasAutoLoginDisabled() &&
       !Utils.isNullOrEmptyString(tenant?.subdomain) &&
       !Utils.isNullOrEmptyString(email) &&
@@ -233,6 +244,10 @@ export default class Login extends BaseScreen<Props, State> {
             case HTTPError.USER_ACCOUNT_INACTIVE_ERROR:
               Message.showError(I18n.t('authentication.accountNotActive'));
               break;
+            // Technical User
+            case HTTPError.TECHNICAL_USER_CANNOT_LOG_TO_UI_ERROR:
+              Message.showError(I18n.t('authentication.technicalUserCannotLoginToUI'));
+              break;
             // Account Pending
             case HTTPError.USER_ACCOUNT_PENDING_ERROR:
               Message.showError(I18n.t('authentication.accountPending'));
@@ -250,24 +265,14 @@ export default class Login extends BaseScreen<Props, State> {
     }
   };
 
-  public onBack = () => {
-    // Exit?
-    Alert.alert(
-      I18n.t('general.exitApp'),
-      I18n.t('general.exitAppConfirm'),
-      [
-        { text: I18n.t('general.no'), style: 'cancel' },
-        { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }
-      ],
-      { cancelable: false }
-    );
-    // Do not bubble up
+  public onBack(): boolean {
+    BackHandler.exitApp();
     return true;
-  };
+  }
 
   public navigateToApp() {
     // Navigate to App
-    this.props.navigation.navigate('AppDrawerNavigator', { key: `${Utils.randomNumber()}` });
+    this.props.navigation.navigate('AppDrawerNavigator', { screen: 'ChargingStationsNavigator', key: `${Utils.randomNumber()}` });
   }
 
   public setTenantWithIndex = async (buttonIndex: number) => {
@@ -282,8 +287,8 @@ export default class Login extends BaseScreen<Props, State> {
         this.setState({
           email: credentials.email,
           password: credentials.password,
-          tenantSubDomain: tenant.subdomain,
-          tenantName: tenant.name,
+          tenantSubDomain: tenant?.subdomain,
+          tenantName: tenant?.name,
           tenantLogo
         });
       } else {
@@ -291,8 +296,8 @@ export default class Login extends BaseScreen<Props, State> {
         this.setState({
           email: null,
           password: null,
-          tenantSubDomain: tenant.subdomain,
-          tenantName: tenant.name,
+          tenantSubDomain: tenant?.subdomain,
+          tenantName: tenant?.name,
           tenantLogo
         });
       }
@@ -345,12 +350,14 @@ export default class Login extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { tenantLogo, eula, loading, initialLoading, hidePassword } = this.state;
+    const { tenantLogo, eula, loading, initialLoading, hidePassword, showExitAppDialog, showNoTenantFoundDialog } = this.state;
     // Render
     return initialLoading ? (
       <Spinner style={formStyle.spinner} color="grey" />
     ) : (
       <View style={style.container}>
+        {showNoTenantFoundDialog && this.renderNoTenantFoundDialog()}
+        {showExitAppDialog && this.renderExitAppDialog()}
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
@@ -362,7 +369,7 @@ export default class Login extends BaseScreen<Props, State> {
             <Form style={formStyle.form}>
               <Button block style={formStyle.button} onPress={() => this.goToTenants()}>
                 <Text style={formStyle.buttonText} uppercase={false}>
-                  {this.state.tenantName}
+                  {this.state?.tenantName}
                 </Text>
               </Button>
               {this.state.errorTenantSubDomain &&
@@ -432,15 +439,15 @@ export default class Login extends BaseScreen<Props, State> {
                   {I18n.t('authentication.forgotYourPassword')}
                 </Text>
               </TouchableOpacity>
-              <View style={formStyle.formCheckboxContainer}>
-                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
+              <TouchableOpacity onPress={() => this.setState({ eula: !eula })} style={formStyle.formCheckboxContainer}>
+                <CheckBox disabled={true} style={formStyle.checkbox} checked={eula} />
                 <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
                     {I18n.t('authentication.eula')}
                   </Text>
                 </Text>
-              </View>
+              </TouchableOpacity>
               {this.state.errorEula &&
                 this.state.errorEula.map((errorMessage, index) => (
                   <Text style={[formStyle.formErrorText, style.formErrorTextEula]} key={index}>
@@ -468,5 +475,30 @@ export default class Login extends BaseScreen<Props, State> {
       key: `${Utils.randomNumber()}`,
       openQRCode
     });
+  }
+
+  private renderExitAppDialog() {
+    return <ExitAppDialog close={() => this.setState({ showExitAppDialog: false })} />;
+  }
+
+  private renderNoTenantFoundDialog() {
+    const modalCommonStyle = computeModalCommonStyle();
+    return (
+      <DialogModal
+        title={I18n.t('authentication.noTenantFoundTitle')}
+        description={I18n.t('authentication.noTenantFoundMessage')}
+        withCancel={true}
+        close={() => this.setState({ showNoTenantFoundDialog: false })}
+        withCloseButton={true}
+        buttons={[
+          {
+            text: I18n.t('general.yes'),
+            action: () => this.setState({ showNoTenantFoundDialog: false }, () => this.goToTenants(true)),
+            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonStyle: modalCommonStyle.primaryButton
+          }
+        ]}
+      />
+    );
   }
 }

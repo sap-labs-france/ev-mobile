@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
@@ -6,7 +5,8 @@ import React from 'react';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
-import TransactionHistoryComponent from '../../../components/transaction/history/TransactionHistoryComponent';
+import TransactionHistoryComponent
+  from '../../../components/transaction/history/TransactionHistoryComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseScreen from '../../../screens/base-screen/BaseScreen';
@@ -107,6 +107,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
       const params = {
         Statistics: 'history',
         UserID: this.state.filters.userID,
+        WithUser: true,
         StartDateTime: startDateTime ? startDateTime.toISOString() : null,
         EndDateTime: endDateTime ? endDateTime.toISOString() : null,
         Search: searchText
@@ -135,17 +136,9 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     return null;
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
-    // Do not bubble up
-    return true;
-  };
-
   public async refresh() {
     // Component Mounted?
     if (this.isMounted()) {
-      this.setState({ refreshing: true });
       const { skip, limit, filters } = this.state;
       // Refresh All
       const transactions = await this.getTransactions(this.searchText, 0, skip + limit, filters.startDateTime, filters.endDateTime);
@@ -187,6 +180,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   };
 
   public search = async (searchText: string) => {
+    this.setState({ refreshing: true })
     this.searchText = searchText;
     await this.refresh();
   };
@@ -194,7 +188,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, initialFilters, filters, refreshing } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, initialFilters, refreshing } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -203,17 +197,11 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           }}
           navigation={navigation}
           title={I18n.t('transactions.transactionsHistory')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-          filters={filters}
+          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
-        <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        <View style={style.searchBar}>
+          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        </View>
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
@@ -221,7 +209,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
             <TransactionsHistoryFilters
               initialFilters={initialFilters}
               onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>
-                this.setState({ filters: newFilters }, async () => this.refresh())
+                this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh())
               }
               ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters)}
             />

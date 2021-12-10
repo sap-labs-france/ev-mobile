@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Buffer } from 'buffer';
 
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
 import { Platform } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
@@ -15,12 +14,13 @@ import NotificationManager from '../notification/NotificationManager';
 import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
-import Car from '../types/Car';
+import Car, { CarCatalog } from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import { KeyValue } from '../types/Global';
-import QueryParams, { PagingParams, SortingParam } from '../types/QueryParams';
+import QueryParams, { PagingParams } from '../types/QueryParams';
+import { HttpChargingStationRequest } from '../types/requests/HTTPChargingStationRequests';
 import { ServerAction, ServerRoute } from '../types/Server';
 import { BillingSettings } from '../types/Setting';
 import Site from '../types/Site';
@@ -50,7 +50,8 @@ export default class CentralServerProvider {
   private locale: string = null;
   private tenant: TenantConnection = null;
   private currency: string = null;
-  private siteImages: Map<string, string> = new Map<string, string>();
+  private siteImagesCache: Map<string, string> = new Map<string, string>();
+  private tenantLogosCache: Map<string, string> = new Map<string, string>();
   private tenantLogo: string;
   private autoLoginDisabled = false;
   private notificationManager: NotificationManager;
@@ -148,19 +149,22 @@ export default class CentralServerProvider {
 
   public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
     this.debugMethod('getTenantLogoBySubdomain');
-    let tenantLogo: string;
-    // Call backend
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(tenant)}/${ServerAction.TENANT_LOGO}`, {
-      headers: this.buildHeaders(),
-      responseType: 'arraybuffer',
-      params: {
-        Subdomain: tenant.subdomain
-      }
-    });
-    if (result.data) {
-      const base64Image = Buffer.from(result.data).toString('base64');
-      if (base64Image) {
-        tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+    let tenantLogo = this.tenantLogosCache.get(tenant.subdomain);
+    if (!tenantLogo) {
+      // Call backend
+      const result = await this.axiosInstance.get(this.buildUtilRestEndpointUrl(ServerRoute.REST_TENANT_LOGO, null, tenant), {
+        headers: this.buildHeaders(),
+        responseType: 'arraybuffer',
+        params: {
+          Subdomain: tenant.subdomain
+        }
+      });
+      if (result.data) {
+        const base64Image = Buffer.from(result.data).toString('base64');
+        if (base64Image) {
+          tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+          this.tenantLogosCache.set(tenant.subdomain, tenantLogo);
+        }
       }
     }
     this.tenantLogo = tenantLogo;
@@ -483,11 +487,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStations(
-    params = {},
-    paging: PagingParams = Constants.DEFAULT_PAGING,
-    sorting: string[] = []
-  ): Promise<DataResult<ChargingStation>> {
+  public async getChargingStations(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<ChargingStation>> {
     this.debugMethod('getChargingStations');
     // Build Paging
     this.buildPaging(paging, params);
@@ -498,7 +498,7 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params
     });
-    return result.data;
+    return result?.data;
   }
 
   public async saveUserMobileToken(params: { id: string; mobileToken: string; mobileOS: string }): Promise<ActionResponse> {
@@ -511,14 +511,15 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStation(id: string): Promise<ChargingStation> {
+  public async getChargingStation(id: string, extraParams: HttpChargingStationRequest = {}): Promise<ChargingStation> {
     this.debugMethod('getChargingStation');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATION, { id });
     // Call
     const result = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders(),
       params: {
-        ID: id
+        ID: id,
+        ...extraParams
       }
     });
     return result.data;
@@ -541,7 +542,7 @@ export default class CentralServerProvider {
     // Build Sorting
     this.buildSorting(sorting, params);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.SITES}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_SITES), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -559,23 +560,26 @@ export default class CentralServerProvider {
     // Build Sorting
     this.buildSorting(sorting, params);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.SITE_AREAS}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_SITE_AREAS), {
       headers: this.buildSecuredHeaders(),
       params
     });
     return result.data;
   }
 
-  public async startTransaction(chargingStationID: string, connectorId: number, tagID: string): Promise<ActionResponse> {
+  // eslint-disable-next-line max-len
+  public async startTransaction(chargingStationID: string, connectorId: number, visualTagID: string, carID: string, userID: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_REMOTE_START, { id: chargingStationID });
     // Call
     const result = await this.axiosInstance.put(
       url,
       {
+        carID,
+        userID,
         args: {
           connectorId,
-          tagID
+          visualTagID
         }
       },
       {
@@ -596,6 +600,18 @@ export default class CentralServerProvider {
           transactionId
         }
       },
+      {
+        headers: this.buildSecuredHeaders()
+      }
+    );
+    return result.data;
+  }
+
+  public async softStopTransaction(transactionID: number): Promise<ActionResponse> {
+    this.debugMethod('softStopTransaction');
+    const result = await this.axiosInstance.put(
+      this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION_SOFT_STOP, { id: transactionID }),
+      {},
       {
         headers: this.buildSecuredHeaders()
       }
@@ -625,7 +641,7 @@ export default class CentralServerProvider {
     this.debugMethod('clearCache');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_CACHE_CLEAR, { id: chargingStationID });
     // Call
-    const result = await this.axiosInstance.put(url, {
+    const result = await this.axiosInstance.put(url, null, {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
@@ -635,7 +651,7 @@ export default class CentralServerProvider {
     this.debugMethod('unlockConnector');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_UNLOCK_CONNECTOR, { id: chargingStationID, connectorId });
     // Call
-    const result = await this.axiosInstance.put(url, {
+    const result = await this.axiosInstance.put(url, null, {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
@@ -644,21 +660,22 @@ export default class CentralServerProvider {
   public async getTransaction(id: number): Promise<Transaction> {
     this.debugMethod('getTransaction');
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION, { id }), {
       headers: this.buildSecuredHeaders(),
       params: {
-        ID: id
+        WithUser: true
       }
     });
     return result.data;
   }
 
-  public async getLastTransaction(chargingStationID: string, connectorId: number): Promise<Transaction> {
+  public async getLastTransaction(chargingStationID: string, connectorID: number): Promise<Transaction> {
     this.debugMethod('getLastTransaction');
     const params: { [param: string]: string } = {};
-    params.ConnectorId = connectorId.toString();
+    params.ConnectorID = connectorID.toString();
     params.Limit = '1';
     params.Skip = '0';
+    params.Status = 'completed';
     params.SortFields = '-timestamp';
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_TRANSACTIONS, { id: chargingStationID });
     // Call
@@ -683,14 +700,24 @@ export default class CentralServerProvider {
     // Build Sorting
     this.buildSorting(sorting, params);
     // Call
-    const result = await this.axiosInstance.get(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_COMPLETED}`,
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS_COMPLETED), {
+      headers: this.buildSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
+  public async createCar(car: Car, forced: boolean): Promise<ActionResponse> {
+    this.debugMethod('createCar');
+    // Execute
+    const response = await this.axiosInstance.post(
+      this.buildRestEndpointUrl(ServerRoute.REST_CARS),
+      { ...car, forced },
       {
-        headers: this.buildSecuredHeaders(),
-        params
+        headers: this.buildSecuredHeaders()
       }
     );
-    return result.data;
+    return response?.data;
   }
 
   public async getCars(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Car>> {
@@ -701,6 +728,34 @@ export default class CentralServerProvider {
     this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CARS}`, {
+      headers: this.buildSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
+  public async getCarCatalog(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<CarCatalog>> {
+    this.debugMethod('getCarCatalog');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CAR_CATALOGS}`, {
+      headers: this.buildSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
+  public async getCar(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<Car> {
+    this.debugMethod('getCar');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CAR}`, {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -728,7 +783,7 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params: { UserID: userID }
     });
-    return res.data as UserDefaultTagCar;
+    return res?.data as UserDefaultTagCar;
   }
 
   public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Tag>> {
@@ -740,7 +795,7 @@ export default class CentralServerProvider {
     // Force only local tags
     params.Issuer = true;
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TAGS}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TAGS), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -781,18 +836,15 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransactionsActive(
-    params = {},
-    paging: PagingParams = Constants.DEFAULT_PAGING,
-    sorting: string[] = []
-  ): Promise<DataResult<Transaction>> {
+  public async getTransactionsActive(params: any = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Transaction>> {
     this.debugMethod('getTransactionsActive');
     // Build Paging
     this.buildPaging(paging, params);
     // Build Sorting
     this.buildSorting(sorting, params);
+    params.WithUser = 'true';
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_ACTIVE}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS_ACTIVE), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -807,15 +859,15 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params: { ID: id }
     });
-    return result.data.image;
+    return result.data.image as string;
   }
 
   public async getUser(id: string): Promise<User> {
     this.debugMethod('getUser');
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USER}`, {
-      headers: this.buildSecuredHeaders(),
-      params: { ID: id }
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_USER, { id });
+    const result = await this.axiosInstance.get(url, {
+      headers: this.buildSecuredHeaders()
     });
     return result.data;
   }
@@ -823,14 +875,13 @@ export default class CentralServerProvider {
   public async getSiteImage(id: string): Promise<string> {
     this.debugMethod('getSiteImage');
     // Check cache
-    let foundSiteImage = this.siteImages.get(id);
+    let foundSiteImage = this.siteImagesCache.get(id);
     if (!foundSiteImage) {
       // Call backend
-      const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(this.tenant)}/${ServerAction.SITE_IMAGE}`, {
+      const result = await this.axiosInstance.get(this.buildUtilRestEndpointUrl(ServerRoute.REST_SITE_IMAGE, { id }), {
         headers: this.buildHeaders(),
         responseType: 'arraybuffer',
         params: {
-          ID: id,
           TenantID: this.decodedToken?.tenantID
         }
       });
@@ -838,7 +889,7 @@ export default class CentralServerProvider {
         const base64Image = Buffer.from(result.data).toString('base64');
         if (base64Image) {
           foundSiteImage = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
-          this.siteImages.set(id, foundSiteImage);
+          this.siteImagesCache.set(id, foundSiteImage);
         }
       }
     }
@@ -849,10 +900,9 @@ export default class CentralServerProvider {
     this.debugMethod('getChargingStationConsumption');
     // Call
     const result = await this.axiosInstance.get(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION_CONSUMPTION}`,
+      this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION_CONSUMPTIONS, { id: transactionId }),
       {
-        headers: this.buildSecuredHeaders(),
-        params: { TransactionId: transactionId }
+        headers: this.buildSecuredHeaders()
       }
     );
     return result.data;
@@ -861,7 +911,7 @@ export default class CentralServerProvider {
   public async sendErrorReport(mobile: string, subject: string, description: string): Promise<any> {
     this.debugMethod('sendErrorReport');
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.END_USER_REPORT_ERROR}`,
+      this.buildRestEndpointUrl(ServerRoute.REST_NOTIFICATIONS_END_USER_REPORT_ERROR),
       {
         mobile,
         subject,
@@ -904,35 +954,42 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Call
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHODS, { userID: params.currentUserID });
-    const result = await this.axiosInstance.get(url, {
-      headers: this.buildSecuredHeaders()
-    });
-    return result.data as DataResult<BillingPaymentMethod>;
+    try {
+      const result = await this.axiosInstance.get(url, {
+        headers: this.buildSecuredHeaders()
+      });
+      return result?.data as DataResult<BillingPaymentMethod>;
+    } catch (e) {
+      return null;
+    }
   }
 
   public async getBillingSettings(): Promise<BillingSettings> {
     // Build the URL
     const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_SETTING}`;
     // Execute the REST Service
-    const result = await this.axiosInstance.get<BillingSettings>(url, {
-      headers: this.buildSecuredHeaders()
-    });
-    return result.data;
+    try {
+      const result = await this.axiosInstance.get<BillingSettings>(url, {
+        headers: this.buildSecuredHeaders()
+      });
+      return result.data;
+    } catch (error) {
+      return null;
+    }
   }
 
   /* eslint-disable @typescript-eslint/indent */
   public async downloadInvoice(invoice: BillingInvoice): Promise<void> {
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_DOWNLOAD_INVOICE, { invoiceID: invoice.id });
     const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
-    const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
     let config;
     if (Platform.OS === PLATFORM.IOS) {
-      config = { fileCache: true, path: downloadedFilePath, appendExt: 'pdf' };
+      config = { fileCache: true, path: ReactNativeBlobUtil.fs.dirs.DocumentDir + '/' + fileName, appendExt: 'pdf' };
     } else if (Platform.OS === PLATFORM.ANDROID) {
       config = {
         fileCache: true,
         addAndroidDownloads: {
-          path: downloadedFilePath,
+          path: ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName,
           useDownloadManager: true,
           mime: 'application/pdf',
           notification: true,
@@ -947,6 +1004,8 @@ export default class CentralServerProvider {
         .fetch('GET', url, this.buildSecuredHeaders())
         .then(async (res) => {
           // Open the  downloaded invoice
+          // On IOS, apps can only save files in their own internal filesystem
+          // We need to open it to be able to save it to the phone custom directories
           if (Platform.OS === PLATFORM.IOS) {
             ReactNativeBlobUtil.ios.openDocument(res.path());
           } else {
@@ -1011,24 +1070,25 @@ export default class CentralServerProvider {
     return this.tenant?.endpoint + '/v1/api';
   }
 
-  private buildCentralRestServerServiceUtilURL(tenant: TenantConnection): string {
-    return tenant?.endpoint + '/client/util';
+  private buildUtilRestServerURL(tenant?: TenantConnection): string {
+    return (tenant?.endpoint ?? this.tenant?.endpoint) + '/v1/util';
   }
 
   private buildCentralRestServerServiceSecuredURL(): string {
     return this.tenant?.endpoint + '/client/api';
   }
 
-  private buildRestEndpointUrl(
-    urlPatternAsString: ServerRoute,
-    params: {
-      // Just a flat list of key/value pairs!
-      [name: string]: string | number | null;
-    } = {}
-  ) {
-    const url = SafeUrlAssembler(this.buildRestServerURL())
-      .template('/' + urlPatternAsString)
-      .param(params);
-    return url.toString();
+  public buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}, urlPrefix = this.buildRestServerURL()): string {
+    let resolvedUrlPattern = urlPatternAsString as string;
+    for (const key in params) {
+      if (Object.prototype.hasOwnProperty.call(params, key)) {
+        resolvedUrlPattern = resolvedUrlPattern.replace(`:${key}`, encodeURIComponent(params[key]));
+      }
+    }
+    return `${urlPrefix}/${resolvedUrlPattern}`;
+  }
+
+  public buildUtilRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}, tenant?: TenantConnection): string {
+    return this.buildRestEndpointUrl(urlPatternAsString, params, this.buildUtilRestServerURL(tenant));
   }
 }

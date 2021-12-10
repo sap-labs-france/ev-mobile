@@ -15,13 +15,39 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     content: {
       flex: 1
     },
+    searchBar: {
+      marginVertical: '10@s'
+    },
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
     map: {
       flex: 1
-    }
+    },
+    fabContainer: {
+      position: 'absolute',
+      zIndex: 1,
+      bottom: 0,
+      right: 0,
+      margin: '12@s',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: 0
+    },
+    imageStyle: {
+      height: '100%',
+      width: '100%',
+      padding: 0,
+      borderRadius: '60@s',
+    },
+    outlinedImage: {
+      borderColor: commonColor.listItemBackground,
+      borderWidth: 2
+    },
+    siteMarker: {
+      fontSize: '40@s',
+    },
   });
   const portraitStyles = {};
   const landscapeStyles = {};

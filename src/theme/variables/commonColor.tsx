@@ -178,10 +178,9 @@ export default {
   searchBarHeight: platform === PLATFORM.IOS ? 30 : 40,
   searchBarInputHeight: platform === PLATFORM.IOS ? 30 : 50,
   toolbarBtnTextColor: platform === PLATFORM.IOS ? '#007aff' : '#fff',
-  iosStatusbar: 'dark-content',
   toolbarDefaultBorder: platform === PLATFORM.IOS ? '#a7a6ab' : '#3F51B5',
   get statusBarColor() {
-    return color(this.toolbarDefaultBg).darken(0.2).hex();
+    return 'transparent';
   },
   get darkenHeader() {
     return color(this.tabBgColor).darken(0.03).hex();
@@ -213,14 +212,12 @@ export default {
   lineHeight: platform === PLATFORM.IOS ? 20 : 24,
 
   // List
-  listBg: 'transparent',
   listBorderColor: '#c9c9c9',
   listDividerBg: '#f4f4f4',
   listBtnUnderlayColor: '#DDD',
   listItemPadding: platform === PLATFORM.IOS ? 10 : 12,
   listNoteColor: '#808080',
   listNoteSize: 13,
-  listItemSelected: platform === PLATFORM.IOS ? '#007aff' : '#3F51B5',
 
   // Progress Bar
   defaultProgressColor: '#E4202D',

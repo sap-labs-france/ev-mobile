@@ -11,6 +11,7 @@ export enum Voltage {
 }
 
 export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
+  id: string;
   siteAreaID: string;
   chargePointSerialNumber: string;
   chargePointModel: string;
@@ -24,7 +25,6 @@ export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
   endpoint: string;
   ocppVersion: string;
   ocppProtocol: string;
-  cfApplicationIDAndInstanceIndex: string;
   lastSeen: Date;
   deleted: boolean;
   inactive: boolean;
@@ -115,6 +115,7 @@ export enum ConnectorType {
   TYPE_1 = 'T1',
   TYPE_1_CCS = 'T1CCS',
   DOMESTIC = 'D',
+  TYPE_3C = 'T3C',
   UNKNOWN = 'U'
 }
 

@@ -10,7 +10,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     paymentMethodContainer: {
       width: '100%',
-      height: '80@s',
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: '5@s'
@@ -27,17 +26,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     cardSVG: {
-      height: '70@s',
-      width: '70@s',
+      height: '80@s',
+      width: '80@s',
       color: commonColor.textColor
     },
     text: {
       color: commonColor.textColor,
-      fontSize: '15@s'
+      fontSize: '14@s'
     },
     badgeText: {
       fontSize: '10@s',
-      color: commonColor.brandLight,
+      color: commonColor.light,
       paddingVertical: '1@s',
       paddingHorizontal: '3@s'
     },
@@ -64,16 +63,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginRight: '3@s'
     },
     paymentMethodExpired: {
-      backgroundColor: commonColor.brandDanger
+      backgroundColor: commonColor.danger
     },
     paymentMethodExpiringSoon: {
-      backgroundColor: commonColor.brandWarning
+      backgroundColor: commonColor.warning
     },
     paymentMethodValid: {
-      backgroundColor: commonColor.brandSuccess
+      backgroundColor: commonColor.success
     },
     defaultContainer: {
-      backgroundColor: commonColor.brandDisabledDark,
+      backgroundColor: commonColor.disabledDark,
       marginLeft: '5@s',
       borderRadius: '2@s'
     }

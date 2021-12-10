@@ -13,7 +13,7 @@
     "noGPSCoordinates": "Coordonnées GPS non fournies",
     "chooseApp": "Choisissez une App",
     "availableApps": "Apps Disponibles",
-    "back": "Back",
+    "back": "Retour",
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",
@@ -37,8 +37,11 @@
     "restoreTenantsConfirm": "Voulez-vous vraiment restaurer la liste initiale des organisations ?",
     "restoreTenantsSuccess": "La liste des organisations list a été restaurée",
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "editTenantSuccess": "Organization updated successfully",
     "registerToNewTenantTitle": "S'enregistrer",
     "registerToNewTenant": "Voulez-vous vous enregistrer dans la nouvelle organisation '{{tenantName}}' ?",
+    "newTenantAddedDialogTitle": "L'organisation '{{organizationName}}' a été ajoutée",
+    "newTenantAddedDialogDescription": "Que souhaitez-vous faire?",
     "noRecordFound": "Pas d'enregistrement trouvé",
     "day": "j",
     "hour": "h",
@@ -54,6 +57,7 @@
     "mustLoggedToTenant": "Vous devez être connecté à l'organization '{{tenantName}}'",
     "tenantMissing": "L'organisation est manquante",
     "tenantExists": "L'organisation '{{tenantName}}' existe déjà.",
+    "subdomainAlreadyUsed": "Ce sous-domain est déjà utilisé dans l'organisation '{{tenantName}}'",
     "createdOn": "Créé le",
     "createdBy": "Créé par",
     "lastChangedOn": "Modifié le",
@@ -62,8 +66,20 @@
     "errorTitle": "Titre de l'erreur",
     "errorDescription": "Description",
     "scanQrCodeSuccess": "Le QR code a bien été scanné",
+    "validate": "Valider",
     "default": "Par défaut",
-    "save": "Sauvegarder"
+    "save": "Sauvegarder",
+    "update": "Mettre à jour",
+    "tenants": "Organisations",
+    "reset": "Réinitialiser",
+    "selected": "Sélectionné(s)",
+    "results": "Résultats",
+    "result": "Résultat",
+    "optional": "Optionnel",
+    "defaultSettings": "Paramètres par défaut",
+    "notApplicable": "N/A",
+    "showMore": "Voir plus",
+    "showLess": "Voir moins"
   },
   "sidebar": {
     "home": "Home",
@@ -77,7 +93,8 @@
     "badges": "Badges",
     "cars": "Voitures",
     "invoices": "Factures",
-    "paymentMethods": "Moyens de paiement"
+    "paymentMethods": "Moyens de paiement",
+    "qrCodeScanner": "Scanneur QR-Code"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -103,6 +120,7 @@
     "registerUnexpectedError": "Impossible de créer le compte",
     "accountLocked": "Votre compte est bloqué",
     "accountNotActive": "Votre compte est inactif",
+    "technicalUserCannotLoginToUI": "Un utilisateur technique ne peut pas se connecter en utilisant l'application",
     "accountAlreadyActive": "Votre compte a déjà été activé",
     "accountVerifiedSuccess": "Votre compte a été activé avec succès!",
     "accountPending": "Votre compte n'est pas activé! Vérifiez vos e-mails",
@@ -138,10 +156,16 @@
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
     "tenant": "Organisation",
     "createTenantTitle": "Créer une organisation",
+    "addTenantTitle": "Ajouter une organisation",
+    "addTenantManuallyTitle": "Ajouter une organisation manuellement",
+    "editTenantTitle": "Editer une organisation",
     "createTenantText": "Comment voulez vous créer l'organisation ?",
-    "tenantSubdomain": "Sous domaine",
+    "addTenantText": "Comment voulez-vous ajouter l'organisation?",
+    "tenantSubdomain": "Sous-domaine",
+    "tenantSubdomainPlaceholder": "Sous-domaine de l'organisation",
     "tenantName": "Nom",
-    "tenantEndpoint": "Cloud",
+    "tenantNamePlaceholder": "Nom de l'organisation",
+    "tenantEndpoint": "Endpoint Cloud",
     "phone": "Phone",
     "mandatoryPhone": "Le numéro de téléphone est obligatoire",
     "mandatoryErrorTitle": "Le titre est obligatoire",
@@ -172,18 +196,22 @@
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur",
     "noUsers": "Aucun utilisateur",
-    "users": "Utilisateur(s)"
+    "users": "Utilisateurs",
+    "user": "Utilisateur",
+    "selectUser" : "Sélectionnez un utilisateur",
+    "selectUsers" : "Sélectionnez des utilisateurs"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Une erreur est survenue",
     "noPaymentMethod": "Aucun moyen de paiement",
-    "paymentMethods": "Moyen(s) de paiement",
+    "paymentMethods": "Moyens de paiement",
+    "paymentMethod": "Moyen de paiement",
     "addPaymentMethodError": "Impossible d'ajouter le moyen de paiement",
     "addPaymentMethodSuccess" : "Nouveau moyen de paiement ajoutée",
     "deletePaymentMethodSuccess": "Moyen de paiement supprimé",
     "deletePaymentMethodTitle": "Supprimer un moyen de paiement",
-    "deletePaymentMethodSubtitle": "Voulez-vous vraiment supprimer la carte {{cardBrand}} finissant par {{cardLast4}}",
-    "addPaymentMethod": "Ajouter un Moyen de Paiement",
+    "deletePaymentMethodSubtitle": "Voulez-vous vraiment supprimer la carte {{cardBrand}} finissant par {{cardLast4}} ?",
+    "addPaymentMethod": "Ajouter un moyen de paiement",
     "paymentMethodCreationRules": "Pour des raisons de sécurité, nous ne stockons ni ne traitons vos informations de moyen de paiement. Les informations collectées sont envoyées de manière sécurisée à notre partenaire STRIPE qui fournit l'infrastructure de facturation et de paiement.",
     "paymentMethodsCreationCheckboxText": "J'ai lu les conditions générales d'utilisation et j'accepte que mes informations de paiement soient utilisées pour payer mes futures sessions de recharge."
   },
@@ -213,7 +241,32 @@
   "cars": {
     "noCars": "Aucune voiture",
     "carUnexpectedError": "Une erreur est survenue",
-    "cars": "Voiture(s)"
+    "cars": "Voitures",
+    "car": "Voiture",
+    "selectCar": "Sélectionnez une voiture",
+    "selectCars": "Sélectionnez des voitures",
+    "clearCar": "Effacer voiture",
+    "noCarMessageTitle": "Indiquez la voiture utilisée pour bénéficier de meilleures recharges",
+    "addCarTitle": "Ajouter une voiture",
+    "addCarButton": "Ajouter",
+    "evse_phase": "Phase",
+    "evse_phases": "Phases",
+    "invalidVIN": "VIN invalide",
+    "invalidLicensePlate": "Plaque d'immatriculation invalide",
+    "licensePlate": "Plaque d'immatriculation",
+    "converter": "Convertisseur",
+    "model": "Modèle",
+    "carAlreadyExistError": "Une voiture avec les mêmes VIN et numéro d'immatriculation existe déjà",
+    "userAlreadyAssignedError": "Cette voiture est déjà assignée à un autre utilisateur",
+    "addError": "Une erreur est survenue lors de l'ajout du véhicule",
+    "addCarSuccessfully": "La voiture a bien été ajoutée",
+    "defaultCar": "Véhicule par défaut",
+    "drivetrainPowerUnit": "ch"
+  },
+  "carTypes": {
+    "poolCar": "Véhicule de covoiturage",
+    "privateCar": "Véhicule privé",
+    "companyCar": "Véhicule d'entreprise"
   },
   "invoices": {
     "noInvoices": "Aucune facture",
@@ -250,8 +303,15 @@
     "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
     "connectorNotAvailable": "Le connecteur de cette borne n'est pas disponible",
     "transactionStopUnexpectedError": "Impossible de stopper la session",
-    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistrée.",
-    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support."
+    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistré.",
+    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support.",
+    "noBadgeError": "Service indisponible, aucune carte de recharge enregistrée",
+    "selectUser": "Sélectionnez l'utilisateur",
+    "selectEV": "Sélectionnez le véhicule",
+    "selectChargeCard": "Sélectionnez la carte de recharge",
+    "chargingSettings": "Paramètres de charge",
+    "adviceMessage": "Assurez-vous que le câble est branché",
+    "sessionAlreadyInProgressError": "Une sessions est déjà en cours sur ce connecteur"
   },
   "home": {
     "browseSites": "Sites",
@@ -274,15 +334,11 @@
     "carsNote": "Liste des Voitures",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "Pas de Session trouvée",
-    "numberOfSessionsNote": "Nombre total de Sessions",
-    "totalConsumptiom": "{{totalConsumptiom}} kW.h",
-    "totalConsumptiomNote": "Energie totale consommée",
-    "totalDuration": "{{totalDuration}}",
-    "totalDurationNote": "Durée totale des Sessions",
-    "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
-    "totalInactivityNote": "Durée totale d'inactivité",
-    "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Cout total",
+    "numberOfSessionsNote": "Nombre Total de Sessions",
+    "totalConsumptionNote": "Consommation Totale",
+    "totalDurationNote": "Durée Totale des Sessions",
+    "totalInactivityNote": "Inactivité Totale",
+    "totalPriceNote": "Coût Total",
     "paymentMethods": "Moyens de paiement",
     "paymentMethodsNote" : "Consulter et créer des moyens de paiement",
     "invoices": "Factures",
@@ -302,7 +358,8 @@
     "noChargers": "Cette Zone n'a pas de Borne",
     "noSiteAreas": "Aucune Zone trouvée",
     "siteAreaUnexpectedError": "Impossible de lire les zones",
-    "siteAreas": "Zone(s)"
+    "siteAreas": "Zones",
+    "siteArea": "Zone"
   },
   "chargers": {
     "title": "Bornes",
@@ -329,7 +386,7 @@
     "clearCache": "Effacer le Cache",
     "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?",
     "noChargers": "Aucune Borne trouvée",
-    "properties": "Propriétées",
+    "properties": "Propriétés",
     "ocpp": "OCPP",
     "actions": "Actions",
     "noSession": "Aucune Session",
@@ -340,7 +397,7 @@
     "charging": "En charge",
     "available": "Disponible",
     "unavailable": "Indisponible",
-    "notCharging": "Inactif",
+    "notCharging": "Charge arrêtée",
     "suspendedEV": "EV Suspendu",
     "suspendedEVSE": "EVSE Suspendu",
     "faulted": "Erreur",
@@ -349,16 +406,24 @@
     "finishing": "Finalisation",
     "unknown": "Unknown",
     "type2": "Type 2",
-    "comboCCS": "Combo",
-    "chademo": "Chademo",
-    "domestic": "Domestique"
+    "comboCCS": "Type 2 - Combo CCS",
+    "type1": "Type 1",
+    "chademo": "CHAdeMo",
+    "domestic": "Domestique",
+    "type1CCS": "Type 1 - Combo CCS",
+    "type3C": "Type 3C"
   },
   "tags": {
     "visualID": "ID Visuel",
     "noTags": "Aucun badge",
-    "tags": "Badge(s)",
+    "tags": "Badges",
+    "tag": "Badge",
     "active": "Actif",
-    "inactive": "Inactif"
+    "inactive": "Inactif",
+    "selectTag": "Sélectionnez un badge",
+    "selectTags": "Sélectionnez des badges",
+    "noTagMessageTitle": "Aucun badge",
+    "noTagMessageSubtitle": "La recharge nécessite un badge"
   },
   "details": {
     "connector": "Connecteur",
@@ -394,7 +459,9 @@
     "instantPowerChartLabel": "Puissance Instantanée (kW)",
     "cumulatedChartLabel": "Cumulé (kW.h)",
     "batteryChartLabel": "Niveau Batterie (%)",
-    "connectorMax": "Connecteur Max Power (kW)",
+    "gridLimitChartLabel": "Limitation Réseau (kW)",
+    "cumulatedConsumptionLabel": "Energie délivrée (kW.h)",
+    "connectorMax": "Puissance max connecteur (kW)",
     "noData": "Pas de données",
     "noSessionInProgress": "Pas de session en cours",
     "noConsumptionData": "No consumption data",
@@ -413,7 +480,7 @@
     "cannotNavigate": "Impossible de naviger vers l'écran",
     "extraDataMissing": "La notification est corrompue",
     "incorrectTenant": "L'organisation est incorrecte",
-    "notifyEndOfSession": {
+    "notifyEndOfTransaction": {
       "message": "Votre session sur '{{chargeBoxID}}' est terminée.",
       "subMessage": "Session Terminée",
       "longMessage": "Votre session sur '{{chargeBoxID}}' est terminée."
@@ -443,5 +510,10 @@
       "subMessage": "Utilisateur Inconnu",
       "longMessage": "Un utilisateur inconnu vient juste de badger sur '{{chargeBoxID}}'."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "Nouvelle version disponible",
+    "appUpdateDialogDescription": "Voulez-vous mettre à jour votre application avec la dernière version disponible?",
+    "noUpdateAvailable": "Vous avez la dernière version"
   }
 }

@@ -1,11 +1,11 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
-import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import TransactionInProgressComponent
+  from '../../../components/transaction/in-progress/TransactionInProgressComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
@@ -107,13 +107,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     return null;
   };
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
-    // Do not bubble up
-    return true;
-  };
-
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
@@ -123,6 +116,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       // Set
       this.setState({
         loading: false,
+        refreshing: false,
         transactions: transactions ? transactions.result : [],
         count: transactions ? transactions.count : 0,
         isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
@@ -163,15 +157,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-          filters={filters}
+          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
@@ -181,7 +167,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
               <TransactionsInProgressFilters
                 initialFilters={initialFilters}
                 onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) =>
-                  this.setState({ filters: newFilters }, async () => this.refresh())
+                  this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh())
                 }
                 ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => this.setScreenFilters(transactionsInProgressFilters)}
               />

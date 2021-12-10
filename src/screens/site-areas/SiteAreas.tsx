@@ -1,35 +1,32 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
-import { ClusterMap } from 'react-native-cluster-map';
-import { Location } from 'react-native-location';
+import { Image, ImageStyle, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import ClusterMap from '../../components/map/ClusterMap';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
-import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
+import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
-import ThemeManager from '../../custom-theme/ThemeManager';
 import I18nManager from '../../I18n/I18nManager';
-import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
-import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
-import { GlobalFilters } from '../../types/Filter';
 import Site from '../../types/Site';
 import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
-import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
+import { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
+import standardDarkLayout from '../../../assets/map/standard-dark.png';
+import standardLightLayout from '../../../assets/map/standard-light.png';
+import satelliteLayout from '../../../assets/map/satellite.png';
+import computeFabStyles from '../../components/fab/FabComponentStyles';
+import ThemeManager from '../../custom-theme/ThemeManager';
 
 export interface Props extends BaseProps {}
 
@@ -38,13 +35,13 @@ interface State {
   loading?: boolean;
   refreshing?: boolean;
   skip?: number;
-  limit?: number;
   count?: number;
   initialFilters?: SiteAreasFiltersDef;
   filters?: SiteAreasFiltersDef;
   showMap?: boolean;
   visible?: boolean;
   siteAreaSelected?: SiteArea;
+  satelliteMap?: boolean;
 }
 
 export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
@@ -52,10 +49,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
   private searchText: string;
   private site: Site;
-  private currentLocation: Location;
-  private locationEnabled: boolean;
   private currentRegion: Region;
-  private darkMapTheme = require('../../utils/map/google-maps-night-style.json');
+  private mapLimit = 200;
+  private listLimit = 25;
 
   public constructor(props: Props) {
     super(props);
@@ -64,12 +60,12 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       loading: true,
       refreshing: false,
       skip: 0,
-      limit: Constants.PAGING_SIZE,
       count: 0,
       initialFilters: {},
       showMap: false,
       visible: false,
-      siteAreaSelected: null
+      siteAreaSelected: null,
+      satelliteMap: false
     };
   }
 
@@ -80,58 +76,40 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount() {
-    // Get initial filters
-    await this.loadInitialFilters();
-    // Get initial filters
+  public async componentDidMount(triggerRefresh: boolean = true): Promise<void> {
+    super.componentDidMount(triggerRefresh);
     this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
-    await super.componentDidMount();
   }
 
-  public async loadInitialFilters() {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    let location = Utils.convertToBoolean(
-      await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.LOCATION)
-    );
-    if (!location) {
-      location = false;
-    }
-    this.setState({
-      initialFilters: { location },
-      filters: { location }
-    });
+  public componentDidFocus() {
+    super.componentDidFocus();
+    this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
   }
 
-  public async getCurrentLocation(): Promise<Location> {
-    const { filters } = this.state;
-    // Get the current location
-    let currentLocation = (await LocationManager.getInstance()).getLocation();
-    this.locationEnabled = currentLocation ? true : false;
-    // Bypass location
-    if (!filters.location) {
-      currentLocation = null;
-    }
-    return currentLocation;
+  public componentDidBlur() {
+    super.componentDidBlur();
+    delete this.site
   }
 
-  public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
+  public getSiteAreas = async (searchText: string = '', skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     try {
       // Get current location
-      this.currentLocation = await this.getCurrentLocation();
+      const currentLocation = await Utils.getUserCurrentLocation();
+      const { showMap } = this.state;
       const params = {
         Search: searchText,
         SiteID: this.site?.id,
         Issuer: true,
         WithAvailableChargers: true,
-        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation.latitude,
+        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation.longitude,
+        LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
       };
       // Get the Site Areas
       const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
       // Get total number of records
       if (siteAreas.count === -1) {
-        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
+        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSiteAreas(params, Constants.ONLY_RECORD_COUNT);
         siteAreas.count = sitesAreasNbrRecordsOnly.count;
       }
       return siteAreas;
@@ -148,44 +126,62 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     return null;
   };
 
-  public onBack = () => {
+  public onBack () {
     // Back mobile button: Force navigation
-    if (this.state.showMap && !Utils.isEmptyArray(this.state.siteAreas)) {
-      this.setState({ showMap: false });
+    if (this.state.showMap) {
+      this.setState({ showMap: false, refreshing: true }, () => this.refresh());
+      return true;
     } else {
       this.props.navigation.goBack();
+      return true;
     }
-    // Do not bubble up
-    return true;
   };
 
-  public refreshCurrentRegion(siteAreas: SiteArea[], force = false) {
-    // Set current region
-    if (!this.currentRegion || force) {
-      let gpsCoordinates: number[];
-      if (!Utils.isEmptyArray(siteAreas) && Utils.containsAddressGPSCoordinates(siteAreas[0].address)) {
-        gpsCoordinates = siteAreas[0].address.coordinates;
+  public async computeRegion(siteAreas: SiteArea[]): Promise<Region> {
+    // If currentLocation available, use it
+    const currentLocation = await Utils.getUserCurrentLocation();
+    if ( currentLocation ) {
+      return {
+        longitude: currentLocation.longitude,
+        latitude: currentLocation.latitude,
+        longitudeDelta: 0.01,
+        latitudeDelta: 0.01
       }
-      this.currentRegion = {
+    }
+    // Else, use coordinates of the first site area
+    if (!Utils.isEmptyArray(siteAreas)) {
+      let gpsCoordinates: number[];
+      if ( !Utils.isEmptyArray(siteAreas) && Utils.containsGPSCoordinates(siteAreas[0].address?.coordinates) ) {
+        gpsCoordinates = siteAreas[0].address?.coordinates;
+      }
+      return {
         longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
         latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
-        latitudeDelta: 0.009,
-        longitudeDelta: 0.009
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01
       };
     }
+    return this.currentRegion;
   }
 
-  public refresh = async () => {
+  public refresh = async (showRefreshing = false) => {
     // Component Mounted?
     if (this.isMounted()) {
-      const { skip, limit } = this.state;
+      const { skip, showMap } = this.state;
+      if (showRefreshing) {
+        this.setState({ refreshing: true});
+      }
       // Refresh All
+      const limit = showMap ? this.mapLimit : this.listLimit;
       const siteAreas = await this.getSiteAreas(this.searchText, 0, skip + limit);
       // Refresh region
-      this.refreshCurrentRegion(siteAreas.result);
+      if (!this.currentRegion) {
+        this.currentRegion = await this.computeRegion(siteAreas?.result);
+      }
       // Set Site Areas
       this.setState({
         loading: false,
+        refreshing: false,
         siteAreas: siteAreas ? siteAreas.result : [],
         count: siteAreas ? siteAreas.count : 0
       });
@@ -196,14 +192,15 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh
-    await this.refresh();
+    await this.refresh(true);
     // Hide spinner
     this.setState({ refreshing: false });
   };
 
   public onEndScroll = async () => {
-    const { count, skip, limit } = this.state;
+    const { count, skip, showMap } = this.state;
     // No reached the end?
+    const limit = showMap ? this.mapLimit : this.listLimit;
     if (skip + limit < count || count === -1) {
       // No: get next sites
       const siteAreas = await this.getSiteAreas(this.searchText, skip + Constants.PAGING_SIZE, limit);
@@ -217,8 +214,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public search = async (searchText: string) => {
+    this.setState({ refreshing: true });
     this.searchText = searchText;
-    await this.refresh();
+    await this.refresh(true);
   };
 
   public onMapRegionChange = (region: Region) => {
@@ -227,17 +225,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public filterChanged(newFilters: SiteAreasFiltersDef) {
     delete this.currentRegion;
-    this.setState({ filters: newFilters }, async () => this.refresh());
+    this.setState({ filters: newFilters }, async () => this.refresh(true));
   }
 
-  public toggleDisplayMap = () => {
-    // Refresh region
-    this.refreshCurrentRegion(this.state.siteAreas, true);
-    // Toggle map
-    this.setState({ showMap: !this.state.showMap });
-  };
-
-  public showMapSiteDetail = (siteArea: SiteArea) => {
+  public showMapSiteAreaDetail = (siteArea: SiteArea) => {
     this.setState({
       visible: true,
       siteAreaSelected: siteArea
@@ -270,70 +261,56 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas } = this.state;
-    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
-    const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
+    const { loading, skip, count, showMap, siteAreaSelected, siteAreas, refreshing, satelliteMap } = this.state;
+    const fabStyles = computeFabStyles();
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
           title={this.site?.name}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('siteAreas.siteAreas')}` : null}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-          displayMap={!Utils.isEmptyArray(this.state.siteAreas)}
-          mapIsDisplayed={mapIsDisplayed}
-          displayMapAction={() => this.toggleDisplayMap()}
+          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)} ${count > 1 ? I18n.t('siteAreas.siteAreas') : I18n.t('siteAreas.siteArea')})` : null}
         />
+        <View style={style.fabContainer}>
+          {showMap && (
+            <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
+              <Image
+                source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
+                style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
+              />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            style={fabStyles.fab}
+            onPress={() => this.setState({ showMap: ! showMap}, () => this.refresh(true)) }
+          >
+            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
+          </TouchableOpacity>
+        </View>
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
-            <SiteAreasFilters
-              initialFilters={initialFilters}
-              locationEnabled={this.locationEnabled}
-              onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters }, async () => this.refresh())}
-              ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
-            />
-            {mapIsDisplayed ? (
+            <View style={style.searchBar}>
+              <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+            </View>
+            {showMap ? (
               <View style={style.map}>
-                {this.currentRegion && (
-                  <ClusterMap
-                    provider={'google'}
-                    customMapStyle={isDarkModeEnabled && this.darkMapTheme}
-                    style={style.map}
-                    region={this.currentRegion}
-                    onRegionChange={this.onMapRegionChange}>
-                    {siteAreasWithGPSCoordinates.map((siteArea: SiteArea) => (
-                      <Marker
-                        image={Utils.buildSiteStatusMarker(siteArea.connectorStats)}
-                        key={siteArea.id}
-                        coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
-                        title={siteArea.name}
-                        onPress={() => this.showMapSiteDetail(siteArea)}
-                      />
-                    ))}
-                  </ClusterMap>
-                )}
+                {this.renderMap()}
                 {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
               </View>
             ) : (
-              <FlatList
-                data={this.state.siteAreas}
-                renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              <ItemsList<SiteArea>
+                skip={skip}
+                count={count}
                 onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                renderItem={(site: SiteArea) => <SiteAreaComponent siteArea={site} navigation={this.props.navigation} />}
+                data={siteAreas}
+                manualRefresh={this.manualRefresh}
+                refreshing={refreshing}
+                emptyTitle={I18n.t('siteAreas.noSiteAreas')}
+                navigation={navigation}
+                limit={this.listLimit}
               />
             )}
           </View>
@@ -341,4 +318,42 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       </Container>
     );
   }
+
+  private renderMap() {
+    const style = computeStyleSheet();
+    const { siteAreas, satelliteMap } = this.state
+    const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) =>
+      Utils.containsGPSCoordinates(siteArea.address.coordinates)
+    );
+    return (
+      <View style={style.map}>
+        <ClusterMap<SiteArea>
+          items={siteAreasWithGPSCoordinates}
+          satelliteMap={satelliteMap}
+          renderMarker={(siteArea, index) => (
+            <Marker
+              key={`${siteArea.id}${index}${siteArea.name}`}
+              tracksViewChanges={false}
+              coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
+              title={siteArea.name}
+              onPress={() => this.showMapSiteAreaDetail(siteArea)}
+            >
+              <Icon type={'MaterialIcons'} name={'location-pin'} style={[style.siteAreaMarker, Utils.computeSiteMarkerStyle(siteArea?.connectorStats)]} />
+            </Marker>
+          )}
+          initialRegion={this.currentRegion}
+          onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
+        />
+      </View>
+    )
+  }
+
+  private onMapRegionChangeComplete = (region: Region) => {
+      if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+        region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+        this.currentRegion = region;
+        this.refresh();
+      }
+    }
+
 }

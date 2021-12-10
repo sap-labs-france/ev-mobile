@@ -8,7 +8,7 @@ import Utils from '../utils/Utils';
 
 export default class MigrationManager {
   private static instance: MigrationManager;
-  private currentMigrationVersion = '1.3';
+  private currentMigrationVersion = '1.41';
   private centralServerProvider: CentralServerProvider;
 
   // eslint-disable-next-line no-useless-constructor
@@ -21,7 +21,7 @@ export default class MigrationManager {
     return MigrationManager.instance;
   }
 
-  public setCentralServerProvider(centralServerProvider: CentralServerProvider) {
+  public setCentralServerProvider(centralServerProvider: CentralServerProvider): void {
     this.centralServerProvider = centralServerProvider;
   }
 
@@ -47,21 +47,14 @@ export default class MigrationManager {
     if (!Utils.isEmptyArray(tenants)) {
       for (let i = tenants.length - 1; i >= 0; i--) {
         const tenant = tenants[i];
-        // Check if user has used this tenant
-        const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain);
-        if (!userCredentials) {
-          // Remove the tenant
-          tenants.splice(i, 1);
-          continue;
+        // Switch to AWS cloud
+        if (['slfcah', 'slf', 'imredd', 'eurecom', 'proviridis'].includes(tenant.subdomain) &&
+          tenant.endpoint !== Configuration.AWS_REST_ENDPOINT_PROD) {
+          // Set AWS
+          tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
         }
-        // TODO: Uncomment these lines + Increase the migration version when Proviridis will have switched to AWS
-        // Proviridis: Switch cloud
-        // if (tenant.subdomain === 'proviridis') {
-        //   tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
-        // }
       }
     }
-    // Save
     await SecuredStorage.saveTenants(tenants);
   }
 }

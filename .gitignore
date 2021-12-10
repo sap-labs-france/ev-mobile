@@ -70,7 +70,7 @@ android/app/*.keystore
 
 # VisualStudioCode
 .vscode/*
-!.vscode/settings.json
+!.vscode/settings-template.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
@@ -102,4 +102,10 @@ production/
 android/app/google-services.json
 ios/GoogleService-Info.plist
 
+assets/config.json
 *.log
+
+# tests
+coverage/
+__tests__/__snapshots__/
+test-results/

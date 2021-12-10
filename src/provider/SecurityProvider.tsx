@@ -1,6 +1,6 @@
 import { Action, Entity, Role } from '../types/Authorization';
 import SiteArea from '../types/SiteArea';
-import TenantComponents from '../types/TenantComponents';
+import { TenantComponents } from '../types/Tenant';
 import UserToken from '../types/UserToken';
 
 export default class SecurityProvider {
@@ -107,26 +107,28 @@ export default class SecurityProvider {
   }
 
   public canAccess(resource: string, action: string): boolean {
-    return this.loggedUser && this.loggedUser.scopes && this.loggedUser.scopes.includes(`${resource}:${action}`);
+    return this.loggedUser && this.loggedUser.scopes && (this.loggedUser.scopes.includes(`${resource}:${action}`)
+      //TODO remove the plural (s) when backend new authorization deployed
+      || this.loggedUser.scopes.includes(`${resource}s:${action}`));
   }
 
   public canListUsers(): boolean {
-    return this.canAccess(Entity.USERS, Action.LIST);
+    return this.canAccess(Entity.USER, Action.LIST);
   }
 
   public canListTags(): boolean {
-    return this.canAccess(Entity.TAGS, Action.LIST);
+    return this.canAccess(Entity.TAG, Action.LIST);
   }
 
   public canListCars(): boolean {
-    return this.canAccess(Entity.CARS, Action.LIST);
+    return this.canAccess(Entity.CAR, Action.LIST);
   }
 
   public canListInvoices(): boolean {
-    return this.canAccess(Entity.INVOICES, Action.LIST);
+    return this.canAccess(Entity.INVOICE, Action.LIST);
   }
 
   public canListPaymentMethods(): boolean {
-    return this.canAccess(Entity.PAYMENT_METHODS, Action.LIST);
+    return this.canAccess(Entity.PAYMENT_METHOD, Action.LIST);
   }
 }

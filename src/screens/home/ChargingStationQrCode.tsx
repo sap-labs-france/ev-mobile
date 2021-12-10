@@ -1,4 +1,4 @@
-import { DrawerActions, StackActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 import base64 from 'base-64';
 import I18n from 'i18n-js';
 import { Container } from 'native-base';
@@ -16,6 +16,7 @@ import Message from '../../utils/Message';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
+import Configuration from '../../config/Configuration';
 
 export interface Props extends BaseProps {
   currentTenantSubDomain: string;
@@ -31,17 +32,19 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
   public state: State;
   public props: Props;
   private tenantEndpointClouds: EndpointCloud[];
+  private currentTenant: TenantConnection;
 
   public constructor(props: Props) {
     super(props);
     this.state = {
       activateQrCode: true
     };
-    this.tenantEndpointClouds = Utils.getEndpointCloud();
+    this.tenantEndpointClouds = Configuration.getEndpoints();
   }
 
   public async componentDidMount() {
     await super.componentDidMount();
+    this.currentTenant = this.centralServerProvider?.getUserTenant();
     Orientation.lockToPortrait();
   }
 
@@ -110,10 +113,12 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       // Check Tenant
       const tenant = await this.centralServerProvider.getTenant(chargingStationQrCode.tenantSubDomain);
       // Scanned Tenant is not the current one where the user is logged
-      if (chargingStationQrCode.tenantSubDomain !== this.props.currentTenantSubDomain) {
+      if (chargingStationQrCode.tenantSubDomain !== this.currentTenant?.subdomain) {
         // User in wrong tenant!
         // Check if the tenant already exists
         if (tenant) {
+          console.log(tenant);
+          console.log(chargingStationQrCode?.tenantSubDomain);
           // Tenant exists: Propose the user to switch to the existing one and log off
           this.setState(
             {
@@ -187,28 +192,19 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
   }
 
   public render() {
-    const { navigation } = this.props;
     const { activateQrCode } = this.state;
+    const commonColor = Utils.getCurrentCommonColor();
     return (
       <Container>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanChargingStationQrCodeTitle')}
-          leftAction={() => {
-            this.close();
-            return true;
-          }}
-          leftActionIcon={'navigate-before'}
-          hideHomeAction
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
+          backArrow={true}
         />
-        {activateQrCode && (
+       {activateQrCode && (
           <QRCodeScanner
             cameraProps={{ captureAudio: false }}
+            markerStyle={{borderColor: commonColor.primaryLight}}
             showMarker
             reactivate
             reactivateTimeout={1000}

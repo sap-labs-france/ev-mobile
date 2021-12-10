@@ -4,16 +4,19 @@ import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, TouchableOpacity } from 'react-native';
+import { CheckVersionResponse, checkVersion } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
-import defaultTenantLogo from '../../../assets/logo-low.png';
+import AppUpdateDialog from '../../components/modal/app-update/AppUpdateDialog';
 import UserAvatar from '../../components/user/avatar/UserAvatar';
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
 import UserToken from '../../types/UserToken';
 import Utils from '../../utils/Utils';
-import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
+import CentralServerProvider from '../../provider/CentralServerProvider';
+import ProviderFactory from '../../provider/ProviderFactory';
+import SecurityProvider from '../../provider/SecurityProvider';
 
 export interface Props extends BaseProps {}
 
@@ -22,19 +25,29 @@ interface State {
   tenantName?: string;
   isComponentOrganizationActive?: boolean;
   updateDate?: string;
+  showAppUpdateDialog?: boolean;
+  appVersion?: CheckVersionResponse;
 }
 
-export default class SideBar extends BaseScreen<Props, State> {
+export default class SideBar extends React.Component<Props, State> {
   public state: State;
   public props: Props;
+  private centralServerProvider: CentralServerProvider;
+  private securityProvider: SecurityProvider;
+  private componentFocusUnsubscribe: () => void;
+  private componentBlurUnsubscribe: () => void;
 
   public constructor(props: Props) {
     super(props);
+   // this.componentFocusUnsubscribe = this.props.navigation?.addListener('focus', () => this.componentDidFocus());
+   // this.componentBlurUnsubscribe = this.props.navigation?.addListener('blur', () => this.componentDidFocus());
     this.state = {
       userToken: null,
       tenantName: '',
       isComponentOrganizationActive: false,
-      updateDate: ''
+      updateDate: '',
+      showAppUpdateDialog: false,
+      appVersion: null
     };
   }
 
@@ -46,14 +59,22 @@ export default class SideBar extends BaseScreen<Props, State> {
   };
 
   public async componentDidMount() {
-    await super.componentDidMount();
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    this.securityProvider = this.centralServerProvider?.getSecurityProvider();
     await this.getUpdateDate();
     // Init User (delay it)
     this.refresh();
   }
 
+  public componentWillUnmount() {
+    this.componentFocusUnsubscribe?.();
+    this.componentBlurUnsubscribe?.();
+  }
+
   public refresh = async () => {
     await this.getUserInfo();
+    const appVersion = await checkVersion();
+    this.setState({ appVersion });
   };
 
   public async getUpdateDate() {
@@ -64,7 +85,6 @@ export default class SideBar extends BaseScreen<Props, State> {
   public getUserInfo = async () => {
     // Logoff
     const userInfo = this.centralServerProvider.getUserInfo();
-    // Add sites(
     this.setState({
       userToken: this.centralServerProvider.getUserInfo(),
       isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false,
@@ -73,6 +93,7 @@ export default class SideBar extends BaseScreen<Props, State> {
   };
 
   public async logoff() {
+    const userTenant = this.centralServerProvider.getUserTenant();
     // Logoff
     this.centralServerProvider.setAutoLoginDisabled(true);
     await this.centralServerProvider.logoff();
@@ -80,7 +101,10 @@ export default class SideBar extends BaseScreen<Props, State> {
     this.props.navigation.dispatch(
       StackActions.replace('AuthNavigator', {
         name: 'Login',
-        key: `${Utils.randomNumber()}`
+        key: `${Utils.randomNumber()}`,
+        params: {
+          tenantSubDomain: userTenant.subdomain
+        }
       })
     );
   }
@@ -93,27 +117,36 @@ export default class SideBar extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { navigation } = this.props;
-    const { userToken, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    const { userToken, tenantName, isComponentOrganizationActive, showAppUpdateDialog, appVersion } = this.state;
     const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <Container style={style.container}>
         <Header style={style.header}>
-          <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logo as ImageStyle} />
+          {tenantLogo && <Image source={{ uri: tenantLogo }} style={style.logo as ImageStyle} />}
           <Text numberOfLines={1} style={style.tenantName}>
             {tenantName}
           </Text>
-          {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
-          <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
-          {!Utils.isNullOrEmptyString(updateDate) && <Text style={style.versionDate}>{updateDate}</Text>}
+          <TouchableOpacity
+            disabled={!appVersion?.needsUpdate}
+            onPress={() => this.setState({ showAppUpdateDialog: true })}
+            style={style.versionContainer}>
+            <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
+            {appVersion?.needsUpdate && (
+              <View style={style.newVersionContainer}>
+                <Icon style={style.newVersionIcon} type={'MaterialIcons'} name={'update'} />
+                <Text style={style.newVersionText}>{I18n.t('appUpdate.appUpdateDialogTitle')}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+          {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
         </Header>
         <Content style={style.drawerContent}>
           <View style={style.linkContainer}>
-            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('HomeNavigator', 'Home')}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="home" />
-              <Text style={style.linkText}>{I18n.t('sidebar.home')}</Text>
+            <ListItem style={style.links} button iconLeft onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
+              <Icon style={style.linkIcon} type="MaterialIcons" name="qr-code-scanner" />
+              <Text style={style.linkText}>{I18n.t('sidebar.qrCodeScanner')}</Text>
             </ListItem>
             {isComponentOrganizationActive && (
               <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
@@ -121,7 +154,7 @@ export default class SideBar extends BaseScreen<Props, State> {
                 <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
               </ListItem>
             )}
-            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
+            <ListItem style={[style.links]} button iconLeft onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
               <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
             </ListItem>
@@ -169,7 +202,7 @@ export default class SideBar extends BaseScreen<Props, State> {
                 button={true}
                 iconLeft={true}
                 onPress={() => this.navigateTo('PaymentMethodsNavigator', 'PaymentMethods')}>
-                <Icon style={style.linkIcon} type="MaterialIcons" name="payment" />
+                <Icon style={style.linkIcon} type="MaterialIcons" name="payments" />
                 <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
               </ListItem>
             )}
@@ -184,17 +217,9 @@ export default class SideBar extends BaseScreen<Props, State> {
               button={true}
               iconLeft={true}
               onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-              <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type="MaterialIcons" name="error-outline" />
-              <Text style={[style.linkText, { color: commonColor.brandDanger }]}>{I18n.t('sidebar.reportError')}</Text>
+              <Icon style={[style.linkIcon, { color: commonColor.dangerLight }]} type="MaterialIcons" name="error-outline" />
+              <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
-            {/* <ListItem button onPress={() => navigation.navigate('Settings')} iconLeft style={style.links}>
-              <Icon name="ios-settings-outline" />
-              <Text style={style.linkText}>SETTINGS</Text>
-            </ListItem>
-            <ListItem button onPress={() => navigation.navigate('Feedback')} iconLeft style={style.links}>
-              <Icon name="ios-paper-outline" />
-              <Text style={style.linkText}>FEEDBACK</Text>
-            </ListItem> */}
           </View>
         </Content>
         <View style={style.logoutContainer}>

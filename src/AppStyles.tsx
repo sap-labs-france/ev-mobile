@@ -10,6 +10,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     sideMenu: {
       width: '250@s',
+      color: commonColor.textColor,
+      zIndex: 1,
+      position: 'absolute'
+    },
+    barStyle: {
       color: commonColor.textColor
     }
   });

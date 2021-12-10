@@ -6,19 +6,48 @@ export default interface Car extends CreatedUpdatedProps, ListItem {
   vin: string;
   licensePlate: string;
   carCatalog?: CarCatalog;
-  carUsers?: UserCar[];
+  user?: User;
+  default: boolean;
   type?: CarType;
   converter?: CarConverter;
+  carCatalogID: number;
+  userID?: string;
+  carConnectorData?: CarConnectorData;
+  forced?: boolean;
 }
 
-export interface CarCatalog {
-  id: number;
+export interface CarConnectorData {
+  carConnectorID: string;
+  carConnectorMeterID: string;
+}
+
+export interface CarCatalog extends ListItem {
   vehicleMake: string;
   vehicleModel: string;
   vehicleModelVersion?: string;
   image?: string;
   fastChargePowerMax?: number;
   batteryCapacityFull?: number;
+  drivetrainPowerHP: number;
+  performanceAcceleration: number;
+  performanceTopspeed: number;
+  rangeWLTP: number;
+  rangeReal: number;
+  efficiencyReal: number;
+  chargePlug: string;
+  chargeStandardPower: number;
+  chargeStandardPhase: number;
+  chargeStandardPhaseAmp: number;
+  chargeAlternativePower: number;
+  chargeAlternativePhase: number;
+  chargeAlternativePhaseAmp: number;
+  chargeOptionPower: number;
+  chargeOptionPhase: number;
+  chargeOptionPhaseAmp: number;
+  fastChargePlug: string;
+  canRead: boolean;
+  canDelete: boolean;
+  canUpdate: boolean;
 }
 
 export interface CarConverter {
@@ -32,14 +61,6 @@ export enum CarType {
   PRIVATE = 'P',
   COMPANY = 'C',
   POOL_CAR = 'PC'
-}
-
-export interface UserCar {
-  id?: string;
-  user: User;
-  carID: string;
-  default?: boolean;
-  owner?: boolean;
 }
 
 export enum CarConverterType {

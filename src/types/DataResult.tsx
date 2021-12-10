@@ -2,6 +2,7 @@ import Transaction from './Transaction';
 
 export interface DataResult<T> {
   count: number;
+  projectFields: string[];
   result: T[];
 }
 

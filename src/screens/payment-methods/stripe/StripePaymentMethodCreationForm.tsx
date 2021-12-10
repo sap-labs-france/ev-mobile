@@ -1,10 +1,10 @@
-import { DrawerActions } from '@react-navigation/native';
 import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Button, CheckBox, Spinner, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { BackHandler, Text, TouchableOpacity } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import { useFocusEffect } from '@react-navigation/native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
@@ -24,6 +24,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [eulaChecked, setEulaChecked] = useState<boolean>(false);
   const [cardDetails, setCardDetails] = useState<CardFieldInput.Details>(null);
+  const [isBillingSetUp, setIsBillingSetUp] = useState<boolean>(undefined);
   const style = computeStyleSheet();
   const commonColors = Utils.getCurrentCommonColor();
 
@@ -33,16 +34,35 @@ export default function StripePaymentMethodCreationForm(props: Props) {
     });
   });
 
+  useFocusEffect(React.useCallback(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => onBack());
+    return () => backHandler.remove();
+  }, [])
+  );
+
+  function onBack(): boolean {
+    props.navigation.goBack();
+    return true;
+  }
+
   async function setUp(): Promise<void> {
     const csProvider = await ProviderFactory.getProvider();
     setProvider(csProvider);
     // Billing
-    const billingSettings: BillingSettings = await csProvider.getBillingSettings();
-    await initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
+    let billingSettings: BillingSettings = Utils.getParamFromNavigation(props.route, 'billingSettings', null) as unknown as BillingSettings;
+    if (!billingSettings?.stripe?.publicKey) {
+      billingSettings = await csProvider.getBillingSettings();
+    }
+    if (billingSettings?.stripe?.publicKey) {
+      await initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
+      setIsBillingSetUp(true);
+    } else {
+      setIsBillingSetUp(false);
+    }
   }
 
   async function addPaymentMethod(): Promise<void> {
-    if (cardDetails?.complete && eulaChecked) {
+    if (cardDetails?.complete && eulaChecked && isBillingSetUp === true) {
       try {
         setLoading(true);
         // STEP 1 - Call Back-End to create intent
@@ -91,18 +111,19 @@ export default function StripePaymentMethodCreationForm(props: Props) {
     }
   }
 
-  function onBack() {
-    // Back mobile button: Force navigation
-    props.navigation.goBack();
-    // Do not bubble up
-    return true;
+  function renderBillingErrorMessage() {
+    return (
+      <View>
+        <Text>Payment service is unavailable</Text>
+      </View>
+    );
   }
 
   function buildCardFieldStyle() {
     return {
       backgroundColor: commonColors.buttonBg,
       textColor: commonColors.textColor,
-      placeholderColor: commonColors.brandDisabledDark,
+      placeholderColor: commonColors.disabledDark,
       cursorColor: commonColors.textColor,
       fontSize: Math.round(scale(15))
     };
@@ -113,14 +134,8 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       <HeaderComponent
         title={I18n.t('paymentMethods.addPaymentMethod')}
         navigation={props.navigation}
-        leftAction={onBack}
-        leftActionIcon={'navigate-before'}
-        rightAction={() => {
-          props.navigation.dispatch(DrawerActions.openDrawer());
-          return true;
-        }}
-        rightActionIcon={'menu'}
       />
+      {isBillingSetUp === false && renderBillingErrorMessage()}
       <CardField
         cardStyle={buildCardFieldStyle()}
         onCardChange={(details: CardFieldInput.Details) => setCardDetails(details)}
@@ -137,12 +152,15 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       <View style={style.buttonContainer}>
         {loading ? (
           <View style={style.spinner}>
-            <Spinner color={commonColors.brandDisabledDark} />
+            <Spinner color={commonColors.disabledDark} />
           </View>
         ) : (
           <Button
-            disabled={!(cardDetails?.complete && eulaChecked)}
-            style={[style.button, cardDetails?.complete && eulaChecked ? style.buttonEnabled : style.buttonDisabled]}
+            disabled={!(cardDetails?.complete && eulaChecked && isBillingSetUp === true)}
+            style={[
+              style.button,
+              cardDetails?.complete && eulaChecked && isBillingSetUp === true ? style.buttonEnabled : style.buttonDisabled
+            ]}
             light
             block
             onPress={async () => addPaymentMethod()}>

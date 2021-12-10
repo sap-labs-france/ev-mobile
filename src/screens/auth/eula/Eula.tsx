@@ -61,13 +61,6 @@ export default class Eula extends BaseScreen<Props, State> {
     }
   };
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate('Login');
-    // Do not bubble up
-    return true;
-  };
-
   public render() {
     const style = computeStyleSheet();
     const { eulaTextHtml, loading } = this.state;
@@ -76,18 +69,12 @@ export default class Eula extends BaseScreen<Props, State> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('authentication.eula')}
-          leftAction={() => {
-            this.props.navigation.navigate('Login');
-            return true;
-          }}
-          leftActionIcon={'navigate-before'}
-          hideHomeAction
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <ScrollView style={style.container}>
-            <HTMLView value={eulaTextHtml} />
+            <HTMLView textComponentProps={{style: {color: Utils.getCurrentCommonColor().textColor}}} value={eulaTextHtml} />
           </ScrollView>
         )}
       </Container>

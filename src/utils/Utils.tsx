@@ -20,7 +20,7 @@ import I18nManager from '../I18n/I18nManager';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Address from '../types/Address';
 import { BillingPaymentMethod, BillingPaymentMethodStatus } from '../types/Billing';
-import Car, { CarCatalog } from '../types/Car';
+import Car, { CarCatalog, CarConverter } from '../types/Car';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
 import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
@@ -30,6 +30,10 @@ import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
+import { Region } from 'react-native-maps';
+import LocationManager from '../location/LocationManager';
+import computeConnectorStatusStyles
+  from '../components/connector-status/ConnectorStatusComponentStyles';
 
 export default class Utils {
   public static getEndpointCloud(): EndpointCloud[] {
@@ -531,12 +535,9 @@ export default class Utils {
   }
 
   public static getParamFromNavigation(
-    route: any,
-    name: string,
-    defaultValue: string | boolean,
-    removeValue = false
+    route: any, name: string, defaultValue: string | boolean | Record<any, any>, removeValue = false
   ): string | number | boolean | Record<string, unknown> | [] {
-    const params: any = route.params?.params ? route.params.params : route.params;
+    const params: any = route?.params?.params ?? route?.params;
     // Has param object?
     if (!params) {
       return defaultValue;
@@ -674,11 +675,27 @@ export default class Utils {
     return carName;
   }
 
+  public static buildCarFastChargePower(fastChargePower: number): string | number {
+    return fastChargePower || I18n.t('general.notApplicable');
+  }
+
+  public static buildCarCatalogConverterName(converter: CarConverter): string {
+    let converterName = '';
+    converterName += `${converter?.powerWatts ?? ''} kW`;
+    if (converter?.numberOfPhases > 0) {
+      converterName += ` - ${converter?.numberOfPhases ?? ''} ${converter?.numberOfPhases > 1 ? I18n.t('cars.evse_phases') : I18n.t('cars.evse_phase')}`;
+    }
+    if (converter?.amperagePerPhase > 0) {
+      converterName += ` - ${converter?.amperagePerPhase ?? ''} A`;
+    }
+    return converterName;
+  }
+
   public static async handleHttpUnexpectedError(
     centralServerProvider: CentralServerProvider,
     error: RequestError,
     defaultErrorMessage: string,
-    navigation?: NavigationContainerRef,
+    navigation?: NavigationContainerRef<any>,
     fctRefresh?: () => void
   ): Promise<void> {
     console.error('HTTP request error', error);
@@ -696,6 +713,7 @@ export default class Utils {
           break;
         // Not logged in?
         case StatusCodes.UNAUTHORIZED:
+          Message.showError(I18n.t('general.notAuthorized'));
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
@@ -851,6 +869,12 @@ export default class Utils {
         return I18n.t('connector.chademo');
       case ConnectorType.DOMESTIC:
         return I18n.t('connector.domestic');
+      case ConnectorType.TYPE_1_CCS:
+        return I18n.t('connector.type1CCS');
+      case ConnectorType.TYPE_1:
+        return I18n.t('connector.type1');
+      case ConnectorType.TYPE_3C:
+        return I18n.t('connector.type3C');
       default:
         return I18n.t('connector.unknown');
     }
@@ -925,41 +949,21 @@ export default class Utils {
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
 
-  public static buildChargingStationStatusMarker(connectors: Connector[], inactive: boolean): any {
-    if (inactive) {
-      return statusMarkerUnavailable;
-    } else if (connectors.find((connector) => connector.status === ChargePointStatus.AVAILABLE)) {
-      return statusMarkerAvailable;
-    } else if (
-      connectors.find((connector) => connector.status === ChargePointStatus.FINISHING) ||
-      connectors.find((connector) => connector.status === ChargePointStatus.PREPARING)
-    ) {
-      return statusMarkerPreparingOrFinishing;
-    } else if (
-      connectors.find((connector) => connector.status === ChargePointStatus.CHARGING) ||
-      connectors.find((connector) => connector.status === ChargePointStatus.OCCUPIED)
-    ) {
-      return statusMarkerChargingOrOccupied;
-    } else if (
-      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EVSE) ||
-      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EV)
-    ) {
-      return statusMarkerSuspended;
-    } else if (connectors.find((connector) => connector.status === ChargePointStatus.FAULTED)) {
-      return statusMarkerFaulted;
+  public static computeSiteMarkerStyle(connectorStats: ConnectorStats) {
+    const connectorStatusStyles = computeConnectorStatusStyles();
+    if (connectorStats.availableConnectors > 0) {
+      return connectorStatusStyles.availableConnectorDescription;
+    } else if (connectorStats.chargingConnectors > 0) {
+      return connectorStatusStyles.chargingConnectorDescription;
+    } else if (connectorStats.unavailableConnectors > 0) {
+      return connectorStatusStyles.unavailableConnectorDescription;
+    } else {
+      return connectorStatusStyles.unavailableConnectorDescription;
     }
   }
 
-  public static buildSiteStatusMarker(connectorStats: ConnectorStats): any {
-    if (connectorStats.availableConnectors > 0) {
-      return statusMarkerAvailable;
-    } else if (connectorStats.chargingConnectors > 0) {
-      return statusMarkerChargingOrOccupied;
-    } else if (connectorStats.unavailableConnectors > 0) {
-      return statusMarkerUnavailable;
-    } else {
-      return statusMarkerUnavailable;
-    }
+  public static concatenateStrings(...args: string[]): string {
+    return args.join('');
   }
 
   private static formatTimer = (value: number): string => {
@@ -978,5 +982,19 @@ export default class Utils {
 
   private static getDeviceLanguage(): string {
     return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
+  }
+
+  public static computeMaxBoundaryDistanceKm(region: Region) {
+    if (region) {
+      const height = region.latitudeDelta * 111;
+      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360
+      return Math.sqrt(height**2 + width**2)/2 * 1000;
+    }
+    return null;
+  }
+
+  public static async getUserCurrentLocation() {
+    const location = await LocationManager.getInstance();
+    return location?.getLocation();
   }
 }

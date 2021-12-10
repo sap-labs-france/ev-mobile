@@ -1,4 +1,4 @@
-﻿{
+{
   "general": {
     "notAuthorized": "You are not authorized to perform this action",
     "migrationError": "Fehler während der Datenmigration",
@@ -37,8 +37,11 @@
     "restoreTenantsConfirm": "Möchten Sie wirklich die ursprüngliche Liste der Organisationen wiederherstellen?",
     "restoreTenantsSuccess": "Liste der Organisationen wurde wieder hergestellt",
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "editTenantSuccess": "Organization updated successfully",
     "registerToNewTenantTitle": "Sign up",
     "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
+    "newTenantAddedDialogTitle": "The organization '{{organizationName}}' has been added",
+    "newTenantAddedDialogDescription": "What would you like to do?",
     "noRecordFound": "Kein Eintrag gefunden",
     "day": "d",
     "hour": "h",
@@ -54,6 +57,7 @@
     "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
     "tenantMissing": "The organization is missing",
     "tenantExists": "Die Organisation '{{tenantName}}' existiert bereits.",
+    "subdomainAlreadyUsed": "This subdomain is already used in the organization '{{tenantName}}'",
     "createdOn": "Erstellt am",
     "createdBy": "Erstellt von",
     "lastChangedOn": "Letzte Änderung am",
@@ -62,8 +66,20 @@
     "errorTitle": "Fehlertitel",
     "errorDescription": "Beschreibung",
     "scanQrCodeSuccess": "Der QR-Code wurde erfolgreich gescannt",
+    "validate": "Validate",
     "default": "Default",
-    "save": "Save"
+    "save": "Save",
+    "update": "Update",
+    "tenants": "Organizations",
+    "reset": "Reset",
+    "selected": "Selected",
+    "results": "Results",
+    "result": "Result",
+    "optional": "Optional",
+    "defaultSettings": "Default Settings",
+    "notApplicable": "N/A",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "sidebar": {
     "home": "Home",
@@ -77,7 +93,8 @@
     "cars": "Cars",
     "badges": "Badges",
     "invoices": "Invoices",
-    "paymentMethods": "Payment Methods"
+    "paymentMethods": "Payment Methods",
+    "qrCodeScanner": "QR-Code Scanner"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -103,6 +120,7 @@
     "registerUnexpectedError": "Neuen Account erstellen",
     "emailAlreadyExists": "Email existiert bereits",
     "accountNotActive": "Ihr Konto ist nicht aktiv",
+    "technicalUserCannotLoginToUI": "Technical user and cannot login using the application",
     "accountAlreadyActive": "Ihr Account ist bereits aktiviert",
     "accountVerifiedSuccess": "Ihr Account wurde erfolgreich aktiviert!",
     "accountPending": "Ihr Konto wurde noch nicht aktiviert, überprüfen Sie Ihre E-Mails!",
@@ -138,10 +156,16 @@
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
     "tenant": "Organisation",
     "createTenantTitle": "Organisation Erstellen",
+    "addTenantTitle": "Add an organization",
+    "addTenantManuallyTitle": "Add an organization manually",
+    "editTenantTitle": "Edit organization",
     "createTenantText": "Wie möchten Sie die Organisation erstelllen?",
+    "addTenantText": "How do you want to add the organization?",
     "tenantSubdomain": "Subdomain",
+    "tenantSubdomainPlaceholder": "Organization subdomain",
     "tenantName": "Name",
-    "tenantEndpoint": "Cloud",
+    "tenantNamePlaceholder": "Organization name",
+    "tenantEndpoint": "Cloud Endpoint",
     "phone": "Telefonnummer",
     "mandatoryPhone": "Die Telefonnummer ist notwendig",
     "mandatoryErrorTitle": "Der Titel ist notwendig",
@@ -165,19 +189,23 @@
     "newOrganizationMessage": "Möchten Sie die neue Organisation '{{tenantName}}' speichern??",
     "unknownChargingStation": "Unbekannte Ladestation '{{chargingStationID}}'",
     "unknownConnector": "Unbekannter Anschluss: '{{connectorID}}'",
-    "scanTenantQrCodeTitle": "Tenant scannen",
+    "scanTenantQrCodeTitle": "Organisation scannen",
     "scanTenantQrCodeSuccess": "Die Organisation '{{tenantName}}' wurde erfolgreich gespeichert",
     "scanChargingStationQrCodeTitle": "Ladestation scannen"
   },
   "users": {
     "userUnexpectedError": "Benutzer kann nicht gelesen werden",
     "noUsers": "No users",
-    "users": "Users(s)"
+    "users": "Users",
+    "user": "User",
+    "selectUser" : "Select User",
+    "selectUsers" : "Select Users"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
     "noPaymentMethod": "No payment method",
-    "paymentMethods": "Payment method(s)",
+    "paymentMethods": "Payment methods",
+    "paymentMethod": "Payment method",
     "addPaymentMethodError": "Failed to add payment method",
     "addPaymentMethodSuccess" : "New payment method added successfully",
     "deletePaymentMethodSuccess": "Payment method removed successfully",
@@ -213,7 +241,32 @@
   "cars": {
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)"
+    "cars": "Cars",
+    "car": "Car",
+    "selectCar": "Select a car",
+    "selectCars": "Select cars",
+    "clearCar": "Clear car",
+    "noCarMessageTitle": "Indicate what car you are using to get better recharges",
+    "addCarTitle": "Add a car",
+    "addCarButton": "Add car",
+    "evse_phase": "Phase",
+    "evse_phases": "Phasen",
+    "invalidVIN": "Invalid VIN",
+    "invalidLicensePlate": "Invalid License Plate",
+    "licensePlate": "Kennzeichen",
+    "converter": "Converter",
+    "model": "Modell",
+    "carAlreadyExistError": "A car with the same VIN and license plate already exists",
+    "userAlreadyAssignedError": "This car already belongs to another user",
+    "addError": "An error occurred while adding the car",
+    "addCarSuccessfully": "Car has been successfully added",
+    "defaultCar": "Standard Fahrzeug",
+    "drivetrainPowerUnit": "ps"
+  },
+  "carTypes": {
+    "poolCar": "Pool Fahrzeug",
+    "privateCar": "Privates Fahrzeug",
+    "companyCar": "Firmenwagen"
   },
   "invoices": {
     "noInvoices": "No Invoices",
@@ -251,7 +304,14 @@
     "connectorNotAvailable": "Der Anschluss der Ladestation ist nicht verfügbar",
     "transactionStopUnexpectedError": "Ladevorgang konnte nicht beendet werden",
     "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
-    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support.",
+    "noBadgeError": "Service unavailable, no charge card registered",
+    "selectUser": "Select User",
+    "selectEV": "Select EV",
+    "selectChargeCard": "Select Charge Card",
+    "chargingSettings": "Charging Settings",
+    "adviceMessage": "Ensure that the cable is connected",
+    "sessionAlreadyInProgressError": "A session is already in progress on this connector"
   },
   "home": {
     "browseSites": "Standorte",
@@ -275,13 +335,9 @@
     "numberOfSessions": "{{nbrSessions}} Ladevorgänge",
     "noSessions": "Kein Ladevorgang gefunden",
     "numberOfSessionsNote": "Anzahl aller Ladevorgänge",
-    "totalConsumptiom": "{{totalConsumptiom}} kW.h",
-    "totalConsumptiomNote": "Gesamte aufgenommene Energie",
-    "totalDuration": "{{totalDuration}}",
+    "totalConsumptionNote": "Gesamte aufgenommene Energie",
     "totalDurationNote": "Dauer aller Ladevorgänge",
-    "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Gesamte Inkativitätsdauer",
-    "totalPrice": "{{totalPrice}}",
     "totalPriceNote": "Gesamtkosten",
     "paymentMethods": "Payment Methods",
     "paymentMethodsNote" : "Browse and create payment methods",
@@ -302,7 +358,8 @@
     "noChargers": "Dieser Standortbereich hat keine Ladestationen",
     "noSiteAreas": "Kein Standortbereich gefunden",
     "siteAreaUnexpectedError": "Standortbereich wurde nicht erkannt",
-    "siteAreas": "Site Area(s)"
+    "siteAreas": "Site Areas",
+    "siteArea": "Site Area"
   },
   "chargers": {
     "title": "Ladestationen",
@@ -340,7 +397,7 @@
     "charging": "Lädt",
     "available": "Verfügbar",
     "unavailable": "Unverfügbar",
-    "notCharging": "Inaktiv",
+    "notCharging": "Not charging",
     "suspendedEV": "EV angehalten",
     "suspendedEVSE": "EVSE angehalten",
     "faulted": "Fehlerhaft",
@@ -349,16 +406,24 @@
     "finishing": "Vollendung",
     "unknown": "Unbekannt",
     "type2": "Type 2",
-    "comboCCS": "Kombo",
-    "chademo": "Chademo",
-    "domestic": "Hausanschluss"
+    "comboCCS": "Type 2 - kombo CCS",
+    "type1": "Type 1",
+    "chademo": "CHAdeMo",
+    "domestic": "Hausanschluss",
+    "type1CCS": "Type 1 - Kombo CCS",
+    "type3C": "Type 3C"
   },
   "tags": {
     "visualID": "Visual ID",
     "noTags": "No badges",
-    "tags": "Badge(s)",
+    "tags": "Badges",
+    "tag": "Badge",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "selectTag": "Select Badge",
+    "selectTags": "Select Badges",
+    "noTagMessageTitle": "No badge",
+    "noTagMessageSubtitle": "A badge is required to recharge"
   },
   "details": {
     "connector": "Anschluss",
@@ -394,6 +459,8 @@
     "instantPowerChartLabel": "Momentane Leistung (kW)",
     "cumulatedChartLabel": "Kumuliert (kW.h)",
     "batteryChartLabel": "Batterieladestand (%)",
+    "gridLimitChartLabel": "Grid Limit (kW)",
+    "cumulatedConsumptionLabel": "Energy Delivered (kW.h)",
     "connectorMax": "Max. Leistung Anschluss (kW)",
     "noData": "Nicht Daten",
     "noSessionInProgress": "Kein laufender Ladvorgang",
@@ -443,5 +510,10 @@
       "subMessage": "Unbekannter Benutzer",
       "longMessage": "Ein unbekanner Benutzer hat auf '{{chargeBoxID}}' gebadgt."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
+    "noUpdateAvailable": "You have the latest version"
   }
 }

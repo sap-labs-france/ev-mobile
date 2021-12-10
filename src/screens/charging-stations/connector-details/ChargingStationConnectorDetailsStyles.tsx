@@ -8,11 +8,16 @@ import Utils from '../../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
+    text: {
+      color: commonColor.textColor,
+      textAlign: 'center'
+    },
     container: {
       flex: 1,
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      width: '100%'
     },
     spinner: {
       flex: 1,
@@ -20,14 +25,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     backgroundImage: {
       width: '100%',
-      height: '125@s'
+      height: '135@s',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    imageInnerContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+      width: '100%'
     },
     lastTransactionContainer: {
       width: '50@s',
       height: '50@s',
-      marginTop: '-85@s',
-      marginLeft: '45@s',
-      marginBottom: '25@s',
       backgroundColor: 'transparent'
     },
     buttonLastTransaction: {
@@ -44,10 +54,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     reportErrorContainer: {
       width: '50@s',
       height: '50@s',
-      marginTop: '-75@s',
-      marginLeft: '250@s',
-      marginBottom: '25@s',
-      backgroundColor: 'transparent'
+      justifyContent: 'center'
     },
     reportErrorButton: {
       width: '50@s',
@@ -55,25 +62,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '25@s',
       borderStyle: 'solid',
       borderWidth: '4@s',
-      borderColor: commonColor.brandDanger,
+      borderColor: commonColor.danger,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
       alignItems: 'center'
     },
     transactionContainer: {
-      width: '100@s',
-      height: '100@s',
       padding: '0@s',
-      paddingBottom: '25@s',
       justifyContent: 'center',
-      alignSelf: 'center',
-      marginTop: '-85@s',
-      backgroundColor: 'transparent'
+      alignSelf: 'center'
     },
     buttonTransaction: {
-      width: '100@s',
-      height: '100@s',
-      borderRadius: '50@s',
+      width: '90@s',
+      height: '90@s',
+      borderRadius: '45@s',
       borderStyle: 'solid',
       borderWidth: '4@s',
       borderColor: commonColor.textColor,
@@ -99,7 +101,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     reportErrorIcon: {
       fontSize: '25@s',
-      color: commonColor.brandDanger
+      color: commonColor.danger
     },
     startTransactionIcon: {
       color: commonColor.success
@@ -114,16 +116,37 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.buttonDisabledBg,
       backgroundColor: 'transparent'
     },
-    scrollViewContainer: {
+    selectUserCarBadgeContainer: {
       flexDirection: 'column',
-      justifyContent: 'flex-start',
       alignItems: 'center',
-      paddingTop: '20@s'
+      flex: 1,
+      width: '100%'
+    },
+    connectorInfoSettingsContainer: {
+      flex: 1
+    },
+    scrollViewContainer: {
+      width: '100%',
+      height: 'auto'
+    },
+    chargingSettingsContainer: {
+      marginHorizontal: '2.5%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 'auto',
+      paddingTop: '10@s'
     },
     rowContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      height: '100@s'
+      height: '100@s',
+      alignSelf: 'center',
+      width: '100%'
+    },
+    rowUserCarBadgeContainer: {
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     columnContainer: {
       flexDirection: 'column',
@@ -169,35 +192,164 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '25@s',
       color: commonColor.textColor
     },
-    userImage: {
-      height: '52@s',
-      width: '52@s',
-      alignSelf: 'center',
-      marginBottom: '5@s',
-      borderRadius: '26@s',
-      borderWidth: '3@s',
-      borderColor: commonColor.textColor
+    downArrow: {
+      fontSize: '30@s'
+    },
+    listContainer: {
+      width: '100%',
+      height: '100%'
     },
     info: {
       color: commonColor.textColor,
       borderColor: commonColor.textColor
     },
     success: {
-      color: commonColor.brandSuccess
+      color: commonColor.success
     },
     warning: {
-      color: commonColor.brandWarning
+      color: commonColor.warning
     },
     danger: {
-      color: commonColor.brandDanger
+      color: commonColor.danger
     },
     disabled: {
       color: commonColor.buttonDisabledBg,
       borderColor: commonColor.buttonDisabledBg
     },
+    messageText: {
+      textAlign: 'left',
+      fontSize: '13@s'
+    },
     errorMessage: {
-      color: commonColor.brandDanger,
-      textAlign: 'center'
+      color: commonColor.dangerLight,
+      fontSize: '14@s'
+    },
+    noPaymentMethodIcon: {
+      color: commonColor.dangerLight,
+      marginHorizontal: '10@s',
+      fontSize: '50@s'
+    },
+    noItemContainer: {
+      minHeight: '90@s',
+      padding: '10@s',
+      justifyContent: 'flex-start'
+    },
+    noCarContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    noCarIcon: {
+      color: commonColor.textColor,
+      fontSize: '50@s',
+      marginHorizontal: '10@s'
+    },
+    noTagContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderColor: commonColor.dangerLight,
+      borderTopWidth: 0.8,
+      borderLeftWidth: 0.8,
+      borderRightWidth: 0.8,
+      borderBottomWidth: 0.8
+    },
+    noTagIcon: {
+      color: commonColor.dangerLight,
+      fontSize: '50@s',
+      marginHorizontal: '10@s'
+    },
+    adviceText: {
+      fontSize: '12@s',
+      textAlign: 'center',
+      marginLeft: '10@s',
+      color: commonColor.light
+    },
+    messageContainer: {
+      backgroundColor: commonColor.listItemBackground,
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: '12@s',
+      width: '95%',
+      borderRadius: '8@s',
+      marginBottom: '10@s'
+    },
+    adviceMessageContainer: {
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      padding: '3@s',
+      marginBottom: 0,
+      marginVertical: '4@s',
+      justifyContent: 'center'
+    },
+    adviceMessageIcon: {
+      fontSize: '25@s',
+      color: commonColor.light
+    },
+    errorMessageContainer: {
+      borderColor: commonColor.dangerLight,
+      borderWidth: 0.8
+    },
+    inputContainer: {
+      marginBottom: '7@s'
+    },
+    selectionContainer: {
+      width: '100%'
+    },
+    column: {
+      flexDirection: 'column',
+      flex: 1
+    },
+    linkText: {
+      color: commonColor.brandPrimaryLight,
+      alignItems: 'center'
+    },
+    switchContainer: {
+      flexDirection: 'row',
+      marginTop: '5@s',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      marginBottom: '20@s',
+      width: '100%',
+      marginLeft: '5%'
+    },
+    switchLabel: {
+      fontSize: '14@s',
+      marginRight: '10@s'
+    },
+    errorAsterisque: {
+      color: commonColor.danger,
+      fontSize: '20@s'
+    },
+    plusSign: {
+      fontSize: '25@s',
+      color: commonColor.brandPrimaryLight,
+      marginRight: '5@s'
+    },
+    addItemContainer: {
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'flex-start',
+      alignItems: 'center'
+    },
+    linkLabel: {
+      flex: 1
+    },
+    accordion: {
+      width: '100%',
+      marginBottom: '10@s',
+      paddingLeft: '10@s',
+      borderTopWidth: 0.8,
+      borderTopColor: commonColor.disabledDark,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    accordionText: {
+      color: commonColor.textColor,
+      fontSize: '15@s'
+    },
+    accordionIcon: {
+      color: commonColor.textColor,
+      fontSize: '35@s'
     }
   });
   const portraitStyles = {};

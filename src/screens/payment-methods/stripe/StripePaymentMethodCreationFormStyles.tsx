@@ -39,7 +39,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.buttonBg
     },
     spinner: {
-      color: commonColor.brandDisabledDark,
+      color: commonColor.disabledDark,
       paddingTop: '15@s'
     },
     buttonDisabled: {

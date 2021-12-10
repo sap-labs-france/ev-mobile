@@ -1,5 +1,4 @@
 import React from 'react';
-import { BackHandler } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ScreenFilters from '../../components/search/filter/screen/ScreenFilters';
@@ -7,6 +6,7 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
+import { BackHandler, NativeEventSubscription } from 'react-native';
 
 export interface Props extends BaseProps {}
 
@@ -20,6 +20,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   private screenFilters: ScreenFilters;
   private componentFocusUnsubscribe: () => void;
   private componentBlurUnsubscribe: () => void;
+  backHandler: NativeEventSubscription;
 
   public constructor(props: Props) {
     super(props);
@@ -31,26 +32,25 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public async componentDidMount() {
+    const { navigation } = this.props;
     // Get providers
     this.centralServerProvider = await ProviderFactory.getProvider();
-    this.securityProvider = this.centralServerProvider.getSecurityProvider();
+    this.securityProvider = this.centralServerProvider?.getSecurityProvider();
     // Add listeners
-    this.componentFocusUnsubscribe = this.props.navigation.addListener('focus', this.componentDidFocus.bind(this));
-    this.componentBlurUnsubscribe = this.props.navigation.addListener('blur', this.componentDidBlur.bind(this));
-    // Remove Backhandler for Android
-    BackHandler.removeEventListener('hardwareBackPress', this.onBack.bind(this));
+    this.componentFocusUnsubscribe = navigation?.addListener('focus', () => this.componentDidFocus());
+    this.componentBlurUnsubscribe = navigation?.addListener('blur', () => this.componentDidBlur());
+    // Bind the back button to the onBack method (Android)
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
     // Ok
     this.mounted = true;
   }
 
   public componentWillUnmount() {
     this.mounted = false;
-    if (this.componentFocusUnsubscribe) {
-      this.componentFocusUnsubscribe();
-    }
-    if (this.componentBlurUnsubscribe) {
-      this.componentBlurUnsubscribe();
-    }
+    this.componentFocusUnsubscribe?.();
+    this.componentBlurUnsubscribe?.();
+    // Unbind the back button and reset its default behavior (Android)
+    this.backHandler.remove();
   }
 
   public setHeaderComponent(headerComponent: HeaderComponent) {
@@ -82,13 +82,17 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public onBack(): boolean {
-    // Not Handled: has to be taken in the sub-classes
-    return false;
+    this.props.navigation.goBack();
+    return true;
   }
 
-  public componentDidFocus() {
-    BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
+  public componentDidFocus(): void {
+    // Bind the back button to the onBack method (Android)
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
   }
 
-  public async componentDidBlur() {}
+  public componentDidBlur(): void {
+    // Unbind the back button and reset its default behavior (Android)
+    this.backHandler.remove();
+  }
 }

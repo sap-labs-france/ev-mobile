@@ -115,13 +115,6 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
     this.setState({ refreshing: false });
   };
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
-  };
-
   public requestChargingStationOcppParametersConfirm() {
     const { chargingStation } = this.state;
     Alert.alert(
@@ -166,13 +159,6 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         <Button
           disabled={chargingStation ? chargingStation.inactive : true}

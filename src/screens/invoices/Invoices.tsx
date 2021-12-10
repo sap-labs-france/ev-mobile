@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import i18n from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
@@ -81,13 +80,6 @@ export default class Invoices extends BaseScreen<Props, State> {
     return null;
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
-    // Do not bubble up
-    return true;
-  };
-
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
@@ -125,15 +117,8 @@ export default class Invoices extends BaseScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           title={i18n.t('sidebar.invoices')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${i18n.t('invoices.invoices')}` : null}
+          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
           navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />

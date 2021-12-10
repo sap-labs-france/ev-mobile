@@ -9,122 +9,136 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   let commonStyles: any;
   commonStyles = ScaledSheet.create({
-    container: {
-      width: '100%',
-      flexDirection: 'column',
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
-    },
     selected: {
-      opacity: 0.3
+      backgroundColor: commonColor.listItemSelected
+    },
+    unselected: {
+      backgroundColor: commonColor.listItemBackground
     },
     header: {
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'space-between',
-      backgroundColor: commonColor.listHeaderBgColor,
-      borderBottomColor: commonColor.listBorderColor,
       padding: '5@s',
-      borderBottomWidth: 1
+      paddingRight: '10@s'
     },
-    carNameContainer: {
-      width: '72%'
-    },
-    licensePlateContainer: {
-      width: '28%'
+    statusNameContainer: {
+      flexDirection: 'row',
+      flex: 1,
+      flexWrap: 'wrap',
+      alignItems: 'center'
     },
     headerText: {
       fontSize: '15@s',
       color: commonColor.textColor
     },
-    licensePlate: {
-      alignSelf: 'flex-end'
-    },
     carName: {
-      alignSelf: 'flex-start'
+      alignSelf: 'flex-start',
+      fontWeight: 'bold'
     },
-    carContainer: {
+    defaultContainer: {
+      backgroundColor: commonColor.primary,
+      borderRadius: '2@s',
+      justifyContent: 'center'
+    },
+    defaultText: {
+      fontSize: '10@s',
+      color: commonColor.light,
+      paddingHorizontal: '3@s'
+    },
+    licensePlate: {
+      textAlign: 'right',
+      marginLeft: '20@s'
+    },
+    bottomContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '115@s',
+      flex: 1,
       width: '100%'
+    },
+    imageStyle: {
+      flex: 1,
+      height: '100%',
+      padding: 0,
+      borderBottomLeftRadius: '8@s'
+    },
+    noImageContainer: {
+      flex: 1,
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    carImagePlaceholder: {
+      fontSize: '75@s'
     },
     carInfos: {
       flexDirection: 'column',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
       width: '60%',
       height: '100%',
-      paddingVertical: '10@s',
       paddingHorizontal: '5@s'
     },
     userContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '100%',
-      marginTop: '5@s'
+      marginLeft: '21@s',
+      marginBottom: '7@s'
     },
     avatarContainer: {
-      width: '25%',
       justifyContent: 'flex-end',
       flexDirection: 'row'
-    },
-    userNameContainer: {
-      marginLeft: '10@s',
-      width: '67%',
-      flexWrap: 'wrap',
-      flexDirection: 'row'
-    },
-    userName: {
-      marginRight: '5@s'
     },
     text: {
       color: commonColor.textColor,
       fontSize: '13@s',
-      textAlign: 'left'
+      width: '100%',
+      textAlign: 'center'
+    },
+    userName: {
+      marginRight: '5@s',
+      textAlign: 'left',
+      flex: 1,
+      marginLeft: '5@s'
     },
     powerDetailsContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: '100%'
+      width: '100%',
+      paddingBottom: '5@s'
     },
     columnContainer: {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'space-between',
-      width: '33%'
+      paddingHorizontal: '2@s',
+      flex: 1
+    },
+    columnContainerBorderRight: {
     },
     iconContainer: {
       flexDirection: 'row',
+      width: '100%',
       justifyContent: 'center',
       alignItems: 'center'
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '25@s'
+      fontSize: '20@s',
+      width: 'auto'
     },
     currentTypeIcon: {
-      fontSize: '10@s',
-      color: commonColor.textColor
+      fontSize: '10@s'
     },
-    imageStyle: {
-      width: '40%',
-      height: '100%',
-      margin: 0,
-      padding: 0
+    powerDetailsText: {
+      fontSize: '12@s'
     }
   });
   const portraitStyles = {};
-  const landscapeStyles = {
-    avatarContainer: {
-      width: '20%'
-    },
-    userNameContainer: {
-      width: '80%'
-    }
-  };
+  const landscapeStyles = ScaledSheet.create({});
   return ResponsiveStylesSheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles),
     portrait: deepmerge(commonStyles, portraitStyles)

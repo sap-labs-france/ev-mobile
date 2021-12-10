@@ -145,6 +145,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       this.setState({ spinnerClearCache: false });
     } catch (error) {
       this.setState({ spinnerClearCache: false });
+      Message.showError(I18n.t('details.denied'));
       // Other common Error
       await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
@@ -207,13 +208,6 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
     }
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
-    // Do not bubble up
-    return true;
-  };
-
   public refresh = async () => {
     if (this.isMounted()) {
       const spinnerConnectors = new Map();
@@ -248,13 +242,6 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
-          leftAction={() => this.onBack()}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
         />
         <ScrollView contentContainerStyle={style.scrollViewContainer}>
           <View style={style.viewContainer}>
@@ -262,9 +249,8 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
               <Button
                 disabled={chargingStationIsDisabled}
                 block
-                danger={!chargingStationIsDisabled}
                 iconLeft
-                style={style.actionButton}
+                style={[style.actionButton, chargingStationIsDisabled ? null : style.resetButton]}
                 onPress={() => this.resetHardConfirm()}>
                 {spinnerResetHard ? <Spinner color="grey" /> : <Icon style={style.actionButtonIcon} type="MaterialIcons" name="repeat" />}
                 <Text uppercase={false} style={style.actionButtonText}>
@@ -298,8 +284,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                 disabled={chargingStationIsDisabled}
                 block
                 iconLeft
-                warning={!chargingStationIsDisabled}
-                style={style.actionButton}
+                style={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
                 onPress={() => this.resetSoftConfirm()}>
                 {spinnerResetSoft ? (
                   <Spinner color="grey" />
@@ -316,8 +301,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                 disabled={chargingStationIsDisabled}
                 block
                 iconLeft
-                warning={!chargingStationIsDisabled}
-                style={style.actionButton}
+                style={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
                 onPress={() => this.clearCacheConfirm()}>
                 {spinnerClearCache ? <Spinner color="grey" /> : <Icon style={style.actionButtonIcon} type="MaterialIcons" name="refresh" />}
                 <Text uppercase={false} style={style.actionButtonText}>

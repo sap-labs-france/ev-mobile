@@ -49,7 +49,6 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
 
   public render() {
     const style = computeStyleSheet();
-    const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     return (
       <View style={style.container}>
@@ -59,12 +58,13 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
             this.textInput = ref;
           }}
           selectionColor={commonColor.textColor}
-          style={formStyle.inputField}
+          style={style.inputField}
+          autoCorrect={false}
           placeholder={I18n.t('general.search')}
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
-        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this.clearSearch()} />
+        <Icon type="Entypo" name="erase" style={style.icon} onPress={() => this.clearSearch()} />
       </View>
     );
   }

@@ -37,8 +37,11 @@
     "restoreTenantsConfirm": "Vuoi veramente ripristinare la lista di organizzazioni iniziale?",
     "restoreTenantsSuccess": "L'elenco delle organizzazioni è stato ripristinato",
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "editTenantSuccess": "Organization updated successfully",
     "registerToNewTenantTitle": "Sign up",
     "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
+    "newTenantAddedDialogTitle": "L'organisation '{{organizationName}}' a été créée",
+    "newTenantAddedDialogDescription": "Que souhaitez-vous faire?",
     "noRecordFound": "Nessun record trovato",
     "day": "g",
     "hour": "h",
@@ -54,6 +57,7 @@
     "mustLoggedToTenant": "Devi essere registrato nell'organizzazione '{{tenantName}}'",
     "tenantMissing": "Manca l'organizzazione",
     "tenantExists": "Organizzazione '{{tenantName}}' già esistente.",
+    "subdomainAlreadyUsed": "This subdomain is already used in the organization '{{tenantName}}'",
     "createdOn": "Creato Il",
     "createdBy": "Creato Da",
     "lastChangedOn": "Ultima Modifica Il",
@@ -62,8 +66,20 @@
     "errorTitle": "Titolo Errore",
     "errorDescription": "Descrizione",
     "scanQrCodeSuccess": "Il codice QR è stato scansionato con successo",
+    "validate": "Validate",
     "default": "Default",
-    "save": "Save"
+    "save": "Save",
+    "update": "Update",
+    "tenants": "Organizations",
+    "reset": "Reset",
+    "selected": "Selected",
+    "results": "Results",
+    "result": "Result",
+    "optional": "Optional",
+    "defaultSettings": "Default Settings",
+    "notApplicable": "N/A",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "sidebar": {
     "home": "Home",
@@ -77,7 +93,8 @@
     "badges": "Badges",
     "cars": "Cars",
     "invoices": "Invoices",
-    "paymentMethods": "Payment Methods"
+    "paymentMethods": "Payment Methods",
+    "qrCodeScanner": "QR-Code Scanner"
   },
 	"authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -103,6 +120,7 @@
     "registerUnexpectedError": "Non posso creare un'account",
     "accountLocked": "Il tuo account è bloccato",
     "accountNotActive": "Il tuo account non è attivo",
+    "technicalUserCannotLoginToUI": "Technical user and cannot login using the application",
     "accountAlreadyActive": "Il tuo account è già attivo",
     "accountVerifiedSuccess": "Il tuo account è stato attivato con successo!",
     "accountPending": "Il tuo account è in sospeso! Controlla la tua email",
@@ -138,10 +156,16 @@
     "passwordNotMatch": "La password non corrisponde",
     "tenant": "Scegli una Organizzazione",
     "createTenantTitle": "Crea Organizzazione",
+    "addTenantTitle": "Add an organization",
+    "addTenantManuallyTitle": "Add an organization manually",
+    "editTenantTitle": "Edit organization",
     "createTenantText": "Come vuoi creare l'organizzazione?",
+    "addTenantText": "How do you want to add the organization?",
     "tenantSubdomain": "Sottodominio",
+    "tenantSubdomainPlaceholder": "Organization subdomain",
     "tenantName": "Nome",
-    "tenantEndpoint": "Cloud",
+    "tenantNamePlaceholder": "Organization name",
+    "tenantEndpoint": "Cloud Endpoint",
     "phone" : "Telefono",
     "mandatoryPhone": "Il numero di telefono è obbligatorio",
     "mandatoryErrorTitle": "Il titolo è obbligatorio",
@@ -165,24 +189,28 @@
     "newOrganizationMessage": "Vuoi salvare la nuova organizzazione '{{tenantName}}'?",
     "unknownChargingStation": "Stazione di Ricarica '{{chargingStationID}}' Sconosciuta",
     "unknownConnector": "ID Presa '{{connectorID}}' sconosciuto",
-    "scanTenantQrCodeTitle": "Scansiona Tenant",
+    "scanTenantQrCodeTitle": "Scansiona Organizzazione",
     "scanTenantQrCodeSuccess": "L'organizzazione '{{tenantName}}' è stata scansionata con successo",
     "scanChargingStationQrCodeTitle": "Scansiona Stazione di Ricarica"
   },
   "users": {
     "userUnexpectedError": "Non posso leggere gli utenti",
     "noUsers": "No users",
-    "users": "Users(s)"
+    "users": "Users",
+    "user": "User",
+    "selectUser" : "Select User",
+    "selectUsers" : "Select Users"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
     "noPaymentMethod": "No payment method",
-    "paymentMethods": "Payment method(s)",
+    "paymentMethods": "Payment methods",
+    "paymentMethod": "Payment method",
     "addPaymentMethodError": "Failed to add payment method",
     "addPaymentMethodSuccess" : "New payment method added successfully",
     "deletePaymentMethodSuccess": "Payment method removed successfully",
     "deletePaymentMethodTitle": "Delete payment method",
-    "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}}",
+    "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}} ?",
     "addPaymentMethod": "Add Payment Method",
     "paymentMethodCreationRules": "For security reasons, we do not store nor process your bank and card details directly. The collected information is sent via a secure channel to our STRIPE partner which provides the billing and payment infrastructure.",
     "paymentMethodsCreationCheckboxText": " I have read the End-user License Agreement and agree that my bank details will be used for paying future EV Charging Sessions."
@@ -213,7 +241,32 @@
   "cars": {
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)"
+    "cars": "Cars",
+    "car": "Car",
+    "selectCar": "Select a car",
+    "selectCars": "Select cars",
+    "clearCar": "Clear car",
+    "noCarMessageTitle": "Indicate what car you are using to get better recharges",
+    "addCarTitle": "Ajouter une voiture",
+    "addCarButton": "Ajouter",
+    "evse_phase": "Fase",
+    "evse_phases": "Fasi",
+    "invalidVIN": "Invalid VIN",
+    "invalidLicensePlate": "Invalid License Plate",
+    "licensePlate": "Targa",
+    "converter": "Converter",
+    "model": "Modello",
+    "carAlreadyExistError": "A car with the same VIN and license plate already exists",
+    "userAlreadyAssignedError": "This car already belongs to another user",
+    "addError": "An error occurred while adding the car",
+    "addCarSuccessfully": "Car has been successfully added",
+    "defaultCar": "Veicolo Predefinito",
+    "drivetrainPowerUnit": "cv"
+  },
+  "carTypes": {
+    "poolCar": "Auto di Gruppo",
+    "privateCar": "Veicolo Privato",
+    "companyCar": "Auto Aziendale"
   },
   "invoices": {
     "noInvoices": "No Invoices",
@@ -251,7 +304,14 @@
     "connectorNotAvailable": "La presa di questa stazione di ricarica non è disponibile",
     "transactionStopUnexpectedError": "Non posso fermare la sessione",
     "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
-    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support.",
+    "noBadgeError": "Service unavailable, no charge card registered",
+    "selectUser": "Select User",
+    "selectEV": "Select EV",
+    "selectChargeCard": "Select Charge Card",
+    "chargingSettings": "Charging Settings",
+    "adviceMessage": "Ensure that the cable is connected",
+    "sessionAlreadyInProgressError": "A session is already in progress on this connector"
   },
   "home": {
     "browseSites": "Siti",
@@ -275,13 +335,9 @@
     "numberOfSessions": "{{nbrSessions}} Sessioni",
     "noSessions": "Nessuna Sessione trovata",
     "numberOfSessionsNote": "Numero totale di Sessioni",
-    "totalConsumptiom": "{{totalConsumptiom}} kW.h",
-    "totalConsumptiomNote": "Energia totale consumata",
-    "totalDuration": "{{totalDuration}}",
+    "totalConsumptionNote": "Energia totale consumata",
     "totalDurationNote": "Durata totale Sessioni",
-    "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Durata Totale Inattività",
-    "totalPrice": "{{totalPrice}}",
     "totalPriceNote": "Costo totale",
     "paymentMethods": "Payment Methods",
     "paymentMethodsNote" : "Browse and create payment methods",
@@ -302,7 +358,8 @@
     "noChargers": "Questa Area del Sito non ha Caricatori",
     "noSiteAreas": "Nessuna Area del Sito trovata",
     "siteAreaUnexpectedError": "Impossibile leggere le aree del sito",
-    "siteAreas": "Site Area(s)"
+    "siteAreas": "Site Areas",
+    "siteArea": "Site Area"
   },
   "chargers": {
     "title": "Stazione di Ricarica",
@@ -340,7 +397,7 @@
     "charging": "In Carica",
     "available": "Disponibile",
     "unavailable": "Non Disponibile",
-    "notCharging": "Inattiva",
+    "notCharging": "Not charging",
     "suspendedEV": "EV Sospeso",
     "suspendedEVSE": "EVSE Sospeso",
     "faulted": "Difettosa",
@@ -349,16 +406,24 @@
     "finishing": "Finendo",
     "unknown": "Sconosciuto",
     "type2": "Tipo 2",
-    "comboCCS": "Combo",
-    "chademo": "Chademo",
-    "domestic": "Domestico"
+    "comboCCS": "Tipo 2 - Combo CCS",
+    "type1": "Type 1",
+    "chademo": "CHAdeMo",
+    "domestic": "Domestico",
+    "type1CCS": "Tipo 1 - Combo CCS",
+    "type3C": "Type 3C"
   },
   "tags": {
     "visualID": "Visual ID",
     "noTags": "No badges",
-    "tags": "Badge(s)",
+    "tags": "Badges",
+    "tag": "Badge",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "selectTag": "Select Badge",
+    "selectTags": "Select Badges",
+    "noTagMessageTitle": "No badge",
+    "noTagMessageSubtitle": "A badge is required to recharge"
   },
   "details": {
     "connector": "Presa",
@@ -394,6 +459,8 @@
     "instantPowerChartLabel": "Potenza Istantanea (kW)",
     "cumulatedChartLabel": "Cumulata (kW.h)",
     "batteryChartLabel": "Livello Batteria (%)",
+    "gridLimitChartLabel": "Grid Limit (kW)",
+    "cumulatedConsumptionLabel": "Energy Delivered (kW.h)",
     "connectorMax": "Potenza Massima Presa (kW)",
     "noData": "Nessun Dato",
     "noSessionInProgress": "Nessuna Sessione in corso",
@@ -443,5 +510,10 @@
       "subMessage": "Utente Sconosciuto",
       "longMessage": "Un utente sconosciuto si è appena registrato su '{{chargeBoxID}}'."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
+    "noUpdateAvailable": "You have the latest version"
   }
 }

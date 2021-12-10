@@ -5,31 +5,27 @@ export default interface Tenant extends CreatedUpdatedProps, ListItem {
   name: string;
   email: string;
   subdomain: string;
-  components: {
-    ocpi?: {
-      active: boolean;
-      type: string;
-    };
-    organization?: {
-      active: boolean;
-    };
-    pricing?: {
-      active: boolean;
-      type: string;
-    };
-    refund?: {
-      active: boolean;
-      type: string;
-    };
-    statistics?: {
-      active: boolean;
-      type: string;
-    };
-    analytics?: {
-      active: boolean;
-      type: string;
-    };
-  };
+  components: TenantComponent;
+}
+
+export interface TenantComponent {
+  ocpi?: TenantComponentContent;
+  oicp?: TenantComponentContent;
+  organization?: TenantComponentContent;
+  pricing?: TenantComponentContent;
+  billing?: TenantComponentContent;
+  refund?: TenantComponentContent;
+  statistics?: TenantComponentContent;
+  analytics?: TenantComponentContent;
+  smartCharging?: TenantComponentContent;
+  asset?: TenantComponentContent;
+  car?: TenantComponentContent;
+  carConnector?: TenantComponentContent;
+}
+
+export interface TenantComponentContent {
+  active: boolean;
+  type: string;
 }
 
 export interface TenantConnection {
@@ -42,4 +38,19 @@ export interface EndpointCloud {
   id: string;
   name: string;
   endpoint: string;
+}
+
+export enum TenantComponents {
+  OCPI = 'ocpi',
+  OICP = 'oicp',
+  REFUND = 'refund',
+  PRICING = 'pricing',
+  ORGANIZATION = 'organization',
+  STATISTICS = 'statistics',
+  ANALYTICS = 'analytics',
+  BILLING = 'billing',
+  ASSET = 'asset',
+  SMART_CHARGING = 'smartCharging',
+  CAR = 'car',
+  CAR_CONNECTOR = 'carConnector'
 }

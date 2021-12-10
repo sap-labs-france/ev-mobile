@@ -13,7 +13,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     content: {
-      flex: 1
+      flex: 1,
+      marginHorizontal: '2.5%'
+    },
+    searchBar: {
+      marginVertical: '10@s'
     },
     spinner: {
       flex: 1,
