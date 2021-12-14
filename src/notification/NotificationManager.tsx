@@ -202,45 +202,36 @@ export default class NotificationManager {
     switch (notification.data.notificationType) {
       // End of Transaction
       case UserNotificationType.END_OF_SESSION:
-        this.navigator.dispatch(
-          StackActions.replace('AppDrawerNavigator', {
-            screen: 'TransactionHistoryNavigator',
-            initial: false,
-            params: {
-              screen: 'TransactionDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+        this.navigator.navigate('TransactionHistoryNavigator', {screen: "TransactionDetailsTabs", key: `${Utils.randomNumber()}`,
+          params: {
               params: {
-                params: {
-                  transactionID: Utils.convertToInt(notification.data.transactionId)
-                }
+                transactionID: Utils.convertToInt(notification.data.transactionId)
               }
-            }
-          })
-        );
+            }});
         break;
       // Session In Progress
       case UserNotificationType.SESSION_STARTED:
       case UserNotificationType.END_OF_CHARGE:
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
-        this.navigator.dispatch(
-          StackActions.replace('AppDrawerNavigator', {
-            screen: 'TransactionInProgressNavigator',
-            initial: false,
+        this.navigator.navigate('TransactionInProgressNavigator', {screen: "ChargingStationConnectorDetailsTabs", key: `${Utils.randomNumber()}`,
+          params: {
             params: {
-              screen: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
-              params: {
-                params: {
-                  chargingStationID: notification.data.chargeBoxID,
-                  connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
-                }
-              }
+              chargingStationID: notification.data.chargeBoxID,
+              connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
             }
-          })
-        );
+        }
+        });
         break;
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
       case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
+/*        this.navigator.navigate('ChargingStationsNavigator', {screen: "ChargingStationConnectorDetailsTabs", key: `${Utils.randomNumber()}`,
+          params: {
+            params: {
+              chargingStationID: notification.data.chargeBoxID,
+              connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+            }
+          }
+        });*/
         this.navigator.dispatch(
           StackActions.replace('AppDrawerNavigator', {
             screen: 'ChargingStationsNavigator',
@@ -261,6 +252,14 @@ export default class NotificationManager {
       // Charger just connected
       case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
       case UserNotificationType.CHARGING_STATION_REGISTERED:
+        /* this.navigator.navigate('ChargingStationsNavigator', {screen: "ChargingStationConnectorDetailsTabs", key: `${Utils.randomNumber()}`,
+          params: {
+            params: {
+              chargingStationID: notification.data.chargeBoxID,
+              connectorID: 1
+            }
+          }
+        });*/
         this.navigator.dispatch(
           StackActions.replace('AppDrawerNavigator', {
             screen: 'ChargingStationsNavigator',
@@ -280,6 +279,8 @@ export default class NotificationManager {
         break;
       // Go to Charger list
       case UserNotificationType.OFFLINE_CHARGING_STATION:
+        /* this.navigator.navigate('ChargingStationsNavigator', {key: `${Utils.randomNumber()}`,
+        });*/
         this.navigator.dispatch(
           StackActions.replace('AppDrawerNavigator', {
             screen: 'ChargingStationsNavigator',
