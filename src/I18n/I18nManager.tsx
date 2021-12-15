@@ -4,6 +4,7 @@ import 'moment/locale/en-gb';
 import 'moment/locale/es';
 import 'moment/locale/fr';
 import 'moment/locale/it';
+import 'moment/locale/cs';
 import 'moment/locale/pt-br';
 
 import i18n from 'i18n-js';
@@ -13,7 +14,7 @@ import { findBestAvailableLanguage, usesMetricSystem } from 'react-native-locali
 
 import Constants from '../utils/Constants';
 import Utils from '../utils/Utils';
-import czJsonLanguage from './languages/cz.json';
+import csJsonLanguage from './languages/cs.json';
 import deJsonLanguage from './languages/de.json';
 import enJsonLanguage from './languages/en.json';
 import esJsonLanguage from './languages/es.json';
@@ -79,7 +80,7 @@ export default class I18nManager {
       es: () => esJsonLanguage,
       pt: () => ptJsonLanguage,
       it: () => itJsonLanguage,
-      cz: () => czJsonLanguage
+      cs: () => csJsonLanguage
     };
     // Fallback if no available language fits
     i18n.fallbacks = true;
@@ -93,7 +94,7 @@ export default class I18nManager {
     i18n.translations.es = esJsonLanguage;
     i18n.translations.pt = ptJsonLanguage;
     i18n.translations.it = itJsonLanguage;
-    i18n.translations.cz = czJsonLanguage;
+    i18n.translations.cs = csJsonLanguage;
     // Update layout direction
     I18nReactNativeManager.forceRTL(isRTL);
     // Default
