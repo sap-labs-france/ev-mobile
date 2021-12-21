@@ -55,6 +55,7 @@ export default class NotificationManager {
     if (enabled) {
       const fcmToken = await firebase.messaging().getToken();
       if (fcmToken) {
+        console.log(fcmToken);
         this.token = fcmToken;
       }
     }
@@ -224,70 +225,31 @@ export default class NotificationManager {
         break;
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
       case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
-/*        this.navigator.navigate('ChargingStationsNavigator', {screen: "ChargingStationConnectorDetailsTabs", key: `${Utils.randomNumber()}`,
+        this.navigator.navigate('ChargingStationsNavigator', {screen: "ChargingStationConnectorDetailsTabs", key: `${Utils.randomNumber()}`,
           params: {
             params: {
               chargingStationID: notification.data.chargeBoxID,
               connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
             }
           }
-        });*/
-        this.navigator.dispatch(
-          StackActions.replace('AppDrawerNavigator', {
-            screen: 'ChargingStationsNavigator',
-            initial: false,
-            params: {
-              screen: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
-              params: {
-                params: {
-                  chargingStationID: notification.data.chargeBoxID,
-                  connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
-                }
-              }
-            }
-          })
-        );
+        });
         break;
       // Charger just connected
       case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
       case UserNotificationType.CHARGING_STATION_REGISTERED:
-        /* this.navigator.navigate('ChargingStationsNavigator', {screen: "ChargingStationConnectorDetailsTabs", key: `${Utils.randomNumber()}`,
+         this.navigator.navigate('ChargingStationsNavigator', {screen: "ChargingStationConnectorDetailsTabs", key: `${Utils.randomNumber()}`,
           params: {
             params: {
               chargingStationID: notification.data.chargeBoxID,
               connectorID: 1
             }
           }
-        });*/
-        this.navigator.dispatch(
-          StackActions.replace('AppDrawerNavigator', {
-            screen: 'ChargingStationsNavigator',
-            initial: false,
-            params: {
-              screen: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
-              params: {
-                params: {
-                  chargingStationID: notification.data.chargeBoxID,
-                  connectorID: 1
-                }
-              }
-            }
-          })
-        );
+        });
         break;
       // Go to Charger list
       case UserNotificationType.OFFLINE_CHARGING_STATION:
-        /* this.navigator.navigate('ChargingStationsNavigator', {key: `${Utils.randomNumber()}`,
-        });*/
-        this.navigator.dispatch(
-          StackActions.replace('AppDrawerNavigator', {
-            screen: 'ChargingStationsNavigator',
-            initial: false,
-            key: `${Utils.randomNumber()}`
-          })
-        );
+         this.navigator.navigate('ChargingStationsNavigator', {key: `${Utils.randomNumber()}`,
+        });
         break;
       // No need to navigate
       case UserNotificationType.UNKNOWN_USER_BADGED:
