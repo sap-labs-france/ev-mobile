@@ -77,9 +77,9 @@ export default class Tags extends SelectableList<Tag> {
       // Get the Tags
       const tags = await this.centralServerProvider.getTags(params, { skip, limit }, [sorting ?? '-createdOn']);
       // Get total number of records
-      if (tags.count === -1) {
+      if (tags?.count === -1) {
         const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
-        tags.count = tagsNbrRecordsOnly.count;
+        tags.count = tagsNbrRecordsOnly?.count;
       }
       return tags;
     } catch (error) {

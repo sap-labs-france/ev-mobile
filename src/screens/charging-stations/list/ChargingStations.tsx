@@ -157,16 +157,16 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         ConnectorStatus: filters.connectorStatus,
         ConnectorType: filters.connectorType,
         WithSiteArea: true,
-        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation.latitude,
-        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation.longitude,
+        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
+        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
         LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
       };
       // Get with the Site Area
       chargingStations = await this.centralServerProvider.getChargingStations(params, { skip, limit }, ['id']);
       // Get total number of records
-      if (chargingStations.count === -1) {
+      if (chargingStations?.count === -1) {
         const chargingStationsNbrRecordsOnly = await this.centralServerProvider.getChargingStations(params, Constants.ONLY_RECORD_COUNT);
-        chargingStations.count = chargingStationsNbrRecordsOnly.count;
+        chargingStations.count = chargingStationsNbrRecordsOnly?.count;
       }
     } catch (error) {
       // Other common Error

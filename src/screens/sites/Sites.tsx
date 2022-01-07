@@ -27,12 +27,6 @@ import standardLightLayout from '../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../assets/map/satellite.png';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
-import ConnectorStats from '../../types/ConnectorStats';
-import statusMarkerAvailable from '../../../assets/icon/charging_station_available.png';
-import statusMarkerChargingOrOccupied from '../../../assets/icon/charging_station_charging.png';
-import statusMarkerUnavailable from '../../../assets/icon/charging_station_unavailable.png';
-import computeConnectorStatusStyles
-  from '../../components/connector-status/ConnectorStatusComponentStyles';
 
 export interface Props extends BaseProps {}
 
@@ -99,16 +93,16 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         Search: searchText,
         Issuer: true,
         WithAvailableChargers: true,
-        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation.latitude,
-        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation.longitude,
+        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
+        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
         LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
       };
       // Get the Sites
       const sites = await this.centralServerProvider.getSites(params, { skip, limit }, ['name']);
       // Get total number of records
-      if (sites.count === -1) {
+      if (sites?.count === -1) {
         const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
-        sites.count = sitesNbrRecordsOnly.count;
+        sites.count = sitesNbrRecordsOnly?.count;
       }
       return sites;
     } catch (error) {
