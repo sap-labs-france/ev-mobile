@@ -86,9 +86,9 @@ export default class Cars extends SelectableList<Car> {
       };
       const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
       // Get total number of records
-      if (cars.count === -1) {
+      if (cars?.count === -1) {
         const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
-        cars.count = carsNbrRecordsOnly.count;
+        cars.count = carsNbrRecordsOnly?.count;
       }
       return cars;
     } catch (error) {
