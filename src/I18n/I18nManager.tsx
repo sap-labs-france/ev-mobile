@@ -126,6 +126,9 @@ export default class I18nManager {
       (!options.compactThreshold || (options.compactThreshold && value > options.compactThreshold));
     const isCurrency = options.currency && options.style === NumberFormatStyleEnum.CURRENCY;
     options.currency = options.currency || I18nManager.currency;
+    if(!options.currency) {
+      delete options.currency
+    }
     const isUnit = options.unit && options.style === NumberFormatStyleEnum.UNIT;
     const isPercent = options.style === NumberFormatStyleEnum.PERCENT;
 
