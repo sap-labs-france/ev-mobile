@@ -40,7 +40,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     address: {
       color: commonColor.textColor,
-      fontSize: '12@s'
+      fontSize: '12@s',
+      flex: 1
     },
     distance: {
       color: commonColor.textColor
