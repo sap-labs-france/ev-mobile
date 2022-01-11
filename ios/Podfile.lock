@@ -511,15 +511,19 @@ PODS:
     - React
   - RNVectorIcons (7.1.0):
     - React
-  - Stripe (21.7.0):
-    - Stripe/Stripe3DS2 (= 21.7.0)
-    - StripeCore (= 21.7.0)
-  - stripe-react-native (0.1.5):
-    - React
-    - Stripe (~> 21.7.0)
-  - Stripe/Stripe3DS2 (21.7.0):
-    - StripeCore (= 21.7.0)
-  - StripeCore (21.7.0)
+  - Stripe (21.9.1):
+    - Stripe/Stripe3DS2 (= 21.9.1)
+    - StripeCore (= 21.9.1)
+    - StripeUICore (= 21.9.1)
+  - stripe-react-native (0.2.3):
+    - React-Core
+    - Stripe (~> 21.9.0)
+  - Stripe/Stripe3DS2 (21.9.1):
+    - StripeCore (= 21.9.1)
+    - StripeUICore (= 21.9.1)
+  - StripeCore (21.9.1)
+  - StripeUICore (21.9.1):
+    - StripeCore (= 21.9.1)
   - SwiftyJSON (5.0.0)
   - toolbar-android (0.2.1):
     - React
@@ -645,6 +649,7 @@ SPEC REPOS:
     - Protobuf
     - Stripe
     - StripeCore
+    - StripeUICore
     - SwiftyJSON
     - YogaKit
 
@@ -768,7 +773,7 @@ SPEC CHECKSUMS:
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   Fabric: ea977e3cd9c20425516d3dafd3bf8c941c51223f
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: e30d74099a6ef3e67364c1ecb8ab68197a5eb022
+  FBReactNativeSpec: 52a80ca1a343877d4c72738fffcf539ac4a64dec
   Firebase: 8db6f2d1b2c5e2984efba4949a145875a8f65fe5
   FirebaseAnalytics: 5dd088bd2e67bb9d13dbf792d1164ceaf3052193
   FirebaseCore: d889d9e12535b7f36ac8bfbf1713a0836a3012cd
@@ -842,9 +847,10 @@ SPEC CHECKSUMS:
   RNSecureStorage: 8b2b07278d80c48b3a881c56e604ab147372f243
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
-  Stripe: 90596971ef49bade169f68bc59369a796b30a045
-  stripe-react-native: f1b034cb702aa214078d9441b0a4313ac00c020d
-  StripeCore: c09b492efc3b269a6ff875ad738ca366db97e03b
+  Stripe: 22c1b8da5ee20a1aaf40fd198160efa72e71644a
+  stripe-react-native: 980f3d19f52a7dc4b373c6c20d30ebd760bc39e5
+  StripeCore: 91ea038ac0abbb72f11014044dfd1e5d39089714
+  StripeUICore: 7edf64b24c9c178bfd97e988f2cffdbb7a7628b0
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   toolbar-android: 2a73856e98b750d7e71ce4644d3f41cc98211719
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
