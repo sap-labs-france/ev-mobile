@@ -545,11 +545,11 @@ export default class App extends React.Component<Props, State> {
 
   public componentWillUnmount() {
     // Deactivate Deep links
-    this.deepLinkingManager.stopListening();
+    this.deepLinkingManager?.stopListening();
     // Stop Notifications
-    this.notificationManager.stop();
+    this.notificationManager?.stop();
     // Stop Location
-    this.location.stopListening();
+    this.location?.stopListening();
   }
 
   public render() {
