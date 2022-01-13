@@ -65,8 +65,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Discover Charging Stations</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Discover Charging Stations</string>
 	<key>UIAppFonts</key>
