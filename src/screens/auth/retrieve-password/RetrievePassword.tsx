@@ -82,9 +82,11 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
 
   public retrievePassword = async () => {
     // Check field
-    const formIsValid = Utils.validateInput(this, this.formValidationDef);
-    if (formIsValid) {
-      const { tenantSubDomain, email, captcha } = this.state;
+    const { tenantSubDomain, email, captcha } = this.state;
+    const formIsValid = Utils.validateInput(this, this.formValidationDef)
+    // Force captcha regeneration for next signUp click
+    this.setState({captcha: null});
+    if (formIsValid && captcha) {
       try {
         this.setState({ loading: true });
         // Login
@@ -169,7 +171,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              {loading || !captcha ? (
+              {loading ? (
                 <Spinner style={formStyle.spinner} color="grey" />
               ) : (
                 <Button primary block style={formStyle.button} onPress={async () => this.retrievePassword()}>
@@ -180,7 +182,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               )}
             </Form>
           </KeyboardAvoidingView>
-          {captchaSiteKey && captchaBaseUrl && (
+          {captchaSiteKey && captchaBaseUrl && !captcha && (
             <ReactNativeRecaptchaV3
               action="ResetPassword"
               onHandleToken={this.recaptchaResponseToken}

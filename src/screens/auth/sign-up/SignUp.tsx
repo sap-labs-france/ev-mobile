@@ -152,9 +152,12 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public signUp = async () => {
     // Check field
+    const { tenantSubDomain, name, firstName, email, password, eula, captcha } = this.state
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
-    if (formIsValid) {
-      const { tenantSubDomain, name, firstName, email, password, eula, captcha } = this.state;
+    // Force captcha regeneration for next signUp click
+    this.setState({captcha: null});
+    if (formIsValid && captcha && eula) {
+      this.setState({loading: true})
       try {
         // Loading
         this.setState({ loading: true });
@@ -212,6 +215,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         }
       }
     }
+    this.setState({loading: false})
   };
 
   public onBack(): boolean {
@@ -370,7 +374,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <View style={formStyle.formCheckboxContainer}>
-                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula, captcha: null })} />
+                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula})} />
                 <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
@@ -384,10 +388,10 @@ export default class SignUp extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              {loading || (!captcha && this.state.eula) ? (
+              {loading ? (
                 <Spinner style={formStyle.spinner} color="grey" />
               ) : (
-                <Button primary block style={formStyle.button} onPress={async () => this.signUp()}>
+                <Button disabled={!eula} primary block style={[formStyle.button, (!eula || !captcha) && formStyle.buttonDisabled]} onPress={async () => this.signUp()}>
                   <Text style={formStyle.buttonText} uppercase={false}>
                     {I18n.t('authentication.signUp')}
                   </Text>
@@ -395,7 +399,7 @@ export default class SignUp extends BaseScreen<Props, State> {
               )}
             </Form>
           </KeyboardAvoidingView>
-          {this.state.eula && captchaSiteKey && captchaBaseUrl && (
+          {!captcha && captchaSiteKey && captchaBaseUrl && (
             <ReactNativeRecaptchaV3
               action="RegisterUser"
               onHandleToken={this.recaptchaResponseToken}
