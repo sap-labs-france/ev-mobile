@@ -30,6 +30,7 @@ interface State {
   captcha?: string;
   loading?: boolean;
   hideRepeatPassword?: boolean;
+  performSignUp?: boolean;
   hidePassword?: boolean;
   errorEula?: Record<string, unknown>[];
   errorPassword?: Record<string, unknown>[];
@@ -121,7 +122,8 @@ export default class SignUp extends BaseScreen<Props, State> {
       captcha: null,
       loading: false,
       hidePassword: true,
-      hideRepeatPassword: true
+      hideRepeatPassword: true,
+      performSignUp: false
     };
   }
 
@@ -146,8 +148,8 @@ export default class SignUp extends BaseScreen<Props, State> {
     this.centralServerProvider.setAutoLoginDisabled(true);
   }
 
-  public recaptchaResponseToken = (captcha: string) => {
-    this.setState({ captcha });
+  public onCaptchaCreated = (captcha: string) => {
+    this.setState({ captcha }, this.state.performSignUp ? () => this.signUp() : () => {});
   };
 
   public signUp = async () => {
@@ -155,12 +157,9 @@ export default class SignUp extends BaseScreen<Props, State> {
     const { tenantSubDomain, name, firstName, email, password, eula, captcha } = this.state
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     // Force captcha regeneration for next signUp click
-    this.setState({captcha: null});
     if (formIsValid && captcha && eula) {
-      this.setState({loading: true})
       try {
         // Loading
-        this.setState({ loading: true });
         // Register
         await this.centralServerProvider.register(
           tenantSubDomain,
@@ -173,7 +172,7 @@ export default class SignUp extends BaseScreen<Props, State> {
           captcha
         );
         // Reset
-        this.setState({ loading: false });
+        this.setState({ loading: false, performSignUp: false });
         // Show
         Message.showSuccess(I18n.t('authentication.registerSuccess'));
         // Navigate
@@ -193,7 +192,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         );
       } catch (error) {
         // Reset
-        this.setState({ loading: false });
+        this.setState({ loading: false, performSignUp: false });
         // Check request?
         if (error.request) {
           // Show error
@@ -215,7 +214,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         }
       }
     }
-    this.setState({loading: false})
+    this.setState({loading: false, performSignUp: false})
   };
 
   public onBack(): boolean {
@@ -391,7 +390,7 @@ export default class SignUp extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={formStyle.spinner} color="grey" />
               ) : (
-                <Button disabled={!eula} primary block style={[formStyle.button, (!eula || !captcha) && formStyle.buttonDisabled]} onPress={async () => this.signUp()}>
+                <Button disabled={!eula} primary block style={[formStyle.button, !eula && formStyle.buttonDisabled]} onPress={async () => this.setState({captcha: null, performSignUp: true, loading: true })}>
                   <Text style={formStyle.buttonText} uppercase={false}>
                     {I18n.t('authentication.signUp')}
                   </Text>
@@ -402,7 +401,7 @@ export default class SignUp extends BaseScreen<Props, State> {
           {!captcha && captchaSiteKey && captchaBaseUrl && (
             <ReactNativeRecaptchaV3
               action="RegisterUser"
-              onHandleToken={this.recaptchaResponseToken}
+              onHandleToken={(captcha) => this.onCaptchaCreated(captcha)}
               url={captchaBaseUrl}
               siteKey={captchaSiteKey}
             />
