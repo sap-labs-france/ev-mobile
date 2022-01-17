@@ -42,8 +42,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     switchFilter: {
       color: commonColor.textColor,
-      transform: [{ scaleX:  moderateScale(1, 2.5) }, { scaleY:
-          moderateScale(1, 2.5) }]
+      transform: [{ scaleX:  moderateScale(1, 3) }, { scaleY:
+          moderateScale(1, 3) }]
     },
     connectorTypeFilterContainer: {
       flexDirection: 'row',

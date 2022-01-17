@@ -86,7 +86,7 @@ export default class Statistics extends BaseScreen<Props, State> {
     const startDateTime = startDateTimeString ? new Date(startDateTimeString) : null;
     const endDateTime = endDateTimeString ? new Date(endDateTimeString) : null;
     const initialFilters = {
-      userID: !!userID,
+      currentUser: !!userID,
       startDateTime,
       endDateTime
     };
