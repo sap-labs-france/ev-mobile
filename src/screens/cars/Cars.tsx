@@ -55,15 +55,15 @@ export default class Cars extends SelectableList<Car> {
       loading: true,
       selectedItems: [],
       filters: {
-        userID: null
+        currentUser: null
       }
     };
   }
 
   public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.CARS_USER_ID);
+    const currentUser = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.CARS_CURRENT_USER);
     const initialFilters = {
-      userID
+      currentUser: !!currentUser
     };
     this.setState({
       filters: initialFilters
@@ -96,8 +96,12 @@ export default class Cars extends SelectableList<Car> {
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
-    const filterUserID = this.state.filters?.userID;
-    const userIDs = filterUserID ? [filterUserID] : [...(this.props.userIDs || [])];
+    const filterCurrentUser = this.state.filters?.currentUser;
+    let currentUserID;
+    if(filterCurrentUser) {
+      currentUserID = this.centralServerProvider.getUserInfo()?.id;
+    }
+    const userIDs = currentUserID ? [currentUserID] : [...(this.props.userIDs || [])];
     try {
       const params = {
         Search: searchText,
@@ -187,7 +191,9 @@ export default class Cars extends SelectableList<Car> {
         <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
-        <CarsFilters initialFilters={filters} onFilterChanged={(filters) => this.onFilterChanged(filters)} />
+        {!isModal && (
+          <CarsFilters initialFilters={filters} onFilterChanged={(filters) => this.onFilterChanged(filters)} />
+        )}
         {loading ? (
           <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (

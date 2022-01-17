@@ -112,7 +112,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
               }}>
               <Icon
                 type={'MaterialCommunityIcons'}
-                name={this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'}
+                name={this.filterModalContainerComponent.getFiltersActive() ? 'filter' : 'filter-outline'}
               />
             </TouchableOpacity>
           )}

@@ -85,7 +85,8 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
       if (newValue) {
         this.setState(
           {
-            openDatePicker: false
+            openDatePicker: false,
+            value: newValue
           },
           () => {
             onFilterChanged(this.getID(), newValue);

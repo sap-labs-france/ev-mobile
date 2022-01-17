@@ -2,7 +2,6 @@ import I18n from 'i18n-js';
 import {View } from 'native-base';
 import React from 'react';
 
-import computeStyleSheet from '../../../../ModalStyles';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
 import DialogModal from '../../../modal/DialogModal';
 import computeModalCommonStyle from '../../../modal/ModalCommonStyle';
@@ -14,6 +13,7 @@ interface State extends FilterContainerComponentState {}
 export default class FilterModalContainerComponent extends FilterContainerComponent {
   public state: State;
   public props: Props;
+  private filtersActive: boolean = null;
 
   public constructor(props: Props) {
     super(props);
@@ -27,10 +27,24 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     super.setState(state, callback);
   };
 
+  public setFiltersActive(filtersActive: boolean): void {
+    this.filtersActive = filtersActive;
+  }
+
+  public getFiltersActive(): boolean {
+    return this.filtersActive;
+  }
+
   public async notifyFilterChanged() {
     const { onFilterChanged } = this.props;
     // Notify
     onFilterChanged(this.getFilters(), false);
+  }
+
+  public clearFilters() {
+    super.clearFilters();
+    this.setFiltersActive(false);
+   // this.notifyFilterChanged();
   }
 
   public applyFiltersAndNotify = async () => {
@@ -65,6 +79,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
             title={I18n.t('general.filters')}
             renderControls={() => this.props.children}
             withCloseButton={true}
+            onBackDropPress={() => {}}
             close={() => this.setState({ visible: false })}
             buttons={[
               {

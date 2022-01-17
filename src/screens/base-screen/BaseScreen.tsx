@@ -57,7 +57,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     if (headerComponent) {
       this.headerComponent = headerComponent;
       // Set modal filter component
-      if (this.headerComponent && this.screenFilters && this.screenFilters.getFilterModalContainerComponent()) {
+      if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent()) {
         this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
       }
     }

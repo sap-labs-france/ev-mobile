@@ -2,27 +2,21 @@ import { Switch, Text, View } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import ProviderFactory from '../../../../../provider/ProviderFactory';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
+import Utils from '../../../../../utils/Utils';
 
-export interface Props extends FilterControlComponentProps<string> {}
+export interface Props extends FilterControlComponentProps<boolean> {}
 
-interface State extends FilterControlComponentState<string> {
-  switchValue?: boolean;
+interface State extends FilterControlComponentState<boolean> {
 }
 
-export default class MyUserSwitchFilterControlComponent extends FilterControlComponent<string> {
+export default class SwitchFilterComponent extends FilterControlComponent<boolean> {
   public state: State;
   public props: Props;
-  private userID: string;
 
   public constructor(props: Props) {
     super(props);
-    this.state = {
-      switchValue: !!this.getValue(),
-      value: this.props.initialValue
-    };
   }
 
   public setState = (
@@ -36,22 +30,15 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     return true;
   }
 
-  public async componentDidMount() {
-    // Get corresponding
-    const centralServerProvider = await ProviderFactory.getProvider();
-    if (centralServerProvider) {
-      this.userID = centralServerProvider.getUserInfo().id;
-    }
-  }
-
   public render = () => {
     const internalStyle = computeStyleSheet();
     const { label, style } = this.props;
-    const { switchValue } = this.state;
+    const { value } = this.state;
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <Switch style={internalStyle.switchFilter} value={switchValue} onValueChange={this.onValueChanged} />
+        <Switch trackColor={{ true: commonColors.primary, false: commonColors.disabledDark }} thumbColor={commonColors.disabled} style={internalStyle.switchFilter} value={!!value} onValueChange={this.onValueChanged} />
       </View>
     );
   };
@@ -61,12 +48,12 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     // Set Filter
     if (onFilterChanged) {
       if (newValue) {
-        onFilterChanged(this.getID(), this.userID);
+        onFilterChanged(this.getID(), !!this.state.value);
       } else {
         onFilterChanged(this.getID(), null);
       }
     }
     // Update
-    this.setState({ switchValue: newValue });
+    this.setState({ value: newValue });
   };
 }

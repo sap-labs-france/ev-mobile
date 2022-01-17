@@ -1,16 +1,17 @@
 import deepmerge from 'deepmerge';
-import { StyleSheet } from 'react-native';
+import {StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../../utils/Utils';
+import { moderateScale } from 'react-native-size-matters';
+
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     rowFilterContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
       width: '100%',
       height: '35@s',
       paddingLeft: '15@s',
@@ -29,7 +30,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     textFilter: {
       fontSize: '15@s',
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      marginRight: '20@s'
     },
     label: {
       fontWeight: 'bold'
@@ -39,7 +41,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     switchFilter: {
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      transform: [{ scaleX:  moderateScale(1, 2.5) }, { scaleY:
+          moderateScale(1, 2.5) }]
     },
     connectorTypeFilterContainer: {
       flexDirection: 'row',

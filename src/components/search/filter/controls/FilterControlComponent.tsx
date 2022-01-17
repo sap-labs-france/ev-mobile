@@ -25,8 +25,15 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   public constructor(props: FilterControlComponentProps<T>) {
     super(props);
     this.state = {
-      value: this.props.initialValue
+      value: null
     };
+  }
+
+  public componentDidUpdate(prevProps: Readonly<FilterControlComponentProps<T>>, prevState: Readonly<FilterControlComponentState<T>>, snapshot?: any) {
+    const newValue = this.state.value ?? this.props.initialValue;
+    if(this.state.value !== newValue) {
+      this.setState({value: newValue})
+    }
   }
 
   public setState = (
@@ -55,7 +62,9 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   }
 
   public clearValue(callback?: () => unknown) {
-    this.setState({ value: null }, callback);
+    // Prevent setState when component not mounted
+    this.state = {value: null}
+    callback?.();
   }
 
   public getID(): string {

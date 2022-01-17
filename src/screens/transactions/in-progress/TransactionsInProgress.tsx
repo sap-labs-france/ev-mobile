@@ -31,7 +31,6 @@ interface State {
   isPricingActive: boolean;
   isAdmin?: boolean;
   hasSiteAdmin: boolean;
-  initialFilters?: TransactionsInProgressFiltersDef;
   filters?: TransactionsInProgressFiltersDef;
 }
 
@@ -53,7 +52,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       isPricingActive: false,
       isAdmin: false,
       hasSiteAdmin: false,
-      initialFilters: {},
       filters: {}
     };
   }
@@ -69,8 +67,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     const centralServerProvider = await ProviderFactory.getProvider();
     const userID = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
     this.setState({
-      initialFilters: { userID },
-      filters: { userID }
+      filters: { currentUser: !!userID }
     });
   }
 
@@ -83,7 +80,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     try {
       const params = {
-        UserID: this.state.filters.userID,
+        UserID: this.state.filters?.currentUser ? this.centralServerProvider.getUserInfo()?.id : null,
         Search: searchText
       };
       // Get the Transactions
@@ -149,7 +146,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive, skip, count, limit, initialFilters, filters, refreshing } =
+    const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive, skip, count, limit, filters, refreshing } =
       this.state;
     return (
       <Container style={style.container}>
@@ -165,7 +162,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           <View style={style.content}>
             {(isAdmin || hasSiteAdmin) && (
               <TransactionsInProgressFilters
-                initialFilters={initialFilters}
+                initialFilters={filters}
                 onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) =>
                   this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh())
                 }
