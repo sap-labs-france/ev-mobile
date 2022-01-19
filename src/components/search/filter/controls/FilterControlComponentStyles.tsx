@@ -47,8 +47,27 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     connectorTypeFilterContainer: {
       flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'stretch',
       justifyContent: 'space-evenly',
       width: '100%'
+    },
+    connectorContainer: {
+      width: '22%',
+      borderWidth: 0.8,
+      padding: '2@s',
+      borderColor: commonColor.textColor,
+      borderRadius: '8@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: '7@s'
+    },
+    selectedConnectorContainer: {
+      borderWidth: 3.5
+    },
+    connectorLabel: {
+      fontSize: '12@s',
+      color: commonColor.textColor
     },
     connectorTypeButton: {
       width: '50@s',

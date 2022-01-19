@@ -17,6 +17,9 @@ export default class SwitchFilterComponent extends FilterControlComponent<boolea
 
   public constructor(props: Props) {
     super(props);
+    this.state = {
+      value: props.initialValue
+    }
   }
 
   public setState = (
@@ -47,13 +50,8 @@ export default class SwitchFilterComponent extends FilterControlComponent<boolea
     const { onFilterChanged } = this.props;
     // Set Filter
     if (onFilterChanged) {
-      if (newValue) {
-        onFilterChanged(this.getID(), !!this.state.value);
-      } else {
-        onFilterChanged(this.getID(), null);
-      }
+      onFilterChanged(this.getID(), newValue || null);
     }
-    // Update
     this.setState({ value: newValue });
   };
 }

@@ -7,6 +7,7 @@ import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
 import { BackHandler, NativeEventSubscription } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
 
 export interface Props extends BaseProps {}
 
@@ -17,7 +18,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected centralServerProvider: CentralServerProvider;
   protected securityProvider: SecurityProvider;
   private headerComponent: HeaderComponent;
-  private screenFilters: ScreenFilters;
+  screenFilters: ScreenFilters<any>;
   private componentFocusUnsubscribe: () => void;
   private componentBlurUnsubscribe: () => void;
   backHandler: NativeEventSubscription;
@@ -43,6 +44,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
     // Ok
     this.mounted = true;
+    Orientation.lockToPortrait();
   }
 
   public componentWillUnmount() {
@@ -57,9 +59,9 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     if (headerComponent) {
       this.headerComponent = headerComponent;
       // Set modal filter component
-      if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent()) {
+/*      if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent()) {
         this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
-      }
+      }*/
     }
   }
 
@@ -67,17 +69,17 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     return this.headerComponent;
   }
 
-  public setScreenFilters(screenFilters: ScreenFilters) {
+  public setScreenFilters(screenFilters: ScreenFilters<any>, headerDisplay = true) {
     if (screenFilters) {
       this.screenFilters = screenFilters;
-      // Set modal filter component
-      if (this.headerComponent && this.screenFilters.getFilterModalContainerComponent()) {
-        this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
+      // Bind filters modal container to header
+      if (this.headerComponent && this.screenFilters.getFilterModalContainerComponent() && headerDisplay) {
+        this.headerComponent.setFilterModalContainerComponent(this.screenFilters);
       }
     }
   }
 
-  public getScreenFilters(): ScreenFilters {
+  public getScreenFilters(): ScreenFilters<any> {
     return this.screenFilters;
   }
 
@@ -89,6 +91,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   public componentDidFocus(): void {
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
+    Orientation.lockToPortrait();
   }
 
   public componentDidBlur(): void {

@@ -35,5 +35,7 @@ export default {
   listHeaderBackground: palette.light,
   listItemBackground: palette.light,
   mapClusterBorder: palette.primaryDark,
+  mapFilterButtonBackground: palette.light,
+  mapFilterButtonIcon: palette.primaryDark,
   lightDark: null
 };

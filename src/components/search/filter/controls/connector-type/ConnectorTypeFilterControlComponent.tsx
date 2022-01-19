@@ -1,27 +1,17 @@
 import { Text, View } from 'native-base';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { ToggleButton } from 'react-native-paper';
 
-import Chademo from '../../../../../../assets/connectorType/chademo.svg';
-import ComboCCS from '../../../../../../assets/connectorType/combo-ccs.svg';
-import Domestic from '../../../../../../assets/connectorType/domestic-ue.svg';
-import Type2 from '../../../../../../assets/connectorType/type2.svg';
 import { ConnectorType } from '../../../../../types/ChargingStation';
 import Utils from '../../../../../utils/Utils';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
+import { TouchableOpacity } from 'react-native';
 
 export interface Props extends FilterControlComponentProps<string> {}
 
 interface State extends FilterControlComponentState<string> {
-  connectorTypes: ConnectorFilter[];
-}
-
-interface ConnectorFilter {
-  type: ConnectorType;
-  element: Element;
-  selected: boolean;
+  connectorTypes: Set<ConnectorType>;
+  value?: string;
 }
 
 export default class ConnectorTypeFilterControlComponent extends FilterControlComponent<string> {
@@ -31,133 +21,54 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
   public constructor(props: Props) {
     super(props);
     // Init
-    const connectorStyle = computeStyleSheet();
-    const commonColor = Utils.getCurrentCommonColor();
     this.state = {
-      connectorTypes: [
-        {
-          type: ConnectorType.TYPE_2,
-          element: (
-            <Type2
-              width={connectorStyle.connectorTypeSVG.width}
-              height={connectorStyle.connectorTypeSVG.height}
-              stroke={commonColor.textColor}
-              strokeWidth="10"
-            />
-          ),
-          selected: false
-        },
-        {
-          type: ConnectorType.COMBO_CCS,
-          element: (
-            <ComboCCS
-              width={connectorStyle.connectorTypeSVG.width}
-              height={connectorStyle.connectorTypeSVG.height}
-              stroke={commonColor.textColor}
-              strokeWidth="30"
-            />
-          ),
-          selected: false
-        },
-        {
-          type: ConnectorType.CHADEMO,
-          element: (
-            <Chademo
-              width={connectorStyle.connectorTypeSVG.width}
-              height={connectorStyle.connectorTypeSVG.height}
-              stroke={commonColor.textColor}
-              strokeWidth="30"
-            />
-          ),
-          selected: false
-        },
-        {
-          type: ConnectorType.DOMESTIC,
-          element: (
-            <Domestic
-              width={connectorStyle.connectorTypeSVG.width}
-              height={connectorStyle.connectorTypeSVG.height}
-              fill={commonColor.textColor}
-            />
-          ),
-          selected: false
-        }
-      ],
+      connectorTypes: new Set<ConnectorType>(this.props.initialValue?.split("|") as ConnectorType[]),
       value: this.props.initialValue
-    };
-    // Default filter values
-    const connectorTypes = this.getValue() as string;
-    if (connectorTypes) {
-      for (const connectorType of connectorTypes.split('|')) {
-        for (const connector of this.state.connectorTypes) {
-          if (connector.type === connectorType) {
-            connector.selected = true;
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
-    callback?: () => void
-  ) => {
-    super.setState(state, callback);
-  };
+    }}
 
   public canBeSaved() {
     return true;
   }
 
   public render = () => {
-    const internalStyle = computeStyleSheet();
-    const { style, label } = this.props;
+    const style = computeStyleSheet();
+    const { label } = this.props;
+    const { connectorTypes } = this.state;
     return (
-      <View style={StyleSheet.compose(internalStyle.columnFilterContainer, style)}>
-        <Text style={internalStyle.textFilter}>{label}</Text>
-        <View style={internalStyle.connectorTypeFilterContainer}>
-          {this.state.connectorTypes.map((connector) => (
-            <ToggleButton
+        <View style={style.connectorTypeFilterContainer}>
+          {Object.values(ConnectorType)?.map((connector, index) => (
+            <TouchableOpacity key={index} onPress={() => this.onValueChanged(connector)} style={[style.connectorContainer, connectorTypes.has(connector) && style.selectedConnectorContainer]}>
+              {Utils.buildConnectorTypeSVG(connector)}
+              <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.connectorLabel}>{Utils.translateConnectorType(connector)}</Text>
+            </TouchableOpacity>
+/*            <ToggleButton
               style={internalStyle.connectorTypeButton}
               key={connector.type}
-              icon={() => connector.element}
+              icon={(Utils.buildConnectorTypeSVG(connector.type))}
               value="bluetooth"
               status={connector.selected ? 'checked' : 'unchecked'}
               onPress={() => {
                 connector.selected = !connector.selected;
                 this.onValueChanged();
               }}
-            />
+            />*/
           ))}
         </View>
-      </View>
     );
   };
 
-  private onValueChanged = async () => {
+  private async onValueChanged (connector: ConnectorType): Promise<void> {
     const { onFilterChanged } = this.props;
-    // Build Filter
-    const connectorFilters: ConnectorType[] = [];
-    const connectorTypes = this.state.connectorTypes;
-    for (const connector of connectorTypes) {
-      if (connector.selected) {
-        connectorFilters.push(connector.type);
-      }
+    const { connectorTypes } = this.state;
+    if(connectorTypes.has(connector)){
+      connectorTypes.delete(connector);
+    } else {
+      connectorTypes.add(connector);
     }
-    if (onFilterChanged) {
-      if (connectorFilters.length) {
-        const filterValue = connectorFilters.join('|');
-        this.setValue(filterValue, () => {
-          onFilterChanged(this.getID(), filterValue);
-        });
-      } else {
-        this.clearValue(() => {
-          onFilterChanged(this.getID(), null);
-        });
-      }
+    const value = connectorTypes.size > 0 ? Array.from(connectorTypes).join('|') : null;
+    this.setState({connectorTypes, value});
+    if(onFilterChanged) {
+      onFilterChanged(this.getID(), value );
     }
-    // Update
-    this.forceUpdate();
   };
 }

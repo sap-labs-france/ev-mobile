@@ -6,6 +6,7 @@ import FilterModalContainerComponent from '../../components/search/filter/contai
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './HeaderComponentStyles';
 import { DrawerActions } from '@react-navigation/native';
+import ScreenFilters from '../search/filter/screen/ScreenFilters';
 
 export interface Props extends BaseProps {
   title: string;
@@ -36,7 +37,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   };
   public state: State;
   public props: Props;
-  private filterModalContainerComponent: FilterModalContainerComponent;
+  private modalFilters: ScreenFilters;
 
   public constructor(props: Props) {
     super(props);
@@ -52,12 +53,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   };
 
-  public getFilterModalContainerComponent(): FilterModalContainerComponent {
-    return this.filterModalContainerComponent;
+  public getFilterModalContainerComponent(): ScreenFilters {
+    return this.modalFilters;
   }
 
-  public setFilterModalContainerComponent(filterModalContainerComponent: FilterModalContainerComponent) {
-    this.filterModalContainerComponent = filterModalContainerComponent;
+  public setFilterModalContainerComponent(filterModalContainerComponent: ScreenFilters) {
+    this.modalFilters = filterModalContainerComponent;
     this.setState({
       hasFilter: true
     });
@@ -104,15 +105,14 @@ export default class HeaderComponent extends React.Component<Props, State> {
               {action.renderAction?.()}
             </TouchableOpacity>
           ))}
-          {this.filterModalContainerComponent && (
+          {this.modalFilters && (
             <TouchableOpacity
               onPress={() => {
-                this.filterModalContainerComponent.setVisible(true);
                 return true;
               }}>
               <Icon
                 type={'MaterialCommunityIcons'}
-                name={this.filterModalContainerComponent.getFiltersActive() ? 'filter' : 'filter-outline'}
+                name={true ? 'filter' : 'filter-outline'}
               />
             </TouchableOpacity>
           )}

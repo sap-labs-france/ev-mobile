@@ -19,6 +19,8 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => ({
   purple: 'purple',
 
   mapClusterBorder: currentTheme.mapClusterBorder,
+  mapFilterButtonBackground: currentTheme.mapFilterButtonBackground,
+  mapFilterButtonIcon: currentTheme.mapFilterButtonIcon,
 
   info: currentTheme.info,
   brandInfo: palette.info,

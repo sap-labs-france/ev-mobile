@@ -14,7 +14,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       alignSelf: 'center',
       width: '95%',
-      height: '35@s',
+      height: '45@s',
       paddingLeft: '5@s',
       paddingRight: '5@s',
       borderRadius: '8@s',

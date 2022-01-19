@@ -1,3 +1,5 @@
+import palette from '../custom-theme/theme/palette';
+
 export enum ThemeType {
   DARK = 'dark',
   LIGHT = 'light'
@@ -36,4 +38,6 @@ export default interface ThemeDefinition {
   listItemBackground: string;
   listHeaderBackground: string;
   mapClusterBorder: string;
+  mapFilterButtonBackground: string,
+  mapFilterButtonIcon: string
 }

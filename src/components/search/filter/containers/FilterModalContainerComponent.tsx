@@ -38,7 +38,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
   public async notifyFilterChanged() {
     const { onFilterChanged } = this.props;
     // Notify
-    onFilterChanged(this.getFilters(), false);
+    onFilterChanged?.(this.getFilters(), false);
   }
 
   public clearFilters() {
@@ -57,7 +57,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     this.setVisible(false);
   };
 
-  public clearFiltersAndNotify = async () => {
+  public async clearFiltersAndNotify(): Promise<void> {
     const { onFilterChanged } = this.props;
     // Clear
     this.clearFilters();

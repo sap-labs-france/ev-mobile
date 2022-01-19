@@ -47,7 +47,6 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
             customMapStyle={isDarkModeEnabled ? this.darkMapTheme : null}
             style={style.map}
             showsCompass={false}
-            showsUserLocation={true}
             zoomControlEnabled={false}
             radius={this.computeRadius(initialRegion.latitudeDelta)}
             toolbarEnabled={false}

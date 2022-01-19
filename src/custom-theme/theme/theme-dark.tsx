@@ -58,5 +58,7 @@ export default {
   selectDropdownBackgroundColor: '#1d1d1d',
   listItemBackground: '#1d1d1d',
   listHeaderBackground: '#1d1d1d',
-  mapClusterBorder: dark
+  mapClusterBorder: dark,
+  mapFilterButtonBackground: dark,
+  mapFilterButtonIcon: palette.light
 };

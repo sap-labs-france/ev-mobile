@@ -12,8 +12,44 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    searchBar: {
-      marginVertical: '10@s'
+    listContainer: {
+      height: '100%'
+    },
+    mapSearchBarComponent: {
+      backgroundColor: commonColor.containerBgColor,
+      flex: 1,
+      marginRight: '10@s',
+      height: '50@s',
+      elevation: 4,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62,
+    },
+    listSearchBarComponent: {
+      backgroundColor: commonColor.listHeaderBgColor,
+      flex: 1,
+      marginRight: '10@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    mapFilterButton: {
+      borderRadius: '8@s',
+      height: '50@s',
+      width: '50@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: commonColor.mapFilterButtonBackground
+    },
+    listFilterButton: {
+      borderRadius: '8@s',
+      width: '50@s',
+      height: '50@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: commonColor.listHeaderBgColor,
     },
     content: {
       flex: 1
@@ -23,7 +59,18 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     map: {
-      flex: 1
+      height: '100%'
+    },
+    filtersContainer: {
+      flexDirection: 'row',
+      zIndex: 1,
+      marginVertical: '10@s',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginHorizontal: '5@s'
+    },
+    mapFiltersContainer: {
+      position: 'absolute',
     },
     filtersExpanded: {
       opacity: 1,
@@ -53,6 +100,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderColor: commonColor.listItemBackground,
       borderWidth: 2
     },
+    fab: {
+      marginTop: '14@s'
+    },
     text: {
       color: commonColor.textColor,
       fontSize: '14@s'
@@ -64,10 +114,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     chargingStationMarker: {
       fontSize: '30@s',
     },
+    chargingStationsContainer: {
+      flex: 1
+    },
     qrcodeButton: {
       backgroundColor: commonColor.primary,
       borderRadius: '8@s',
-      padding: '10@s'
+      padding: '10@s',
+      width: '45@s',
+      height: '45@s',
+      alignItems: 'center',
+      justifyContent: 'center'
     }
   });
   const portraitStyles = {};
