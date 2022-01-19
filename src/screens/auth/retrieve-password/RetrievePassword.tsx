@@ -23,6 +23,7 @@ interface State {
   captchaSiteKey?: string;
   captchaBaseUrl?: string;
   captcha?: string;
+  performRetrievePassword?: boolean;
   loading?: boolean;
   errorEmail?: Record<string, unknown>[];
 }
@@ -51,7 +52,8 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
       captchaSiteKey: null,
       captchaBaseUrl: null,
       captcha: null,
-      loading: false
+      loading: false,
+      performRetrievePassword: false
     };
   }
 
@@ -76,21 +78,21 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     this.centralServerProvider.setAutoLoginDisabled(true);
   }
 
-  public recaptchaResponseToken = (captcha: string) => {
-    this.setState({ captcha });
+  public onCaptchaCreated = (captcha: string) => {
+    this.setState({ captcha }, this.state.performRetrievePassword ? () => this.retrievePassword() : () => {});
   };
 
   public retrievePassword = async () => {
     // Check field
-    const formIsValid = Utils.validateInput(this, this.formValidationDef);
-    if (formIsValid) {
-      const { tenantSubDomain, email, captcha } = this.state;
+    const { tenantSubDomain, email, captcha } = this.state;
+    const formIsValid = Utils.validateInput(this, this.formValidationDef)
+    // Force captcha regeneration for next signUp click
+    if (formIsValid && captcha) {
       try {
-        this.setState({ loading: true });
         // Login
         await this.centralServerProvider.retrievePassword(tenantSubDomain, email, captcha);
         // Login Success
-        this.setState({ loading: false });
+        this.setState({ loading: false, performRetrievePassword: false });
         // Show
         Message.showSuccess(I18n.t('authentication.resetSuccess'));
         // Navigate
@@ -110,7 +112,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
         );
       } catch (error) {
         // Login failed
-        this.setState({ loading: false });
+        this.setState({ loading: false, performRetrievePassword: false });
         // Check request?
         if (error.request) {
           // Show error
@@ -169,10 +171,10 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              {loading || !captcha ? (
+              {loading ? (
                 <Spinner style={formStyle.spinner} color="grey" />
               ) : (
-                <Button primary block style={formStyle.button} onPress={async () => this.retrievePassword()}>
+                <Button primary block style={formStyle.button} onPress={async () => this.setState({loading: true, performRetrievePassword: true, captcha: null})}>
                   <Text style={formStyle.buttonText} uppercase={false}>
                     {I18n.t('authentication.retrievePassword')}
                   </Text>
@@ -180,10 +182,10 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               )}
             </Form>
           </KeyboardAvoidingView>
-          {captchaSiteKey && captchaBaseUrl && (
+          {captchaSiteKey && captchaBaseUrl && !captcha && (
             <ReactNativeRecaptchaV3
               action="ResetPassword"
-              onHandleToken={this.recaptchaResponseToken}
+              onHandleToken={(captcha) => this.onCaptchaCreated(captcha)}
               url={captchaBaseUrl}
               siteKey={captchaSiteKey}
             />

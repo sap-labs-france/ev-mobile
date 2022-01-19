@@ -101,16 +101,16 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         SiteID: this.site?.id,
         Issuer: true,
         WithAvailableChargers: true,
-        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation.latitude,
-        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation.longitude,
+        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
+        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
         LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
       };
       // Get the Site Areas
       const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
       // Get total number of records
-      if (siteAreas.count === -1) {
+      if (siteAreas?.count === -1) {
         const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSiteAreas(params, Constants.ONLY_RECORD_COUNT);
-        siteAreas.count = sitesAreasNbrRecordsOnly.count;
+        siteAreas.count = sitesAreasNbrRecordsOnly?.count;
       }
       return siteAreas;
     } catch (error) {

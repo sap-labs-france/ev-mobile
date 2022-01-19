@@ -120,7 +120,7 @@
     "registerUnexpectedError": "Impossible de créer le compte",
     "accountLocked": "Votre compte est bloqué",
     "accountNotActive": "Votre compte est inactif",
-    "technicalUserCannotLoginToUI": "Un utilisateur technique ne peut pas se connecter en utilisant l'application",
+    "technicalUserCannotLoginToUI": "Un utilisateur API ne peut pas se connecter en utilisant l'application",
     "accountAlreadyActive": "Votre compte a déjà été activé",
     "accountVerifiedSuccess": "Votre compte a été activé avec succès!",
     "accountPending": "Votre compte n'est pas activé! Vérifiez vos e-mails",

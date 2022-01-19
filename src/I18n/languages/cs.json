@@ -120,7 +120,7 @@
     "registerUnexpectedError": "Nelze vytvořit účet",
     "accountLocked": "Váš účet je zablokován",
     "accountNotActive": "Váš účet není aktivní",
-    "technicalUserCannotLoginToUI": "Technical user and cannot login using the application",
+    "technicalUserCannotLoginToUI": "API user and cannot login using the application",
     "accountAlreadyActive": "Váš účet je již aktivní",
     "accountVerifiedSuccess": "Váš účet byl úspěšně aktivován!",
     "accountPending": "Váš účet čeká na vyřízení! Zkontrolujte svůj e-mail",

@@ -120,7 +120,7 @@
     "registerUnexpectedError": "Cannot create account",
     "accountLocked": "Your account is locked",
     "accountNotActive": "Your account is not active",
-    "technicalUserCannotLoginToUI": "Technical user and cannot login using the application",
+    "technicalUserCannotLoginToUI": "API user and cannot login using the application",
     "accountAlreadyActive": "Your account is already active",
     "accountVerifiedSuccess": "Your account has been activated with success!",
     "accountPending": "Your account is pending! Check your e-mail",

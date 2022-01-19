@@ -477,25 +477,6 @@ function createAppDrawerNavigator(props: BaseProps) {
   );
 }
 
-function createRootNavigator(app: App, initialState: InitialState) {
-  return (
-    <NavigationContainer
-      ref={(navigatorRef) => {
-        if (navigatorRef) {
-          app.notificationManager?.initialize(navigatorRef);
-          app.deepLinkingManager?.initialize(navigatorRef, app.centralServerProvider);
-        }
-      }}
-      onStateChange={persistNavigationState}
-      initialState={initialState}>
-      <rootStack.Navigator initialRouteName="AuthNavigator" screenOptions={{ headerShown: false }}>
-        <rootStack.Screen name="AuthNavigator" component={createAuthNavigator} />
-        <rootStack.Screen name="AppDrawerNavigator" component={createAppDrawerNavigator} />
-      </rootStack.Navigator>
-    </NavigationContainer>
-  );
-}
-
 export interface Props {}
 interface State {
   switchTheme?: boolean;
@@ -548,31 +529,27 @@ export default class App extends React.Component<Props, State> {
     // Location ------------------------------------------------
     this.location = await LocationManager.getInstance();
     this.location.startListening();
-    // Check on hold notification
-    this.notificationManager.checkOnHoldNotification();
     // Check migration
     const migrationManager = MigrationManager.getInstance();
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
     // Check for app updates
     this.appVersion = await checkVersion();
-    if (this.appVersion?.needsUpdate) {
-      this.setState({ showAppUpdateDialog: true });
-    }
     // Set
     this.setState({
       navigationState,
-      isNavigationStateLoaded: true
+      isNavigationStateLoaded: true,
+      showAppUpdateDialog: !!this.appVersion?.needsUpdate
     });
   }
 
   public componentWillUnmount() {
     // Deactivate Deep links
-    this.deepLinkingManager.stopListening();
+    this.deepLinkingManager?.stopListening();
     // Stop Notifications
-    this.notificationManager.stop();
+    this.notificationManager?.stop();
     // Stop Location
-    this.location.stopListening();
+    this.location?.stopListening();
   }
 
   public render() {
@@ -584,9 +561,29 @@ export default class App extends React.Component<Props, State> {
             <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />
           )}
           <StatusBar barStyle={ThemeManager.getInstance()?.isThemeTypeIsDark() ? 'light-content' : 'dark-content'} translucent backgroundColor="transparent" />
-          {createRootNavigator(this, this.state.navigationState)}
+          {this.createRootNavigator()}
         </RootSiblingParent>
       )
+    );
+  }
+
+  private createRootNavigator() {
+    return (
+      <NavigationContainer
+        ref={(navigatorRef) => {
+          if (navigatorRef) {
+            this.notificationManager?.initialize(navigatorRef);
+            this.notificationManager.checkOnHoldNotification();
+            this.deepLinkingManager?.initialize(navigatorRef, this.centralServerProvider);
+          }
+        }}
+        onStateChange={persistNavigationState}
+        initialState={this.state.navigationState}>
+        <rootStack.Navigator initialRouteName="AuthNavigator" screenOptions={{ headerShown: false }}>
+          <rootStack.Screen name="AuthNavigator" component={createAuthNavigator} />
+          <rootStack.Screen name="AppDrawerNavigator" component={createAppDrawerNavigator} />
+        </rootStack.Navigator>
+      </NavigationContainer>
     );
   }
 }

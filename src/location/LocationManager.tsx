@@ -26,7 +26,7 @@ export default class LocationManager {
       headingFilter: 1, // Degrees
       headingOrientation: 'portrait',
       pausesLocationUpdatesAutomatically: false,
-      showsBackgroundLocationIndicator: false
+      showsBackgroundLocationIndicator: true
     });
   }
 

@@ -1,10 +1,10 @@
 import deepmerge from 'deepmerge';
 import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { scale, ScaledSheet } from 'react-native-size-matters';
+import { ScaledSheet, scale } from 'react-native-size-matters';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import Utils from '../../utils/Utils';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -24,12 +24,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '20@s',
+      fontSize: '30@s',
       paddingTop: '2@s'
     },
     leftIcon: {
       marginLeft: '2.5%',
       marginRight: '13@s'
+    },
+    rightIcon: {
+      marginLeft: '13@s',
+      marginRight: '2.5%'
     },
     modalHeader: {
       paddingTop: '10@s'
@@ -39,28 +43,22 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       justifyContent: 'flex-start'
     },
-    titlesContainer: {
+    titleContainer: {
       flex: 1,
       flexDirection: 'row',
       flexWrap: 'wrap',
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start'
-    },
-    titleContainer: {
-      maxWidth: '100%',
-      marginRight: '5@s'
+      alignItems: 'center',
+      alignContent: 'stretch',
+      justifyContent: 'flex-start',
     },
     title: {
-      color: commonColor.textColor,
       fontSize: '17@s',
-      textAlign: 'left',
-      width: '100%'
+      color: commonColor.textColor,
+      marginRight: '5@s',
     },
     subTitle: {
-      width: '100%',
-      color: commonColor.textColor,
       fontSize: '17@s',
-      textAlign: 'left',
+      color: commonColor.textColor,
     },
     actionsContainer: {
       flexDirection: 'row',
