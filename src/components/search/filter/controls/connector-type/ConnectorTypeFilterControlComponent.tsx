@@ -32,7 +32,6 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
 
   public render = () => {
     const style = computeStyleSheet();
-    const { label } = this.props;
     const { connectorTypes } = this.state;
     return (
         <View style={style.connectorTypeFilterContainer}>
@@ -41,17 +40,6 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
               {Utils.buildConnectorTypeSVG(connector)}
               <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.connectorLabel}>{Utils.translateConnectorType(connector)}</Text>
             </TouchableOpacity>
-/*            <ToggleButton
-              style={internalStyle.connectorTypeButton}
-              key={connector.type}
-              icon={(Utils.buildConnectorTypeSVG(connector.type))}
-              value="bluetooth"
-              status={connector.selected ? 'checked' : 'unchecked'}
-              onPress={() => {
-                connector.selected = !connector.selected;
-                this.onValueChanged();
-              }}
-            />*/
           ))}
         </View>
     );

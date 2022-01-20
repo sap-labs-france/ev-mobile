@@ -1,10 +1,9 @@
-import I18n from 'i18n-js';
-import {View } from 'native-base';
 import React from 'react';
 
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
-import DialogModal from '../../../modal/DialogModal';
 import computeModalCommonStyle from '../../../modal/ModalCommonStyle';
+import FiltersModal from '../../../modal/FiltersModal';
+import { View } from 'react-native';
 
 export interface Props extends FilterContainerComponentProps {}
 
@@ -70,34 +69,18 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
   };
 
   public render = () => {
-    const modalCommonStyle = computeModalCommonStyle();
     const { visible } = this.state;
     return (
       <View>
         {visible && (
-          <DialogModal
-            title={I18n.t('general.filters')}
-            renderControls={() => this.props.children}
-            withCloseButton={true}
-            onBackDropPress={() => {}}
-            close={() => this.setState({ visible: false })}
-            buttons={[
-              {
-                text: I18n.t('general.apply'),
-                action: async () => this.applyFiltersAndNotify(),
-                buttonTextStyle: modalCommonStyle.primaryButton,
-                buttonStyle: modalCommonStyle.primaryButton
-              },
-              {
-                text: I18n.t('general.clear'),
-                action: async () => this.clearFiltersAndNotify(),
-                buttonTextStyle: modalCommonStyle.primaryButton,
-                buttonStyle: modalCommonStyle.primaryButton
-              }
-            ]}
-          />
+          <FiltersModal
+            apply={() => this.applyFiltersAndNotify()}
+            clear={() => this.clearFiltersAndNotify()}
+            close={() => this.setState({visible: false})}>
+            {this.props.children}
+          </FiltersModal>
         )}
       </View>
     );
-  };
+  }
 }

@@ -14,8 +14,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       width: '100%',
       height: '35@s',
-      paddingLeft: '15@s',
-      paddingRight: '15@s',
       alignItems: 'center'
     },
     columnFilterContainer: {
@@ -49,7 +47,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       flexWrap: 'wrap',
       alignItems: 'stretch',
-      justifyContent: 'space-evenly',
+      justifyContent: 'space-between',
       width: '100%'
     },
     connectorContainer: {
