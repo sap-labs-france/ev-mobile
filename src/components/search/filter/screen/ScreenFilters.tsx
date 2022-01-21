@@ -9,7 +9,7 @@ import FilterVisibleContainerComponent from '../containers/FilterVisibleContaine
 import FilterControlComponent from '../controls/FilterControlComponent';
 
 export interface ScreenFiltersProps<T> {
-  onFilterChanged?: (filters: T, modalFiltersActive?: boolean) => void;
+  onFilterChanged?: (filters: T) => void;
 }
 
 export interface ScreenFiltersState<T> {
@@ -21,9 +21,9 @@ export interface ScreenFiltersState<T> {
   modalFilters?: T;
 }
 
-export default class ScreenFilters<T> extends React.Component<ScreenFiltersProps<T>, ScreenFiltersState<T>> {
-  public state: ScreenFiltersState<T>;
-  public props: ScreenFiltersProps<T>;
+export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFiltersProps<T>, S extends ScreenFiltersState<T> = ScreenFiltersState<T>> extends React.Component<P, S> {
+  public state: S;
+  public props: P;
   filterVisibleContainerComponent: FilterVisibleContainerComponent;
   filterModalContainerComponent: FilterModalContainerComponent;
   centralServerProvider: CentralServerProvider;
@@ -32,7 +32,7 @@ export default class ScreenFilters<T> extends React.Component<ScreenFiltersProps
   private filterVisibleControlComponents: FilterControlComponent<any>[] = [];
   private expandableView: any;
 
-  public constructor(props: ScreenFiltersProps<T>) {
+  public constructor(props: P) {
     super(props);
     this.state = {
       isAdmin: false,
@@ -41,7 +41,7 @@ export default class ScreenFilters<T> extends React.Component<ScreenFiltersProps
       expanded: false,
       filters: {} as T,
       modalFilters: {} as T
-    };
+    } as S;
   }
 
   public areModalFiltersActive() {
@@ -54,13 +54,14 @@ export default class ScreenFilters<T> extends React.Component<ScreenFiltersProps
     this.filterModalContainerComponent.setVisible(true);
   }
 
-  onFiltersChanged (newFilters: T = {} as T, newModalFilters: T = {} as T) {
+  onFiltersChanged(newVisibleFilters: T = {} as T, newModalFilters: T = {} as T, applyFilters?: boolean) {
     const { onFilterChanged } = this.props;
-    const filters = { ...this.state.filters, ...newFilters };
+    const filters = { ...this.state.filters, ...newVisibleFilters, ...newModalFilters };
     const modalFilters = { ...this.state.modalFilters, ...newModalFilters}
     this.setState({ filters, modalFilters });
-    onFilterChanged(filters);
-  };
+    if (applyFilters) {
+      onFilterChanged(filters);
+    }};
 
   public async componentDidMount() {
     let locale = null;

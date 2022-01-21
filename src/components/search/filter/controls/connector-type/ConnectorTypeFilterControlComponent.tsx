@@ -30,6 +30,11 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     return true;
   }
 
+  public clearValue(callback?: () => unknown) {
+    super.clearValue(callback);
+    this.setState({connectorTypes: new Set()})
+  }
+
   public render = () => {
     const style = computeStyleSheet();
     const { connectorTypes } = this.state;

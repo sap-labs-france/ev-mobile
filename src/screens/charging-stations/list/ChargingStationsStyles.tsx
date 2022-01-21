@@ -72,14 +72,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     mapFiltersContainer: {
       position: 'absolute',
     },
-    filtersExpanded: {
-      opacity: 1,
-      height: '140@s'
-    },
-    filtersHidden: {
-      opacity: 0,
-      height: '0@s'
-    },
     fabContainer: {
       position: 'absolute',
       zIndex: 1,

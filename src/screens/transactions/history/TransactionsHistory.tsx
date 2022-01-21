@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -8,18 +8,17 @@ import SimpleSearchComponent from '../../../components/search/simple/SimpleSearc
 import TransactionHistoryComponent
   from '../../../components/transaction/history/TransactionHistoryComponent';
 import I18nManager from '../../../I18n/I18nManager';
-import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';
 import { TransactionDataResult } from '../../../types/DataResult';
-import { GlobalFilters } from '../../../types/Filter';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
-import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from './TransactionsHistoryFilters';
+import computeFabStyles from '../../../components/fab/FabComponentStyles';
+import { TouchableOpacity } from 'react-native';
 
 export interface Props extends BaseProps {}
 
@@ -33,6 +32,8 @@ interface State {
   isPricingActive?: boolean;
   isAdmin?: boolean;
   filters?: TransactionsHistoryFiltersDef;
+  maxTransactionDate?: Date;
+  minTransactionDate?: Date;
 }
 
 export default class TransactionsHistory extends BaseScreen<Props, State> {
@@ -52,14 +53,15 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
       count: 0,
       isPricingActive: false,
       isAdmin: false,
-      filters: {}
+      filters: {},
+      maxTransactionDate: null,
+      minTransactionDate: null
     };
   }
 
   public async componentDidMount() {
     // Get initial filters
     await super.componentDidMount();
-    await this.loadInitialFilters();
     await this.refresh();
   }
 
@@ -70,52 +72,29 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async loadInitialFilters() {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const userID = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
-    const startDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(),
-      GlobalFilters.TRANSACTIONS_START_DATE_FILTER
-    ) as string;
-    const endDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(),
-      GlobalFilters.TRANSACTIONS_END_DATE_FILTER
-    ) as string;
-    const startDateTime = startDateTimeString ? new Date(startDateTimeString) : null;
-    const endDateTime = endDateTimeString ? new Date(endDateTimeString) : null;
-    const initialFilters = {
-      currentUser: !!userID,
-      startDateTime,
-      endDateTime
-    };
-    this.setState({
-      filters: initialFilters
-    });
-  }
-
-  public async getTransactions(
-    searchText: string,
-    skip: number,
-    limit: number,
-    startDateTime: Date,
-    endDateTime: Date
-  ): Promise<TransactionDataResult> {
+  public async getTransactions(searchText: string, skip: number, limit: number, countAll?: boolean): Promise<TransactionDataResult> {
     try {
+      const { startDateTime, endDateTime, currentUser } = this.state.filters;
       const params = {
         Statistics: 'history',
-        UserID: this.state.filters?.currentUser ? this.centralServerProvider.getUserInfo()?.id : null,
+        UserID: currentUser ? this.centralServerProvider.getUserInfo()?.id : null,
         WithUser: true,
-        StartDateTime: startDateTime ? startDateTime.toISOString() : null,
-        EndDateTime: endDateTime ? endDateTime.toISOString() : null,
+        StartDateTime: startDateTime?.toISOString(),
+        EndDateTime: endDateTime?.toISOString(),
         Search: searchText
       };
       // Get active transaction
-      const transactions = await this.centralServerProvider.getTransactions(params, { skip, limit }, ['-timestamp']);
+      let transactions;
+      if (countAll) {
+        transactions = await this.centralServerProvider.getTransactions({ Statistics: 'history' }, Constants.ONLY_RECORD_COUNT);
+      } else {
+        transactions = await this.centralServerProvider.getTransactions(params, { skip, limit }, ['-timestamp']);
+      }
       // Get total number of records
-      if (transactions.count === -1) {
+      if ((transactions?.count === -1) && (!countAll)) {
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(params, Constants.ONLY_RECORD_COUNT);
-        transactions.count = transactionsNbrRecordsOnly.count;
-        transactions.stats = transactionsNbrRecordsOnly.stats;
+        transactions.count = transactionsNbrRecordsOnly?.count;
+        transactions.stats = transactionsNbrRecordsOnly?.stats;
       }
       return transactions;
     } catch (error) {
@@ -136,20 +115,20 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   public async refresh() {
     // Component Mounted?
     if (this.isMounted()) {
-      const { skip, limit, filters } = this.state;
+      const { skip, limit } = this.state;
       // Refresh All
-      const allTransactions = await this.getTransactions(this.searchText, 0, skip + limit, null, null);
-      const transactions = await this.getTransactions(this.searchText, 0, skip + limit, filters.startDateTime, filters.endDateTime);
-
-      const allTransactionsStats = allTransactions.stats;
-      const minTransactionDate = allTransactionsStats.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
-      const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
+      const allTransactions = await this.getTransactions(null, null, null, true);
+      const allTransactionsStats = allTransactions?.stats;
+      const minTransactionDate = allTransactionsStats?.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
+      const maxTransactionDate = allTransactionsStats?.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
+      const transactions = await this.getTransactions(this.searchText, 0, skip + limit);
       // Set
       this.setState({
         loading: false,
         refreshing: false,
         transactions: transactions ? transactions.result : [],
-        filters: { ...this.state.filters, minTransactionDate, maxTransactionDate },
+        minTransactionDate,
+        maxTransactionDate,
         count: transactions ? transactions.count : 0,
         isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
         isPricingActive: this.securityProvider ? this.securityProvider.isComponentPricingActive() : false
@@ -158,16 +137,14 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   }
 
   public onEndScroll = async () => {
-    const { count, skip, limit, filters } = this.state;
+    const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
       const transactions = await this.getTransactions(
         this.searchText,
         skip + Constants.PAGING_SIZE,
-        limit,
-        filters.startDateTime,
-        filters.endDateTime
+        limit
       );
       // Add sites
       this.setState((prevState) => ({
@@ -184,10 +161,10 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     await this.refresh();
   };
 
-  public render = () => {
+  public render () {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, refreshing, filters } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, refreshing } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -198,16 +175,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           title={I18n.t('transactions.transactionsHistory')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
-        <View style={style.searchBar}>
-          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
-        </View>
-        <TransactionsHistoryFilters
-          initialFilters={filters}
-          onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>
-            this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh())
-          }
-          ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters)}
-        />
+        {this.renderFilters()}
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
@@ -236,5 +204,31 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
         )}
       </Container>
     );
-  };
+  }
+
+  private onFiltersChanged(newFilters: TransactionsHistoryFiltersDef): void {
+    this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh());
+  }
+
+  private renderFilters() {
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    const style = computeStyleSheet();
+    const fabStyles = computeFabStyles();
+    const commonColors = Utils.getCurrentCommonColor();
+    return (
+      <View style={style.filtersContainer}>
+        <TransactionsHistoryFilters
+          maxTransactionDate={this.state.maxTransactionDate}
+          minTransactionDate={this.state.minTransactionDate}
+          onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.onFiltersChanged(newFilters)}
+          ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, false)}
+        />
+        <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={[fabStyles.fab, style.filterButton]}>
+          <Icon style={{color: commonColors.light}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
 }

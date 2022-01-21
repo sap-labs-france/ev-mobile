@@ -24,6 +24,29 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
+    },
+    filtersContainer: {
+      flexDirection: 'row',
+      zIndex: 1,
+      marginVertical: '10@s',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginHorizontal: '5@s'
+    },
+    filterButton: {
+      borderRadius: '8@s',
+      width: '50@s',
+      height: '50@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: commonColor.listHeaderBgColor,
+    },
+    searchBarComponent: {
+      backgroundColor: commonColor.listHeaderBgColor,
+      flex: 1,
+      marginRight: '10@s',
+      alignItems: 'center',
+      justifyContent: 'center',
     }
   });
   const portraitStyles = {};

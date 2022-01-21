@@ -36,7 +36,6 @@ import ThemeManager from '../../../custom-theme/ThemeManager';
 import standardDarkLayout from '../../../../assets/map/standard-dark.png';
 import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
-import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -523,7 +522,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters, false)}
         />
         <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        <TouchableOpacity onPressIn={() => this.screenFilters?.openModal()}  style={[fabStyles.fab, showMap ?  style.mapFilterButton : style.listFilterButton]}>
+        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={[fabStyles.fab, showMap ?  style.mapFilterButton : style.listFilterButton]}>
           <Icon style={{color: commonColors.light}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
         </TouchableOpacity>
       </View>

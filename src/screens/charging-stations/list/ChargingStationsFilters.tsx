@@ -29,8 +29,8 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
     const connectorStatus = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS);
     let connectorTypes = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
     connectorTypes = connectorTypes || null;
-    const newFilters = { availableConnectors: !!connectorStatus, connectorTypes: connectorTypes as string };
-    this.onFiltersChanged(newFilters, newFilters);
+    const initialFilters = { availableConnectors: !!connectorStatus, connectorTypes: connectorTypes as string };
+    this.onFiltersChanged(null, initialFilters, true);
   }
 
   public render = () => {
@@ -39,7 +39,7 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
     return (
       <View>
         <FilterModalContainerComponent
-          onFilterChanged={(modalFilters) => this.onFiltersChanged(modalFilters, modalFilters)}
+          onFilterChanged={(modalFilters) => this.onFiltersChanged(null, modalFilters, true)}
           ref={(filterModalContainerComponent: FilterModalContainerComponent) =>
             this.setFilterModalContainerComponent(filterModalContainerComponent)
           }>

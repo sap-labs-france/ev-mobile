@@ -1,6 +1,6 @@
 import { Text, View } from 'native-base';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import Constants from '../../../../../utils/Constants';
@@ -8,9 +8,10 @@ import FilterControlComponent, { FilterControlComponentProps, FilterControlCompo
 import computeStyleSheet from '../FilterControlComponentStyles';
 
 export interface Props extends FilterControlComponentProps<Date> {
-  defaultDate?: Date;
-  minimumDate?: Date;
-  maximumDate?: Date;
+  // Date used when date prop is null
+  date: Date;
+  minimumDate: Date;
+  maximumDate: Date;
 }
 
 interface State extends FilterControlComponentState<Date> {
@@ -19,8 +20,7 @@ interface State extends FilterControlComponentState<Date> {
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
   public static defaultProps = {
-    style: {},
-    defaultDate: new Date()
+    style: {}
   };
   public state: State;
   public props: Props;
@@ -29,7 +29,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     super(props);
     this.state = {
       openDatePicker: false,
-      value: this.props.defaultDate
+      value: this.props.date
     };
   }
 
@@ -46,10 +46,11 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public render = () => {
     const internalStyle = computeStyleSheet();
-    const { label, style, minimumDate, maximumDate, locale } = this.props;
-    const value = this.getValue() as Date;
+    const { label, style, minimumDate, maximumDate, locale, date } = this.props;
+    let { value } = this.state;
+    value = value ?? date;
     return (
-      <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
+      <View style={[internalStyle.rowFilterContainer, style]}>
         <Text style={[internalStyle.textFilter, internalStyle.label]}>{label}</Text>
         {value ? (
           <View>
@@ -58,7 +59,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
             </TouchableOpacity>
             <DateTimePickerModal
               isVisible={this.state.openDatePicker}
-              date={this.getValue()}
+              date={value}
               mode={'date'}
               maximumDate={maximumDate}
               minimumDate={minimumDate}
