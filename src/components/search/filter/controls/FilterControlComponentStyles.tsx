@@ -58,7 +58,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '8@s',
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: '7@s'
+      marginBottom: '10@s'
     },
     selectedConnectorContainer: {
       borderWidth: 3.5

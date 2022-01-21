@@ -11,16 +11,23 @@ import { Button } from 'react-native-elements';
 
 export interface Props extends FilterContainerComponentProps {}
 
-interface State extends FilterContainerComponentState {}
+interface State extends FilterContainerComponentState {
+  applyLoading?: boolean;
+  clearLoading?: boolean;
+  visible?: boolean;
+}
 
 export default class FilterModalContainerComponent extends FilterContainerComponent {
   public state: State;
   public props: Props;
-  private filtersActive: boolean = null;
 
   public constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      applyLoading: false,
+      clearLoading: false,
+      visible: false
+    };
   }
 
   public setState = (
@@ -30,38 +37,26 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     super.setState(state, callback);
   };
 
-  public setFiltersActive(filtersActive: boolean): void {
-    this.filtersActive = filtersActive;
-  }
-
-  public getFiltersActive(): boolean {
-    return this.filtersActive;
-  }
-
   public async notifyFilterChanged() {
     const { onFilterChanged } = this.props;
     // Notify
     onFilterChanged?.(this.getFilters(), false);
   }
 
-  public clearFilters() {
-    super.clearFilters();
-    this.setFiltersActive(false);
-   // this.notifyFilterChanged();
-  }
-
   public applyFiltersAndNotify = async () => {
     const { onFilterChanged } = this.props;
+    this.setState({applyLoading: true});
     // Save
     await this.saveFilters();
     // Notify
     onFilterChanged(this.getFilters(), true);
     // Close
-    this.setVisible(false);
+    this.setState({visible: false, applyLoading: false});
   };
 
   public async clearFiltersAndNotify(): Promise<void> {
     const { onFilterChanged } = this.props;
+    this.setState({clearLoading: true})
     // Clear
     this.clearFilters();
     // Save
@@ -69,11 +64,11 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     // Notify
     onFilterChanged(this.getFilters(), true);
     // Close
-    this.setVisible(false);
+    this.setState({visible: false, clearLoading: false});
   };
 
   public render = () => {
-    const { visible } = this.state;
+    const { visible, applyLoading, clearLoading } = this.state;
     const modalCommonStyle = computeModalCommonStyle();
     const style = computeStyleSheet();
     return (
@@ -96,10 +91,14 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
             </View>
             {this.props.children}
             <View style={style.buttonsContainer}>
-              <Button containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
-                      onPress={() => this.applyFiltersAndNotify()} title={I18n.t('general.apply')}/>
-              <Button containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
-                      onPress={() => this.clearFiltersAndNotify()} title={I18n.t('general.clear')}/>
+              <Button
+                loading={applyLoading}
+                containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
+                onPress={() => this.applyFiltersAndNotify()} title={I18n.t('general.apply')}/>
+              <Button
+                loading={clearLoading}
+                containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
+                onPress={() => this.clearFiltersAndNotify()} title={I18n.t('general.clear')}/>
             </View>
           </View>
         </Modal>
