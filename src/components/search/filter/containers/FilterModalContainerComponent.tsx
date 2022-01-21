@@ -2,8 +2,12 @@ import React from 'react';
 
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
 import computeModalCommonStyle from '../../../modal/ModalCommonStyle';
-import FiltersModal from '../../../modal/FiltersModal';
-import { View } from 'react-native';
+import computeStyleSheet from'./FilterModalContainerComponentStyles';
+import { Text, View } from 'react-native';
+import Modal from 'react-native-modal';
+import I18n from 'i18n-js';
+import { Icon } from 'native-base';
+import { Button } from 'react-native-elements';
 
 export interface Props extends FilterContainerComponentProps {}
 
@@ -70,16 +74,35 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
 
   public render = () => {
     const { visible } = this.state;
+    const modalCommonStyle = computeModalCommonStyle();
+    const style = computeStyleSheet();
     return (
       <View>
-        {visible && (
-          <FiltersModal
-            apply={() => this.applyFiltersAndNotify()}
-            clear={() => this.clearFiltersAndNotify()}
-            close={() => this.setState({visible: false})}>
+        <Modal
+          style={style.modal}
+          animationOut={'slideOutDown'}
+          animationIn={'slideInUp'}
+          animationInTiming={700}
+          animationOutTiming={200}
+          useNativeDriver={true}
+          isVisible={visible}
+          onBackButtonPress={() => this.setState({visible: false})}
+          onBackdropPress={() => this.setState({visible: false})}
+        >
+          <View style={style.modalContent}>
+            <View style={style.header}>
+              <Text style={style.title}>{I18n.t('general.filters')}</Text>
+              <Icon onPress={() => this.setState({visible: false})} name={'x'} type={'Feather'} style={style.closeIcon}/>
+            </View>
             {this.props.children}
-          </FiltersModal>
-        )}
+            <View style={style.buttonsContainer}>
+              <Button containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
+                      onPress={() => this.applyFiltersAndNotify()} title={I18n.t('general.apply')}/>
+              <Button containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
+                      onPress={() => this.clearFiltersAndNotify()} title={I18n.t('general.clear')}/>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
