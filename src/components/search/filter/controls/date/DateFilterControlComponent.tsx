@@ -1,11 +1,11 @@
-import { Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import Constants from '../../../../../utils/Constants';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
-import computeStyleSheet from '../FilterControlComponentStyles';
+import computeStyleSheet from './DateFilterControlComponentStyles';
 
 export interface Props extends FilterControlComponentProps<Date> {
   // Date used when date prop is null
@@ -46,16 +46,17 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public render = () => {
     const internalStyle = computeStyleSheet();
-    const { label, style, minimumDate, maximumDate, locale, date } = this.props;
+    const { label, minimumDate, maximumDate, locale, date, style } = this.props;
     let { value } = this.state;
     value = value ?? date;
     return (
-      <View style={[internalStyle.rowFilterContainer, style]}>
-        <Text style={[internalStyle.textFilter, internalStyle.label]}>{label}</Text>
+      <View style={[internalStyle.container, style]}>
+        <Text style={internalStyle.label}>{label}</Text>
         {value ? (
-          <View>
-            <TouchableOpacity onPress={() => this.openDatePicker(true)}>
-              <Text style={internalStyle.textFilter}>{value.toDateString()}</Text>
+            <View>
+            <TouchableOpacity style={internalStyle.inputContainer} onPress={() => this.openDatePicker(true)}>
+              <Text numberOfLines={1} style={internalStyle.dateText}>{value.toDateString()}</Text>
+              <Icon style={internalStyle.dateIcon} type={'Foundation'} name={'calendar'} />
             </TouchableOpacity>
             <DateTimePickerModal
               isVisible={this.state.openDatePicker}

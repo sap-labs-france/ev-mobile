@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { View } from 'native-base';
 import React from 'react';
 
+import computeStyleSheet from './TransactionHistoryFiltersStyles';
 import FilterModalContainerComponent from '../../../components/search/filter/containers/FilterModalContainerComponent';
 import DateFilterControlComponent from '../../../components/search/filter/controls/date/DateFilterControlComponent';
 import SwitchFilterComponent from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
@@ -29,7 +30,7 @@ export interface TransactionsHistoryFiltersDef {
 export default class TransactionsHistoryFilters extends ScreenFilters<TransactionsHistoryFiltersDef, Props> {
   public state: ScreenFiltersState<TransactionsHistoryFiltersDef>;
   public props: Props;
-  
+
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<ScreenFiltersState<TransactionsHistoryFiltersDef>>, snapshot?: any) {
     const { minTransactionDate, maxTransactionDate } = this.props;
     if (minTransactionDate?.getTime() !== prevProps.minTransactionDate?.getTime()
@@ -85,10 +86,11 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
     const { maxTransactionDate, minTransactionDate } = this.props;
     let startDateTime = filters?.startDateTime;
     let endDateTime = filters?.endDateTime;
+    const style = computeStyleSheet();
     return (
       <View>
         <FilterModalContainerComponent
-          onFilterChanged={(newFilters) => this.onFiltersChanged(newFilters, newFilters)}
+          onFilterChanged={(newFilters) => this.onFiltersChanged(null, newFilters, true)}
           ref={(filterModalContainerComponent: FilterModalContainerComponent) =>
             this.setFilterModalContainerComponent(filterModalContainerComponent)
           }>
@@ -104,28 +106,32 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
               }
             />
           )}
-          <DateFilterControlComponent
-            filterID={'startDateTime'}
-            internalFilterID={GlobalFilters.TRANSACTIONS_START_DATE_FILTER}
-            label={I18n.t('general.startDate')}
-            onFilterChanged={async (id: string, startDateTime: Date) => this.onFiltersChanged(null, {startDateTime})}
-            ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
-            locale={this.state.locale}
-            minimumDate={minTransactionDate}
-            date={startDateTime ?? minTransactionDate}
-            maximumDate={endDateTime ?? maxTransactionDate}
-          />
-          <DateFilterControlComponent
-            filterID={'endDateTime'}
-            internalFilterID={GlobalFilters.TRANSACTIONS_END_DATE_FILTER}
-            label={I18n.t('general.endDate')}
-            onFilterChanged={async (id: string, endDateTime: Date) => this.onFiltersChanged(null, {endDateTime})}
-            ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
-            locale={this.state.locale}
-            minimumDate={startDateTime ?? minTransactionDate}
-            date={endDateTime ?? maxTransactionDate}
-            maximumDate={maxTransactionDate}
-          />
+          <View style={style.dateFiltersContainer}>
+            <DateFilterControlComponent
+              filterID={'startDateTime'}
+              style={style.dateFilterComponentContainer}
+              internalFilterID={GlobalFilters.TRANSACTIONS_START_DATE_FILTER}
+              label={I18n.t('general.startDate')}
+              onFilterChanged={async (id: string, startDateTime: Date) => this.onFiltersChanged(null, {startDateTime})}
+              ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
+              locale={this.state.locale}
+              minimumDate={minTransactionDate}
+              date={startDateTime ?? minTransactionDate}
+              maximumDate={endDateTime ?? maxTransactionDate}
+            />
+            <DateFilterControlComponent
+              filterID={'endDateTime'}
+              internalFilterID={GlobalFilters.TRANSACTIONS_END_DATE_FILTER}
+              style={style.dateFilterComponentContainer}
+              label={I18n.t('general.endDate')}
+              onFilterChanged={async (id: string, endDateTime: Date) => this.onFiltersChanged(null, {endDateTime})}
+              ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
+              locale={this.state.locale}
+              minimumDate={startDateTime ?? minTransactionDate}
+              date={endDateTime ?? maxTransactionDate}
+              maximumDate={maxTransactionDate}
+            />
+          </View>
         </FilterModalContainerComponent>
       </View>
     );
