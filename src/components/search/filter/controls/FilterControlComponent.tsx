@@ -62,8 +62,8 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   }
 
   public clearValue(callback?: () => unknown) {
-    // Prevent setState when component not mounted
-    this.setState({value: null})
+    // Prevent callers to setState when component not mounted.
+    this.state.value = null;
     callback?.();
   }
 
