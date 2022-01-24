@@ -14,7 +14,7 @@ import SecuredStorage from '../../../utils/SecuredStorage';
 import { scale } from 'react-native-size-matters';
 
 export interface ChargingStationsFiltersDef {
-  availableConnectors?: boolean;
+  connectorStatus?: string;
   connectorTypes?: string;
 }
 
@@ -43,14 +43,15 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
           ref={(filterModalContainerComponent: FilterModalContainerComponent) =>
             this.setFilterModalContainerComponent(filterModalContainerComponent)
           }>
-          <SwitchFilterComponent
-            filterID={'availableConnectors'}
+          <SwitchFilterComponent<string>
+            filterID={'connectorStatus'}
             internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS}
+            enabledValue={'Available'}
             style={{marginBottom: scale(20)}}
-            initialValue={filters?.availableConnectors}
+            initialValue={filters?.connectorStatus}
             label={I18n.t('general.onlyAvailableChargers')}
             ref={async (
-              onlyAvailableChargingStationSwitchFilterControlComponent: SwitchFilterComponent
+              onlyAvailableChargingStationSwitchFilterControlComponent: SwitchFilterComponent<string>
             ) => this.addModalFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
           />
           <ConnectorTypeFilterControlComponent

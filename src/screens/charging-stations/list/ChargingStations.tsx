@@ -152,7 +152,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         Search: searchText,
         SiteAreaID: this.siteArea?.id,
         Issuer: true,
-        ConnectorStatus: filters?.availableConnectors ? "Available" : null,
+        ConnectorStatus: filters?.connectorStatus,
         ConnectorType: filters.connectorTypes,
         WithSiteArea: true,
         LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation.latitude,
@@ -523,7 +523,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         />
         <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={[fabStyles.fab, showMap ?  style.mapFilterButton : style.listFilterButton]}>
-          <Icon style={{color: commonColors.light}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
         </TouchableOpacity>
       </View>
       );

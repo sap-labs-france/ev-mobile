@@ -74,10 +74,10 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
 
   public async getTransactions(searchText: string, skip: number, limit: number, countAll?: boolean): Promise<TransactionDataResult> {
     try {
-      const { startDateTime, endDateTime, currentUser } = this.state.filters;
+      const { startDateTime, endDateTime, userID } = this.state.filters;
       const params = {
         Statistics: 'history',
-        UserID: currentUser ? this.centralServerProvider.getUserInfo()?.id : null,
+        UserID: userID,
         WithUser: true,
         StartDateTime: startDateTime?.toISOString(),
         EndDateTime: endDateTime?.toISOString(),
@@ -225,7 +225,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
         />
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={[fabStyles.fab, style.filterButton]}>
-          <Icon style={{color: commonColors.light}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
         </TouchableOpacity>
       </View>
     );

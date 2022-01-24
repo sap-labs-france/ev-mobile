@@ -22,7 +22,7 @@ export interface Props extends ScreenFiltersProps<TransactionsHistoryFiltersDef>
 export interface TransactionsHistoryFiltersDef {
   startDateTime?: Date;
   endDateTime?: Date;
-  currentUser?: boolean;
+  userID?: string;
   maxTransactionDate?: Date;
   minTransactionDate?: Date;
 }
@@ -30,40 +30,12 @@ export interface TransactionsHistoryFiltersDef {
 export default class TransactionsHistoryFilters extends ScreenFilters<TransactionsHistoryFiltersDef, Props> {
   public state: ScreenFiltersState<TransactionsHistoryFiltersDef>;
   public props: Props;
-
-  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<ScreenFiltersState<TransactionsHistoryFiltersDef>>, snapshot?: any) {
-    const { minTransactionDate, maxTransactionDate } = this.props;
-    if (minTransactionDate?.getTime() !== prevProps.minTransactionDate?.getTime()
-      || maxTransactionDate?.getTime() !== prevProps.maxTransactionDate?.getTime()) {
-      const correctedDates = this.computeCorrectedDates(maxTransactionDate, minTransactionDate);
-      this.onFiltersChanged(null, correctedDates);
-    }
-  }
+  private currentUserID: string;
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
+    this.currentUserID = this.centralServerProvider.getUserInfo()?.id;
     await this.loadInitialFilters();
-  }
-
-  private computeCorrectedDates(maxTransactionDate: Date, minTransactionDate: Date): TransactionsHistoryFiltersDef {
-    let { startDateTime, endDateTime } = this.state.filters;
-    if (startDateTime) {
-      if (startDateTime < minTransactionDate) {
-        startDateTime = minTransactionDate;
-      }
-      if (startDateTime > maxTransactionDate) {
-        startDateTime = maxTransactionDate
-      }
-    }
-    if(endDateTime) {
-      if (endDateTime < minTransactionDate) {
-        endDateTime = minTransactionDate;
-      }
-      if (endDateTime > maxTransactionDate) {
-        endDateTime = maxTransactionDate
-      }
-    }
-    return {startDateTime, endDateTime};
   }
 
   private async loadInitialFilters() {
@@ -94,15 +66,16 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
           ref={(filterModalContainerComponent: FilterModalContainerComponent) =>
             this.setFilterModalContainerComponent(filterModalContainerComponent)
           }>
-          {isAdmin || hasSiteAdmin && (
-            <SwitchFilterComponent
-              filterID={'currentUser'}
+          {(isAdmin || hasSiteAdmin) && (
+            <SwitchFilterComponent<string>
+              filterID={'userID'}
               internalFilterID={GlobalFilters.MY_USER_FILTER}
-              initialValue={filters?.currentUser}
+              style={style.switchFilterComponentContainer}
+              initialValue={filters?.userID}
+              enabledValue={this.currentUserID}
               label={I18n.t('general.onlyMyTransactions')}
-              onFilterChanged={async (id: string, value: boolean) => this.getFilterVisibleContainerComponent().notifyFilterChanged()}
-              ref={async (myUserSwitchFilterControlComponent: SwitchFilterComponent) =>
-                this.addVisibleFilter(myUserSwitchFilterControlComponent)
+              ref={async (myUserSwitchFilterControlComponent: SwitchFilterComponent<string>) =>
+                this.addModalFilter(myUserSwitchFilterControlComponent)
               }
             />
           )}

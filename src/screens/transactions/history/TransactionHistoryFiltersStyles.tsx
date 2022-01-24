@@ -14,6 +14,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     dateFilterComponentContainer: {
       width: '48%'
+    },
+    switchFilterComponentContainer: {
+      marginBottom: '20@s'
     }
   });
   const portraitStyles = {};

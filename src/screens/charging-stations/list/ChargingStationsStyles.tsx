@@ -45,8 +45,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     listFilterButton: {
       borderRadius: '8@s',
-      width: '50@s',
-      height: '50@s',
+      width: '45@s',
+      height: '45@s',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: commonColor.listHeaderBgColor,
