@@ -81,25 +81,14 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   };
 
   private onConfirm(newValue: Date) {
-    const { onFilterChanged } = this.props;
-    // Set Filter
-    if (onFilterChanged) {
-      if (newValue) {
-        this.setState(
-          {
-            openDatePicker: false,
-            value: newValue
-          },
-          () => {
-            onFilterChanged(this.getID(), newValue);
-          }
-        );
-      } else {
-        this.clearValue(() => {
-          onFilterChanged(this.getID(), null);
-        });
-      }
+    const { maximumDate, minimumDate, onFilterChanged } = this.props;
+    // Workaround to fix the bug from react-native-modal-datetime-picker
+    if (newValue < minimumDate ) {
+      newValue = minimumDate
+    } else if (newValue > maximumDate) {
+      newValue = maximumDate
     }
+    this.setState({ openDatePicker: false, value: newValue }, () => onFilterChanged?.(this.getID(), newValue))
   }
 
   private openDatePicker(openDatePicker: boolean) {
