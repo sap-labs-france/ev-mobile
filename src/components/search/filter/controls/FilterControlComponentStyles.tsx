@@ -46,14 +46,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     connectorTypeFilterContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      alignItems: 'stretch',
+      alignItems: 'center',
       justifyContent: 'space-between',
       width: '100%'
     },
     connectorContainer: {
-      width: '22%',
+      width: '80@s',
       borderWidth: 0.8,
       padding: '2@s',
+      height: '80@s',
       borderColor: commonColor.textColor,
       borderRadius: '8@s',
       alignItems: 'center',
