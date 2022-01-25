@@ -38,6 +38,4 @@ export default interface ThemeDefinition {
   listItemBackground: string;
   listHeaderBackground: string;
   mapClusterBorder: string;
-  mapFilterButtonBackground: string,
-  mapFilterButtonIcon: string
 }

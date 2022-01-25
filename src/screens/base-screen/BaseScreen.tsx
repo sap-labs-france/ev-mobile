@@ -7,7 +7,6 @@ import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
 import { BackHandler, NativeEventSubscription } from 'react-native';
-import Orientation from 'react-native-orientation-locker';
 
 export interface Props extends BaseProps {}
 
@@ -44,7 +43,6 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
     // Ok
     this.mounted = true;
-    Orientation.lockToPortrait();
   }
 
   public componentWillUnmount() {
@@ -91,7 +89,6 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   public componentDidFocus(): void {
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
-    Orientation.lockToPortrait();
   }
 
   public componentDidBlur(): void {
