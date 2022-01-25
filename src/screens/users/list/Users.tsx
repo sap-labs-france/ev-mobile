@@ -66,9 +66,9 @@ export default class Users extends SelectableList<User> {
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
       // Get total number of records
-      if (users.count === -1) {
+      if (users?.count === -1) {
         const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
-        users.count = usersNbrRecordsOnly.count;
+        users.count = usersNbrRecordsOnly?.count;
       }
       return users;
     } catch (error) {

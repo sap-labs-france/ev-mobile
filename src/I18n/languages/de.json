@@ -120,7 +120,7 @@
     "registerUnexpectedError": "Neuen Account erstellen",
     "emailAlreadyExists": "Email existiert bereits",
     "accountNotActive": "Ihr Konto ist nicht aktiv",
-    "technicalUserCannotLoginToUI": "Technical user and cannot login using the application",
+    "technicalUserCannotLoginToUI": "API user and cannot login using the application",
     "accountAlreadyActive": "Ihr Account ist bereits aktiviert",
     "accountVerifiedSuccess": "Ihr Account wurde erfolgreich aktiviert!",
     "accountPending": "Ihr Konto wurde noch nicht aktiviert, überprüfen Sie Ihre E-Mails!",

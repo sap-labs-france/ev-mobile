@@ -1,6 +1,6 @@
 {
   "name": "eMobility",
-  "version": "2.0.5",
+  "version": "2.0.19",
   "engines": {
     "npm": "8.x.x"
   },
@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/sap-labs-france/ev-mobile.git"
   },
-  "author": "SAP E-Mobility Labs France <e-mobility@sap.com>",
+  "author": "Serge FABIANO <sergefabiano@@free.fr>",
   "license": "Apache-2.0",
   "licenses": [
     {
@@ -92,7 +92,7 @@
     "@react-navigation/material-bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
-    "@stripe/stripe-react-native": "^0.1.4",
+    "@stripe/stripe-react-native": "^0.2.3",
     "axios": "^0.22.0",
     "base-64": "^1.0.0",
     "buffer": "^6.0.3",

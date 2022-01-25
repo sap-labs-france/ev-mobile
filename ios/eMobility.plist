@@ -52,10 +52,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>${PRODUCT_NAME} needs access to the camera to scan the charging station's QR Code to register the organization or start a transaction</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Discover charging stations</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Discover charging stations</string>
+	<string>Discover Charging Stations</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -80,7 +78,6 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

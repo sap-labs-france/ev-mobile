@@ -1,10 +1,10 @@
+import { DrawerActions } from '@react-navigation/native';
 import { Icon } from 'native-base';
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './HeaderComponentStyles';
-import { DrawerActions } from '@react-navigation/native';
 import ScreenFilters from '../search/filter/screen/ScreenFilters';
 
 export interface Props extends BaseProps {
@@ -80,23 +80,21 @@ export default class HeaderComponent extends React.Component<Props, State> {
             </TouchableOpacity>
           ) : (
             backArrow && (
-              <TouchableOpacity style={style.leftIcon} onPress={backAction ?? (() => navigation.goBack())}>
-                <Icon style={style.icon} type={'Feather'} name={'arrow-left'} />
+              <TouchableOpacity
+                style={style.leftIcon}
+                onPress={backAction ?? (() => navigation.goBack())}>
+                <Icon style={style.icon} type={'Feather'} name={'chevron-left'} />
               </TouchableOpacity>
             )
           )}
         </View>
-        <View style={style.titlesContainer}>
-          <View style={style.titleContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
-              {title}
-            </Text>
-          </View>
-          <View>
-            <Text numberOfLines={1}  style={style.subTitle}>
-              {subTitle}
-            </Text>
-          </View>
+        <View style={style.titleContainer}>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
+            {title}
+          </Text>
+          <Text numberOfLines={1} style={style.subTitle}>
+            {subTitle}
+          </Text>
         </View>
         <View style={style.actionsContainer}>
           {actions?.map((action, index) => (
@@ -106,10 +104,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
           ))}
           {this.modalFilters && (
             <TouchableOpacity
+              style={style.rightIcon}
               onPress={() => {
                 this.modalFilters?.openModal();
               }}>
               <Icon
+                style={style.icon}
                 type={'MaterialCommunityIcons'}
                 name={this.modalFilters?.areModalFiltersActive() ? 'filter' : 'filter-outline'}
               />

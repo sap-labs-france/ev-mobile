@@ -154,7 +154,7 @@ export default class Statistics extends BaseScreen<Props, State> {
       compactDisplay: 'long',
       compactThreshold: 1000000
     });
-    const totalCost = I18nManager.formatNumberWithCompacts(totalPrice, {
+    const totalCost = !isPricingActive ? null : I18nManager.formatNumberWithCompacts(totalPrice, {
       notation: NumberFormatNotationEnum.COMPACT,
       compactStyle: NumberFormatCompactStyleEnum.FINANCE,
       compactDisplay: 'short',

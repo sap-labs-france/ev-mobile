@@ -7,12 +7,6 @@ import { NativeModules, Platform, ViewStyle } from 'react-native';
 import { showLocation } from 'react-native-map-link';
 import validate from 'validate.js';
 
-import statusMarkerAvailable from '../../assets/icon/charging_station_available.png';
-import statusMarkerChargingOrOccupied from '../../assets/icon/charging_station_charging.png';
-import statusMarkerFaulted from '../../assets/icon/charging_station_faulted.png';
-import statusMarkerPreparingOrFinishing from '../../assets/icon/charging_station_finishing.png';
-import statusMarkerSuspended from '../../assets/icon/charging_station_suspended.png';
-import statusMarkerUnavailable from '../../assets/icon/charging_station_unavailable.png';
 import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ThemeManager from '../custom-theme/ThemeManager';
@@ -737,7 +731,8 @@ export default class Utils {
       await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
     } else {
       // Error in code
-      Message.showError(I18n.t('general.unexpectedErrorBackend'));
+      centralServerProvider.sendErrorReport(null,  error.message, error.stack);
+      Message.showError(I18n.t('general.unexpectedError'));
     }
   }
 

@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+
 import DialogModal from '../../../components/modal/DialogModal';
 import ExitAppDialog from '../../../components/modal/exit-app/ExitAppDialog';
 import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
@@ -244,7 +245,7 @@ export default class Login extends BaseScreen<Props, State> {
             case HTTPError.USER_ACCOUNT_INACTIVE_ERROR:
               Message.showError(I18n.t('authentication.accountNotActive'));
               break;
-            // Technical User
+            // API User
             case HTTPError.TECHNICAL_USER_CANNOT_LOG_TO_UI_ERROR:
               Message.showError(I18n.t('authentication.technicalUserCannotLoginToUI'));
               break;

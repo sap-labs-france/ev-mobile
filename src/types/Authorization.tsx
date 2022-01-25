@@ -41,6 +41,7 @@ export enum Action {
   READ = 'Read',
   CREATE = 'Create',
   UPDATE = 'Update',
+  REVOKE = 'Revoke',
   DELETE = 'Delete',
   LOGOUT = 'Logout',
   LIST = 'List',

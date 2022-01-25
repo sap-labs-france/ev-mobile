@@ -100,12 +100,10 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
           </View>
         </View>
         <View style={style.subHeaderContent}>
-          {chargingStation.siteArea ? (
+          {chargingStation.siteArea && (
             <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
               {Utils.formatAddress(chargingStation.siteArea.address)}
             </Text>
-          ) : (
-            <Text>-</Text>
           )}
           {chargingStation.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>}
         </View>

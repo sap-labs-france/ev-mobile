@@ -86,7 +86,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
       // Get total number of records
       if (paymentMethods?.count === -1) {
         const paymentMethodsNbrRecordsOnly = await this.centralServerProvider.getPaymentMethods(params, Constants.ONLY_RECORD_COUNT);
-        paymentMethods.count = paymentMethodsNbrRecordsOnly.count;
+        paymentMethods.count = paymentMethodsNbrRecordsOnly?.count;
       }
       return paymentMethods;
     } catch (error) {

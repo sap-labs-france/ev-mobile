@@ -37,6 +37,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginBottom: '10@s',
       backgroundColor: commonColor.buttonBg
     },
+    buttonDisabled: {
+      opacity: 0.4
+    },
     buttonText: {
       width: '100%',
       textAlign: 'center',

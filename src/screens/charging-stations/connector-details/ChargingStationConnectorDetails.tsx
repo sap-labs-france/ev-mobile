@@ -927,7 +927,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 {/* Badge */}
                 {this.renderTagSelection(style)}
                 {/* Car */}
-                {this.renderCarSelection(style)}
+                {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
               </ScrollView>
             )}
           </View>

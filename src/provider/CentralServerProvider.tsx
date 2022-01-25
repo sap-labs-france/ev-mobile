@@ -39,7 +39,7 @@ import SecurityProvider from './SecurityProvider';
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
   private debug = false;
-  private captchaBaseUrl: string = Configuration.SCP_CAPTCHA_BASE_URL;
+  private captchaBaseUrl: string = Configuration.AWS_REST_ENDPOINT_PROD;
   private captchaSiteKey: string = Configuration.SCP_CAPTCHA_SITE_KEY;
 
   // Paste the token below
@@ -795,7 +795,7 @@ export default class CentralServerProvider {
     // Force only local tags
     params.Issuer = true;
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TAGS}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TAGS), {
       headers: this.buildSecuredHeaders(),
       params
     });
