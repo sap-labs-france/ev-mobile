@@ -76,9 +76,9 @@ export default class Statistics extends BaseScreen<Props, State> {
   public refresh = async () => {
     const { filters } = this.state;
     // Get the ongoing Transaction stats
-    const transactionsStats = await this.getTransactionsStats(filters.startDateTime, filters.endDateTime);
+    const transactionsStats = await this.getTransactionsStats();
     // Retrieve all the transactions for the current userID
-    const allTransactions = await this.getTransactionsStats(null, null);
+    const allTransactions = await this.getTransactionsStats({ Statistics: 'history' });
     const allTransactionsStats = allTransactions.stats;
     const minTransactionDate = allTransactionsStats.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
     const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
@@ -99,19 +99,17 @@ export default class Statistics extends BaseScreen<Props, State> {
     });
   };
 
-  public getTransactionsStats = async (startDateTime: Date, endDateTime: Date): Promise<TransactionDataResult> => {
+  public getTransactionsStats = async (params?: {}): Promise<TransactionDataResult> => {
     try {
       // Get active transaction
-      const transactions = await this.centralServerProvider?.getTransactions(
-        {
-          Statistics: 'history',
-          UserID: this.state.filters?.userID,
-          StartDateTime: startDateTime ? startDateTime.toISOString() : null,
-          EndDateTime: endDateTime ? endDateTime.toISOString() : null
-        },
-        Constants.ONLY_RECORD_COUNT
-      );
-      return transactions;
+      const { startDateTime, endDateTime } = this.state.filters;
+      params = params ?? {
+        Statistics: 'history',
+        UserID: this.state.filters?.userID,
+        StartDateTime: startDateTime ? startDateTime.toISOString() : null,
+        EndDateTime: endDateTime ? endDateTime.toISOString() : null
+      }
+      return await this.centralServerProvider?.getTransactions(params, Constants.ONLY_RECORD_COUNT);
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {

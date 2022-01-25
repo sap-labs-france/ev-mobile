@@ -72,42 +72,37 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async getTransactions(searchText: string, skip: number, limit: number, countAll?: boolean): Promise<TransactionDataResult> {
+  public async getTransactions(paging: {skip: number, limit: number}, params?: {}): Promise<TransactionDataResult> {
     try {
       const { startDateTime, endDateTime, userID } = this.state.filters;
-      const params = {
+      // Get active transaction
+      params = params ?? {
         Statistics: 'history',
         UserID: userID,
         WithUser: true,
         StartDateTime: startDateTime?.toISOString(),
         EndDateTime: endDateTime?.toISOString(),
-        Search: searchText
-      };
-      // Get active transaction
-      let transactions;
-      if (countAll) {
-        transactions = await this.centralServerProvider.getTransactions({ Statistics: 'history' }, Constants.ONLY_RECORD_COUNT);
-      } else {
-        transactions = await this.centralServerProvider.getTransactions(params, { skip, limit }, ['-timestamp']);
+        Search: this.searchText
       }
+      const transactions = await this.centralServerProvider.getTransactions(params, paging, ['-timestamp']);
       // Get total number of records
-      if ((transactions?.count === -1) && (!countAll)) {
+      if (transactions?.count === -1) {
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(params, Constants.ONLY_RECORD_COUNT);
         transactions.count = transactionsNbrRecordsOnly?.count;
         transactions.stats = transactionsNbrRecordsOnly?.stats;
       }
-      return transactions;
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'transactions.transactionUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
-      }
+        return transactions;
+      } catch (error) {
+        // Check if HTTP?
+        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            'transactions.transactionUnexpectedError',
+            this.props.navigation,
+            this.refresh.bind(this)
+          );
+        }
     }
     return null;
   }
@@ -117,11 +112,11 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const allTransactions = await this.getTransactions(null, null, null, true);
+      const allTransactions = await this.getTransactions(Constants.ONLY_RECORD_COUNT, {Statistics: 'history'});
       const allTransactionsStats = allTransactions?.stats;
       const minTransactionDate = allTransactionsStats?.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
       const maxTransactionDate = allTransactionsStats?.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
-      const transactions = await this.getTransactions(this.searchText, 0, skip + limit);
+      const transactions = await this.getTransactions({skip, limit});
       // Set
       this.setState({
         loading: false,
@@ -141,11 +136,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const transactions = await this.getTransactions(
-        this.searchText,
-        skip + Constants.PAGING_SIZE,
-        limit
-      );
+      const transactions = await this.getTransactions({skip: skip + Constants.PAGING_SIZE, limit});
       // Add sites
       this.setState((prevState) => ({
         transactions: transactions ? [...prevState.transactions, ...transactions.result] : prevState.transactions,
@@ -230,5 +221,4 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
       </View>
     );
   }
-
 }

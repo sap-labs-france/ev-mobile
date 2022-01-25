@@ -1,5 +1,3 @@
-import palette from '../custom-theme/theme/palette';
-
 export enum ThemeType {
   DARK = 'dark',
   LIGHT = 'light'
