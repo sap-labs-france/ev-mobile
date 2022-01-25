@@ -102,10 +102,6 @@ FilterContainerComponentState
     return filters;
   };
 
-  public getFiltersComponents(): FilterControlComponent<any>[] {
-    return this.filterControlComponents;
-  }
-
   public async applyFiltersAndNotify() {
     // Save
     await this.saveFilters();
