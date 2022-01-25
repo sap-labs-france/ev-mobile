@@ -91,7 +91,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
         transactions.count = transactionsNbrRecordsOnly?.count;
         transactions.stats = transactionsNbrRecordsOnly?.stats;
       }
-        return transactions;
+      return transactions;
       } catch (error) {
         // Check if HTTP?
         if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
