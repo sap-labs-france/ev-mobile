@@ -16,13 +16,6 @@ export interface TransactionsInProgressFiltersDef {
 export default class TransactionsInProgressFilters extends ScreenFilters<TransactionsInProgressFiltersDef> {
   private currentUserID: string;
 
-  public constructor(props: ScreenFiltersProps<TransactionsInProgressFiltersDef>) {
-    super(props);
-    this.state = {
-      filters: {}
-    };
-  }
-
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
     await this.loadInitialFilters();
