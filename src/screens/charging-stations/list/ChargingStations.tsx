@@ -519,7 +519,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       <View style={[style.filtersContainer, showMap && style.mapFiltersContainer]}>
         <ChargingStationsFilters
           onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
-          ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters, false)}
+          ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
         />
         <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={[fabStyles.fab, showMap ?  style.mapFilterButton : style.listFilterButton]}>

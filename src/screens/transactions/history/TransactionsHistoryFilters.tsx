@@ -23,8 +23,6 @@ export interface TransactionsHistoryFiltersDef {
   startDateTime?: Date;
   endDateTime?: Date;
   userID?: string;
-  maxTransactionDate?: Date;
-  minTransactionDate?: Date;
 }
 
 export default class TransactionsHistoryFilters extends ScreenFilters<TransactionsHistoryFiltersDef, Props> {
@@ -45,7 +43,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
     const startDateTime = startDateTimeString ? new Date(startDateTimeString as string) : null;
     const endDateTime = endDateTimeString ? new Date(endDateTimeString as string) : null;
     const initialFilters = {
-      currentUser: !!userID,
+      userID: userID as string,
       startDateTime,
       endDateTime
     };

@@ -35,6 +35,8 @@ interface State {
   isPricingActive?: boolean;
   showFilter?: boolean;
   filters?: TransactionsHistoryFiltersDef;
+  maxTransactionDate?: Date;
+  minTransactionDate?: Date;
 }
 
 export default class Statistics extends BaseScreen<Props, State> {
@@ -61,7 +63,6 @@ export default class Statistics extends BaseScreen<Props, State> {
   public async componentDidMount() {
     // Get initial filters
     await super.componentDidMount();
-    await this.loadInitialFilters();
     await this.refresh();
   }
 
@@ -71,29 +72,6 @@ export default class Statistics extends BaseScreen<Props, State> {
   ) => {
     super.setState(state, callback);
   };
-
-  public async loadInitialFilters() {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const userID = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
-    const startDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(),
-      GlobalFilters.TRANSACTIONS_START_DATE_FILTER
-    ) as string;
-    const endDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(),
-      GlobalFilters.TRANSACTIONS_END_DATE_FILTER
-    ) as string;
-    const startDateTime = startDateTimeString ? new Date(startDateTimeString) : null;
-    const endDateTime = endDateTimeString ? new Date(endDateTimeString) : null;
-    const initialFilters = {
-      currentUser: !!userID,
-      startDateTime,
-      endDateTime
-    };
-    this.setState({
-      filters: initialFilters
-    });
-  }
 
   public refresh = async () => {
     const { filters } = this.state;
@@ -106,11 +84,13 @@ export default class Statistics extends BaseScreen<Props, State> {
     const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
     // Set
     this.setState({
-      filters: { ...this.state.filters, minTransactionDate, maxTransactionDate },
+      filters,
       totalNumberOfSession: transactionsStats.stats.count,
       totalConsumptionWattHours: transactionsStats.stats.totalConsumptionWattHours,
       totalDurationSecs: transactionsStats.stats.totalDurationSecs,
       totalInactivitySecs: transactionsStats.stats.totalInactivitySecs,
+      maxTransactionDate,
+      minTransactionDate,
       totalPrice: transactionsStats.stats.totalPrice,
       isPricingActive: this.securityProvider?.isComponentPricingActive(),
       priceCurrency: transactionsStats.stats.currency,
@@ -125,7 +105,7 @@ export default class Statistics extends BaseScreen<Props, State> {
       const transactions = await this.centralServerProvider?.getTransactions(
         {
           Statistics: 'history',
-          UserID: this.state.filters?.currentUser ? this.centralServerProvider.getUserInfo()?.id : null,
+          UserID: this.state.filters?.userID,
           StartDateTime: startDateTime ? startDateTime.toISOString() : null,
           EndDateTime: endDateTime ? endDateTime.toISOString() : null
         },
@@ -162,7 +142,9 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalPrice,
       isPricingActive,
       filterLoading,
-      filters
+      filters,
+      minTransactionDate,
+      maxTransactionDate
     } = this.state;
     const totalConsumption = I18nManager.formatNumberWithCompacts(totalConsumptionWattHours, {
       notation: NumberFormatNotationEnum.COMPACT,
@@ -191,16 +173,18 @@ export default class Statistics extends BaseScreen<Props, State> {
       <Container style={style.container}>
         {filterLoading && <ActivityIndicator color={'black'} size={scale(20)} style={activityIndicatorCommonStyles.activityIndicator} animating={filterLoading} />}
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
+          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
           title={I18n.t('home.statistics')}
         />
         <TransactionsHistoryFilters
           initialFilters={filters}
+          minTransactionDate={minTransactionDate}
+          maxTransactionDate={maxTransactionDate}
           onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>
             this.setState({ filters: newFilters, filterLoading: true }, async () => this.refresh())
           }
-          ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters)}
+          ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, true)}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />

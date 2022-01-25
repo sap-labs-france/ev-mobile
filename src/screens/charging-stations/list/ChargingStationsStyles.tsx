@@ -41,7 +41,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: commonColor.mapFilterButtonBackground
+      backgroundColor: commonColor.containerBgColor
     },
     listFilterButton: {
       borderRadius: '8@s',
@@ -49,7 +49,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '45@s',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: commonColor.listHeaderBgColor,
+      backgroundColor: commonColor.listHeaderBgColor
     },
     content: {
       flex: 1

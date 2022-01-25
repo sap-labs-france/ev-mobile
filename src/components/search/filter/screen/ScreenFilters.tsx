@@ -24,8 +24,8 @@ export interface ScreenFiltersState<T> {
 export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFiltersProps<T>, S extends ScreenFiltersState<T> = ScreenFiltersState<T>> extends React.Component<P, S> {
   public state: S;
   public props: P;
-  filterVisibleContainerComponent: FilterVisibleContainerComponent;
-  filterModalContainerComponent: FilterModalContainerComponent;
+  protected filterVisibleContainerComponent: FilterVisibleContainerComponent;
+  protected filterModalContainerComponent: FilterModalContainerComponent;
   centralServerProvider: CentralServerProvider;
   private securityProvider: SecurityProvider;
   private filterModalControlComponents: FilterControlComponent<any>[] = [];

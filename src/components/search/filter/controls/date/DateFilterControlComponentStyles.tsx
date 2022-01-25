@@ -35,7 +35,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     dateIcon: {
       color: commonColor.textColor,
-      fontSize: '24@s',
+      fontSize: '28@s',
       marginLeft: '10@s'
     },
     content: {

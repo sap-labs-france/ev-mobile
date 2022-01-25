@@ -6,28 +6,20 @@ import FilterControlComponent, { FilterControlComponentProps, FilterControlCompo
 import computeStyleSheet from '../FilterControlComponentStyles';
 import Utils from '../../../../../utils/Utils';
 
-export interface Props extends FilterControlComponentProps<boolean> {}
-
-interface State extends FilterControlComponentState<boolean> {
+export interface Props<T> extends FilterControlComponentProps<T> {
+  enabledValue?: T;
 }
 
-export default class SwitchFilterComponent extends FilterControlComponent<boolean> {
-  public state: State;
-  public props: Props;
+export default class SwitchFilterComponent<T> extends FilterControlComponent<T> {
+  public state: FilterControlComponentState<T>;
+  public props: Props<T>;
 
-  public constructor(props: Props) {
+  public constructor(props: Props<T>) {
     super(props);
     this.state = {
       value: props.initialValue
     }
   }
-
-  public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
-    callback?: () => void
-  ) => {
-    super.setState(state, callback);
-  };
 
   public canBeSaved() {
     return true;
@@ -46,11 +38,12 @@ export default class SwitchFilterComponent extends FilterControlComponent<boolea
     );
   };
 
-  private onValueChanged = (newValue: boolean) => {
-    const { onFilterChanged } = this.props;
+  private onValueChanged = (switchValue: boolean) => {
+    const { onFilterChanged, enabledValue } = this.props;
+    const newValue = switchValue ? enabledValue: null;
     // Set Filter
     if (onFilterChanged) {
-      onFilterChanged(this.getID(), newValue || null);
+      onFilterChanged(this.getID(), newValue);
     }
     this.setState({ value: newValue });
   };
