@@ -17,7 +17,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected centralServerProvider: CentralServerProvider;
   protected securityProvider: SecurityProvider;
   private headerComponent: HeaderComponent;
-  screenFilters: ScreenFilters<any>;
+  protected screenFilters: ScreenFilters<any>;
   private componentFocusUnsubscribe: () => void;
   private componentBlurUnsubscribe: () => void;
   backHandler: NativeEventSubscription;
@@ -57,7 +57,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     if (headerComponent) {
       this.headerComponent = headerComponent;
       // Set modal filter component
-       if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent() && headerDisplay) {
+      if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent() && headerDisplay) {
         this.headerComponent.setFilterModalContainerComponent(this.screenFilters);
       }
     }

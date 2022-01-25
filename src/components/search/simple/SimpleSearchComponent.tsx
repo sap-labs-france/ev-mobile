@@ -3,7 +3,6 @@ import { Icon } from 'native-base';
 import React from 'react';
 import { TextInput, View } from 'react-native';
 
-import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './SimpleSearchComponentStyles';
@@ -11,7 +10,6 @@ import computeStyleSheet from './SimpleSearchComponentStyles';
 export interface Props extends BaseProps {
   onChange: (search: string) => void;
   containerStyle?: {}
-  value?: string;
 }
 
 interface State {}
@@ -47,7 +45,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { containerStyle, value } = this.props;
+    const { containerStyle } = this.props;
     return (
       <View style={[style.container, containerStyle]}>
         <Icon type="MaterialIcons" name="search" style={style.icon} />
@@ -55,7 +53,6 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           ref={(ref) => {
             this.textInput = ref;
           }}
-          value={value}
           selectionColor={commonColor.textColor}
           style={style.inputField}
           autoCorrect={false}

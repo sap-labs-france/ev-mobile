@@ -61,7 +61,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
       <View style={[internalStyle.container, style]}>
         <Text style={internalStyle.label}>{label}</Text>
         {value ? (
-            <View>
+          <View>
             <TouchableOpacity style={internalStyle.inputContainer} onPress={() => this.setState({openDatePicker: true})}>
               <Text numberOfLines={1} style={internalStyle.dateText}>{value.toDateString()}</Text>
               <Icon style={internalStyle.dateIcon} type={'Foundation'} name={'calendar'} />

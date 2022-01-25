@@ -26,7 +26,7 @@ export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFi
   public props: P;
   protected filterVisibleContainerComponent: FilterVisibleContainerComponent;
   protected filterModalContainerComponent: FilterModalContainerComponent;
-  centralServerProvider: CentralServerProvider;
+  protected centralServerProvider: CentralServerProvider;
   private securityProvider: SecurityProvider;
   private filterModalControlComponents: FilterControlComponent<any>[] = [];
   private filterVisibleControlComponents: FilterControlComponent<any>[] = [];
