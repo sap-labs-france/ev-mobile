@@ -6,7 +6,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 import Utils from '../../../../utils/Utils';
 import { moderateScale } from 'react-native-size-matters';
 
-
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -40,8 +39,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     switchFilter: {
       color: commonColor.textColor,
-      transform: [{ scaleX:  moderateScale(1, 3) }, { scaleY:
-          moderateScale(1, 3) }]
+      transform: [{ scaleX:  moderateScale(1, 3) }, { scaleY: moderateScale(1, 3) }]
     },
     connectorTypeFilterContainer: {
       flexDirection: 'row',
@@ -75,6 +73,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     connectorTypeSVG: {
       width: '40@s',
       height: '40@s'
+    },
+    transactionsInProgressUserSwitchContainer: {
+      marginLeft: '5@s',
+      marginVertical: '10@s'
     }
   });
   const portraitStyles = {};
