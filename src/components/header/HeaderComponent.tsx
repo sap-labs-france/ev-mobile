@@ -2,7 +2,6 @@ import { Icon } from 'native-base';
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 
-import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './HeaderComponentStyles';
 import { DrawerActions } from '@react-navigation/native';
@@ -37,7 +36,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   };
   public state: State;
   public props: Props;
-  private modalFilters: ScreenFilters;
+  private modalFilters: ScreenFilters<any>;
 
   public constructor(props: Props) {
     super(props);
@@ -53,11 +52,11 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   };
 
-  public getFilterModalContainerComponent(): ScreenFilters {
+  public getFilterModalContainerComponent(): ScreenFilters<any> {
     return this.modalFilters;
   }
 
-  public setFilterModalContainerComponent(filterModalContainerComponent: ScreenFilters) {
+  public setFilterModalContainerComponent(filterModalContainerComponent: ScreenFilters<any>) {
     this.modalFilters = filterModalContainerComponent;
     this.setState({
       hasFilter: true
@@ -108,11 +107,11 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {this.modalFilters && (
             <TouchableOpacity
               onPress={() => {
-                return true;
+                this.modalFilters?.openModal();
               }}>
               <Icon
                 type={'MaterialCommunityIcons'}
-                name={true ? 'filter' : 'filter-outline'}
+                name={this.modalFilters?.areModalFiltersActive() ? 'filter' : 'filter-outline'}
               />
             </TouchableOpacity>
           )}
