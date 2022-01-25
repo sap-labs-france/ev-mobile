@@ -51,7 +51,6 @@
     "startDate": "Data Iniziale",
     "endDate": "Data Finale",
     "onlyMyTransactions": "Le mie Sessioni",
-    "onlyMyCars": "My cars",
     "onlyAvailableChargers": "Stazioni di ricarica disponibili",
     "wrongTenant": "Sei connesso alla organizzazione sbagliata",
     "tenantUnknown": "Organizzazione '{{tenantSubdomain}}' sconosciuta",

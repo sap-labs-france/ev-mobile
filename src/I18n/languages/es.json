@@ -51,7 +51,6 @@
     "startDate": "Fecha inicial",
     "endDate": "Fecha final",
     "onlyMyTransactions": "Mis sesiones",
-    "onlyMyCars": "My cars",
     "onlyAvailableChargers": "Cargadores disponibles",
     "wrongTenant": "Se ha conectado a la organización equivocada",
     "tenantUnknown": "Unknown organization '{{tenantSubdomain}}'",

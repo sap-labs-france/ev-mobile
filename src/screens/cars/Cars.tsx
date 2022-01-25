@@ -18,7 +18,6 @@ import computeTransactionStyles from '../transactions/TransactionsStyles'
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
-import CarsFilters, { CarsFiltersDef } from './CarsFilters';
 import SecuredStorage from '../../utils/SecuredStorage';
 import { GlobalFilters } from '../../types/Filter';
 
@@ -28,7 +27,6 @@ interface State extends SelectableState<Car> {
   limit?: number;
   refreshing?: boolean;
   loading?: boolean;
-  filters?: CarsFiltersDef;
 }
 
 export interface Props extends SelectableProps<Car> {
@@ -53,21 +51,8 @@ export default class Cars extends SelectableList<Car> {
       count: 0,
       refreshing: false,
       loading: true,
-      selectedItems: [],
-      filters: {
-        currentUser: null
-      }
+      selectedItems: []
     };
-  }
-
-  public async loadInitialFilters() {
-    const currentUser = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.CARS_CURRENT_USER);
-    const initialFilters = {
-      currentUser: !!currentUser
-    };
-    this.setState({
-      filters: initialFilters
-    });
   }
 
   public setState = (
@@ -79,7 +64,6 @@ export default class Cars extends SelectableList<Car> {
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
-    await this.loadInitialFilters();
     await this.refresh();
   }
 
@@ -96,17 +80,11 @@ export default class Cars extends SelectableList<Car> {
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
-    const filterCurrentUser = this.state.filters?.currentUser;
-    let currentUserID;
-    if(filterCurrentUser) {
-      currentUserID = this.centralServerProvider.getUserInfo()?.id;
-    }
-    const userIDs = currentUserID ? [currentUserID] : [...(this.props.userIDs || [])];
     try {
       const params = {
         Search: searchText,
         WithUser: true,
-        UserID: userIDs.join('|')
+        UserID: this.props.userIDs?.join('|')
       };
       const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
       // Get total number of records
@@ -170,7 +148,7 @@ export default class Cars extends SelectableList<Car> {
   public render() {
     const transactionStyles = computeTransactionStyles();
     const style = computeStyleSheet();
-    const { cars, count, skip, limit, refreshing, loading, filters } = this.state;
+    const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
     const fabStyles = computeFabStyles();
     return (
@@ -191,9 +169,6 @@ export default class Cars extends SelectableList<Car> {
         <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
-        {!isModal && (
-          <CarsFilters initialFilters={filters} onFilterChanged={(filters) => this.onFilterChanged(filters)} />
-        )}
         {loading ? (
           <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (
@@ -223,9 +198,5 @@ export default class Cars extends SelectableList<Car> {
         )}
       </Container>
     );
-  }
-
-  private onFilterChanged(filters: CarsFiltersDef): void {
-    this.setState({ refreshing: true, filters}, async() => this.refresh());
   }
 }

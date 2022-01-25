@@ -51,7 +51,6 @@
     "startDate": "Počáteční datum",
     "endDate": "Datum ukončení",
     "onlyMyTransactions": "Mé relace",
-    "onlyMyCars": "My cars",
     "onlyAvailableChargers": "Dostupné nabíjecí stanice",
     "wrongTenant": "Jste připojeni ke špatné organizaci",
     "tenantUnknown": "Neznámá organizace '{{tenantSubdomain}}'",
