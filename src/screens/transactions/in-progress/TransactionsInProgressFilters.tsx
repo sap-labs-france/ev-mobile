@@ -7,6 +7,7 @@ import SwitchFilterComponent from '../../../components/search/filter/controls/sw
 import ScreenFilters, { ScreenFiltersProps, ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../../types/Filter';
 import SecuredStorage from '../../../utils/SecuredStorage';
+import computeStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
 
 export interface TransactionsInProgressFiltersDef {
   userID?: string;
@@ -41,6 +42,7 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
 
   public render = () => {
     const { filters, isAdmin, hasSiteAdmin } = this.state;
+    const style = computeStyleSheet();
     return (
       <View>
         {(isAdmin || hasSiteAdmin) && (
@@ -54,6 +56,7 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
               internalFilterID={GlobalFilters.MY_USER_FILTER}
               initialValue={filters?.userID}
               enabledValue={this.currentUserID}
+              style={style.transactionsInProgressUserSwitchContainer}
               label={I18n.t('general.onlyMyTransactions')}
               onFilterChanged={async (id: string, value: string) => this.getFilterVisibleContainerComponent().notifyFilterChanged()}
               ref={async (myUserSwitchFilterControlComponent: SwitchFilterComponent<string>) =>
