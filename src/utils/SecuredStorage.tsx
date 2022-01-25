@@ -11,7 +11,7 @@ import Utils from './Utils';
 let navigationID: string = new Date().getTime().toString();
 if (__DEV__) {
   // Keep the same key for dev
- // navigationID = '123456789';
+  navigationID = '123456789';
 }
 
 export default class SecuredStorage {
