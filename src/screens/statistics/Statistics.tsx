@@ -4,15 +4,12 @@ import React from 'react';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager, { NumberFormatCompactStyleEnum, NumberFormatNotationEnum, NumberFormatStyleEnum } from '../../I18n/I18nManager';
-import ProviderFactory from '../../provider/ProviderFactory';
 import BaseScreen from '../../screens/base-screen/BaseScreen';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
 import { TransactionDataResult } from '../../types/DataResult';
-import { GlobalFilters } from '../../types/Filter';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
-import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './StatisticsStyles';
 import { View } from 'react-native';
@@ -176,7 +173,6 @@ export default class Statistics extends BaseScreen<Props, State> {
           title={I18n.t('home.statistics')}
         />
         <TransactionsHistoryFilters
-          initialFilters={filters}
           minTransactionDate={minTransactionDate}
           maxTransactionDate={maxTransactionDate}
           onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>

@@ -6,15 +6,11 @@ import computeStyleSheet from './TransactionHistoryFiltersStyles';
 import FilterModalContainerComponent from '../../../components/search/filter/containers/FilterModalContainerComponent';
 import DateFilterControlComponent from '../../../components/search/filter/controls/date/DateFilterControlComponent';
 import SwitchFilterComponent from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
-import ScreenFilters, {
-  ScreenFiltersProps,
-  ScreenFiltersState
-} from '../../../components/search/filter/screen/ScreenFilters';
+import ScreenFilters, { ScreenFiltersProps, } from '../../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../../types/Filter';
 import SecuredStorage from '../../../utils/SecuredStorage';
 
 export interface Props extends ScreenFiltersProps<TransactionsHistoryFiltersDef>{
-  initialFilters?: TransactionsHistoryFiltersDef;
   maxTransactionDate?: Date;
   minTransactionDate?: Date;
 }
@@ -26,14 +22,12 @@ export interface TransactionsHistoryFiltersDef {
 }
 
 export default class TransactionsHistoryFilters extends ScreenFilters<TransactionsHistoryFiltersDef, Props> {
-  public state: ScreenFiltersState<TransactionsHistoryFiltersDef>;
-  public props: Props;
   private currentUserID: string;
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
-    this.currentUserID = this.centralServerProvider.getUserInfo()?.id;
     await this.loadInitialFilters();
+    this.currentUserID = this.centralServerProvider.getUserInfo()?.id;
   }
 
   private async loadInitialFilters() {
