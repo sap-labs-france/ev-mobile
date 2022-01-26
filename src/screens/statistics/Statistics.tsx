@@ -125,7 +125,7 @@ export default class Statistics extends BaseScreen<Props, State> {
   };
 
   private onFilterChanged(newFilters: TransactionsHistoryFiltersDef) : void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+    this.setState({filters: newFilters, ...(this.state.filters ? {filterLoading: true} : {loading: true})}, () => this.refresh());
   }
 
   public render = () => {
