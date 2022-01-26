@@ -29,6 +29,14 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
     };
   }
 
+  public componentDidUpdate(prevProps: Readonly<FilterControlComponentProps<T>>, prevState: Readonly<FilterControlComponentState<T>>, snapshot?: any) {
+    const { initialValue } = this.props;
+    // If filter is not aware of initialValue change, set new initialValue to state
+    if ( (initialValue !== prevProps.initialValue) && (this.state.value !== initialValue) ) {
+      this.setState({value: initialValue });
+    }
+  }
+
   public setState = (
     state:
       | FilterControlComponentState<T>

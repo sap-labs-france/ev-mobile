@@ -42,9 +42,6 @@ export default class SwitchFilterComponent<T> extends FilterControlComponent<T> 
     const { onFilterChanged, enabledValue } = this.props;
     const newValue = switchValue ? enabledValue: null;
     // Set Filter
-    if (onFilterChanged) {
-      onFilterChanged(this.getID(), newValue);
-    }
-    this.setState({ value: newValue });
+    this.setState({ value: newValue }, () => onFilterChanged?.(this.getID(), newValue));
   };
 }

@@ -8,7 +8,6 @@ import FilterControlComponent, { FilterControlComponentProps, FilterControlCompo
 import computeStyleSheet from './DateFilterControlComponentStyles';
 
 export interface Props extends FilterControlComponentProps<Date> {
-  date: Date;
   minimumDate: Date;
   maximumDate: Date;
 }
@@ -28,8 +27,16 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     super(props);
     this.state = {
       openDatePicker: false,
-      value: this.props.date
+      value: this.props.initialValue
     };
+  }
+
+  public componentDidUpdate(prevProps: Readonly<FilterControlComponentProps<Date>>, prevState: Readonly<FilterControlComponentState<Date>>, snapshot?: any) {
+    const { initialValue } = this.props;
+    // If filter is not aware of initialValue change, set new initialValue to state
+    if ( initialValue?.getTime() !== prevProps.initialValue?.getTime() && this.state.value?.getTime() !== initialValue?.getTime() ) {
+      this.setState({value: initialValue });
+    }
   }
 
   public componentDidMount() {
@@ -54,9 +61,9 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public render = () => {
     const internalStyle = computeStyleSheet();
-    const { label, minimumDate, maximumDate, locale, date, style } = this.props;
+    const { label, minimumDate, maximumDate, locale, style, initialValue } = this.props;
     let { value } = this.state;
-    value = value ?? date;
+    value = value ?? initialValue;
     return (
       <View style={[internalStyle.container, style]}>
         <Text style={internalStyle.label}>{label}</Text>

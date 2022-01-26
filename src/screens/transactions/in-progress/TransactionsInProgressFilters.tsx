@@ -4,7 +4,7 @@ import React from 'react';
 
 import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
 import SwitchFilterComponent from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
-import ScreenFilters, { ScreenFiltersProps, ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
+import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../../types/Filter';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import computeStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
@@ -13,28 +13,30 @@ export interface TransactionsInProgressFiltersDef {
   userID?: string;
 }
 
-export default class TransactionsInProgressFilters extends ScreenFilters<TransactionsInProgressFiltersDef> {
-  private currentUserID: string;
+interface State extends ScreenFiltersState<TransactionsInProgressFiltersDef>{
+  currentUserID: string;
+}
+
+export default class TransactionsInProgressFilters extends ScreenFilters<TransactionsInProgressFiltersDef, null, State> {
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
     await this.loadInitialFilters();
-    this.currentUserID = this.centralServerProvider.getUserInfo()?.id;
+    this.setState({currentUserID: this.centralServerProvider.getUserInfo()?.id})
   }
 
   public async loadInitialFilters() {
     const userID = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
-    this.setState({
-      filters: { userID: userID as string }
-    });
+    const initialFilters = { userID: userID as string }
+    this.onFiltersChanged(initialFilters, null, true);
   }
 
-  public setState<K extends keyof ScreenFiltersState<TransactionsInProgressFiltersDef>>(state: ((prevState: Readonly<ScreenFiltersState<TransactionsInProgressFiltersDef>>, props: Readonly<ScreenFiltersProps<TransactionsInProgressFiltersDef>>) => (Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null)) | Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null, callback?: () => void) {
+  public setState<K extends keyof State>(state: ((prevState: Readonly<State>, props: Readonly<null>) => (Pick<State, K> | State | null)) | Pick<State, K> | State | null, callback?: () => void) {
     super.setState(state, callback);
   }
 
   public render = () => {
-    const { filters, isAdmin, hasSiteAdmin } = this.state;
+    const { filters, isAdmin, hasSiteAdmin, currentUserID } = this.state;
     const style = computeStyleSheet();
     return (
       <View>
@@ -48,7 +50,7 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
               filterID={'userID'}
               internalFilterID={GlobalFilters.MY_USER_FILTER}
               initialValue={filters?.userID}
-              enabledValue={this.currentUserID}
+              enabledValue={currentUserID}
               style={style.transactionsInProgressUserSwitchContainer}
               label={I18n.t('general.onlyMyTransactions')}
               onFilterChanged={async (id: string, value: string) => this.getFilterVisibleContainerComponent().notifyFilterChanged()}

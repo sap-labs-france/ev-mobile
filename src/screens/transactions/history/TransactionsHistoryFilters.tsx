@@ -41,7 +41,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
       startDateTime,
       endDateTime
     };
-    this.onFiltersChanged(null, initialFilters);
+    this.onFiltersChanged(null, initialFilters, true);
 
   }
 
@@ -81,7 +81,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
               ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
               locale={this.state.locale}
               minimumDate={minTransactionDate}
-              date={startDateTime ?? minTransactionDate}
+              initialValue={startDateTime ?? minTransactionDate}
               maximumDate={endDateTime ?? maxTransactionDate}
             />
             <DateFilterControlComponent
@@ -93,7 +93,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
               ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
               locale={this.state.locale}
               minimumDate={startDateTime ?? minTransactionDate}
-              date={endDateTime ?? maxTransactionDate}
+              initialValue={endDateTime ?? maxTransactionDate}
               maximumDate={maxTransactionDate}
             />
           </View>

@@ -521,7 +521,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
         />
         <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={[fabStyles.fab, showMap ?  style.mapFilterButton : style.listFilterButton]}>
+        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
           <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
         </TouchableOpacity>
       </View>

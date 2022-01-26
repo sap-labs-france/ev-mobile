@@ -17,7 +17,6 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from './TransactionsHistoryFilters';
-import computeFabStyles from '../../../components/fab/FabComponentStyles';
 import { TouchableOpacity } from 'react-native';
 
 export interface Props extends BaseProps {}
@@ -204,7 +203,6 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   private renderFilters() {
     const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
     const style = computeStyleSheet();
-    const fabStyles = computeFabStyles();
     const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={style.filtersContainer}>
@@ -215,7 +213,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, false)}
         />
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={[fabStyles.fab, style.filterButton]}>
+        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
           <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
         </TouchableOpacity>
       </View>

@@ -29,7 +29,7 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
     const connectorStatus = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS);
     let connectorTypes = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
     connectorTypes = connectorTypes || null;
-    const initialFilters = { availableConnectors: !!connectorStatus, connectorTypes: connectorTypes as string };
+    const initialFilters = { connectorStatus: connectorStatus as string, connectorTypes: connectorTypes as string };
     this.onFiltersChanged(null, initialFilters, true);
   }
 

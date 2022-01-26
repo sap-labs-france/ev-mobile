@@ -59,9 +59,6 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
       connectorTypes.add(connector);
     }
     const value = connectorTypes.size > 0 ? Array.from(connectorTypes).join('|') : null;
-    this.setState({connectorTypes, value});
-    if(onFilterChanged) {
-      onFilterChanged(this.getID(), value );
-    }
+    this.setState({connectorTypes, value}, () => onFilterChanged?.(this.getID(), value));
   };
 }

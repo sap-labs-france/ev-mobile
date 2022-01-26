@@ -1,10 +1,11 @@
 import deepmerge from 'deepmerge';
-import {StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../../utils/Utils';
 import { moderateScale } from 'react-native-size-matters';
+import { PLATFORM } from '../../../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -39,7 +40,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     switchFilter: {
       color: commonColor.textColor,
-      transform: [{ scaleX:  moderateScale(1, 3) }, { scaleY: moderateScale(1, 3) }]
+      transform: Platform.OS === PLATFORM.IOS ? [] : [{ scaleX:  moderateScale(1, 3.5) }, { scaleY: moderateScale(1, 3.5) }]
     },
     connectorTypeFilterContainer: {
       flexDirection: 'row',
