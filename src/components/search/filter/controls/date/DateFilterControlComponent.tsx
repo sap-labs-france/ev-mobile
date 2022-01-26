@@ -10,6 +10,7 @@ import computeStyleSheet from './DateFilterControlComponentStyles';
 export interface Props extends FilterControlComponentProps<Date> {
   minimumDate: Date;
   maximumDate: Date;
+  defaultValue : Date;
 }
 
 interface State extends FilterControlComponentState<Date> {
@@ -26,8 +27,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   public constructor(props: Props) {
     super(props);
     this.state = {
-      openDatePicker: false,
-      value: this.props.initialValue
+      openDatePicker: false
     };
   }
 
@@ -61,9 +61,9 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public render = () => {
     const internalStyle = computeStyleSheet();
-    const { label, minimumDate, maximumDate, locale, style, initialValue } = this.props;
+    const { label, minimumDate, maximumDate, locale, style, initialValue, defaultValue } = this.props;
     let { value } = this.state;
-    value = value ?? initialValue;
+    value = value ?? initialValue ?? defaultValue ;
     return (
       <View style={[internalStyle.container, style]}>
         <Text style={internalStyle.label}>{label}</Text>

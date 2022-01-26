@@ -13,16 +13,13 @@ export interface TransactionsInProgressFiltersDef {
   userID?: string;
 }
 
-interface State extends ScreenFiltersState<TransactionsInProgressFiltersDef>{
-  currentUserID: string;
-}
-
-export default class TransactionsInProgressFilters extends ScreenFilters<TransactionsInProgressFiltersDef, null, State> {
+export default class TransactionsInProgressFilters extends ScreenFilters<TransactionsInProgressFiltersDef> {
+  private currentUserID: string;
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
     await this.loadInitialFilters();
-    this.setState({currentUserID: this.centralServerProvider.getUserInfo()?.id})
+    this.currentUserID = this.centralServerProvider.getUserInfo()?.id;
   }
 
   public async loadInitialFilters() {
@@ -31,12 +28,12 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
     this.onFiltersChanged(initialFilters, null, true);
   }
 
-  public setState<K extends keyof State>(state: ((prevState: Readonly<State>, props: Readonly<null>) => (Pick<State, K> | State | null)) | Pick<State, K> | State | null, callback?: () => void) {
+  public setState<K extends keyof ScreenFiltersState<TransactionsInProgressFiltersDef>>(state: ((prevState: Readonly<ScreenFiltersState<TransactionsInProgressFiltersDef>>, props: Readonly<ScreenFiltersProps<TransactionsInProgressFiltersDef>>) => (Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null)) | Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null, callback?: () => void) {
     super.setState(state, callback);
   }
 
   public render = () => {
-    const { filters, isAdmin, hasSiteAdmin, currentUserID } = this.state;
+    const { filters, isAdmin, hasSiteAdmin } = this.state;
     const style = computeStyleSheet();
     return (
       <View>
@@ -50,7 +47,7 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
               filterID={'userID'}
               internalFilterID={GlobalFilters.MY_USER_FILTER}
               initialValue={filters?.userID}
-              enabledValue={currentUserID}
+              enabledValue={this.currentUserID}
               style={style.transactionsInProgressUserSwitchContainer}
               label={I18n.t('general.onlyMyTransactions')}
               onFilterChanged={async (id: string, value: string) => this.getFilterVisibleContainerComponent().notifyFilterChanged()}

@@ -5,8 +5,7 @@ import React from 'react';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
-import TransactionHistoryComponent
-  from '../../../components/transaction/history/TransactionHistoryComponent';
+import TransactionHistoryComponent from '../../../components/transaction/history/TransactionHistoryComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';
@@ -52,7 +51,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
       count: 0,
       isPricingActive: false,
       isAdmin: false,
-      filters: {},
+      filters: null,
       maxTransactionDate: null,
       minTransactionDate: null
     };
@@ -72,25 +71,26 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   };
 
   public async getTransactions(paging: {skip: number, limit: number}, params?: {}): Promise<TransactionDataResult> {
-    try {
-      const { startDateTime, endDateTime, userID } = this.state.filters;
-      // Get active transaction
-      params = params ?? {
-        Statistics: 'history',
-        UserID: userID,
-        WithUser: true,
-        StartDateTime: startDateTime?.toISOString(),
-        EndDateTime: endDateTime?.toISOString(),
-        Search: this.searchText
-      }
-      const transactions = await this.centralServerProvider.getTransactions(params, paging, ['-timestamp']);
-      // Get total number of records
-      if (transactions?.count === -1) {
-        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(params, Constants.ONLY_RECORD_COUNT);
-        transactions.count = transactionsNbrRecordsOnly?.count;
-        transactions.stats = transactionsNbrRecordsOnly?.stats;
-      }
-      return transactions;
+    if (this.state.filters) {
+      try {
+        const { startDateTime, endDateTime, userID } = this.state.filters;
+        // Get active transaction
+        params = params ?? {
+          Statistics: 'history',
+          UserID: userID,
+          WithUser: true,
+          StartDateTime: startDateTime?.toISOString(),
+          EndDateTime: endDateTime?.toISOString(),
+          Search: this.searchText
+        }
+        const transactions = await this.centralServerProvider.getTransactions(params, paging, ['-timestamp']);
+        // Get total number of records
+        if (transactions?.count === -1) {
+          const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(params, Constants.ONLY_RECORD_COUNT);
+          transactions.count = transactionsNbrRecordsOnly?.count;
+          transactions.stats = transactionsNbrRecordsOnly?.stats;
+        }
+        return transactions;
       } catch (error) {
         // Check if HTTP?
         if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
@@ -102,6 +102,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
             this.refresh.bind(this)
           );
         }
+      }
     }
     return null;
   }
@@ -154,7 +155,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   public render () {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, refreshing } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, refreshing, filters } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -166,7 +167,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
         {this.renderFilters()}
-        {loading ? (
+        {(loading || !filters) ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
@@ -197,7 +198,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   }
 
   private onFiltersChanged(newFilters: TransactionsHistoryFiltersDef): void {
-    this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh());
+    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
   }
 
   private renderFilters() {
