@@ -67,7 +67,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginVertical: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginHorizontal: '5@s'
+      marginHorizontal: '7.5@s'
     },
     mapFiltersContainer: {
       position: 'absolute',
