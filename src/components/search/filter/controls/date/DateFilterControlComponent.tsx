@@ -26,15 +26,14 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public constructor(props: Props) {
     super(props);
-    this.state = {
-      openDatePicker: false
-    };
+    this.state.openDatePicker = false;
   }
 
-  public componentDidUpdate(prevProps: Readonly<FilterControlComponentProps<Date>>, prevState: Readonly<FilterControlComponentState<Date>>, snapshot?: any) {
-    const { initialValue } = this.props;
+
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
+    const { initialValue, defaultValue } = this.props;
     // If filter is not aware of initialValue change, set new initialValue to state
-    if ( initialValue?.getTime() !== prevProps.initialValue?.getTime() && this.state.value?.getTime() !== initialValue?.getTime() ) {
+    if ( (initialValue?.getTime() !== prevProps.initialValue?.getTime()) && (this.state.value?.getTime() !== initialValue?.getTime()) ) {
       this.setState({value: initialValue });
     }
   }
@@ -104,10 +103,12 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   private fitDateWithinMinAndMax(date: Date): Date {
     const { maximumDate, minimumDate } = this.props;
-    if (date < minimumDate) {
-      return minimumDate
-    } else if (date > maximumDate) {
-      return maximumDate
+    if (date) {
+      if (date < minimumDate) {
+        return minimumDate
+      } else if (date > maximumDate) {
+        return maximumDate
+      }
     }
     return date;
   }

@@ -25,7 +25,7 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   public constructor(props: FilterControlComponentProps<T>) {
     super(props);
     this.state = {
-      value: null
+      value: this.props.initialValue
     };
   }
 
