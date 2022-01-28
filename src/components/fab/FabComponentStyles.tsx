@@ -16,7 +16,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       bottom: 0,
       right: 0,
-      marginTop: '14@s',
       zIndex: 1,
       elevation: 4,
       backgroundColor: commonColor.primary,

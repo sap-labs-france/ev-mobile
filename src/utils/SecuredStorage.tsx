@@ -97,7 +97,7 @@ export default class SecuredStorage {
     });
   }
 
-  public static async saveFilterValue(user: UserToken, filterInternalID: string, filterValue: string): Promise<void> {
+  public static async saveFilterValue(user: UserToken, filterInternalID: string, filterValue: string | boolean): Promise<void> {
     // Ensure string
     if (typeof filterValue !== 'string') {
       filterValue = String(filterValue);
@@ -124,11 +124,17 @@ export default class SecuredStorage {
     return false;
   }
 
-  public static async loadFilterValue(user: UserToken, filterInternalID: string): Promise<string> {
+  public static async loadFilterValue(user: UserToken, filterInternalID: string): Promise<string | boolean> {
     // Get
     const value = await SecuredStorage.getString(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
     if (value === 'null' || value === 'undefined' ) {
       return null;
+    }
+    if ((/true/i).test(value)) {
+      return true;
+    }
+    if ((/false/i).test(value)) {
+      return false;
     }
     return value;
   }

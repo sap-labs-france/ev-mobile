@@ -13,7 +13,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingTop: '5@s',
       padding: '10@s',
       paddingVertical: '20@s',
-      borderRadius: '3@s',
+      borderRadius: '8@s',
       alignItems: 'center'
     },
     closeButtonContainer: {
@@ -51,14 +51,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     button: {
       padding: '5@s',
       paddingVertical: '10@s',
-      borderWidth: 0.8
+      borderRadius: '8@s'
     },
     buttonText: {
       fontSize: '12@s',
       textAlign: 'center'
     },
     cancelButton: {
-      borderColor: commonColor.textColor
+      borderColor: commonColor.textColor,
+      borderWidth: 0.8
     },
     horizontalButton: {
       width: '49%'

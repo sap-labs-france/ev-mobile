@@ -17,7 +17,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected centralServerProvider: CentralServerProvider;
   protected securityProvider: SecurityProvider;
   private headerComponent: HeaderComponent;
-  private screenFilters: ScreenFilters;
+  protected screenFilters: ScreenFilters<any>;
   private componentFocusUnsubscribe: () => void;
   private componentBlurUnsubscribe: () => void;
   backHandler: NativeEventSubscription;
@@ -53,12 +53,12 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.backHandler.remove();
   }
 
-  public setHeaderComponent(headerComponent: HeaderComponent) {
+  public setHeaderComponent(headerComponent: HeaderComponent, headerDisplay?: boolean) {
     if (headerComponent) {
       this.headerComponent = headerComponent;
       // Set modal filter component
-      if (this.headerComponent && this.screenFilters && this.screenFilters.getFilterModalContainerComponent()) {
-        this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
+      if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent() && headerDisplay) {
+        this.headerComponent.setFilterModalContainerComponent(this.screenFilters);
       }
     }
   }
@@ -67,17 +67,17 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     return this.headerComponent;
   }
 
-  public setScreenFilters(screenFilters: ScreenFilters) {
+  public setScreenFilters(screenFilters: ScreenFilters<any>, headerDisplay?: boolean) {
     if (screenFilters) {
       this.screenFilters = screenFilters;
-      // Set modal filter component
-      if (this.headerComponent && this.screenFilters.getFilterModalContainerComponent()) {
-        this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
+      // Bind filters modal container to header
+      if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent() && headerDisplay) {
+        this.headerComponent.setFilterModalContainerComponent(this.screenFilters);
       }
     }
   }
 
-  public getScreenFilters(): ScreenFilters {
+  public getScreenFilters(): ScreenFilters<any> {
     return this.screenFilters;
   }
 

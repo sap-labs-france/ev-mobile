@@ -118,7 +118,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
       </View>
     ) : (
       <View style={style.connectorDetail}>
-        {this.buildConnectorTypeSVG(connector.type, style)}
+        {Utils.buildConnectorTypeSVG(connector?.type)}
         <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
       </View>
     );
@@ -185,37 +185,4 @@ export default class ChargingStationConnectorComponent extends React.Component<P
       </TouchableOpacity>
     );
   }
-
-  private buildConnectorTypeSVG = (connectorType: ConnectorType, style: any): Element => {
-    const commonColor = Utils.getCurrentCommonColor();
-    switch (connectorType) {
-      case ConnectorType.CHADEMO:
-        return (
-          <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="20%" />
-        );
-      case ConnectorType.TYPE_2:
-        return (
-          <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="8%" />
-        );
-      case ConnectorType.COMBO_CCS:
-        return (
-          <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="20%" />
-        );
-      case ConnectorType.DOMESTIC:
-        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} strokeWidth="2%" />;
-      case ConnectorType.TYPE_1:
-        return (
-          <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="2%" />
-        );
-      case ConnectorType.TYPE_1_CCS:
-        return (
-          <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="2%" />
-        );
-      case ConnectorType.TYPE_3C:
-        return (
-          <Type3C width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="2%" />
-        );
-    }
-    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
-  };
 }

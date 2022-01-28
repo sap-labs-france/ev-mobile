@@ -8,7 +8,7 @@ export interface FilterControlComponentProps<T> {
   locale?: string;
   initialValue?: T;
   style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
-  onFilterChanged: (id: string, value: T) => void;
+  onFilterChanged?: (id: string, value: T) => Promise<void>;
 }
 
 export interface FilterControlComponentState<T> {
@@ -27,6 +27,14 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
     this.state = {
       value: this.props.initialValue
     };
+  }
+
+  public componentDidUpdate(prevProps: Readonly<FilterControlComponentProps<T>>, prevState: Readonly<FilterControlComponentState<T>>, snapshot?: any) {
+    const { initialValue } = this.props;
+    // If filter is not aware of initialValue change, set new initialValue to state
+    if ( (initialValue !== prevProps.initialValue) && (this.state.value !== initialValue) ) {
+      this.setState({value: initialValue });
+    }
   }
 
   public setState = (
@@ -55,7 +63,9 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   }
 
   public clearValue(callback?: () => unknown) {
-    this.setState({ value: null }, callback);
+    // Prevent callers to setState when component not mounted.
+    this.state.value = null;
+    callback?.();
   }
 
   public getID(): string {

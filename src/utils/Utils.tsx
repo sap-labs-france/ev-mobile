@@ -28,6 +28,16 @@ import { Region } from 'react-native-maps';
 import LocationManager from '../location/LocationManager';
 import computeConnectorStatusStyles
   from '../components/connector-status/ConnectorStatusComponentStyles';
+import Chademo from '../../assets/connectorType/chademo.svg';
+import Type2 from '../../assets/connectorType/type2.svg';
+import ComboCCS from '../../assets/connectorType/combo-ccs.svg';
+import Domestic from '../../assets/connectorType/domestic-ue.svg';
+import Type1 from '../../assets/connectorType/type1.svg';
+import Type1CCS from '../../assets/connectorType/type1-ccs.svg';
+import Type3C from '../../assets/connectorType/type3c.svg';
+import NoConnector from '../../assets/connectorType/no-connector.svg';
+import React from 'react';
+import { scale } from 'react-native-size-matters';
 
 export default class Utils {
   public static getEndpointCloud(): EndpointCloud[] {
@@ -992,4 +1002,37 @@ export default class Utils {
     const location = await LocationManager.getInstance();
     return location?.getLocation();
   }
+
+  public static buildConnectorTypeSVG = (connectorType: ConnectorType): Element => {
+    const commonColor = Utils.getCurrentCommonColor();
+    switch (connectorType) {
+      case ConnectorType.CHADEMO:
+        return (
+          <Chademo width={scale(40)} height={scale(40)} stroke={commonColor.textColor} strokeWidth="20%" />
+        );
+      case ConnectorType.TYPE_2:
+        return (
+          <Type2 width={scale(40)} height={scale(40)} stroke={commonColor.textColor} strokeWidth="8%" />
+        );
+      case ConnectorType.COMBO_CCS:
+        return (
+          <ComboCCS width={scale(40)} height={scale(40)} stroke={commonColor.textColor} strokeWidth="20%" />
+        );
+      case ConnectorType.DOMESTIC:
+        return <Domestic width={scale(40)} height={scale(40)} fill={commonColor.textColor} strokeWidth="2%" />;
+      case ConnectorType.TYPE_1:
+        return (
+          <Type1 width={scale(40)} height={scale(40)} stroke={commonColor.textColor} strokeWidth="2%" />
+        );
+      case ConnectorType.TYPE_1_CCS:
+        return (
+          <Type1CCS width={scale(40)} height={scale(40)} stroke={commonColor.textColor} strokeWidth="2%" />
+        );
+      case ConnectorType.TYPE_3C:
+        return (
+          <Type3C width={scale(40)} height={scale(40)} stroke={commonColor.textColor} strokeWidth="2%" />
+        );
+    }
+    return <NoConnector width={scale(40)} height={scale(40)} fill={commonColor.textColor} />;
+  };
 }

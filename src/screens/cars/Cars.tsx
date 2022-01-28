@@ -18,6 +18,8 @@ import computeTransactionStyles from '../transactions/TransactionsStyles'
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
+import SecuredStorage from '../../utils/SecuredStorage';
+import { GlobalFilters } from '../../types/Filter';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];

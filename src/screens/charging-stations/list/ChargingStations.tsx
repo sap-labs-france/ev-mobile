@@ -37,8 +37,6 @@ import standardDarkLayout from '../../../../assets/map/standard-dark.png';
 import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
 
-
-
 export interface Props extends BaseProps {}
 
 interface State {
@@ -48,7 +46,6 @@ interface State {
   isAdmin?: boolean;
   skip?: number;
   count?: number;
-  initialFilters?: ChargingStationsFiltersDef;
   filters?: ChargingStationsFiltersDef;
   showMap?: boolean;
   visible?: boolean;
@@ -74,7 +71,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       loading: true,
       refreshing: false,
       isAdmin: false,
-      initialFilters: {},
       filters: {},
       skip: 0,
       count: 0,
@@ -90,7 +86,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     await super.componentDidMount()
     this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     const { navigation } = this.props;
-    await this.loadInitialFilters();
     // Enable swipe for opening sidebar
     this.parent = navigation.getParent();
     this.parent?.setOptions({
@@ -140,8 +135,10 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const connectorStatus = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS);
     const connectorType = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
     this.setState({
-      initialFilters: { connectorStatus, connectorType },
-      filters: { connectorStatus, connectorType }
+      filters: {
+        availableConnectors: !!connectorStatus,
+        connectorType
+      }
     });
   }
 
@@ -154,8 +151,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         Search: searchText,
         SiteAreaID: this.siteArea?.id,
         Issuer: true,
-        ConnectorStatus: filters.connectorStatus,
-        ConnectorType: filters.connectorType,
+        ConnectorStatus: filters?.connectorStatus,
+        ConnectorType: filters.connectorTypes,
         WithSiteArea: true,
         LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
         LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
@@ -258,7 +255,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
       // Refresh region
       if(!this.currentRegion) {
-        this.currentRegion = await this.computeRegion(chargingStations.result);
+        this.currentRegion = await this.computeRegion(chargingStations?.result);
       }
       // Add ChargingStations
       this.setState(() => ({
@@ -368,22 +365,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public render() {
     const style = computeStyleSheet();
-    const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const fabStyles = computeFabStyles();
-    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
-    const {
-      loading,
-      chargingStations,
-      isAdmin,
-      initialFilters,
-      skip,
-      count,
-      showMap,
-      chargingStationSelected,
-      refreshing,
-      satelliteMap
-    } = this.state;
+    const { loading, chargingStations, isAdmin, skip, count, showMap, refreshing } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -404,76 +387,51 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           sideBar={!this.siteArea}
           backArrow={!!this.siteArea}
         />
-        <View style={style.fabContainer}>
-          {showMap && (
-            <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
-              <Image
-                source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
-                style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
-              />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            delayPressIn={0}
-            style={fabStyles.fab}
-            onPress={() => this.setState({ showMap: !showMap}, () => this.refresh(true)) }
-          >
-            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
-          </TouchableOpacity>
-        </View>
-        {loading ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
-          <View style={style.content}>
-            <View style={style.searchBar}>
-              <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        <View style={style.content}>
+          {this.renderFilters()}
+          {this.renderFabs()}
+          {loading ? <Spinner style={style.spinner} color="grey" /> : (
+            <View style={style.chargingStationsContainer}>
+              {showMap ? this.renderMap() : (
+                <ItemsList<ChargingStation>
+                  skip={skip}
+                  count={count}
+                  onEndReached={this.onEndScroll}
+                  itemsSeparator={ItemsSeparatorType.DEFAULT}
+                  renderItem={(chargingStation: ChargingStation) => (
+                    <ChargingStationComponent
+                      chargingStation={chargingStation}
+                      isAdmin={isAdmin}
+                      navigation={navigation}
+                      isSiteAdmin={this.securityProvider?.isSiteAdmin(chargingStation.siteArea ? chargingStation.siteArea.siteID : '')}
+                    />
+                  )}
+                  data={chargingStations}
+                  manualRefresh={this.manualRefresh}
+                  refreshing={refreshing}
+                  emptyTitle={I18n.t('chargers.noChargers')}
+                  navigation={navigation}
+                  limit={this.listLimit}
+                />
+              )}
             </View>
-            <ChargingStationsFilters
-              initialFilters={initialFilters}
-              onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
-              ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
-            />
-            {showMap ? (
-              <View style={style.map}>
-                {this.renderMap()}
-                {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
-              </View>
-            ) : (
-              <ItemsList<ChargingStation>
-                skip={skip}
-                count={count}
-                onEndReached={this.onEndScroll}
-                itemsSeparator={ItemsSeparatorType.DEFAULT}
-                renderItem={(chargingStation: ChargingStation) => (
-                  <ChargingStationComponent
-                    chargingStation={chargingStation}
-                    isAdmin={isAdmin}
-                    navigation={navigation}
-                    isSiteAdmin={this.securityProvider?.isSiteAdmin(chargingStation.siteArea ? chargingStation.siteArea.siteID : '')}
-                  />
-                )}
-                data={chargingStations}
-                manualRefresh={this.manualRefresh}
-                refreshing={refreshing}
-                emptyTitle={I18n.t('chargers.noChargers')}
-                navigation={navigation}
-                limit={this.listLimit}
-              />
-            )}
-          </View>
-        )}
+          )}
+        </View>
       </Container>
     );
   }
 
   private renderMap() {
     const style = computeStyleSheet();
-    const { chargingStations, satelliteMap } = this.state
+    const { chargingStations, satelliteMap, isAdmin, chargingStationSelected } = this.state
+    const { navigation } = this.props;
+    const modalStyle = computeModalStyle();
     const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
       Utils.containsGPSCoordinates(chargingStation.coordinates)
     );
     return (
       <View style={style.map}>
+        {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
         <ClusterMap<ChargingStation>
           items={chargingStationsWithGPSCoordinates}
           satelliteMap={satelliteMap}
@@ -494,6 +452,32 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         />
       </View>
     )
+  }
+
+  private renderFabs() {
+    const style = computeStyleSheet();
+    const fabStyles = computeFabStyles();
+    const { showMap, satelliteMap } = this.state;
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    return (
+      <View style={style.fabContainer}>
+        {showMap && (
+          <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
+            <Image
+              source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
+              style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
+            />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          delayPressIn={0}
+          style={[fabStyles.fab, style.fab]}
+          onPress={() => this.setState({ showMap: !showMap}, () => this.refresh(true)) }
+        >
+          <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   private buildMarkerStyle(connectors: Connector[], inactive: boolean) {
@@ -523,4 +507,24 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     }
     return connectorStatusStyles.unavailableConnectorDescription;
   }
+
+  private renderFilters() {
+    const { showMap } = this.state;
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    const style = computeStyleSheet();
+    const fabStyles = computeFabStyles();
+    const commonColors = Utils.getCurrentCommonColor();
+    return (
+      <View style={[style.filtersContainer, showMap && style.mapFiltersContainer]}>
+        <ChargingStationsFilters
+          onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
+          ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
+        />
+        <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
+          <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+        </TouchableOpacity>
+      </View>
+      );
+    }
 }

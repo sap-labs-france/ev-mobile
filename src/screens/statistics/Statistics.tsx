@@ -4,15 +4,12 @@ import React from 'react';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager, { NumberFormatCompactStyleEnum, NumberFormatNotationEnum, NumberFormatStyleEnum } from '../../I18n/I18nManager';
-import ProviderFactory from '../../provider/ProviderFactory';
 import BaseScreen from '../../screens/base-screen/BaseScreen';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
 import { TransactionDataResult } from '../../types/DataResult';
-import { GlobalFilters } from '../../types/Filter';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
-import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './StatisticsStyles';
 import { View } from 'react-native';
@@ -34,8 +31,9 @@ interface State {
   priceCurrency?: string;
   isPricingActive?: boolean;
   showFilter?: boolean;
-  initialFilters?: TransactionsHistoryFiltersDef;
   filters?: TransactionsHistoryFiltersDef;
+  maxTransactionDate?: Date;
+  minTransactionDate?: Date;
 }
 
 export default class Statistics extends BaseScreen<Props, State> {
@@ -54,15 +52,13 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalPrice: 0,
       isPricingActive: false,
       showFilter: false,
-      initialFilters: {},
-      filters: {},
+      filters: null,
       filterLoading: false
     };
   }
 
   public async componentDidMount() {
     // Get initial filters
-    await this.loadInitialFilters();
     await super.componentDidMount();
     await this.refresh();
   }
@@ -74,81 +70,63 @@ export default class Statistics extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async loadInitialFilters() {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const userID = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
-    const startDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(),
-      GlobalFilters.TRANSACTIONS_START_DATE_FILTER
-    );
-    const endDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(),
-      GlobalFilters.TRANSACTIONS_END_DATE_FILTER
-    );
-    const startDateTime = startDateTimeString ? new Date(startDateTimeString) : null;
-    const endDateTime = endDateTimeString ? new Date(endDateTimeString) : null;
-    const initialFilters = {
-      userID,
-      startDateTime,
-      endDateTime
-    };
-    this.setState({
-      initialFilters,
-      filters: initialFilters
-    });
-  }
-
   public refresh = async () => {
     const { filters } = this.state;
     // Get the ongoing Transaction stats
-    const transactionsStats = await this.getTransactionsStats(filters.startDateTime, filters.endDateTime);
+    const transactionsStats = await this.getTransactionsStats();
     // Retrieve all the transactions for the current userID
-    const allTransactions = await this.getTransactionsStats(null, null);
-    const allTransactionsStats = allTransactions.stats;
-    const minTransactionDate = allTransactionsStats.firstTimestamp ? new Date(allTransactions.stats.firstTimestamp) : new Date();
-    const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(allTransactions.stats.lastTimestamp) : new Date();
+    const allTransactions = await this.getTransactionsStats({ Statistics: 'history' });
+    const allTransactionsStats = allTransactions?.stats;
+    const minTransactionDate = allTransactionsStats?.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
+    const maxTransactionDate = allTransactionsStats?.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
     // Set
     this.setState({
-      initialFilters: { ...this.state.initialFilters, minTransactionDate, maxTransactionDate },
-      totalNumberOfSession: transactionsStats.stats.count,
-      totalConsumptionWattHours: transactionsStats.stats.totalConsumptionWattHours,
-      totalDurationSecs: transactionsStats.stats.totalDurationSecs,
-      totalInactivitySecs: transactionsStats.stats.totalInactivitySecs,
-      totalPrice: transactionsStats.stats.totalPrice,
+      filters,
+      totalNumberOfSession: transactionsStats?.stats?.count,
+      totalConsumptionWattHours: transactionsStats?.stats?.totalConsumptionWattHours,
+      totalDurationSecs: transactionsStats?.stats?.totalDurationSecs,
+      totalInactivitySecs: transactionsStats?.stats?.totalInactivitySecs,
+      maxTransactionDate,
+      minTransactionDate,
+      totalPrice: transactionsStats?.stats?.totalPrice,
       isPricingActive: this.securityProvider?.isComponentPricingActive(),
-      priceCurrency: transactionsStats.stats.currency,
+      priceCurrency: transactionsStats?.stats?.currency,
       loading: false,
       filterLoading: false
     });
   };
 
-  public getTransactionsStats = async (startDateTime: Date, endDateTime: Date): Promise<TransactionDataResult> => {
-    try {
-      // Get active transaction
-      const transactions = await this.centralServerProvider.getTransactions(
-        {
+  public getTransactionsStats = async (params?: {}): Promise<TransactionDataResult> => {
+    if (this.state.filters) {
+      try {
+        // Get active transaction
+        const { startDateTime, endDateTime } = this.state.filters;
+        params = params ?? {
           Statistics: 'history',
-          UserID: this.state.filters.userID,
+          UserID: this.state.filters?.userID,
           StartDateTime: startDateTime ? startDateTime.toISOString() : null,
           EndDateTime: endDateTime ? endDateTime.toISOString() : null
-        },
-        Constants.ONLY_RECORD_COUNT
-      );
-      return transactions;
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'transactions.transactionStatsUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
+        }
+        return await this.centralServerProvider?.getTransactions(params, Constants.ONLY_RECORD_COUNT);
+      } catch (error) {
+        // Check if HTTP?
+        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            'transactions.transactionStatsUnexpectedError',
+            this.props.navigation,
+            this.refresh.bind(this)
+          );
+        }
       }
     }
     return null;
   };
+
+  private onFilterChanged(newFilters: TransactionsHistoryFiltersDef) : void {
+    this.setState({filters: newFilters, ...(this.state.filters ? {filterLoading: true} : {loading: true})}, () => this.refresh());
+  }
 
   public render = () => {
     const style = computeStyleSheet();
@@ -159,13 +137,15 @@ export default class Statistics extends BaseScreen<Props, State> {
       loading,
       totalNumberOfSession,
       totalConsumptionWattHours,
-      initialFilters,
       totalDurationSecs,
       totalInactivitySecs,
       priceCurrency,
       totalPrice,
       isPricingActive,
-      filterLoading
+      filterLoading,
+      minTransactionDate,
+      maxTransactionDate,
+      filters
     } = this.state;
     const totalConsumption = I18nManager.formatNumberWithCompacts(totalConsumptionWattHours, {
       notation: NumberFormatNotationEnum.COMPACT,
@@ -194,21 +174,20 @@ export default class Statistics extends BaseScreen<Props, State> {
       <Container style={style.container}>
         {filterLoading && <ActivityIndicator color={'black'} size={scale(20)} style={activityIndicatorCommonStyles.activityIndicator} animating={filterLoading} />}
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
+          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
           title={I18n.t('home.statistics')}
         />
-        {loading ? (
+        <TransactionsHistoryFilters
+          minTransactionDate={minTransactionDate}
+          maxTransactionDate={maxTransactionDate}
+          onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}
+          ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, true)}
+        />
+        {(loading || !filters) ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <Content style={style.content}>
-            <TransactionsHistoryFilters
-              initialFilters={initialFilters}
-              onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>
-                this.setState({ filters: newFilters, filterLoading: true }, async () => this.refresh())
-              }
-              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters)}
-            />
             <View style={style.boxContainer}>
               <StatisticsComponent
                 backgroundColor={style.sessions.backgroundColor.toString()}

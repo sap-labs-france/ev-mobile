@@ -2,36 +2,21 @@ import deepmerge from 'deepmerge';
 import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-
-import Utils from '../../../utils/Utils';
-
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
-  const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    container: {
+    dateFiltersContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
-      alignSelf: 'center',
-      width: '95%',
-      height: '45@s',
-      paddingLeft: '5@s',
-      paddingRight: '5@s',
-      borderRadius: '8@s',
-      backgroundColor: commonColor.listHeaderBgColor
+      width: '100%'
     },
-    inputField: {
-      flex: 1,
-      fontSize: '14@s',
-      height: '100%',
-      paddingVertical: 0,
-      color: commonColor.textColor
+    dateFilterComponentContainer: {
+      width: '48%'
     },
-    icon: {
-      paddingLeft: '5@s',
-      paddingRight: '5@s',
-      fontSize: '22@s',
-      color: commonColor.textColor
+    switchFilterComponentContainer: {
+      marginBottom: '20@s'
     }
   });
   const portraitStyles = {};

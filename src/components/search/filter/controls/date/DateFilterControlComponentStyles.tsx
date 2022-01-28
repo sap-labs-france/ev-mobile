@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
-import Utils from '../../utils/Utils';
+import Utils from '../../../../../utils/Utils';
 
 /**
  *
@@ -12,8 +12,31 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
+      flexDirection: 'column',
+      width: '100%'
+    },
+    label: {
+     color: commonColor.textColor,
+     fontSize: '14@s' ,
+      marginBottom: '5@s'
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: '5@s',
+      borderWidth: 0.8,
+      borderColor: commonColor.textColor,
+      borderRadius: '8@s',
+    },
+    dateText: {
+      color: commonColor.textColor,
       flex: 1,
-      backgroundColor: commonColor.containerBgColor
+      fontSize: '13@s'
+    },
+    dateIcon: {
+      color: commonColor.textColor,
+      fontSize: '28@s',
+      marginLeft: '10@s'
     },
     content: {
       flex: 1
@@ -35,8 +58,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     filterButton: {
       borderRadius: '8@s',
-      width: '45@s',
-      height: '45@s',
+      width: '50@s',
+      height: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: commonColor.listHeaderBgColor,

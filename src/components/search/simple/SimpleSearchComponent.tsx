@@ -3,25 +3,21 @@ import { Icon } from 'native-base';
 import React from 'react';
 import { TextInput, View } from 'react-native';
 
-import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './SimpleSearchComponentStyles';
 
 export interface Props extends BaseProps {
   onChange: (search: string) => void;
+  containerStyle?: {}
 }
 
 interface State {}
 
 export default class SimpleSearchComponent extends React.Component<Props, State> {
-  public static defaultProps = {
-    visible: false
-  };
   public state: State;
   public props: Props;
   private textInput: TextInput;
-  private currentSearchText: string;
 
   public constructor(props: Props) {
     super(props);
@@ -36,7 +32,6 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   };
 
   public searchHasChanged(searchText: string) {
-    this.currentSearchText = searchText;
     const { onChange } = this.props;
     // Call the function
     onChange(searchText);
@@ -50,8 +45,9 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
+    const { containerStyle } = this.props;
     return (
-      <View style={style.container}>
+      <View style={[style.container, containerStyle]}>
         <Icon type="MaterialIcons" name="search" style={style.icon} />
         <TextInput
           ref={(ref) => {

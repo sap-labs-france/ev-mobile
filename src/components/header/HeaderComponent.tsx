@@ -3,9 +3,9 @@ import { Icon } from 'native-base';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './HeaderComponentStyles';
+import ScreenFilters from '../search/filter/screen/ScreenFilters';
 
 export interface Props extends BaseProps {
   title: string;
@@ -36,7 +36,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   };
   public state: State;
   public props: Props;
-  private filterModalContainerComponent: FilterModalContainerComponent;
+  private modalFilters: ScreenFilters<any>;
 
   public constructor(props: Props) {
     super(props);
@@ -52,12 +52,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   };
 
-  public getFilterModalContainerComponent(): FilterModalContainerComponent {
-    return this.filterModalContainerComponent;
+  public getFilterModalContainerComponent(): ScreenFilters<any> {
+    return this.modalFilters;
   }
 
-  public setFilterModalContainerComponent(filterModalContainerComponent: FilterModalContainerComponent) {
-    this.filterModalContainerComponent = filterModalContainerComponent;
+  public setFilterModalContainerComponent(filterModalContainerComponent: ScreenFilters<any>) {
+    this.modalFilters = filterModalContainerComponent;
     this.setState({
       hasFilter: true
     });
@@ -102,17 +102,16 @@ export default class HeaderComponent extends React.Component<Props, State> {
               {action.renderAction?.()}
             </TouchableOpacity>
           ))}
-          {this.filterModalContainerComponent && (
+          {this.modalFilters && (
             <TouchableOpacity
-              style={style.rightIcon} 
+              style={style.rightIcon}
               onPress={() => {
-                this.filterModalContainerComponent.setVisible(true);
-                return true;
+                this.modalFilters?.openModal();
               }}>
               <Icon
-                style={style.icon} 
+                style={style.icon}
                 type={'MaterialCommunityIcons'}
-                name={this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'}
+                name={this.modalFilters?.areModalFiltersActive() ? 'filter' : 'filter-outline'}
               />
             </TouchableOpacity>
           )}

@@ -28,7 +28,7 @@ FilterContainerComponentState
   public constructor(props: FilterContainerComponentProps) {
     super(props);
     this.state = {
-      visible: props.visible ? props.visible : false
+      visible: props.visible ?? false
     };
   }
 
@@ -114,16 +114,6 @@ FilterContainerComponentState
     for (const filterControlComponent of this.filterControlComponents) {
       filterControlComponent.clearValue();
     }
-  }
-
-  public getNumberOfFilters(): number {
-    let numberOfFilter = 0;
-    for (const filterControlComponent of this.filterControlComponents) {
-      if (filterControlComponent.getValue()) {
-        numberOfFilter++;
-      }
-    }
-    return numberOfFilter;
   }
 
   public async clearFiltersAndNotify() {

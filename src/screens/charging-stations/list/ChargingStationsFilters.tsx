@@ -1,98 +1,70 @@
 import I18n from 'i18n-js';
 import { View } from 'native-base';
 import React from 'react';
-import * as Animatable from 'react-native-animatable';
 
-import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
 import ConnectorTypeFilterControlComponent from '../../../components/search/filter/controls/connector-type/ConnectorTypeFilterControlComponent';
 import computeControlStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
-import OnlyAvailableChargingStationSwitchFilterControlComponent from '../../../components/search/filter/controls/only-available-charging-station-switch/OnlyAvailableChargingStationSwitchFilterControlComponent';
-import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
-import { ChargePointStatus } from '../../../types/ChargingStation';
+import ScreenFilters from '../../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../../types/Filter';
-import computeStyleSheet from './ChargingStationsStyles';
-
-export interface Props {
-  onFilterChanged?: (filters: ChargingStationsFiltersDef) => void;
-  initialFilters?: ChargingStationsFiltersDef;
-}
-
-interface State extends ScreenFiltersState {
-  filters?: ChargingStationsFiltersDef;
-}
+import SwitchFilterComponent
+  from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
+import FilterModalContainerComponent
+  from '../../../components/search/filter/containers/FilterModalContainerComponent';
+import SecuredStorage from '../../../utils/SecuredStorage';
+import { scale } from 'react-native-size-matters';
 
 export interface ChargingStationsFiltersDef {
-  connectorStatus?: ChargePointStatus;
-  connectorType?: string;
+  connectorStatus?: string;
+  connectorTypes?: string;
 }
 
-export default class ChargingStationsFilters extends ScreenFilters {
-  public state: State;
-  public props: Props;
+export default class ChargingStationsFilters extends ScreenFilters<ChargingStationsFiltersDef> {
 
-  public constructor(props: Props) {
-    super(props);
-    this.state = {
-      filters: {}
-    };
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    await this.loadInitialFilters();
   }
 
-  public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
-    callback?: () => void
-  ) => {
-    super.setState(state, callback);
-  };
-
-  public onFilterChanged = (newFilters: ChargingStationsFiltersDef) => {
-    const { onFilterChanged } = this.props;
-    this.setState(
-      {
-        filters: { ...this.state.filters, ...newFilters }
-      },
-      () => onFilterChanged(this.state.filters)
-    );
-  };
+  private async loadInitialFilters() {
+    const connectorStatus = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS);
+    let connectorTypes = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
+    connectorTypes = connectorTypes || null;
+    const initialFilters = { connectorStatus: connectorStatus as string, connectorTypes: connectorTypes as string };
+    this.onFiltersChanged(null, initialFilters, true);
+  }
 
   public render = () => {
-    const { initialFilters } = this.props;
     const { filters } = this.state;
-    const style = computeStyleSheet();
     const controlStyle = computeControlStyleSheet();
     return (
       <View>
-        <FilterVisibleContainerComponent
-          onExpand={(expanded: boolean) => this.setViewExpanded(expanded, style.filtersHidden, style.filtersExpanded)}
-          onFilterChanged={this.onFilterChanged}
-          ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
-            this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)
+        <FilterModalContainerComponent
+          onFilterChanged={(modalFilters) => this.onFiltersChanged(null, modalFilters, true)}
+          ref={(filterModalContainerComponent: FilterModalContainerComponent) =>
+            this.setFilterModalContainerComponent(filterModalContainerComponent)
           }>
-          <OnlyAvailableChargingStationSwitchFilterControlComponent
+          <SwitchFilterComponent<string>
             filterID={'connectorStatus'}
             internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS}
-            initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
+            enabledValue={'Available'}
+            style={{marginBottom: scale(20)}}
+            initialValue={filters?.connectorStatus}
             label={I18n.t('general.onlyAvailableChargers')}
-            onFilterChanged={async (id: string, value: ChargePointStatus) => this.getFilterVisibleContainerComponent().setFilter(id, value)}
             ref={async (
-              onlyAvailableChargingStationSwitchFilterControlComponent: OnlyAvailableChargingStationSwitchFilterControlComponent
-            ) => this.addVisibleFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
+              onlyAvailableChargingStationSwitchFilterControlComponent: SwitchFilterComponent<string>
+            ) => this.addModalFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
           />
-          <Animatable.View style={style.filtersHidden} ref={this.setExpandableView}>
-            <ConnectorTypeFilterControlComponent
-              filterID={'connectorType'}
-              internalFilterID={GlobalFilters.CONNECTOR_TYPES}
-              initialValue={filters.hasOwnProperty('connectorType') ? filters.connectorType : initialFilters.connectorType}
-              style={controlStyle.rowFilterWithBorder}
-              label={I18n.t('details.connectors')}
-              onFilterChanged={async (id: string, value: ChargePointStatus) =>
-                this.getFilterVisibleContainerComponent().setFilter(id, value)
-              }
-              ref={async (connectorTypeFilterControlComponent: ConnectorTypeFilterControlComponent) =>
-                this.addVisibleFilter(connectorTypeFilterControlComponent)
-              }
-            />
-          </Animatable.View>
-        </FilterVisibleContainerComponent>
+          <ConnectorTypeFilterControlComponent
+            filterID={'connectorTypes'}
+            internalFilterID={GlobalFilters.CONNECTOR_TYPES}
+            initialValue={filters?.connectorTypes}
+            style={controlStyle.rowFilterWithBorder}
+            label={I18n.t('details.connectors')}
+            ref={async (connectorTypeFilterControlComponent: ConnectorTypeFilterControlComponent) =>
+              this.addModalFilter(connectorTypeFilterControlComponent)
+            }
+          />
+        </FilterModalContainerComponent>
       </View>
     );
   };

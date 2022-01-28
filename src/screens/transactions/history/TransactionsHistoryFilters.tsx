@@ -1,145 +1,104 @@
 import I18n from 'i18n-js';
-import moment from 'moment';
 import { View } from 'native-base';
 import React from 'react';
 
+import computeStyleSheet from './TransactionHistoryFiltersStyles';
 import FilterModalContainerComponent from '../../../components/search/filter/containers/FilterModalContainerComponent';
-import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
 import DateFilterControlComponent from '../../../components/search/filter/controls/date/DateFilterControlComponent';
-import MyUserSwitchFilterControlComponent from '../../../components/search/filter/controls/my-user-switch/MyUserSwitchFilterControlComponent';
-import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
+import SwitchFilterComponent from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
+import ScreenFilters, { ScreenFiltersProps, } from '../../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../../types/Filter';
+import SecuredStorage from '../../../utils/SecuredStorage';
 
-export interface Props {
-  onFilterChanged?: (filters: TransactionsHistoryFiltersDef) => void;
-  initialFilters?: TransactionsHistoryFiltersDef;
+export interface Props extends ScreenFiltersProps<TransactionsHistoryFiltersDef>{
+  maxTransactionDate?: Date;
+  minTransactionDate?: Date;
 }
 
 export interface TransactionsHistoryFiltersDef {
   startDateTime?: Date;
   endDateTime?: Date;
   userID?: string;
-  maxTransactionDate?: Date;
-  minTransactionDate?: Date;
 }
 
-interface State extends ScreenFiltersState {
-  filters?: TransactionsHistoryFiltersDef;
-}
+export default class TransactionsHistoryFilters extends ScreenFilters<TransactionsHistoryFiltersDef, Props> {
+  private currentUserID: string;
 
-export default class TransactionsHistoryFilters extends ScreenFilters {
-  public state: State;
-  public props: Props;
-
-  public constructor(props: Props) {
-    super(props);
-    this.state = { filters: props.initialFilters };
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    await this.loadInitialFilters();
+    this.currentUserID = this.centralServerProvider.getUserInfo()?.id;
   }
 
-  public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
-    callback?: () => void
-  ) => {
-    super.setState(state, callback);
-  };
+  private async loadInitialFilters() {
+    const userID = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
+    const startDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_START_DATE_FILTER);
+    const endDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_END_DATE_FILTER);
+    const startDateTime = startDateTimeString ? new Date(startDateTimeString as string) : null;
+    const endDateTime = endDateTimeString ? new Date(endDateTimeString as string) : null;
+    const initialFilters = {
+      userID: userID as string,
+      startDateTime,
+      endDateTime
+    };
+    this.onFiltersChanged(null, initialFilters, true);
 
-  public onFilterChanged = (newFilters: TransactionsHistoryFiltersDef, applyFilters: boolean) => {
-    const { onFilterChanged } = this.props;
-    // User ID has been changed: Clear Start/End Date
-    if (applyFilters && newFilters.hasOwnProperty('userID') && this.state.filters.userID !== newFilters.userID) {
-      this.getFilterModalContainerComponent().clearFilters();
-      newFilters.startDateTime = null;
-      newFilters.endDateTime = null;
-    }
-    if (newFilters.startDateTime) {
-      newFilters.startDateTime = moment(newFilters.startDateTime).startOf('day').toDate();
-    }
-    if (newFilters.endDateTime) {
-      newFilters.endDateTime = moment(newFilters.endDateTime).endOf('day').toDate();
-    }
-    if (applyFilters) {
-      this.setState(
-        {
-          filters: { ...this.state.filters, ...newFilters }
-        },
-        () => {
-          onFilterChanged(this.state.filters);
-        }
-      );
-    } else {
-      this.setState({
-        filters: { ...this.state.filters, ...newFilters }
-      });
-    }
-  };
+  }
 
   public render = () => {
-    const { initialFilters } = this.props;
     const { filters, isAdmin, hasSiteAdmin } = this.state;
-    const maxTransactionDate = initialFilters.maxTransactionDate;
-    const minTransactionDate = initialFilters.minTransactionDate;
-    let startDateTime = filters.startDateTime ? filters.startDateTime : minTransactionDate;
-    let endDateTime = filters.endDateTime ? filters.endDateTime : maxTransactionDate;
-    // Check the dates interval and fix it if needed
-    if (startDateTime < minTransactionDate) {
-      startDateTime = minTransactionDate;
-      if (endDateTime < minTransactionDate) {
-        endDateTime = minTransactionDate;
-      }
-    }
-    if (endDateTime > maxTransactionDate) {
-      endDateTime = maxTransactionDate;
-      if (startDateTime > maxTransactionDate) {
-        startDateTime = maxTransactionDate;
-      }
-    }
+    const { maxTransactionDate, minTransactionDate } = this.props;
+    const startDateTime = filters?.startDateTime;
+    const endDateTime = filters?.endDateTime;
+    const style = computeStyleSheet();
     return (
       <View>
-        {(isAdmin || hasSiteAdmin) && (
-          <FilterVisibleContainerComponent
-            onFilterChanged={this.onFilterChanged}
-            ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
-              this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)
-            }>
-            <MyUserSwitchFilterControlComponent
-              filterID={'userID'}
-              internalFilterID={GlobalFilters.MY_USER_FILTER}
-              initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
-              label={I18n.t('general.onlyMyTransactions')}
-              onFilterChanged={async (id: string, value: string) => this.getFilterVisibleContainerComponent().setFilter(id, value)}
-              ref={async (myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) =>
-                this.addVisibleFilter(myUserSwitchFilterControlComponent)
-              }
-            />
-          </FilterVisibleContainerComponent>
-        )}
         <FilterModalContainerComponent
-          onFilterChanged={this.onFilterChanged}
+          onFilterChanged={(newFilters) => this.onFiltersChanged(null, newFilters, true)}
           ref={(filterModalContainerComponent: FilterModalContainerComponent) =>
             this.setFilterModalContainerComponent(filterModalContainerComponent)
           }>
-          <DateFilterControlComponent
-            filterID={'startDateTime'}
-            internalFilterID={GlobalFilters.TRANSACTIONS_START_DATE_FILTER}
-            label={I18n.t('general.startDate')}
-            onFilterChanged={async (id: string, value: Date) => this.getFilterModalContainerComponent().setFilter(id, value)}
-            ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
-            locale={this.state.locale}
-            minimumDate={minTransactionDate}
-            defaultDate={startDateTime}
-            maximumDate={endDateTime}
-          />
-          <DateFilterControlComponent
-            filterID={'endDateTime'}
-            internalFilterID={GlobalFilters.TRANSACTIONS_END_DATE_FILTER}
-            label={I18n.t('general.endDate')}
-            onFilterChanged={async (id: string, value: Date) => this.getFilterModalContainerComponent().setFilter(id, value)}
-            ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
-            locale={this.state.locale}
-            minimumDate={startDateTime}
-            defaultDate={endDateTime}
-            maximumDate={maxTransactionDate}
-          />
+          {(isAdmin || hasSiteAdmin) && (
+            <SwitchFilterComponent<string>
+              filterID={'userID'}
+              internalFilterID={GlobalFilters.MY_USER_FILTER}
+              style={style.switchFilterComponentContainer}
+              initialValue={filters?.userID}
+              enabledValue={this.currentUserID}
+              label={I18n.t('general.onlyMyTransactions')}
+              ref={async (myUserSwitchFilterControlComponent: SwitchFilterComponent<string>) =>
+                this.addModalFilter(myUserSwitchFilterControlComponent)
+              }
+            />
+          )}
+          <View style={style.dateFiltersContainer}>
+            <DateFilterControlComponent
+              filterID={'startDateTime'}
+              style={style.dateFilterComponentContainer}
+              internalFilterID={GlobalFilters.TRANSACTIONS_START_DATE_FILTER}
+              label={I18n.t('general.startDate')}
+              onFilterChanged={async (id: string, startDateTime: Date) => this.onFiltersChanged(null, {startDateTime})}
+              ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
+              locale={this.state.locale}
+              minimumDate={minTransactionDate}
+              initialValue={startDateTime}
+              defaultValue={minTransactionDate}
+              maximumDate={endDateTime ?? maxTransactionDate}
+            />
+            <DateFilterControlComponent
+              filterID={'endDateTime'}
+              internalFilterID={GlobalFilters.TRANSACTIONS_END_DATE_FILTER}
+              style={style.dateFilterComponentContainer}
+              label={I18n.t('general.endDate')}
+              onFilterChanged={async (id: string, endDateTime: Date) => this.onFiltersChanged(null, {endDateTime})}
+              ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
+              locale={this.state.locale}
+              minimumDate={startDateTime ?? minTransactionDate}
+              initialValue={endDateTime}
+              defaultValue={maxTransactionDate}
+              maximumDate={maxTransactionDate}
+            />
+          </View>
         </FilterModalContainerComponent>
       </View>
     );

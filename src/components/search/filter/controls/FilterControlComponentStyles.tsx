@@ -1,20 +1,19 @@
 import deepmerge from 'deepmerge';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../../utils/Utils';
+import { moderateScale } from 'react-native-size-matters';
+import { PLATFORM } from '../../../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     rowFilterContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
       width: '100%',
       height: '35@s',
-      paddingLeft: '15@s',
-      paddingRight: '15@s',
       alignItems: 'center'
     },
     columnFilterContainer: {
@@ -29,7 +28,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     textFilter: {
       fontSize: '15@s',
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      marginRight: '20@s'
     },
     label: {
       fontWeight: 'bold'
@@ -39,12 +39,33 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     switchFilter: {
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      transform: Platform.OS === PLATFORM.IOS ? [] : [{ scaleX:  moderateScale(1, 3.5) }, { scaleY: moderateScale(1, 3.5) }]
     },
     connectorTypeFilterContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-evenly',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       width: '100%'
+    },
+    connectorContainer: {
+      width: '80@s',
+      borderWidth: 0.8,
+      padding: '2@s',
+      height: '80@s',
+      borderColor: commonColor.textColor,
+      borderRadius: '8@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: '10@s'
+    },
+    selectedConnectorContainer: {
+      borderWidth: 3.5
+    },
+    connectorLabel: {
+      fontSize: '12@s',
+      color: commonColor.textColor
     },
     connectorTypeButton: {
       width: '50@s',
@@ -53,6 +74,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     connectorTypeSVG: {
       width: '40@s',
       height: '40@s'
+    },
+    transactionsInProgressUserSwitchContainer: {
+      marginLeft: '5@s',
+      marginVertical: '10@s'
     }
   });
   const portraitStyles = {};

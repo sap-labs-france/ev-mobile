@@ -8,35 +8,60 @@ import FilterModalContainerComponent from '../containers/FilterModalContainerCom
 import FilterVisibleContainerComponent from '../containers/FilterVisibleContainerComponent';
 import FilterControlComponent from '../controls/FilterControlComponent';
 
-export interface ScreenFiltersProps {}
+export interface ScreenFiltersProps<T> {
+  onFilterChanged?: (filters: T) => void;
+}
 
-export interface ScreenFiltersState {
+export interface ScreenFiltersState<T> {
   isAdmin?: boolean;
   hasSiteAdmin?: boolean;
   locale?: string;
   expanded?: boolean;
+  filters?: T;
+  modalFilters?: T;
 }
 
-export default class ScreenFilters extends React.Component<ScreenFiltersProps, ScreenFiltersState> {
-  public state: ScreenFiltersState;
-  public props: ScreenFiltersProps;
-  private filterVisibleContainerComponent: FilterVisibleContainerComponent;
-  private filterModalContainerComponent: FilterModalContainerComponent;
-  private centralServerProvider: CentralServerProvider;
+export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFiltersProps<T>, S extends ScreenFiltersState<T> = ScreenFiltersState<T>> extends React.Component<P, S> {
+  public state: S;
+  public props: P;
+  protected filterVisibleContainerComponent: FilterVisibleContainerComponent;
+  protected filterModalContainerComponent: FilterModalContainerComponent;
+  protected centralServerProvider: CentralServerProvider;
   private securityProvider: SecurityProvider;
   private filterModalControlComponents: FilterControlComponent<any>[] = [];
   private filterVisibleControlComponents: FilterControlComponent<any>[] = [];
   private expandableView: any;
 
-  public constructor(props: ScreenFiltersProps) {
+  public constructor(props: P) {
     super(props);
     this.state = {
       isAdmin: false,
       hasSiteAdmin: false,
       locale: null,
-      expanded: false
-    };
+      expanded: false,
+      filters: {} as T,
+      modalFilters: {} as T
+    } as S;
   }
+
+  public areModalFiltersActive() {
+    const { modalFilters } = this.state;
+    const nonNullFiltersValues =  Object.values(modalFilters).filter((filterValue) => filterValue)
+    return nonNullFiltersValues?.length > 0;
+  }
+
+  public openModal() {
+    this.filterModalContainerComponent.setVisible(true);
+  }
+
+  onFiltersChanged(newVisibleFilters: T = {} as T, newModalFilters: T = {} as T, applyFilters?: boolean) {
+    const { onFilterChanged } = this.props;
+    const filters = { ...this.state.filters, ...newVisibleFilters, ...newModalFilters };
+    const modalFilters = { ...this.state.modalFilters, ...newModalFilters}
+    this.setState({ filters, modalFilters });
+    if (applyFilters) {
+      onFilterChanged(filters);
+    }};
 
   public async componentDidMount() {
     let locale = null;
@@ -73,19 +98,6 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     if (expandableView) {
       this.expandableView = expandableView;
     }
-  };
-
-  public setState = (
-    state:
-      | ScreenFiltersState
-      | ((
-          prevState: Readonly<ScreenFiltersState>,
-          props: Readonly<ScreenFiltersProps>
-        ) => ScreenFiltersState | Pick<ScreenFiltersState, never>)
-      | Pick<ScreenFiltersState, never>,
-    callback?: () => void
-  ) => {
-    super.setState(state, callback);
   };
 
   public getFilterModalContainerComponent(): FilterModalContainerComponent {
