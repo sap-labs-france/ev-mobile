@@ -12,6 +12,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       flex: 1
     },
+    itemContainer: {
+      marginBottom: '10@s'
+    },
     rowContainer: {
       flexDirection: 'row'
     },

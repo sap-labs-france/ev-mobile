@@ -1,24 +1,28 @@
-import { Button, Icon, Spinner, Text, View } from 'native-base';
+import { Icon, Spinner, Text, View } from 'native-base';
 import React, { createRef } from 'react';
 import Modal from 'react-native-modal';
 import BaseProps from '../../types/BaseProps';
 import Utils from '../../utils/Utils';
 import { ItemSelectionMode } from '../list/ItemsList';
-import computeStyleSheet from './ModalStyles';
+import computeStyleSheet from './ModalSelectStyles';
 import I18n from 'i18n-js';
 import SelectableList from '../../screens/base-screen/SelectableList';
 import ListItem from '../../types/ListItem';
-import { TouchableHighlight, TouchableOpacity } from 'react-native';
+import { SafeAreaView, TouchableOpacity } from 'react-native';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
+import computeModalCommonStyle from './ModalCommonStyle';
+import { Button } from 'react-native-elements';
 
 export interface Props<T> extends BaseProps {
-  defaultItem?: T;
+  defaultItems?: T[];
   buildItemName?: (item: T) => string;
   // Disable the opening with specific styles
   disabled?: boolean;
   label?: string;
-  // Render list item
+  // Render button for single select
   renderItem?: (item?: T) => React.ReactElement;
+  // Render button for multi select
+  renderItems?: (items?: T[]) => React.ReactElement;
   // Render a generic item when the items list is empty (only if renderItemPlaceholder is null)
   renderNoItem?: () => React.ReactElement;
   // Render a generic item when nothing is selected
@@ -36,7 +40,6 @@ interface State<T> {
   isVisible: boolean;
   noneSelected: boolean;
   selectedItems: T[];
-  selectedItemsCount: number;
 }
 
 export default class ModalSelect<T extends ListItem> extends React.Component<Props<T>, State<T>> {
@@ -51,28 +54,33 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     this.state = {
       isVisible: false,
       selectedItems: [],
-      selectedItemsCount: 0,
       noneSelected: false
     };
   }
 
-
-  public resetInput(noneSelected: boolean = false): void {
+  private clearSelection(): void {
     this.itemsListRef?.current?.clearSelectedItems();
-    this.setState({noneSelected, selectedItems: [], selectedItemsCount: 0, isVisible: false}, () => this.props.onItemsSelected([]));
+  }
+
+  public resetInput(noneSelected: boolean = false, items: T[] = []): void {
+    this.itemsListRef?.current?.clearSelectedItems();
+    this.setState({noneSelected, selectedItems: items, isVisible: false}, () => this.props.onItemsSelected(items));
   }
 
   public render() {
     const style = computeStyleSheet();
     const { selectionMode, label } = this.props;
-    const { isVisible, selectedItems } = this.state;
+    const { isVisible } = this.state;
     const itemsList = React.Children.only(this.props.children);
+    const canValidateMultiSelect = this.itemsListRef?.current?.state.selectedItems.length > 0;
+    const modalCommonStyle = computeModalCommonStyle();
     return (
       <View style={style.container}>
         {label && <Text style={style.label}>{label}</Text>}
         {this.renderButton(style)}
         <Modal
           propagateSwipe={true}
+          useNativeDriver={true}
           supportedOrientations={['portrait', 'landscape']}
           style={style.modal}
           isVisible={isVisible}
@@ -85,11 +93,11 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           onBackButtonPress={() => this.setState({ isVisible: false })}
           onBackdropPress={() => this.setState({ isVisible: false })}
           hideModalContentWhileAnimating={true}>
-          <View style={style.modalContainer}>
+          <SafeAreaView style={style.modalContainer}>
             <View style={style.modalHeader}>
-              <TouchableHighlight style={style.closeIcon} onPress={() => this.setState({ isVisible: false })}>
-                <Icon type="MaterialIcons" name={'close'} />
-              </TouchableHighlight>
+              <TouchableOpacity onPress={() => this.setState({ isVisible: false })}>
+                <Icon style={style.closeIcon} type="Feather" name={'x'} />
+              </TouchableOpacity>
             </View>
             <View style={style.listContainer}>
               {React.cloneElement(itemsList, {
@@ -100,21 +108,21 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
               })}
             </View>
             {selectionMode === ItemSelectionMode.MULTI && (
-              <View style={style.bottomButtonContainer}>
-                <Button style={style.modalButton} block light onPress={() => this.resetInput()}>
-                  <Text style={style.buttonText}>{I18n.t('general.reset')}</Text>
-                </Button>
+              <View style={style.buttonsContainer}>
                 <Button
-                  disabled={selectedItems.length <= 0}
-                  block
-                  light
-                  style={[style.modalButton, selectedItems.length > 0 ? style.buttonEnabled : style.buttonDisabled]}
-                  onPress={() => this.validateSelection()}>
-                  <Text style={style.buttonText}>{I18n.t('general.validate')}</Text>
-                </Button>
+                  containerStyle={[style.buttonContainer, modalCommonStyle.primaryButton]}
+                  title={I18n.t('general.reset')}
+                  onPress={() => this.clearSelection()} />
+                <Button
+                  disabled={!canValidateMultiSelect}
+                  title={I18n.t('general.validate')}
+                  disabledStyle={style.disabledButton}
+                  disabledTitleStyle={style.disabledButtonText}
+                  containerStyle={[style.buttonContainer]}
+                  onPress={() => this.validateSelection()}/>
               </View>
             )}
-          </View>
+          </SafeAreaView>
         </Modal>
       </View>
     );
@@ -124,21 +132,32 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     const { onItemsSelected } = this.props;
     const selectedItems = this.itemsListRef?.current?.state.selectedItems;
     if (!Utils.isEmptyArray(selectedItems)) {
-      this.setState({ isVisible: false }, () => onItemsSelected?.(selectedItems));
+      this.setState({ isVisible: false, selectedItems }, () => onItemsSelected?.(selectedItems));
     }
   }
 
   private onItemSelected(selectedItems: T[]): void {
     const { selectionMode, onItemsSelected } = this.props;
     if (selectionMode === ItemSelectionMode.MULTI) {
-      this.setState({ selectedItems, noneSelected: false });
+      this.setState({ noneSelected: false });
     } else if (selectionMode === ItemSelectionMode.SINGLE && !Utils.isEmptyArray(selectedItems)) {
       this.setState({ selectedItems, isVisible: false, noneSelected: false }, () => onItemsSelected?.(selectedItems));
     }
   }
 
   private renderButton(style: any) {
-    const { defaultItemLoading, renderNoItem, renderItem, renderItemPlaceholder, openable, disabled, clearable, defaultItem } = this.props;
+    const {
+      defaultItemLoading,
+      renderNoItem,
+      renderItem,
+      renderItemPlaceholder,
+      openable,
+      disabled,
+      clearable,
+      defaultItems,
+      selectionMode,
+      renderItems
+    } = this.props;
     const { selectedItems, noneSelected } = this.state;
     const listItemCommonStyle = computeListItemCommonStyle();
 
@@ -150,7 +169,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
         </View>
       );
     }
-    if ((selectedItems[0] || defaultItem)) {
+    if ((selectedItems[0] || defaultItems?.[0])) {
       return (
         <TouchableOpacity
           disabled={disabled || !openable}
@@ -161,7 +180,11 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
               <Text style={{textAlign: 'right', color: commonColors.primary}}>{I18n.t('cars.clearCar')}</Text>
             </TouchableOpacity>
           )}
-          {renderItem?.(selectedItems[0] ?? defaultItem)}
+          {selectionMode === ItemSelectionMode.MULTI ?
+            renderItems?.(Utils.isEmptyArray(selectedItems) ? defaultItems : selectedItems)
+            :
+            renderItem?.(selectedItems[0] ?? defaultItems?.[0])
+          }
         </TouchableOpacity>
       );
     } if (renderItemPlaceholder && (noneSelected || !renderNoItem)) {

@@ -73,11 +73,11 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   public async getTransactions(paging: {skip: number, limit: number}, params?: {}): Promise<TransactionDataResult> {
     if (this.state.filters) {
       try {
-        const { startDateTime, endDateTime, userID } = this.state.filters;
+        const { startDateTime, endDateTime, users } = this.state.filters;
         // Get active transaction
         params = params ?? {
           Statistics: 'history',
-          UserID: userID,
+          UserID: users?.map(user => user?.id).join('|'),
           WithUser: true,
           StartDateTime: startDateTime?.toISOString(),
           EndDateTime: endDateTime?.toISOString(),

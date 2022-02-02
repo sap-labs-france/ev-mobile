@@ -112,7 +112,7 @@ export default class AddCar extends BaseScreen<Props, State> {
             InputComponent={() => (
               <ModalSelect<CarCatalog>
                 openable={true}
-                defaultItem={selectedCarCatalog}
+                defaultItems={[selectedCarCatalog]}
                 renderItem={(carCatalog: CarCatalog) => this.renderCarCatalog(style, carCatalog)}
                 renderItemPlaceholder={() => this.renderCarCatalogPlaceholder(style)}
                 onItemsSelected={(selectedCarCatalogs: CarCatalog[]) => this.onCarCatalogSelected(selectedCarCatalogs?.[0])}
@@ -179,7 +179,7 @@ export default class AddCar extends BaseScreen<Props, State> {
                 <ModalSelect<User>
                   openable={true}
                   disabled={false}
-                  defaultItem={selectedUser}
+                  defaultItems={[selectedUser]}
                   renderItem={(user: User) => this.renderUser(style, user)}
                   onItemsSelected={(users: User[]) => this.setState({ selectedUser: users?.[0] })}
                   navigation={navigation}

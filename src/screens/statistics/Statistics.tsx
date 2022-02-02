@@ -100,10 +100,10 @@ export default class Statistics extends BaseScreen<Props, State> {
     if (this.state.filters) {
       try {
         // Get active transaction
-        const { startDateTime, endDateTime } = this.state.filters;
+        const { startDateTime, endDateTime, users } = this.state.filters;
         params = params ?? {
           Statistics: 'history',
-          UserID: this.state.filters?.userID,
+          UserID: users?.map(user => user?.id).join('|'),
           StartDateTime: startDateTime ? startDateTime.toISOString() : null,
           EndDateTime: endDateTime ? endDateTime.toISOString() : null
         }
