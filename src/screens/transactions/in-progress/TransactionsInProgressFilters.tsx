@@ -4,7 +4,7 @@ import React from 'react';
 
 import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
 import SwitchFilterComponent from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
-import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
+import ScreenFilters, { ScreenFiltersProps, ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../../types/Filter';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import computeStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
