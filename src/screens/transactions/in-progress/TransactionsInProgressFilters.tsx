@@ -1,31 +1,23 @@
-import I18n from 'i18n-js';
 import { View } from 'native-base';
 import React from 'react';
 
-import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
-import SwitchFilterComponent from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
 import ScreenFilters, { ScreenFiltersProps, ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
-import { GlobalFilters } from '../../../types/Filter';
-import SecuredStorage from '../../../utils/SecuredStorage';
 import computeStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
+import FilterModalContainerComponent
+  from '../../../components/search/filter/containers/FilterModalContainerComponent';
+import UserFilterComponent
+  from '../../../components/search/filter/controls/user/UserFilterComponent';
+import User from '../../../types/User';
 
 export interface TransactionsInProgressFiltersDef {
-  userID?: string;
+  userID?: User[];
 }
 
 export default class TransactionsInProgressFilters extends ScreenFilters<TransactionsInProgressFiltersDef> {
-  private currentUserID: string;
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
-    await this.loadInitialFilters();
-    this.currentUserID = this.centralServerProvider.getUserInfo()?.id;
-  }
-
-  public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
-    const initialFilters = { userID: userID as string }
-    this.onFiltersChanged(initialFilters, null, true);
+    this.onFiltersChanged(null, null, true);
   }
 
   public setState<K extends keyof ScreenFiltersState<TransactionsInProgressFiltersDef>>(state: ((prevState: Readonly<ScreenFiltersState<TransactionsInProgressFiltersDef>>, props: Readonly<ScreenFiltersProps<TransactionsInProgressFiltersDef>>) => (Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null)) | Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null, callback?: () => void) {
@@ -38,24 +30,17 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
     return (
       <View>
         {(isAdmin || hasSiteAdmin) && (
-          <FilterVisibleContainerComponent
-            onFilterChanged={(newFilters) => this.onFiltersChanged(newFilters, null, true)}
-            ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
-              this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)
+          <FilterModalContainerComponent
+            onFilterChanged={(newFilters) => this.onFiltersChanged(null, newFilters, true)}
+            ref={(filterModalContainerComponent: FilterModalContainerComponent) =>
+              this.setFilterModalContainerComponent(filterModalContainerComponent)
             }>
-            <SwitchFilterComponent<string>
+            <UserFilterComponent
               filterID={'userID'}
-              internalFilterID={GlobalFilters.MY_USER_FILTER}
-              initialValue={filters?.userID}
-              enabledValue={this.currentUserID}
-              style={style.transactionsInProgressUserSwitchContainer}
-              label={I18n.t('general.onlyMyTransactions')}
-              onFilterChanged={async (id: string, value: string) => this.getFilterVisibleContainerComponent().notifyFilterChanged()}
-              ref={async (myUserSwitchFilterControlComponent: SwitchFilterComponent<string>) =>
-                this.addVisibleFilter(myUserSwitchFilterControlComponent)
-              }
-            />
-          </FilterVisibleContainerComponent>
+              initialValue={filters.userID}
+              ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
+              />
+          </FilterModalContainerComponent>
         )}
       </View>
     );

@@ -15,7 +15,6 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsInProgressFilters, { TransactionsInProgressFiltersDef } from './TransactionsInProgressFilters';
-import { TransactionsHistoryFiltersDef } from '../history/TransactionsHistoryFilters';
 
 export interface Props extends BaseProps {}
 
@@ -70,7 +69,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     if (this.state.filters) {
       try {
         const params = {
-          UserID: this.state.filters?.userID,
+          UserID: this.state.filters?.userID?.map(user => user.id).join('|'),
           Search: searchText
         };
         // Get the Transactions
@@ -134,7 +133,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     await this.refresh();
   };
 
-  private onFiltersChanged(newFilters: TransactionsHistoryFiltersDef): void {
+  private onFiltersChanged(newFilters: TransactionsInProgressFiltersDef): void {
     this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
   }
 
@@ -145,14 +144,14 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
+          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
         <TransactionsInProgressFilters
           onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.onFiltersChanged(newFilters)}
-          ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => this.setScreenFilters(transactionsInProgressFilters)}
+          ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => this.setScreenFilters(transactionsInProgressFilters, true)}
         />
         {(loading || !filters) ? (
           <Spinner style={style.spinner} color="grey" />
