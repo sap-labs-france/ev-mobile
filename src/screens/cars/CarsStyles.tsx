@@ -10,7 +10,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     content: {
       flex: 1,
-      marginHorizontal: '2.5%'
+      marginHorizontal: '2.5%',
+      width: '95%'
+    },
+    container: {
+      alignItems: 'center'
     },
     icon: {
       color: commonColor.textColor,
@@ -30,6 +34,32 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       },
       shadowOpacity: 0.23,
       shadowRadius: 3.62
+    },
+    filtersContainer: {
+      flexDirection: 'row',
+      zIndex: 1,
+      marginVertical: '10@s',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '95%'
+    },
+    filterButton: {
+      borderRadius: '8@s',
+      width: '45@s',
+      height: '45@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginLeft: '10@s',
+      backgroundColor: commonColor.listHeaderBgColor,
+    },
+    filterButtonIcon: {
+      color: commonColor.textColor
+    },
+    searchBarComponent: {
+      backgroundColor: commonColor.listHeaderBgColor,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
     }
   });
   const portraitStyles = {};

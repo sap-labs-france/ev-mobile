@@ -18,8 +18,7 @@ import computeTransactionStyles from '../transactions/TransactionsStyles'
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
-import SecuredStorage from '../../utils/SecuredStorage';
-import { GlobalFilters } from '../../types/Filter';
+import CarsFilters, { CarsFiltersDef } from './CarsFilters';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];
@@ -27,6 +26,7 @@ interface State extends SelectableState<Car> {
   limit?: number;
   refreshing?: boolean;
   loading?: boolean;
+  filters?: CarsFiltersDef;
 }
 
 export interface Props extends SelectableProps<Car> {
@@ -80,29 +80,33 @@ export default class Cars extends SelectableList<Car> {
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
-    try {
-      const params = {
-        Search: searchText,
-        WithUser: true,
-        UserID: this.props.userIDs?.join('|')
-      };
-      const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
-      // Get total number of records
-      if (cars?.count === -1) {
-        const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
-        cars.count = carsNbrRecordsOnly?.count;
-      }
-      return cars;
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'cars.carUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
+    const { isModal } = this.props;
+    if(this.state.filters || isModal) {
+      try {
+        const userID = isModal ? this.props.userIDs?.join('|') : this.state.filters.users?.map(user => user.id).join('|');
+        const params = {
+          Search: searchText,
+          WithUser: true,
+          UserID: userID
+        };
+        const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
+        // Get total number of records
+        if (cars?.count === -1) {
+          const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
+          cars.count = carsNbrRecordsOnly?.count;
+        }
+        return cars;
+      } catch (error) {
+        // Check if HTTP?
+        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            'cars.carUnexpectedError',
+            this.props.navigation,
+            this.refresh.bind(this)
+          );
+        }
       }
     }
     return null;
@@ -152,7 +156,7 @@ export default class Cars extends SelectableList<Car> {
     const { navigation, selectionMode, isModal } = this.props;
     const fabStyles = computeFabStyles();
     return (
-      <Container style={transactionStyles.container}>
+      <Container style={style.container}>
         {!isModal && (
           <TouchableOpacity
             onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={[fabStyles.fab, fabStyles.placedFab]}>
@@ -166,9 +170,7 @@ export default class Cars extends SelectableList<Car> {
           backArrow={!isModal}
           navigation={this.props.navigation}
         />
-        <View style={transactionStyles.searchBar}>
-          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
-        </View>
+        {this.renderFilters()}
         {loading ? (
           <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (
@@ -197,6 +199,29 @@ export default class Cars extends SelectableList<Car> {
           </View>
         )}
       </Container>
+    );
+  }
+
+  private onFilterChanged(newFilters: CarsFiltersDef) : void {
+    this.setState({filters: newFilters, ...(this.state.filters ? {filterLoading: true} : {loading: true})}, () => this.refresh());
+  }
+
+  private renderFilters() {
+    const style = computeStyleSheet();
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    return (
+      <View style={style.filtersContainer}>
+        <CarsFilters
+          onFilterChanged={(newFilters: CarsFiltersDef) => this.onFilterChanged(newFilters)}
+          ref={(chargingStationsFilters: CarsFilters) => this.setScreenFilters(chargingStationsFilters)}
+        />
+        <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        {!this.props.isModal && (
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
+            <Icon style={style.filterButtonIcon} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          </TouchableOpacity>
+        )}
+      </View>
     );
   }
 }

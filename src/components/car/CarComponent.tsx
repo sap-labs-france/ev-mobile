@@ -37,7 +37,7 @@ export default class CarComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
-    const { car, navigation, containerStyle } = this.props;
+    const { car, navigation } = this.props;
     const userName = Utils.buildUserName(car?.user);
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
     const carFullNameWords = carFullName.split(' ');

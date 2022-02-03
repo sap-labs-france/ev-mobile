@@ -2,7 +2,6 @@ import { View } from 'native-base';
 import React from 'react';
 
 import ScreenFilters, { ScreenFiltersProps, ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
-import computeStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
 import FilterModalContainerComponent
   from '../../../components/search/filter/containers/FilterModalContainerComponent';
 import UserFilterComponent
@@ -10,7 +9,7 @@ import UserFilterComponent
 import User from '../../../types/User';
 
 export interface TransactionsInProgressFiltersDef {
-  userID?: User[];
+  users?: User[];
 }
 
 export default class TransactionsInProgressFilters extends ScreenFilters<TransactionsInProgressFiltersDef> {
@@ -26,7 +25,6 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
 
   public render = () => {
     const { filters, isAdmin, hasSiteAdmin } = this.state;
-    const style = computeStyleSheet();
     return (
       <View>
         {(isAdmin || hasSiteAdmin) && (
@@ -36,8 +34,8 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
               this.setFilterModalContainerComponent(filterModalContainerComponent)
             }>
             <UserFilterComponent
-              filterID={'userID'}
-              initialValue={filters.userID}
+              filterID={'users'}
+              initialValue={filters?.users}
               ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
               />
           </FilterModalContainerComponent>

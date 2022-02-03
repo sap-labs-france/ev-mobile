@@ -69,7 +69,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     if (this.state.filters) {
       try {
         const params = {
-          UserID: this.state.filters?.userID?.map(user => user.id).join('|'),
+          UserID: this.state.filters?.users?.map(user => user.id).join('|'),
           Search: searchText
         };
         // Get the Transactions
