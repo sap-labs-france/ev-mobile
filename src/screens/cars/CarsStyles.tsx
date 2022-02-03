@@ -10,7 +10,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     content: {
       flex: 1,
-      marginHorizontal: '2.5%'
+      marginHorizontal: '2.5%',
+      width: '95%'
+    },
+    container: {
+      alignItems: 'center'
     },
     icon: {
       color: commonColor.textColor,
@@ -37,7 +41,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginVertical: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginHorizontal: '10@s'
+      width: '95%'
     },
     filterButton: {
       borderRadius: '8@s',

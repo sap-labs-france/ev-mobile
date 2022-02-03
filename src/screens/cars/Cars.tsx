@@ -156,7 +156,7 @@ export default class Cars extends SelectableList<Car> {
     const { navigation, selectionMode, isModal } = this.props;
     const fabStyles = computeFabStyles();
     return (
-      <Container style={transactionStyles.container}>
+      <Container style={style.container}>
         {!isModal && (
           <TouchableOpacity
             onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={[fabStyles.fab, fabStyles.placedFab]}>
