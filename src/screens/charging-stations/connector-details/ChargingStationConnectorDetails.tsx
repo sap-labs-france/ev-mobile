@@ -1059,7 +1059,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             disabled={disabled}
             openable={isAdmin}
             renderItem={() => <UserComponent outlinedInactive={true} user={selectedUser} navigation={navigation} />}
-            defaultItem={selectedUser}
+            defaultItems={[selectedUser]}
             onItemsSelected={this.onUserSelected.bind(this)}
             navigation={navigation}
             selectionMode={ItemSelectionMode.SINGLE}>
@@ -1084,7 +1084,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           clearable={true}
           renderItem={() => <CarComponent car={selectedCar} navigation={navigation} />}
           ref={this.carModalRef}
-          defaultItem={selectedCar}
+          defaultItems={[selectedCar]}
           renderItemPlaceholder={this.renderCarPlaceholder.bind(this)}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedCars: Car[]) => this.setState({ selectedCar: selectedCars?.[0] })}
@@ -1145,7 +1145,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           renderNoItem={this.renderNoTag.bind(this)}
           itemsEquals={(a, b) => a?.visualID === b?.visualID}
           ref={this.tagModalRef}
-          defaultItem={selectedTag}
+          defaultItems={[selectedTag]}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedTags: Tag[]) => this.setState({ selectedTag: selectedTags?.[0] })}
           navigation={navigation}

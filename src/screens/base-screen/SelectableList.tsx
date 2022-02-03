@@ -36,11 +36,7 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
   }
 
   protected onItemsSelected(selectedItems: T[]): void {
-    this.setState({ selectedItems });
-    const { onItemsSelected } = this.props;
-    if (onItemsSelected) {
-      onItemsSelected(selectedItems);
-    }
+    this.setState({ selectedItems }, () => this.props.onItemsSelected?.(selectedItems));
   }
 
   protected buildHeaderTitle(): string {

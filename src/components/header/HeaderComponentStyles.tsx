@@ -46,6 +46,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     titleContainer: {
       flex: 1,
       flexDirection: 'row',
+      marginLeft: '2.5@s',
       flexWrap: 'wrap',
       alignItems: 'center',
       alignContent: 'stretch',

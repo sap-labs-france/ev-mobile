@@ -31,14 +31,14 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
-    const { initialValue, defaultValue } = this.props;
+    const { initialValue } = this.props;
     // If filter is not aware of initialValue change, set new initialValue to state
     if ( (initialValue?.getTime() !== prevProps.initialValue?.getTime()) && (this.state.value?.getTime() !== initialValue?.getTime()) ) {
       this.setState({value: initialValue });
     }
   }
 
-  public componentDidMount() {
+  public async componentDidMount() {
     let { value } = this.state;
     const correctedDate = this.fitDateWithinMinAndMax(value);
     if (correctedDate?.getTime() !== value?.getTime()) {

@@ -21,8 +21,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       },
       shadowOpacity: 0.23,
       shadowRadius: 3.62,
-      elevation: 11,
-      marginBottom: '8@s'
+      elevation: 11
     },
     transactionContent: {
       width: '100%',

@@ -10,7 +10,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     dateFiltersContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      width: '100%'
+      width: '100%',
+      marginTop: '20@s'
     },
     dateFilterComponentContainer: {
       width: '48%'

@@ -1,6 +1,5 @@
 import { Text, View } from 'native-base';
 import React from 'react';
-import { ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
@@ -44,7 +43,12 @@ export default class UserComponent extends React.Component<Props, State> {
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, chipStyle);
     return (
-      <View style={[listItemCommonStyle.container, style.container, outlinedInactive && userStatus !== UserStatus.ACTIVE && listItemCommonStyle.outlinedError]}>
+      <View style={[
+        listItemCommonStyle.container,
+        style.container,
+        outlinedInactive && userStatus !== UserStatus.ACTIVE && listItemCommonStyle.outlinedError,
+        selected && listItemCommonStyle.outlinedSelected
+      ]}>
         <View style={style.userContent}>
           <View style={style.avatarContainer}>
             {selected ? <UserAvatar isSelected={true} navigation={navigation} /> : <UserAvatar user={user} navigation={navigation} />}
@@ -74,18 +78,6 @@ export default class UserComponent extends React.Component<Props, State> {
         </View>
       </View>
     );
-  }
-
-  private buildStatusIndicatorStyle(userStatus: UserStatus, style: any): ViewStyle {
-    switch (userStatus) {
-      case UserStatus.ACTIVE:
-        return style.statusActive;
-      case UserStatus.BLOCKED:
-      case UserStatus.INACTIVE:
-      case UserStatus.LOCKED:
-      case UserStatus.PENDING:
-        return style.statusInactive;
-    }
   }
 
   private computeStatusStyle(status: string, style: any) {

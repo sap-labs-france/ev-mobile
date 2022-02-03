@@ -20,7 +20,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '5@s',
       paddingTop: getStatusBarHeight(),
       alignItems: 'center',
-      backgroundColor: commonColor.modalBackgroundColor
+      backgroundColor: commonColor.containerBgColor
     },
     closeIcon: {
       color: commonColor.textColor,
@@ -31,10 +31,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       justifyContent: 'space-between',
       marginTop: '20@s'
-    },
-    button: {
-      padding: '3@s',
-      borderRadius: '8@s'
     },
     buttonContainer: {
       width: '48%',

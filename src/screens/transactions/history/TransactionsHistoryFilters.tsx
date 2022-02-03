@@ -3,12 +3,16 @@ import { View } from 'native-base';
 import React from 'react';
 
 import computeStyleSheet from './TransactionHistoryFiltersStyles';
-import FilterModalContainerComponent from '../../../components/search/filter/containers/FilterModalContainerComponent';
-import DateFilterControlComponent from '../../../components/search/filter/controls/date/DateFilterControlComponent';
-import SwitchFilterComponent from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
+import FilterModalContainerComponent
+  from '../../../components/search/filter/containers/FilterModalContainerComponent';
+import DateFilterControlComponent
+  from '../../../components/search/filter/controls/date/DateFilterControlComponent';
 import ScreenFilters, { ScreenFiltersProps, } from '../../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../../types/Filter';
 import SecuredStorage from '../../../utils/SecuredStorage';
+import UserFilterComponent
+  from '../../../components/search/filter/controls/user/UserFilterComponent';
+import User from '../../../types/User';
 
 export interface Props extends ScreenFiltersProps<TransactionsHistoryFiltersDef>{
   maxTransactionDate?: Date;
@@ -18,26 +22,22 @@ export interface Props extends ScreenFiltersProps<TransactionsHistoryFiltersDef>
 export interface TransactionsHistoryFiltersDef {
   startDateTime?: Date;
   endDateTime?: Date;
-  userID?: string;
+  users?: User[];
 }
 
 export default class TransactionsHistoryFilters extends ScreenFilters<TransactionsHistoryFiltersDef, Props> {
-  private currentUserID: string;
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
     await this.loadInitialFilters();
-    this.currentUserID = this.centralServerProvider.getUserInfo()?.id;
   }
 
   private async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
     const startDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_START_DATE_FILTER);
     const endDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_END_DATE_FILTER);
     const startDateTime = startDateTimeString ? new Date(startDateTimeString as string) : null;
     const endDateTime = endDateTimeString ? new Date(endDateTimeString as string) : null;
     const initialFilters = {
-      userID: userID as string,
       startDateTime,
       endDateTime
     };
@@ -59,17 +59,14 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
             this.setFilterModalContainerComponent(filterModalContainerComponent)
           }>
           {(isAdmin || hasSiteAdmin) && (
-            <SwitchFilterComponent<string>
-              filterID={'userID'}
-              internalFilterID={GlobalFilters.MY_USER_FILTER}
-              style={style.switchFilterComponentContainer}
-              initialValue={filters?.userID}
-              enabledValue={this.currentUserID}
-              label={I18n.t('general.onlyMyTransactions')}
-              ref={async (myUserSwitchFilterControlComponent: SwitchFilterComponent<string>) =>
-                this.addModalFilter(myUserSwitchFilterControlComponent)
-              }
-            />
+            <View>
+              <UserFilterComponent
+                internalFilterID={GlobalFilters.MY_USER_FILTER}
+                filterID={'users'}
+                initialValue={filters?.users}
+                ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
+              />
+            </View>
           )}
           <View style={style.dateFiltersContainer}>
             <DateFilterControlComponent
@@ -104,3 +101,4 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
     );
   };
 }
+

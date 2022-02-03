@@ -1,10 +1,12 @@
 import React from 'react';
 import { ImageStyle, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import CentralServerProvider from '../../../../provider/CentralServerProvider';
+import ProviderFactory from '../../../../provider/ProviderFactory';
 
 export interface FilterControlComponentProps<T> {
-  internalFilterID: string;
+  internalFilterID?: string;
   filterID: string;
-  label: string;
+  label?: string;
   locale?: string;
   initialValue?: T;
   style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
@@ -21,12 +23,17 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   };
   public state: FilterControlComponentState<T>;
   public props: FilterControlComponentProps<T>;
+  protected centralServerProvider: CentralServerProvider;
 
   public constructor(props: FilterControlComponentProps<T>) {
     super(props);
     this.state = {
       value: this.props.initialValue
     };
+  }
+
+  public async componentDidMount() {
+    this.centralServerProvider = await ProviderFactory.getProvider();
   }
 
   public componentDidUpdate(prevProps: Readonly<FilterControlComponentProps<T>>, prevState: Readonly<FilterControlComponentState<T>>, snapshot?: any) {

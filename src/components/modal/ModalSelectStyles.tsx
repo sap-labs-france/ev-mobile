@@ -11,11 +11,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       width: '100%'
     },
-    buttonDisabled: {
-      opacity: 0.5
-    },
-    buttonEnabled: {
-      opacity: 1
+    buttonContainer: {
+      width: '48%',
+      borderRadius: '8@s'
     },
     selectionContainer: {
       flexDirection: 'row',
@@ -29,7 +27,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     closeIcon: {
       alignSelf: 'flex-end',
-      margin: '5@s'
+      fontSize: '35@s',
+      margin: '3@s',
+      color: commonColor.textColor,
     },
     rightIcon: {
       textAlign: 'right'
@@ -65,7 +65,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     modalHeader: {
       width: '100%',
       flexDirection: 'column',
-      alignItems: 'center',
+      alignItems: 'flex-end',
       padding: '5@s',
       backgroundColor: commonColor.containerBgColor,
       borderTopLeftRadius: '20@s',
@@ -78,21 +78,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       flex: 1
     },
-    bottomButtonContainer: {
+    buttonsContainer: {
       width: '100%',
       flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      height: '80@s',
+      justifyContent: 'space-between',
       alignItems: 'center',
-      paddingBottom: '20@s',
       borderTopColor: commonColor.listBorderColor,
-      borderTopWidth: 1
-    },
-    modalButton: {
-      marginTop: '15@s',
-      alignSelf: 'center',
-      width: '40%',
-      backgroundColor: commonColor.buttonBg
+      paddingHorizontal: '8@s',
+      paddingVertical: '10@s'
     },
     itemContainer: {
       width: '100%',
@@ -104,9 +97,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       height: '90@s'
     },
-    buttonContainer: {
-      width: '100%'
-    },
     label: {
       fontWeight: 'bold',
       fontSize: '14@s',
@@ -117,6 +107,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     clearContainer: {
       width: '100%'
+    },
+    disabledButton: {
+      backgroundColor: commonColor.disabledDark,
+      borderColor: commonColor.disabledDark,
+      opacity: 0.5
+    },
+    disabledButtonText: {
+      color: commonColor.disabled,
+      opacity: 0.8
     }
   });
   const portraitStyles = {};
