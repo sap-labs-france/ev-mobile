@@ -488,7 +488,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { chargingStation, connector, selectedTag, selectedCar, selectedUser, buttonDisabled, canStartTransaction } = this.state;
     try {
       if (buttonDisabled || !canStartTransaction) {
-        Message.showError(I18n.t('Not authorized'));
+        Message.showError(I18n.t('general.notAuthorized'));
         return;
       }
       // Check already in use
