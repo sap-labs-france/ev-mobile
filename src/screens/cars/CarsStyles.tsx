@@ -30,6 +30,32 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       },
       shadowOpacity: 0.23,
       shadowRadius: 3.62
+    },
+    filtersContainer: {
+      flexDirection: 'row',
+      zIndex: 1,
+      marginVertical: '10@s',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginHorizontal: '10@s'
+    },
+    filterButton: {
+      borderRadius: '8@s',
+      width: '45@s',
+      height: '45@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginLeft: '10@s',
+      backgroundColor: commonColor.listHeaderBgColor,
+    },
+    filterButtonIcon: {
+      color: commonColor.textColor
+    },
+    searchBarComponent: {
+      backgroundColor: commonColor.listHeaderBgColor,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
     }
   });
   const portraitStyles = {};
