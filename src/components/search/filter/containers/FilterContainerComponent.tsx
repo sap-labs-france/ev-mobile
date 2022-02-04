@@ -102,6 +102,10 @@ FilterContainerComponentState
     return filters;
   };
 
+  public countFilters(): number {
+    return React.Children.toArray(this.props.children).length;
+  }
+
   public async applyFiltersAndNotify() {
     // Save
     await this.saveFilters();

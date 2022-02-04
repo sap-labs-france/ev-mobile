@@ -27,7 +27,7 @@ export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFi
   protected filterVisibleContainerComponent: FilterVisibleContainerComponent;
   protected filterModalContainerComponent: FilterModalContainerComponent;
   protected centralServerProvider: CentralServerProvider;
-  private securityProvider: SecurityProvider;
+  protected securityProvider: SecurityProvider;
   private filterModalControlComponents: FilterControlComponent<any>[] = [];
   private filterVisibleControlComponents: FilterControlComponent<any>[] = [];
   private expandableView: any;
@@ -52,6 +52,10 @@ export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFi
 
   public openModal() {
     this.filterModalContainerComponent.setVisible(true);
+  }
+
+  public canOpenModal() {
+    return this.filterModalContainerComponent?.countFilters() > 0;
   }
 
   onFiltersChanged(newVisibleFilters: T = {} as T, newModalFilters: T = {} as T, applyFilters?: boolean) {

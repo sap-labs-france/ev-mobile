@@ -214,9 +214,11 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, false)}
         />
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
-          <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
-        </TouchableOpacity>
+        {this.screenFilters?.canOpenModal() && (
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
+            <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
