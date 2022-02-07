@@ -15,6 +15,7 @@ import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from '../transactions/TransactionsStyles';
+import InvoicesFilters, { InvoicesFiltersDef } from './InvoicesFilters';
 
 export interface Props extends BaseProps {}
 
@@ -25,6 +26,7 @@ interface State {
   skip?: number;
   limit?: number;
   count?: number;
+  filters?: InvoicesFiltersDef;
 }
 
 export default class Invoices extends BaseScreen<Props, State> {
@@ -39,7 +41,8 @@ export default class Invoices extends BaseScreen<Props, State> {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
+      filters: null
     };
   }
 
@@ -56,25 +59,31 @@ export default class Invoices extends BaseScreen<Props, State> {
   };
 
   public async getInvoices(skip: number, limit: number): Promise<DataResult<BillingInvoice>> {
-    try {
-      // Get the invoices
-      const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit }, ['-createdOn']);
-      // Get total number of records
-      if (invoices?.count === -1) {
-        const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);
-        invoices.count = invoicesNbrRecordsOnly?.count;
-      }
-      return invoices;
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'invoices.invoiceUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
+    const { filters } = this.state;
+    if (filters) {
+      try {
+        const params = {
+          UserID: filters.users?.map(user => user.id).join('|')
+        }
+        // Get the invoices
+        const invoices = await this.centralServerProvider.getInvoices(params, { skip, limit }, ['-createdOn']);
+        // Get total number of records
+        if (invoices?.count === -1) {
+          const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);
+          invoices.count = invoicesNbrRecordsOnly?.count;
+        }
+        return invoices;
+      } catch (error) {
+        // Check if HTTP?
+        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            'invoices.invoiceUnexpectedError',
+            this.props.navigation,
+            this.refresh.bind(this)
+          );
+        }
       }
     }
     return null;
@@ -103,14 +112,19 @@ export default class Invoices extends BaseScreen<Props, State> {
       // Set
       this.setState({
         loading: false,
+        refreshing: false,
         invoices: invoices ? invoices.result : [],
         count: invoices ? invoices.count : 0
       });
     }
   }
 
+  private onFilterChanged(newFilters: InvoicesFiltersDef): void {
+    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+  }
+
   public render() {
-    const { invoices, loading, skip, limit, refreshing, count } = this.state;
+    const { invoices, loading, skip, limit, refreshing, count, filters } = this.state;
     const { navigation } = this.props;
     const style = computeStyleSheet();
     return (
@@ -119,8 +133,13 @@ export default class Invoices extends BaseScreen<Props, State> {
           title={i18n.t('sidebar.invoices')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
           navigation={this.props.navigation}
+          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
         />
-        {loading ? (
+        <InvoicesFilters
+          onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}
+          ref={(invoicesFilters: InvoicesFilters) => this.setScreenFilters(invoicesFilters, true)}
+        />
+          {(loading || !filters) ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>

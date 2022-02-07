@@ -60,12 +60,13 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
           }>
           {(isAdmin || hasSiteAdmin) && (
             <View>
-              <UserFilterComponent
-                internalFilterID={GlobalFilters.MY_USER_FILTER}
-                filterID={'users'}
-                initialValue={filters?.users}
-                ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
-              />
+              {this.securityProvider?.canListUsers() && (
+                <UserFilterComponent
+                  filterID={'users'}
+                  initialValue={filters.users}
+                  ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
+                />
+              )}
             </View>
           )}
           <View style={style.dateFiltersContainer}>

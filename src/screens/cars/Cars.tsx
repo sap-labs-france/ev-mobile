@@ -152,7 +152,7 @@ export default class Cars extends SelectableList<Car> {
   public render() {
     const transactionStyles = computeTransactionStyles();
     const style = computeStyleSheet();
-    const { cars, count, skip, limit, refreshing, loading } = this.state;
+    const { cars, count, skip, limit, refreshing, loading, filters } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
     const fabStyles = computeFabStyles();
     return (
@@ -171,7 +171,7 @@ export default class Cars extends SelectableList<Car> {
           navigation={this.props.navigation}
         />
         {this.renderFilters()}
-        {loading ? (
+        {(loading || !filters) ? (
           <Spinner style={transactionStyles.spinner} color="grey" />
         ) : (
           <View style={style.content}>
@@ -203,7 +203,7 @@ export default class Cars extends SelectableList<Car> {
   }
 
   private onFilterChanged(newFilters: CarsFiltersDef) : void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {filterLoading: true} : {loading: true})}, () => this.refresh());
+    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
   }
 
   private renderFilters() {
@@ -216,7 +216,7 @@ export default class Cars extends SelectableList<Car> {
           ref={(chargingStationsFilters: CarsFilters) => this.setScreenFilters(chargingStationsFilters)}
         />
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        {!this.props.isModal && (
+        {!this.props.isModal && this.screenFilters?.canOpenModal() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
             <Icon style={style.filterButtonIcon} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
