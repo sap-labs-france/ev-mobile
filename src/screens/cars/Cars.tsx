@@ -51,7 +51,8 @@ export default class Cars extends SelectableList<Car> {
       count: 0,
       refreshing: false,
       loading: true,
-      selectedItems: []
+      selectedItems: [],
+      filters: null
     };
   }
 

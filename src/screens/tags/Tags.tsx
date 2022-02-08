@@ -1,7 +1,7 @@
 import i18n, { default as I18n } from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -14,6 +14,7 @@ import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import computeStyleSheet from './TagsStyles';
+import TagsFilters, { TagsFiltersDef } from './TagsFilters';
 
 export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];
@@ -29,6 +30,7 @@ interface State extends SelectableState<Tag> {
   count: number;
   refreshing?: boolean;
   loading?: boolean;
+  filters?: TagsFiltersDef;
 }
 
 export default class Tags extends SelectableList<Tag> {
@@ -50,7 +52,8 @@ export default class Tags extends SelectableList<Tag> {
       count: 0,
       refreshing: false,
       loading: true,
-      selectedItems: []
+      selectedItems: [],
+      filters: null
     };
   }
 
@@ -67,31 +70,34 @@ export default class Tags extends SelectableList<Tag> {
   };
 
   public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
-    const { sorting } = this.props;
-    try {
-      const params = {
-        Search: searchText,
-        WithUser: true,
-        UserID: this.props.userIDs?.join('|')
-      };
-      // Get the Tags
-      const tags = await this.centralServerProvider.getTags(params, { skip, limit }, [sorting ?? '-createdOn']);
-      // Get total number of records
-      if (tags?.count === -1) {
-        const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
-        tags.count = tagsNbrRecordsOnly?.count;
-      }
-      return tags;
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'transactions.transactionUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
+    const { sorting, isModal } = this.props;
+    if (this.state.filters || isModal) {
+      try {
+        const userID = isModal ? this.props.userIDs?.join('|') : this.state.filters.users?.map(user => user.id).join('|');
+        const params = {
+          Search: searchText,
+          WithUser: true,
+          UserID: userID
+        };
+        // Get the Tags
+        const tags = await this.centralServerProvider.getTags(params, { skip, limit }, [sorting ?? '-createdOn']);
+        // Get total number of records
+        if (tags?.count === -1) {
+          const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
+          tags.count = tagsNbrRecordsOnly?.count;
+        }
+        return tags;
+      } catch (error) {
+        // Check if HTTP?
+        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            'transactions.transactionUnexpectedError',
+            this.props.navigation,
+            this.refresh.bind(this)
+          );
+        }
       }
     }
     return null;
@@ -150,9 +156,7 @@ export default class Tags extends SelectableList<Tag> {
           navigation={this.props.navigation}
           displayTenantLogo={false}
         />
-        <View style={style.searchBar}>
-          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
-        </View>
+        {this.renderFilters()}
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
@@ -185,4 +189,27 @@ export default class Tags extends SelectableList<Tag> {
       </Container>
     );
   };
+
+  private onFilterChanged(newFilters: TagsFiltersDef) : void {
+    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+  }
+
+  private renderFilters() {
+    const style = computeStyleSheet();
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    return (
+      <View style={style.filtersContainer}>
+        <TagsFilters
+          onFilterChanged={(newFilters: TagsFiltersDef) => this.onFilterChanged(newFilters)}
+          ref={(chargingStationsFilters: TagsFilters) => this.setScreenFilters(chargingStationsFilters)}
+        />
+        <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        {!this.props.isModal && this.screenFilters?.canOpenModal() && (
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
+            <Icon style={style.filterButtonIcon} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
 }
