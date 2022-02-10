@@ -130,18 +130,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     super.setState(state, callback);
   };
 
-  public async loadInitialFilters() {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const connectorStatus = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS);
-    const connectorType = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
-    this.setState({
-      filters: {
-        availableConnectors: !!connectorStatus,
-        connectorType
-      }
-    });
-  }
-
   public getChargingStations = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     let chargingStations: DataResult<ChargingStation>;
     const { filters, showMap } = this.state;
