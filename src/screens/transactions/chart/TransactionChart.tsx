@@ -323,6 +323,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       position: 'BOTTOM',
       drawGridLines: false,
       valueFormatter: 'date',
+      //TODO find a way to have a i18n pattern
       valueFormatterPattern: 'HH:mm',
       fontFamily: 'HelveticaNeue-Medium',
       textSize: scale(8),
