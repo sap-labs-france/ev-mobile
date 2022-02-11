@@ -897,7 +897,7 @@ export default class CentralServerProvider {
   }
 
   public async getTransactionConsumption(transactionId: number): Promise<Transaction> {
-    this.debugMethod('getChargingStationConsumption');
+    this.debugMethod('getTransactionConsumption');
     // Call
     const result = await this.axiosInstance.get(
       this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION_CONSUMPTIONS, { id: transactionId }),

@@ -1,13 +1,7 @@
 import I18n from 'i18n-js';
 import { Card, CardItem, Icon } from 'native-base';
 import React from 'react';
-import {
-  ActivityIndicator,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewStyle
-} from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { scale } from 'react-native-size-matters';
 
 import I18nManager from '../../I18n/I18nManager';
@@ -65,7 +59,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
             <View style={style.leftContainer}>
               <View style={style.invoiceDetailsContainer}>
                 <Text numberOfLines={1} style={[style.text, style.invoiceCreatedOn]}>
-                  {I18nManager.formatDateTime(invoice.createdOn)}
+                  {I18nManager.formatDateTime(invoice.createdOn, {dateStyle: 'medium'})}
                 </Text>
                 <Text numberOfLines={1} style={style.text}>
                   {invoice.number}
@@ -171,7 +165,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
 
   private renderDownloadInvoiceDialog() {
     const { invoice } = this.props;
-    const invoiceDate = I18nManager.formatDateTime(invoice.createdOn);
+    const invoiceDate = I18nManager.formatDateTime(invoice.createdOn, {dateStyle: 'medium'});
     const modalCommonStyle = computeModalCommonStyle();
     return (
       <DialogModal

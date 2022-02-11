@@ -38,7 +38,7 @@ export default class TransactionHeaderComponent extends React.Component<Props, S
     const { transaction, isAdmin, isSiteAdmin } = this.props;
     return (
       <View style={style.container}>
-        <Text style={style.transactionTimestamp}>{I18nManager.formatDateTime(transaction.timestamp)}</Text>
+        <Text style={style.transactionTimestamp}>{I18nManager.formatDateTime(transaction.timestamp, {dateStyle: 'medium', timeStyle: 'short'})}</Text>
         <Text numberOfLines={1} style={[style.subHeaderName, style.chargingStationName]}>
           {transaction.chargeBoxID} - {Utils.getConnectorLetterFromConnectorID(transaction.connectorId)}
         </Text>

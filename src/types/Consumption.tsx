@@ -44,6 +44,7 @@ export interface AbstractConsumption {
 }
 
 export default interface Consumption extends AbstractConsumption {
+  [key: string]: any;
   id: string;
   startedAt: Date;
   endedAt: Date;
