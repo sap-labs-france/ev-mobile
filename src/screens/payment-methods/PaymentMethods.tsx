@@ -2,7 +2,6 @@ import I18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { scale } from 'react-native-size-matters';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -21,6 +20,8 @@ import SelectableList, { SelectableState } from '../base-screen/SelectableList';
 import DialogModal from '../../components/modal/DialogModal';
 import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import UserComponent from '../../components/user/UserComponent';
 
 export interface Props extends BaseProps {}
 
@@ -166,8 +167,8 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
                 <Swipeable
                   overshootRight={false}
                   overshootLeft={false}
-                  containerStyle={style.swiperContainer}
-                  childrenContainerStyle={style.swiperChildrenContainer}
+                  containerStyle={style.paymentMethodContainer}
+                  childrenContainerStyle={style.paymentMethodItemContainer}
                   renderRightActions={() => this.renderPaymentMethodRightActions(paymentMethod, style)}>
                   <PaymentMethodComponent paymentMethod={paymentMethod} navigation={navigation} />
                 </Swipeable>

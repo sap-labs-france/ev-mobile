@@ -1,6 +1,6 @@
 import { Icon } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, Text, View } from 'react-native';
+import { Image, ImageStyle, Text, View, ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import { CarCatalog } from '../../types/Car';
@@ -14,6 +14,7 @@ interface State {}
 export interface Props extends BaseProps {
   carCatalog: CarCatalog;
   selected?: boolean;
+  containerStyle?: ViewStyle[];
 }
 
 export default class CarCatalogComponent extends React.Component<Props, State> {
@@ -30,11 +31,11 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
-    const { carCatalog } = this.props;
+    const { carCatalog, containerStyle } = this.props;
     const carFullName = Utils.buildCarCatalogName(carCatalog);
     const imageURI = carCatalog?.image;
     return (
-      <View style={[listItemCommonStyle.container, style.carCatalogContainer]}>
+      <View style={[listItemCommonStyle.container, style.carCatalogContainer, ...(containerStyle || [])]}>
         {imageURI ? (
           <Image resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={{ uri: imageURI }} />
         ) : (

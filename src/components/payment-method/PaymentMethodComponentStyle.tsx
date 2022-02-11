@@ -9,20 +9,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     paymentMethodContainer: {
-      width: '100%',
       flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: '5@s'
+      paddingHorizontal: '5@s',
+      paddingVertical: '5@s'
     },
     paymentMethodDetailsContainer: {
       justifyContent: 'center',
-      flex: 1,
-      height: '100%'
+      flex: 1
     },
     paymentMethodLogoContainer: {
       marginRight: '15@s',
       paddingLeft: '10@s',
-      height: '100%',
       justifyContent: 'center'
     },
     cardSVG: {

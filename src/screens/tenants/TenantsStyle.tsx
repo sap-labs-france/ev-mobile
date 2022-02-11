@@ -16,24 +16,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       marginTop: '10@s'
     },
-    toolBar: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderRadius: 1,
-      height: '40@s',
-      padding: '5@s',
-      marginVertical: '10@s'
-    },
     tenantContainer: {
-      height: '60@s',
-      marginBottom: '8@s',
+      marginBottom: '11@s',
       marginHorizontal: '2.5%'
     },
     tenantNameContainer: {
-      height: '100%',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      backgroundColor: commonColor.containerBgColor
     },
     tenantNameText: {
       color: commonColor.textColor,
@@ -49,7 +39,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginLeft: '2.5%'
     },
     trashIconButton: {
-      height: '100%',
       width: '60@s',
       backgroundColor: commonColor.danger,
       justifyContent: 'center',
@@ -62,7 +51,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '20@s'
     },
     editIconButton: {
-      height: '100%',
       width: '60@s',
       backgroundColor: commonColor.primary,
       justifyContent: 'center',

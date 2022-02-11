@@ -232,6 +232,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     noItemContainer: {
       minHeight: '90@s',
       padding: '10@s',
+      marginBottom: '11@s',
       justifyContent: 'flex-start'
     },
     noCarContainer: {
@@ -350,6 +351,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     accordionIcon: {
       color: commonColor.textColor,
       fontSize: '35@s'
+    },
+    itemComponentContainer: {
+      marginBottom: '10@s'
     }
   });
   const portraitStyles = {};

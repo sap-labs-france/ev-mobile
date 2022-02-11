@@ -1,7 +1,13 @@
 import I18n from 'i18n-js';
 import { Card, CardItem, Icon } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, Alert, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import {
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle
+} from 'react-native';
 import { scale } from 'react-native-size-matters';
 
 import I18nManager from '../../I18n/I18nManager';
@@ -19,6 +25,7 @@ import computeModalCommonStyle from '../modal/ModalCommonStyle';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;
+  containerStyle?: ViewStyle[];
 }
 
 interface State {
@@ -46,11 +53,11 @@ export default class InvoiceComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { invoice, navigation } = this.props;
+    const { invoice, navigation, containerStyle } = this.props;
     const invoiceAmount = invoice.amount && invoice.amount / 100;
     const { downloading, showDownloadInvoiceDialog } = this.state;
     return (
-      <Card style={style.container}>
+      <Card style={[style.container, ...(containerStyle || [])]}>
         {showDownloadInvoiceDialog && this.renderDownloadInvoiceDialog()}
         <CardItem style={style.invoiceContent}>
           <View style={[this.buildStatusIndicatorStyle(invoice.status, style), style.statusIndicator]} />

@@ -19,7 +19,7 @@ import Orientation from 'react-native-orientation-locker';
 import CarCatalogComponent from '../../components/car/CarCatalogComponent';
 
 interface State extends SelectableState<Car> {
-  cars?: Car[];
+  cars?: CarCatalog[];
   skip?: number;
   limit?: number;
   refreshing?: boolean;
@@ -166,6 +166,7 @@ export default class CarCatalogs extends SelectableList<Car> {
               selectionMode={selectionMode}
               renderItem={(item: CarCatalog, selected: boolean) => (
                 <CarCatalogComponent
+                  containerStyle={[carsStyles.carComponentContainer]}
                   navigation={navigation}
                   selected={selected}
                   carCatalog={item}

@@ -8,13 +8,16 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: commonColor.containerBgColor,
+      alignItems: 'center',
+      width: '100%'
+    },
     content: {
       flex: 1,
-      marginHorizontal: '2.5%',
-      width: '95%'
-    },
-    container: {
-      alignItems: 'center'
+      width: '95%',
+      marginHorizontal: '2.5%'
     },
     icon: {
       color: commonColor.textColor,
@@ -60,6 +63,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    carComponentContainer: {
+      marginBottom: '11@s'
     }
   });
   const portraitStyles = {};

@@ -956,7 +956,8 @@ export default class CentralServerProvider {
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHODS, { userID: params.currentUserID });
     try {
       const result = await this.axiosInstance.get(url, {
-        headers: this.buildSecuredHeaders()
+        headers: this.buildSecuredHeaders(),
+        params
       });
       return result?.data as DataResult<BillingPaymentMethod>;
     } catch (e) {

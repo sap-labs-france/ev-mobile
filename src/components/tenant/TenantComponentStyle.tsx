@@ -9,13 +9,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      flex: 1,
-      width: '100%'
+      width: '100%',
+      paddingVertical: '15@s'
     },
     content: {
       alignItems: 'center',
-      justifyContent: 'center',
-      height: '100%'
+      justifyContent: 'center'
     },
     text: {
       color: commonColor.textColor,

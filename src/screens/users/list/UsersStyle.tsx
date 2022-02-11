@@ -22,6 +22,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
+    },
+    userComponentContainer: {
+      marginBottom: '11@s'
     }
   });
   const portraitStyles = {};

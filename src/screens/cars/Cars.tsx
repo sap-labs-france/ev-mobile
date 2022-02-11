@@ -187,6 +187,7 @@ export default class Cars extends SelectableList<Car> {
               selectionMode={selectionMode}
               renderItem={(item: Car, selected: boolean) => (
                 <CarComponent
+                  containerStyle={[style.carComponentContainer]}
                   navigation={navigation}
                   selected={selected}
                   car={item}

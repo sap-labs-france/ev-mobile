@@ -122,7 +122,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                     overshootRight={false}
                     overshootLeft={false}
                     containerStyle={style.tenantContainer}
-                    childrenContainerStyle={[listItemCommonStyle.container, style.tenantNameContainer]}
+                    childrenContainerStyle={style.tenantNameContainer}
                     renderRightActions={() => this.renderTenantRightActions(index, item, style)}>
                     <TenantComponent tenant={item} navigation={navigation} />
                   </Swipeable>
