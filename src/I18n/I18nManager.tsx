@@ -21,6 +21,7 @@ import esJsonLanguage from './languages/es.json';
 import frJsonLanguage from './languages/fr.json';
 import itJsonLanguage from './languages/it.json';
 import ptJsonLanguage from './languages/pt.json';
+import DurationUnitFormat, { DurationUnitFormatOptions } from 'intl-unofficial-duration-unit-format';
 
 export interface FormatNumberOptions extends Intl.NumberFormatOptions {
   compactThreshold?: number;
@@ -69,7 +70,7 @@ export enum NumberFormatStyleEnum {
 }
 
 export default class I18nManager {
-  private static currency: string;
+  public static currency: string;
 
   public static initialize(): void {
     // Translation files
@@ -124,7 +125,7 @@ export default class I18nManager {
     const isCompactForm =
       options.notation === NumberFormatNotationEnum.COMPACT &&
       (!options.compactThreshold || (options.compactThreshold && value > options.compactThreshold));
-    const isCurrency = options.currency && options.style === NumberFormatStyleEnum.CURRENCY;
+    const isCurrency = options.style === NumberFormatStyleEnum.CURRENCY;
     options.currency = options.currency || I18nManager.currency;
     if(!options.currency) {
       delete options.currency
@@ -174,11 +175,17 @@ export default class I18nManager {
     return usesMetricSystem();
   }
 
-  public static formatDateTime(value: Date, format: string = 'LLL'): string {
+  public static formatDateTime(value: Date, options?: Intl.DateTimeFormatOptions ): string {
     if (I18nManager.isValidDate(value)) {
-      return moment(value).format(format);
+      return Intl.DateTimeFormat(i18n.locale, options).format(new Date(value));
     }
     return '-';
+  }
+
+  // We use an external lib until ECMAScript Intl namespace features DurationFormat pending proposition
+  public static formatDuration(durationSecs: number, options?: DurationUnitFormatOptions): string {
+    const formatter =  new DurationUnitFormat(i18n.locale, options);
+    return formatter.format(durationSecs)
   }
 
   private static isValidDate(date: Date): boolean {
