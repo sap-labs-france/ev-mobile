@@ -145,6 +145,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginRight: '15@s',
       color: 'red',
       transform: Platform.OS === PLATFORM.IOS ? [{ scaleX: 0.8 }, { scaleY: 0.8 }] : []
+    },
+    itemComponentContainer: {
+      marginBottom: '5@s'
     }
   });
   const portraitStyles = {};

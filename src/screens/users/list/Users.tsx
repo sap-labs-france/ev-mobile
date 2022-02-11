@@ -13,6 +13,7 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UsersStyle';
 import SelectableList, { SelectableProps, SelectableState } from '../../base-screen/SelectableList';
+import computeListItemCommonStyles from '../../../components/list/ListItemCommonStyle';
 
 export interface Props extends SelectableProps<User> {}
 
@@ -132,6 +133,7 @@ export default class Users extends SelectableList<User> {
 
   public render(): React.ReactElement {
     const style = computeStyleSheet();
+    const listItemCommonStyles = computeListItemCommonStyles();
     const { users, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, isModal, selectionMode } = this.props;
     return (
@@ -160,7 +162,8 @@ export default class Users extends SelectableList<User> {
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(item: User, selected: boolean) => <UserComponent user={item} selected={selected} navigation={this.props.navigation} />}
+              renderItem={(item: User, selected: boolean) =>
+                <UserComponent containerStyle={[style.userComponentContainer, selected && listItemCommonStyles.outlinedSelected]} user={item} selected={selected} navigation={this.props.navigation} />}
               refreshing={refreshing}
               manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}

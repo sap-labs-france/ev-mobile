@@ -6,8 +6,8 @@ import Utils from '../../utils/Utils';
 import computeStyleSheet from './TenantComponentStyle';
 import { TenantConnection } from '../../types/Tenant';
 import BaseProps from '../../types/BaseProps';
-import I18n from 'i18n-js';
 import Configuration from '../../config/Configuration';
+import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 
 interface State {}
 
@@ -21,11 +21,12 @@ export default class TenantComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const listItemCommonStyle = computeListItemCommonStyle();
     const { tenant } = this.props;
     const tenantEndpointName = Configuration.getEndpoints().find((e) => e.endpoint === tenant?.endpoint)?.name;
     return (
       <TouchableOpacity
-        style={style.container}
+        style={[listItemCommonStyle.container, style.container]}
         onPress={() => {
           this.props.navigation.dispatch(
             StackActions.replace('AuthNavigator', {

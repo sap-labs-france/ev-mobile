@@ -13,18 +13,15 @@ import computeConnectorStatusStyles from '../../../components/connector-status/C
 
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList, { ItemsSeparatorType } from '../../../components/list/ItemsList';
+import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import computeModalStyle from '../../../ModalStyles';
-import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
-import { GlobalFilters } from '../../../types/Filter';
 import SiteArea from '../../../types/SiteArea';
 import Constants from '../../../utils/Constants';
-import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
@@ -385,7 +382,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                   skip={skip}
                   count={count}
                   onEndReached={this.onEndScroll}
-                  itemsSeparator={ItemsSeparatorType.DEFAULT}
                   renderItem={(chargingStation: ChargingStation) => (
                     <ChargingStationComponent
                       chargingStation={chargingStation}

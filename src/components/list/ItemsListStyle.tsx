@@ -10,18 +10,23 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       alignItems: 'center',
+      width: '100%',
       flex: 1
     },
-    itemContainer: {
-      marginBottom: '10@s'
-    },
-    rowContainer: {
-      flexDirection: 'row'
+    flatList: {
+      width: '100%'
     },
     rowSeparator: {
       borderBottomColor: commonColor.listBorderColor,
       borderBottomWidth: 1
+    },
+    rowItem: {
+      width: '100%'
+    },
+    rowContainer: {
+      width: '100%'
     }
+
   });
   const portraitStyles = {};
   const landscapeStyles = {};

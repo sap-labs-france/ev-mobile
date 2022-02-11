@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 import React from 'react';
-import { Image, ImageStyle, Text, View } from 'react-native';
+import { Image, ImageStyle, Text, View, ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import Tag from '../../types/Tag';
@@ -16,7 +16,7 @@ export interface Props extends BaseProps {
   tag: Tag;
   selected?: boolean;
   canReadUser?: boolean;
-  outlinedInactive?: boolean;
+  containerStyle?: ViewStyle[]
 }
 
 export default class TagComponent extends React.Component<Props, State> {
@@ -42,13 +42,13 @@ export default class TagComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const chipStyle = computeChipStyleSheet();
-    const { tag, canReadUser, outlinedInactive } = this.props;
+    const { tag, canReadUser, containerStyle } = this.props;
     const listItemCommonStyle = computeListItemCommonStyle();
     const userFullName = Utils.buildUserName(tag?.user);
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
       <View
-        style={[listItemCommonStyle.container, style.tagContainer, outlinedInactive && !tag?.active && listItemCommonStyle.outlinedError]}>
+        style={[listItemCommonStyle.container, style.tagContainer, ...(containerStyle || [])]}>
         <View style={style.leftContainer}>
           <Image style={style.icon as ImageStyle} source={{ uri: this.exampleImageUri }} />
         </View>

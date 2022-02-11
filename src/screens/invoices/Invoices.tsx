@@ -14,7 +14,7 @@ import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import computeStyleSheet from '../transactions/TransactionsStyles';
+import computeStyleSheet from './InvoicesStyles';
 import InvoicesFilters, { InvoicesFiltersDef } from './InvoicesFilters';
 
 export interface Props extends BaseProps {}
@@ -149,7 +149,7 @@ export default class Invoices extends BaseScreen<Props, State> {
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(invoice: BillingInvoice) => <InvoiceComponent navigation={navigation} invoice={invoice} />}
+              renderItem={(invoice: BillingInvoice) => <InvoiceComponent containerStyle={[style.invoiceComponentContainer]} navigation={navigation} invoice={invoice} />}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}

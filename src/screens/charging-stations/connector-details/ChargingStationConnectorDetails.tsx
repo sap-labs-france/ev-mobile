@@ -1,13 +1,22 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, ImageBackground, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  Alert,
+  ImageBackground,
+  ImageStyle,
+  RefreshControl,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
 import noSite from '../../../../assets/no-site.png';
 import CarComponent from '../../../components/car/CarComponent';
-import ChargingStationConnectorComponent from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
-import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
+import ChargingStationConnectorComponent
+  from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
+import ConnectorStatusComponent
+  from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
 import computeListItemCommonStyle from '../../../components/list/ListItemCommonStyle';
@@ -1052,13 +1061,15 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { navigation } = this.props;
     const { selectedUser, isAdmin, showBillingErrorMessage, connector } = this.state;
     const disabled = connector?.status !== ChargePointStatus.PREPARING && connector?.status !== ChargePointStatus.AVAILABLE;
+    const listItemCommonStyles = computeListItemCommonStyle();
     return (
       <View style={style.rowUserCarBadgeContainer}>
         {this.securityProvider?.canListUsers() && (
           <ModalSelect<User>
             disabled={disabled}
             openable={isAdmin}
-            renderItem={() => <UserComponent outlinedInactive={true} user={selectedUser} navigation={navigation} />}
+            renderItem={(user) =>
+              <UserComponent containerStyle={[user.status !== UserStatus.ACTIVE && listItemCommonStyles.outlinedError, style.itemComponentContainer]} user={selectedUser} navigation={navigation} />}
             defaultItems={[selectedUser]}
             onItemsSelected={this.onUserSelected.bind(this)}
             navigation={navigation}
@@ -1136,10 +1147,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { navigation } = this.props;
     const { tagCarLoading, selectedUser, selectedTag, connector } = this.state;
     const disabled = connector?.status !== ChargePointStatus.PREPARING && connector?.status !== ChargePointStatus.AVAILABLE;
+    const listItemCommonStyles = computeListItemCommonStyle();
     return (
       <View style={style.rowUserCarBadgeContainer}>
         <ModalSelect<Tag>
-          renderItem={() => <TagComponent outlinedInactive={true} tag={selectedTag} navigation={navigation} />}
+          renderItem={(tag) => <TagComponent containerStyle={[!tag.active && listItemCommonStyles.outlinedError, style.itemComponentContainer]} tag={selectedTag} navigation={navigation} />}
           disabled={disabled}
           openable={true}
           renderNoItem={this.renderNoTag.bind(this)}

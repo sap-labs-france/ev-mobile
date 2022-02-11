@@ -95,7 +95,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     spinnerContainer: {
       width: '100%',
-      height: '90@s'
+      height: '90@s',
+      marginBottom: '11@s'
     },
     label: {
       fontWeight: 'bold',

@@ -1,6 +1,6 @@
 import { Icon } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, StyleSheet, Text, View } from 'react-native';
+import { Image, ImageStyle, Text, View, ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import Car from '../../types/Car';
@@ -15,7 +15,7 @@ interface State {}
 export interface Props extends BaseProps {
   car: Car;
   selected?: boolean;
-  containerStyle?: StyleSheet.NamedStyles<any>;
+  containerStyle?: ViewStyle[];
 }
 
 export default class CarComponent extends React.Component<Props, State> {
@@ -37,13 +37,13 @@ export default class CarComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
-    const { car, navigation } = this.props;
+    const { car, navigation, containerStyle } = this.props;
     const userName = Utils.buildUserName(car?.user);
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
     const carFullNameWords = carFullName.split(' ');
     const imageURI = car?.carCatalog?.image;
     return (
-      <View style={[listItemCommonStyle.container, style.carContainer]}>
+      <View style={[listItemCommonStyle.container, ...(containerStyle || [])]}>
         <View style={style.header}>
           <View style={style.statusNameContainer}>
             {carFullNameWords.map((word, index) => (
