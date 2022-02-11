@@ -17,7 +17,10 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './TransactionChartStyles';
 import { HttpChargingStationRequest } from '../../../types/requests/HTTPChargingStationRequests';
-import I18nManager from '../../../I18n/I18nManager';
+import I18nManager, { NumberFormatStyleEnum } from '../../../I18n/I18nManager';
+import i18n from 'i18n-js';
+import { NumberFormat } from '@formatjs/intl-numberformat';
+import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 
 export interface Props extends BaseProps {}
 
@@ -31,11 +34,6 @@ interface State {
   canDisplayTransaction?: boolean;
   isAdmin: boolean;
   isSiteAdmin?: boolean;
-}
-
-interface ChartPoint {
-  x: number;
-  y: number;
 }
 
 export default class TransactionChart extends BaseAutoRefreshScreen<Props, State> {
@@ -191,7 +189,12 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     // Add Data
     chartDefinition.data = { dataSets: [] };
     // Check Consumptions
-    let powerValues = this.getDataSetFunctionOfTime(values, 'instantWatts', (y, value) => (value.instantWatts || value.instantWattsDC) / 1000);
+    let powerValues = this.getDataSetFunctionOfTime(
+      values,
+      'instantWatts',
+      (y, value) => (value.instantWatts || value.instantWattsDC) / 1000,
+      'kW'
+    );
     if (!Utils.isEmptyArray(powerValues)) {
       chartDefinition.data.dataSets.push({
         values: powerValues,
@@ -211,8 +214,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       });
     }
     // Check SoC
-    const stateOfChargeValues = this.getDataSetFunctionOfTime(values, 'stateOfCharge');
-    if (transaction?.stateOfCharge > 0 || transaction?.stop.stateOfCharge > 0) {
+    const stateOfChargeValues = this.getDataSetFunctionOfTime(
+      values,
+      'stateOfCharge',
+      null,
+      '%'
+      );
+    if (transaction?.stateOfCharge > 0 || transaction?.stop?.stateOfCharge > 0) {
       chartDefinition.data.dataSets.push({
         values: stateOfChargeValues,
         label: I18n.t('details.batteryChartLabel'),
@@ -233,7 +241,12 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     }
     // Check isAdmin
     if (this.state?.isAdmin) {
-      const gridLimitationValues = this.getDataSetFunctionOfTime(values, 'limitWatts', (y) => y / 1000);
+      const gridLimitationValues = this.getDataSetFunctionOfTime(
+        values,
+        'limitWatts',
+        (y) => y / 1000,
+        'kW'
+        );
       // Check grid limitation
       if (!Utils.isEmptyArray(gridLimitationValues)) {
         chartDefinition.data.dataSets.push({
@@ -256,7 +269,12 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       }
     }
     if (!Utils.isEmptyArray(values)) {
-      const cumulatedConsumptionValues = this.getDataSetFunctionOfTime(values, 'cumulatedConsumptionWh', (y) => y / 1000);
+      const cumulatedConsumptionValues = this.getDataSetFunctionOfTime(
+        values,
+        'cumulatedConsumptionWh',
+        (y) => y / 1000,
+        'kW.h'
+        );
       chartDefinition.data.dataSets.push({
         values: cumulatedConsumptionValues,
         label: I18n.t('details.cumulatedConsumptionLabel'),
@@ -275,13 +293,14 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         }
       });
     }
-    const priceValues = this.getDataSetFunctionOfTime(values, 'cumulatedAmount');
+    const priceCurrency = I18nManager.formatNumberWithCompacts(null, {style: NumberFormatStyleEnum.CURRENCY} )?.currency;
+    const priceValues = this.getDataSetFunctionOfTime(values, 'cumulatedAmount', null, priceCurrency);
     if (!Utils.isEmptyArray(priceValues) && this.securityProvider?.isComponentPricingActive()) {
       chartDefinition.data.dataSets.push({
         values: priceValues,
-        label: I18n.t('details.priceLabel', {priceCurrency:  transaction.stop.priceUnit}),
+        label: I18n.t('details.priceLabel', {priceCurrency}),
         config: {
-          axisDependency: 'RIGHT',
+          axisDependency: 'LEFT',
           mode: 'LINEAR',
           drawValues: false,
           lineWidth: 2,
@@ -303,9 +322,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       drawLabels: true,
       position: 'BOTTOM',
       drawGridLines: false,
-      fontFamily: 'HelveticaNeue-Medium',
       valueFormatter: 'date',
       valueFormatterPattern: 'HH:mm',
+      fontFamily: 'HelveticaNeue-Medium',
       textSize: scale(8),
       textColor: processColor(commonColor.textColor)
     };
@@ -326,10 +345,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       };
     }
     // Check SoC
-    if (transaction?.stateOfCharge > 0 || transaction?.stop.stateOfCharge > 0) {
+    if (transaction?.stateOfCharge > 0 || transaction?.stop?.stateOfCharge > 0) {
       chartDefinition.yAxis.right = {
         enabled: true,
-        valueFormatter: '##0.#%',
+        valueFormatter: "##0'%'",
         labelCount: 10,
         axisMinimum: 0,
         axisMaximum: 100,
@@ -397,8 +416,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
               enabled: true,
               markerColor: processColor(commonColor.listItemBackground),
               textSize: scale(12),
-              textColor: processColor(commonColor.textColor),
-              digits: 2
+              textColor: processColor(commonColor.textColor)
             }}
             xAxis={chartDefinition.xAxis}
             yAxis={chartDefinition.yAxis}
@@ -434,9 +452,17 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     );
   }
 
-  private getDataSetFunctionOfTime(values: Consumption[], dataSet: string, transformValuesCallback: (y: number, value: Consumption) => number = (x) => x): LineValue[] {
+  private getDataSetFunctionOfTime(values: Consumption[], dataSet: string, transformValuesCallback?: (y: number, value: Consumption) => number, markerUnit: string = ''): LineValue[] {
+    const { transaction } = this.state;
     return values
       ?.filter((value) => value.startedAt)
-      ?.map((value) => ({ x: new Date(value.startedAt).getTime(), y: Utils.roundTo(transformValuesCallback(value[dataSet], value), 2), marker: 'bite' }));
+      ?.map((value) => {
+        const y = Utils.roundTo(transformValuesCallback?.(value[dataSet], value) ?? value[dataSet], 2);
+        const x = new Date(value.startedAt);
+        const duration = (new Date(value.startedAt).getTime() - new Date(transaction?.timestamp).getTime()) / (1000);
+        const durationFormatOptions = {style: DurationUnitFormat.styles.SHORT, format: '{hour} {minutes} {seconds}'};
+        const marker = `${I18nManager.formatDateTime(x, {timeStyle: 'short'})} (${I18nManager.formatDuration(duration, durationFormatOptions)}) \n ${I18nManager.formatNumber(y)} ${markerUnit}`;
+        return { x: x.getTime(), y,  marker };
+      });
   }
 }

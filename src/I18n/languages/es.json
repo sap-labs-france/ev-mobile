@@ -462,7 +462,7 @@
     "gridLimitChartLabel": "Grid Limit (kW)",
     "cumulatedConsumptionLabel": "Energy Delivered (kW.h)",
     "connectorMax": "Conector de potencia máxima (kW)",
-    "priceLabel": "Price ('{{priceCurrency}}')",
+    "priceLabel": "Price ({{priceCurrency}})",
     "noData": "Sin datos",
     "noSessionInProgress": "Ninguna sesión en progreso",
     "noConsumptionData": "No consumption data",
