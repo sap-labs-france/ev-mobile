@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import { Spinner, Text } from 'native-base';
 import React from 'react';
 import { View, processColor } from 'react-native';
-import { LineChart, LineChartProps } from 'react-native-charts-wrapper';
+import { LineChart, LineChartProps, LineValue } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -17,6 +17,7 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './TransactionChartStyles';
 import { HttpChargingStationRequest } from '../../../types/requests/HTTPChargingStationRequests';
+import I18nManager from '../../../I18n/I18nManager';
 
 export interface Props extends BaseProps {}
 
@@ -26,8 +27,6 @@ interface State {
   connector?: Connector;
   transaction?: Transaction;
   values?: Consumption[];
-  consumptionValues?: ChartPoint[];
-  stateOfChargeValues?: ChartPoint[];
   showTransactionDetails?: boolean;
   canDisplayTransaction?: boolean;
   isAdmin: boolean;
@@ -52,8 +51,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       transaction: null,
       values: [],
       canDisplayTransaction: false,
-      consumptionValues: null,
-      stateOfChargeValues: null,
       showTransactionDetails: false
     };
     // Set Refresh
@@ -140,7 +137,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
 
   public getTransactionWithConsumptions = async (
     transactionID: number
-  ): Promise<{ transaction: Transaction; values: Consumption[]; consumptionValues: ChartPoint[]; stateOfChargeValues: ChartPoint[] }> => {
+  ): Promise<{ transaction: Transaction; values: Consumption[] }> => {
     try {
       // Active Transaction?
       if (transactionID) {
@@ -155,39 +152,15 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
               startedAt: transaction.values[transaction.values.length - 1].endedAt
             });
           }
-          // Convert
-          const consumptionValues: ChartPoint[] = [];
-          const stateOfChargeValues: ChartPoint[] = [];
-          for (const value of transaction.values) {
-            const date = new Date(value.startedAt).getTime();
-            if (value.instantWattsDC > 0) {
-              value.instantWatts = value.instantWattsDC;
-            }
-            // Add
-            consumptionValues.push({
-              x: date,
-              y: value.instantWatts ? Utils.roundTo(value.instantWatts / 1000, 2) : 0
-            });
-            if (value.stateOfCharge > 0) {
-              stateOfChargeValues.push({
-                x: date,
-                y: value.stateOfCharge ? value.stateOfCharge : 0
-              });
-            }
-          }
           // Set
           return {
             transaction,
             values: transaction.values,
-            consumptionValues,
-            stateOfChargeValues
           };
         } else {
           return {
             transaction,
-            values: null,
-            consumptionValues: null,
-            stateOfChargeValues: null
+            values: null
           };
         }
       }
@@ -207,21 +180,21 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     // Clear
     return {
       transaction: null,
-      values: null,
-      consumptionValues: null,
-      stateOfChargeValues: null
+      values: null
     };
   };
 
-  public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[], values: Consumption[]) {
+  public createChart() {
     const commonColor = Utils.getCurrentCommonColor();
     const chartDefinition = {} as LineChartProps;
+    const { values, transaction } = this.state;
     // Add Data
     chartDefinition.data = { dataSets: [] };
     // Check Consumptions
-    if (!Utils.isEmptyArray(consumptionValues)) {
+    let powerValues = this.getDataSetFunctionOfTime(values, 'instantWatts', (y, value) => (value.instantWatts || value.instantWattsDC) / 1000);
+    if (!Utils.isEmptyArray(powerValues)) {
       chartDefinition.data.dataSets.push({
-        values: consumptionValues,
+        values: powerValues,
         label: I18n.t('details.instantPowerChartLabel'),
         config: {
           mode: 'LINEAR',
@@ -238,7 +211,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       });
     }
     // Check SoC
-    if (!Utils.isEmptyArray(stateOfChargeValues)) {
+    const stateOfChargeValues = this.getDataSetFunctionOfTime(values, 'stateOfCharge');
+    if (transaction?.stateOfCharge > 0 || transaction?.stop.stateOfCharge > 0) {
       chartDefinition.data.dataSets.push({
         values: stateOfChargeValues,
         label: I18n.t('details.batteryChartLabel'),
@@ -301,6 +275,26 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         }
       });
     }
+    const priceValues = this.getDataSetFunctionOfTime(values, 'cumulatedAmount');
+    if (!Utils.isEmptyArray(priceValues) && this.securityProvider?.isComponentPricingActive()) {
+      chartDefinition.data.dataSets.push({
+        values: priceValues,
+        label: I18n.t('details.priceLabel', {priceCurrency:  transaction.stop.priceUnit}),
+        config: {
+          axisDependency: 'RIGHT',
+          mode: 'LINEAR',
+          drawValues: false,
+          lineWidth: 2,
+          drawCircles: false,
+          highlightColor: processColor('#f57b02'),
+          color: processColor('#f57b02'),
+          drawFilled: true,
+          fillAlpha: 65,
+          fillColor: processColor('#f57b02'),
+          valueTextSize: scale(8)
+        }
+      });
+    }
     // X Axis
     chartDefinition.xAxis = {
       enabled: true,
@@ -318,10 +312,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     // Y Axis
     chartDefinition.yAxis = {};
     // Check Consumptions
-    if (consumptionValues && consumptionValues.length > 1) {
+    if (powerValues && powerValues.length > 1) {
       chartDefinition.yAxis.left = {
         enabled: true,
-        valueFormatter: '##0.#kW',
+        valueFormatter: '##0',
         axisMinimum: 0,
         textColor: processColor(commonColor.textColor),
         textSize: scale(8)
@@ -332,14 +326,15 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       };
     }
     // Check SoC
-    if (stateOfChargeValues && stateOfChargeValues.length > 1) {
+    if (transaction?.stateOfCharge > 0 || transaction?.stop.stateOfCharge > 0) {
       chartDefinition.yAxis.right = {
         enabled: true,
-        valueFormatter: '##0',
+        valueFormatter: '##0.#%',
+        labelCount: 10,
         axisMinimum: 0,
         axisMaximum: 100,
         textColor: processColor(commonColor.success),
-        textSize: scale(8)
+        textSize: scale(8),
       };
     } else {
       chartDefinition.yAxis.right = {
@@ -362,12 +357,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       transaction,
       chargingStation,
       connector,
-      consumptionValues,
-      stateOfChargeValues,
       values,
       canDisplayTransaction
     } = this.state;
-    const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues, values);
+    const chartDefinition = this.createChart();
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return loading ? (
       <Spinner style={style.spinner} color="grey" />
@@ -387,21 +380,25 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             displayNavigationIcon={false}
           />
         )}
-        {transaction && consumptionValues && consumptionValues.length > 1 && canDisplayTransaction ? (
+        {transaction && values && values.length > 1 && canDisplayTransaction ? (
           <LineChart
             style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
             data={chartDefinition.data}
             chartDescription={{ text: '' }}
             legend={{
               enabled: true,
-              textSize: scale(8),
-              textColor: processColor(commonColor.textColor)
+              textSize: scale(9),
+              textColor: processColor(commonColor.textColor),
+              wordWrapEnabled: true,
+              yEntrySpace: scale(10),
+              xEntrySpace: scale(15),
             }}
             marker={{
               enabled: true,
               markerColor: processColor(commonColor.listItemBackground),
               textSize: scale(12),
-              textColor: processColor(commonColor.textColor)
+              textColor: processColor(commonColor.textColor),
+              digits: 2
             }}
             xAxis={chartDefinition.xAxis}
             yAxis={chartDefinition.yAxis}
@@ -437,9 +434,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     );
   }
 
-  private getDataSetFunctionOfTime(values: { [key: string]: any }[], dataSet: string, transformValuesCallback?: (y: number) => number) {
+  private getDataSetFunctionOfTime(values: Consumption[], dataSet: string, transformValuesCallback: (y: number, value: Consumption) => number = (x) => x): LineValue[] {
     return values
-      ?.filter((c) => c[dataSet] && c.startedAt)
-      ?.map((c) => ({ x: new Date(c.startedAt).getTime(), y: Utils.roundTo(transformValuesCallback(c[dataSet]), 2) }));
+      ?.filter((value) => value.startedAt)
+      ?.map((value) => ({ x: new Date(value.startedAt).getTime(), y: Utils.roundTo(transformValuesCallback(value[dataSet], value), 2), marker: 'bite' }));
   }
 }
