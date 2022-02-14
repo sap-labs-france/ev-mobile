@@ -307,7 +307,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
     const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     const showChargingSettingsFromNavigation = Utils.getParamFromNavigation(this.props.route, 'showChargingSettings', false) as boolean;
-    const startTransactionFromQRCode = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null) as boolean;
+    const startTransactionFromQRCode = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
     // Get Charging Station
     const chargingStation = await this.getChargingStation(chargingStationID);
     // Get Connector from Charging Station
