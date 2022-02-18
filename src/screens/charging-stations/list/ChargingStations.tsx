@@ -332,7 +332,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                 )}
               />
             </View>
-
           )}
         </SafeAreaView>
       </Modal>
