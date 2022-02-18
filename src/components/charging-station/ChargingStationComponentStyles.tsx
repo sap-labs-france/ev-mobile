@@ -9,10 +9,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      flex: 1,
       flexDirection: 'column',
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+      maxHeight: '100%'
     },
     headerContent: {
       flexDirection: 'row',
@@ -36,7 +34,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       height: '25@s',
       paddingRight: '5@s',
-      paddingLeft: '5@s'
+      paddingLeft: '5@s',
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.listBorderColor
     },
     address: {
       color: commonColor.textColor,
@@ -86,11 +86,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingLeft: '20@s',
       fontSize: '25@s'
     },
-    connectorsContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
+    connectorsContent: {
+      justifyContent: 'center',
       alignItems: 'center',
-      flexWrap: 'wrap'
+      width: '100%',
+      height: 'auto'
+    },
+    connectorsContainer: {
+      flexGrow: 0,
+      width: '100%'
     }
   });
   const portraitStyles = {};

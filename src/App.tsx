@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { scale } from 'react-native-size-matters';
 
@@ -50,6 +50,7 @@ import AppUpdateDialog from './components/modal/app-update/AppUpdateDialog';
 import AddCar from './screens/cars/AddCar';
 import ChargingStationQrCode from './screens/home/ChargingStationQrCode';
 import ThemeManager from './custom-theme/ThemeManager';
+import { PLATFORM } from './theme/variables/commonColor';
 
 // Init i18n
 I18nManager.initialize();
@@ -156,7 +157,8 @@ function getTabStyle(): any {
     borderTopWidth: 1,
     borderTopColor: 'darkgray',
     paddingTop: 0,
-    marginTop: 0
+    marginTop: 0,
+    paddingBottom: PLATFORM.IOS === Platform.OS ? scale(10) : 0
   };
 }
 

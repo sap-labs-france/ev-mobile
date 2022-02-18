@@ -13,8 +13,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       alignItems: 'stretch',
       borderStyle: 'solid',
-      borderWidth: 1,
-      borderColor: 'transparent'
+      borderBottomWidth: 1,
+      borderColor: commonColor.listBorderColor
     },
     borderedTopContainer: {
       borderTopColor: commonColor.listBorderColor

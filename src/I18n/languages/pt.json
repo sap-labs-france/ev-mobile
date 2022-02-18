@@ -79,7 +79,8 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "roaming": "Show roaming charging stations"
   },
   "sidebar": {
     "home": "Home",
@@ -516,5 +517,9 @@
     "appUpdateDialogTitle": "New version available",
     "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
     "noUpdateAvailable": "You have the latest version"
+  },
+  "filters": {
+    "myUser": "My user",
+    "clearUser": "Clear user"
   }
 }

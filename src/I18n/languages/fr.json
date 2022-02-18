@@ -79,7 +79,8 @@
     "defaultSettings": "Paramètres par défaut",
     "notApplicable": "N/A",
     "showMore": "Voir plus",
-    "showLess": "Voir moins"
+    "showLess": "Voir moins",
+    "roaming": "Afficher les bornes en itinérance"
   },
   "sidebar": {
     "home": "Home",
@@ -516,5 +517,9 @@
     "appUpdateDialogTitle": "Nouvelle version disponible",
     "appUpdateDialogDescription": "Voulez-vous mettre à jour votre application avec la dernière version disponible?",
     "noUpdateAvailable": "Vous avez la dernière version"
+  },
+  "filters": {
+    "myUser": "Mon utilisateur",
+    "clearUser": "Supprimer"
   }
 }

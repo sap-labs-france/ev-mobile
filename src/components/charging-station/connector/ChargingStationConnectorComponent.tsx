@@ -4,17 +4,9 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import Chademo from '../../../../assets/connectorType/chademo.svg';
-import ComboCCS from '../../../../assets/connectorType/combo-ccs.svg';
-import Domestic from '../../../../assets/connectorType/domestic-ue.svg';
-import NoConnector from '../../../../assets/connectorType/no-connector.svg';
-import Type1CCS from '../../../../assets/connectorType/type1-ccs.svg';
-import Type1 from '../../../../assets/connectorType/type1.svg';
-import Type3C from '../../../../assets/connectorType/type3c.svg';
-import Type2 from '../../../../assets/connectorType/type2.svg';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { Connector, ConnectorType } from '../../../types/ChargingStation';
+import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';
@@ -168,7 +160,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
             key: `${Utils.randomNumber()}`
           });
         }}>
-        <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+        <View >
           <View style={style.connectorContainer}>
             <View style={style.connectorDetailContainer}>
               <View style={{ flex: 1 }}>{this.renderFirstConnectorDetails(chargingStation, connector)}</View>
@@ -181,7 +173,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
               </View>
             )}
           </View>
-        </Animatable.View>
+        </View>
       </TouchableOpacity>
     );
   }

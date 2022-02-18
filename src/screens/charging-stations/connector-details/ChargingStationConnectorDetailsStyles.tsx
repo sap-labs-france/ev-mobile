@@ -338,8 +338,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       marginBottom: '10@s',
       paddingLeft: '10@s',
-      borderTopWidth: 0.8,
-      borderTopColor: commonColor.disabledDark,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center'
