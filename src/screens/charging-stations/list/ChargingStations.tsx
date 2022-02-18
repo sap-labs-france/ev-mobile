@@ -1,12 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import {
-  ActivityIndicator,
-  BackHandler, Dimensions, Image, ImageStyle,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
+import { ActivityIndicator, BackHandler, Image, ImageStyle, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import computeConnectorStatusStyles from '../../../components/connector-status/ConnectorStatusComponentStyles';
@@ -33,7 +28,6 @@ import ThemeManager from '../../../custom-theme/ThemeManager';
 import standardDarkLayout from '../../../../assets/map/standard-dark.png';
 import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
-import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
