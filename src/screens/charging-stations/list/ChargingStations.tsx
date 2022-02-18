@@ -446,7 +446,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <TouchableOpacity
           delayPressIn={0}
           style={[fabStyles.fab, style.fab]}
-          onPress={() => this.setState({ showMap: !showMap}, () => this.refresh(true)) }
+          onPress={() => this.setState({ showMap: !showMap, chargingStations: []}, () => this.refresh()) }
         >
           <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
