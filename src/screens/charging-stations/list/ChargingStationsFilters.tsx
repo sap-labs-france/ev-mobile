@@ -57,7 +57,8 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
               onlyAvailableChargingStationSwitchFilterControlComponent: SwitchFilterComponent<string>
             ) => this.addModalFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
           />
-          <SwitchFilterComponent<boolean>
+          {this.securityProvider?.isComponentOrganizationActive() && (
+            <SwitchFilterComponent<boolean>
             filterID={'issuer'}
             internalFilterID={GlobalFilters.ROAMING}
             enabledValue={true}
@@ -65,9 +66,10 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
             label={I18n.t('general.roaming')}
             initialValue={filters?.issuer}
             ref={async (
-              roamingFilterControlComponent : SwitchFilterComponent<boolean>
+            roamingFilterControlComponent : SwitchFilterComponent<boolean>
             ) => this.addModalFilter(roamingFilterControlComponent)}
-          />
+            />
+          )}
           <ConnectorTypeFilterControlComponent
             filterID={'connectorTypes'}
             internalFilterID={GlobalFilters.CONNECTOR_TYPES}
