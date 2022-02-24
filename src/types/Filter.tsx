@@ -4,5 +4,6 @@ export enum GlobalFilters {
   MY_USER_FILTER = 'MyUserFilter',
   ONLY_AVAILABLE_CHARGING_STATIONS = 'OnlyAvailableChargingStationsFilter',
   CONNECTOR_TYPES = 'ConnectorTypesFilter',
-  LOCATION = 'LocationFilter'
+  LOCATION = 'LocationFilter',
+  ROAMING = 'Roaming'
 }

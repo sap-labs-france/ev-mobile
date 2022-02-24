@@ -70,10 +70,10 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
         </View>
         <View style={style.buttonsContainer}>
           <TouchableOpacity style={style.buttonContainer} onPress={() => this.userModalRef?.current?.resetInput(false, this.currentUser ? [this.currentUser] : [])}>
-            <Text style={style.button}>My user</Text>
+            <Text style={style.button}>{I18n.t('filters.myUser')}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={style.buttonContainer} onPress={() => this.userModalRef?.current?.resetInput()}>
-            <Text style={style.button}>Clear user</Text>
+            <Text style={style.button}>{I18n.t('filters.clearUser')}</Text>
           </TouchableOpacity>
         </View>
       </View>

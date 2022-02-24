@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import moment from 'moment';
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import BaseProps from '../../types/BaseProps';
@@ -100,28 +100,28 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
           </View>
         </View>
         <View style={style.subHeaderContent}>
-          {chargingStation.siteArea && (
-            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
-              {Utils.formatAddress(chargingStation.siteArea.address)}
-            </Text>
-          )}
-          {chargingStation.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>}
-        </View>
-        <View style={style.connectorsContainer}>
-          {chargingStation.connectors.map(
-            (connector) =>
-              connector && (
-                <ChargingStationConnectorComponent
-                  onNavigate={onNavigate}
-                  listed={true}
-                  key={`${chargingStation.id}~${connector.connectorId}`}
-                  chargingStation={chargingStation}
-                  connector={connector}
-                  navigation={navigation}
-                />
-              )
-          )}
-        </View>
+            {chargingStation.siteArea && (
+              <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
+                {Utils.formatAddress(chargingStation.siteArea?.address)}
+              </Text>
+            )}
+            {chargingStation.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>}
+          </View>
+          <ScrollView contentContainerStyle={style.connectorsContent} style={style.connectorsContainer}>
+              {chargingStation.connectors.map(
+                (connector) =>
+                  connector && (
+                    <ChargingStationConnectorComponent
+                      onNavigate={onNavigate}
+                      listed={true}
+                      key={`${chargingStation.id}~${connector.connectorId}`}
+                      chargingStation={chargingStation}
+                      connector={connector}
+                      navigation={navigation}
+                    />
+                  )
+              )}
+        </ScrollView>
       </View>
     );
   }

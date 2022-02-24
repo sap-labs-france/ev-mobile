@@ -117,6 +117,33 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '45@s',
       alignItems: 'center',
       justifyContent: 'center'
+    },
+    chargingStationDetailsModalContainer: {
+      width: '100%',
+      backgroundColor: commonColor.modalBackgroundColor,
+      maxHeight: '60%',
+      minHeight: '70@s',
+      borderTopRightRadius: '20@s',
+      borderTopLeftRadius: '20@s'
+    },
+    chargingStationDetailsModalHeader: {
+      height: '50@s',
+      flexDirection: 'row',
+      justifyContent: 'flex-end'
+    },
+    chargingStationDetailsModalSpinnerContainer: {
+      height: '70@s',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    chargingStationDetailsModalSpinner: {
+      color: commonColor.disabledDark,
+      fontSize: '30@s'
+    },
+    closeIcon: {
+      padding: '8@s',
+      fontSize: '35@s',
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
