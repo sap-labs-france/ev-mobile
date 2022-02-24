@@ -77,10 +77,11 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       name: chargingStationQRCode.tenantName,
       endpoint: newTenantEndpointCloud.endpoint
     };
+    const tenants = await this.centralServerProvider?.getTenants();
     // Add to existing list
-    this.props.tenants.push(newTenant);
+    tenants.push(newTenant);
     // Save
-    await SecuredStorage.saveTenants(this.props.tenants);
+    await SecuredStorage.saveTenants(tenants);
     // Navigate to login
     await this.logoffAndNavigateToLogin(newTenant);
   }
@@ -93,7 +94,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       const chargingStationQrCode = JSON.parse(decodedQrCodeData) as ChargingStationQRCode;
       // Check mandatory props
       if (
-        !chargingStationQrCode.tenantSubDomain ||
+        !chargingStationQrCode. tenantSubDomain ||
         !chargingStationQrCode.tenantName ||
         !chargingStationQrCode.endpoint ||
         !chargingStationQrCode.chargingStationID ||
