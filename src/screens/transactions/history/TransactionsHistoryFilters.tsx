@@ -69,7 +69,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
               internalFilterID={GlobalFilters.ROAMING}
               enabledValue={true}
               style={style.switchFilterControlComponentContainer}
-              label={I18n.t('filters.siteAreasRoamingFilterLabel')}
+              label={I18n.t('filters.transactionsRoamingFilterLabel')}
               initialValue={filters?.issuer}
               ref={async (
                 roamingFilterControlComponent : SwitchFilterComponent<boolean>
