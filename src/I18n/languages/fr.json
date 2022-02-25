@@ -522,6 +522,7 @@
     "clearUser": "Supprimer",
     "chargingStationsRoamingFilterLabel": "Afficher les bornes en itinérance",
     "sitesRoamingFilterLabel": "Afficher les sites en itinérance",
-    "siteAreasRoamingFilterLabel": "Afficher les zones en itinérance"
+    "siteAreasRoamingFilterLabel": "Afficher les zones en itinérance",
+    "transactionsRoamingFilterLabel": "Afficher les sessions en itinérance"
   }
 }
