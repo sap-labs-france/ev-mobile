@@ -65,7 +65,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       showMap: false,
       visible: false,
       selectedSite: null,
-      satelliteMap: false
+      satelliteMap: false,
+      filters: null
     };
   }
 
@@ -220,7 +221,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public filterChanged(newFilters: SitesFiltersDef) {
-    delete this.currentRegion;
     this.setState({ filters: newFilters,
       ...(Utils.isEmptyArray(this.state.sites) ? {loading: true} : {refreshing : true})
       },
