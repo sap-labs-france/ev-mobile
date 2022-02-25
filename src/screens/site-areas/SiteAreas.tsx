@@ -20,13 +20,14 @@ import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import { SiteAreasFiltersDef } from './SiteAreasFilters';
+import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
 import standardDarkLayout from '../../../assets/map/standard-dark.png';
 import standardLightLayout from '../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../assets/map/satellite.png';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
+import { SitesFiltersDef } from '../sites/SitesFilters';
 
 export interface Props extends BaseProps {}
 
@@ -40,7 +41,7 @@ interface State {
   filters?: SiteAreasFiltersDef;
   showMap?: boolean;
   visible?: boolean;
-  siteAreaSelected?: SiteArea;
+  selectedSiteArea?: SiteArea;
   satelliteMap?: boolean;
 }
 
@@ -64,8 +65,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       initialFilters: {},
       showMap: false,
       visible: false,
-      siteAreaSelected: null,
-      satelliteMap: false
+      selectedSiteArea: null,
+      satelliteMap: false,
+      filters: null
     };
   }
 
@@ -92,36 +94,38 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getSiteAreas = async (searchText: string = '', skip: number, limit: number): Promise<DataResult<SiteArea>> => {
-    try {
-      // Get current location
-      const currentLocation = await Utils.getUserCurrentLocation();
-      const { showMap } = this.state;
-      const params = {
-        Search: searchText,
-        SiteID: this.site?.id,
-        Issuer: true,
-        WithAvailableChargers: true,
-        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
-        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
-        LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
-      };
-      // Get the Site Areas
-      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
-      // Get total number of records
-      if (siteAreas?.count === -1) {
-        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSiteAreas(params, Constants.ONLY_RECORD_COUNT);
-        siteAreas.count = sitesAreasNbrRecordsOnly?.count;
+    if (this.state.filters) {
+      try {
+        // Get current location
+        const currentLocation = await Utils.getUserCurrentLocation();
+        const { showMap } = this.state;
+        const params = {
+          Search: searchText,
+          SiteID: this.site?.id,
+          Issuer: !this.state.filters.issuer,
+          WithAvailableChargers: true,
+          LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
+          LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
+          LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
+        };
+        // Get the Site Areas
+        const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
+        // Get total number of records
+        if (siteAreas?.count === -1) {
+          const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSiteAreas(params, Constants.ONLY_RECORD_COUNT);
+          siteAreas.count = sitesAreasNbrRecordsOnly?.count;
+        }
+        return siteAreas;
+      } catch (error) {
+        // Other common Error
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'siteAreas.siteAreaUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
-      return siteAreas;
-    } catch (error) {
-      // Other common Error
-      await Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        'siteAreas.siteAreaUnexpectedError',
-        this.props.navigation,
-        this.refresh.bind(this)
-      );
     }
     return null;
   };
@@ -223,15 +227,17 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     this.currentRegion = region;
   };
 
-  public filterChanged(newFilters: SiteAreasFiltersDef) {
-    delete this.currentRegion;
-    this.setState({ filters: newFilters }, async () => this.refresh(true));
+  public filterChanged(newFilters: SitesFiltersDef) {
+    this.setState({ filters: newFilters,
+        ...(Utils.isEmptyArray(this.state.siteAreas) ? {loading: true} : {refreshing : true})
+      },
+      async () => this.refresh(true));
   }
 
   public showMapSiteAreaDetail = (siteArea: SiteArea) => {
     this.setState({
       visible: true,
-      siteAreaSelected: siteArea
+      selectedSiteArea: siteArea
     });
   };
 
@@ -261,9 +267,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, showMap, siteAreaSelected, siteAreas, refreshing, satelliteMap } = this.state;
-    const fabStyles = computeFabStyles();
-    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    const { loading, skip, count, showMap, selectedSiteArea, siteAreas, refreshing } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -271,51 +275,56 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           title={this.site?.name}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)} ${count > 1 ? I18n.t('siteAreas.siteAreas') : I18n.t('siteAreas.siteArea')})` : null}
         />
-        <View style={style.fabContainer}>
-          {showMap && (
-            <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
-              <Image
-                source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
-                style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
-              />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={fabStyles.fab}
-            onPress={() => this.setState({ showMap: ! showMap}, () => this.refresh(true)) }
-          >
-            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
-          </TouchableOpacity>
-        </View>
-        {loading ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
-          <View style={style.content}>
-            <View style={style.searchBar}>
-              <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        <View style={style.content}>
+          {this.renderFilters()}
+          {this.renderFabs()}
+          {selectedSiteArea && this.buildModal(navigation, selectedSiteArea, modalStyle)}
+          {loading ? <Spinner style={style.spinner} color="grey" /> : (
+            <View style={style.siteAreasContainer}>
+              {showMap ? this.renderMap() : (
+                <ItemsList<SiteArea>
+                  skip={skip}
+                  count={count}
+                  onEndReached={this.onEndScroll}
+                  renderItem={(site: SiteArea) => <SiteAreaComponent siteArea={site} navigation={this.props.navigation} />}
+                  data={siteAreas}
+                  manualRefresh={this.manualRefresh}
+                  refreshing={refreshing}
+                  emptyTitle={I18n.t('siteAreas.noSiteAreas')}
+                  navigation={navigation}
+                  limit={this.listLimit}
+                />
+              )}
             </View>
-            {showMap ? (
-              <View style={style.map}>
-                {this.renderMap()}
-                {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
-              </View>
-            ) : (
-              <ItemsList<SiteArea>
-                skip={skip}
-                count={count}
-                onEndReached={this.onEndScroll}
-                renderItem={(site: SiteArea) => <SiteAreaComponent siteArea={site} navigation={this.props.navigation} />}
-                data={siteAreas}
-                manualRefresh={this.manualRefresh}
-                refreshing={refreshing}
-                emptyTitle={I18n.t('siteAreas.noSiteAreas')}
-                navigation={navigation}
-                limit={this.listLimit}
-              />
-            )}
-          </View>
-        )}
+          )}
+        </View>
       </Container>
+    );
+  }
+
+  private renderFabs() {
+    const style = computeStyleSheet();
+    const fabStyles = computeFabStyles();
+    const { showMap, satelliteMap } = this.state;
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    return (
+      <View style={style.fabContainer}>
+        {showMap && (
+          <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
+            <Image
+              source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
+              style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
+            />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          delayPressIn={0}
+          style={[fabStyles.fab, style.fab]}
+          onPress={() => this.setState({ showMap: !showMap, siteAreas: []}, () => this.refresh()) }
+        >
+          <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
+        </TouchableOpacity>
+      </View>
     );
   }
 
@@ -346,6 +355,26 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         />
       </View>
     )
+  }
+
+  private renderFilters() {
+    const { showMap } = this.state;
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    const style = computeStyleSheet();
+    const fabStyles = computeFabStyles();
+    const commonColors = Utils.getCurrentCommonColor();
+    return (
+      <View style={[style.filtersContainer, showMap && style.mapFiltersContainer]}>
+        <SiteAreasFilters
+          onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.filterChanged(newFilters)}
+          ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
+        />
+        <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
+          <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   private onMapRegionChangeComplete = (region: Region) => {
