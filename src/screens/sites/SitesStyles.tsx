@@ -48,6 +48,59 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     siteMarker: {
       fontSize: '40@s',
     },
+    sitesContainer: {
+      flex: 1
+    },
+    filtersContainer: {
+      flexDirection: 'row',
+      zIndex: 1,
+      marginVertical: '10@s',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginHorizontal: '7.5@s'
+    },
+    mapFiltersContainer: {
+      position: 'absolute',
+    },
+    mapSearchBarComponent: {
+      backgroundColor: commonColor.containerBgColor,
+      flex: 1,
+      marginRight: '10@s',
+      height: '50@s',
+      elevation: 4,
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62,
+    },
+    listSearchBarComponent: {
+      backgroundColor: commonColor.listHeaderBgColor,
+      flex: 1,
+      marginRight: '10@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    mapFilterButton: {
+      borderRadius: '8@s',
+      height: '50@s',
+      width: '50@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: commonColor.containerBgColor
+    },
+    listFilterButton: {
+      borderRadius: '8@s',
+      width: '45@s',
+      height: '45@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: commonColor.listHeaderBgColor
+    },
+    fab: {
+      marginTop: '14@s'
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

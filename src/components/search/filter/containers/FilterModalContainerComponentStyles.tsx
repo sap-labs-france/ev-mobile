@@ -41,7 +41,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%',
-      marginBottom: '20@s'
+      marginBottom: '40@s'
     },
     title: {
       color: commonColor.textColor,

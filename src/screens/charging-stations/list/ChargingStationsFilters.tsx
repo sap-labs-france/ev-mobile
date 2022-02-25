@@ -63,7 +63,7 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
             internalFilterID={GlobalFilters.ROAMING}
             enabledValue={true}
             style={filtersStyles.switchFilterControlComponentContainer}
-            label={I18n.t('general.roaming')}
+            label={I18n.t('filters.chargingStationsRoamingFilterLabel')}
             initialValue={filters?.issuer}
             ref={async (
             roamingFilterControlComponent : SwitchFilterComponent<boolean>

@@ -12,8 +12,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     rowFilterContainer: {
       flexDirection: 'row',
-      width: '100%',
-      height: '35@s',
       alignItems: 'center'
     },
     columnFilterContainer: {
@@ -29,7 +27,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     textFilter: {
       fontSize: '15@s',
       color: commonColor.textColor,
-      marginRight: '20@s'
+      marginRight: '30@s',
+      flex: 1
     },
     label: {
       fontWeight: 'bold'

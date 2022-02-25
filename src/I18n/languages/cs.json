@@ -79,8 +79,7 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less",
-    "roaming": "Show roaming charging stations"
+    "showLess": "Show less"
   },
   "sidebar": {
     "home": "Domovská stránka",
@@ -520,6 +519,8 @@
   },
   "filters": {
     "myUser": "My user",
-    "clearUser": "Clear user"
+    "clearUser": "Clear user",
+    "chargingStationsRoamingFilterLabel": "Show roaming charging stations",
+    "sitesRoamingFilterLabel": "Show roaming sites"
   }
 }
