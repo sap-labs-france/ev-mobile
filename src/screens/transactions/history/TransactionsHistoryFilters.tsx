@@ -13,6 +13,8 @@ import SecuredStorage from '../../../utils/SecuredStorage';
 import UserFilterComponent
   from '../../../components/search/filter/controls/user/UserFilterComponent';
 import User from '../../../types/User';
+import SwitchFilterComponent
+  from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
 
 export interface Props extends ScreenFiltersProps<TransactionsHistoryFiltersDef>{
   maxTransactionDate?: Date;
@@ -23,6 +25,7 @@ export interface TransactionsHistoryFiltersDef {
   startDateTime?: Date;
   endDateTime?: Date;
   users?: User[];
+  issuer?: boolean
 }
 
 export default class TransactionsHistoryFilters extends ScreenFilters<TransactionsHistoryFiltersDef, Props> {
@@ -35,11 +38,13 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
   private async loadInitialFilters() {
     const startDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_START_DATE_FILTER);
     const endDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_END_DATE_FILTER);
+    const issuer = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ROAMING);
     const startDateTime = startDateTimeString ? new Date(startDateTimeString as string) : null;
     const endDateTime = endDateTimeString ? new Date(endDateTimeString as string) : null;
     const initialFilters = {
       startDateTime,
-      endDateTime
+      endDateTime,
+      issuer: !!issuer
     };
     this.onFiltersChanged(null, initialFilters, true);
 
@@ -58,6 +63,19 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
           ref={(filterModalContainerComponent: FilterModalContainerComponent) =>
             this.setFilterModalContainerComponent(filterModalContainerComponent)
           }>
+          {this.securityProvider?.isComponentOrganizationActive() && (
+            <SwitchFilterComponent<boolean>
+              filterID={'issuer'}
+              internalFilterID={GlobalFilters.ROAMING}
+              enabledValue={true}
+              style={style.switchFilterControlComponentContainer}
+              label={I18n.t('filters.siteAreasRoamingFilterLabel')}
+              initialValue={filters?.issuer}
+              ref={async (
+                roamingFilterControlComponent : SwitchFilterComponent<boolean>
+              ) => this.addModalFilter(roamingFilterControlComponent)}
+            />
+          )}
           {(isAdmin || hasSiteAdmin) && (
             <View>
               {this.securityProvider?.canListUsers() && (

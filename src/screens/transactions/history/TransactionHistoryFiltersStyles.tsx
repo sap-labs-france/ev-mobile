@@ -11,13 +11,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'space-between',
       width: '100%',
-      marginTop: '20@s'
+      marginTop: '30@s'
     },
     dateFilterComponentContainer: {
       width: '48%'
     },
-    switchFilterComponentContainer: {
-      marginBottom: '20@s'
+    switchFilterControlComponentContainer: {
+      width: '95%',
+      justifyContent: 'space-between',
+      marginBottom: '30@s'
     }
   });
   const portraitStyles = {};
