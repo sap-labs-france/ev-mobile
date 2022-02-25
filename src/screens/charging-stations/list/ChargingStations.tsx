@@ -498,6 +498,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
         </TouchableOpacity>
       </View>
-      );
-    }
+    );
+  }
 }

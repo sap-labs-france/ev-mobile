@@ -19,7 +19,7 @@ import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import { SitesFiltersDef } from './SitesFilters';
+import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
 import ClusterMap from '../../components/map/ClusterMap';
 import standardDarkLayout from '../../../assets/map/standard-dark.png';
@@ -27,6 +27,7 @@ import standardLightLayout from '../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../assets/map/satellite.png';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
+import { ChargingStationsFiltersDef } from '../charging-stations/list/ChargingStationsFilters';
 
 export interface Props extends BaseProps {}
 
@@ -40,7 +41,7 @@ interface State {
   count?: number;
   showMap?: boolean;
   visible?: boolean;
-  siteSelected?: Site;
+  selectedSite?: Site;
   satelliteMap?: boolean;
 }
 
@@ -63,8 +64,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       count: 0,
       showMap: false,
       visible: false,
-      siteSelected: null,
-      satelliteMap: false
+      selectedSite: null,
+      satelliteMap: false,
+      filters: null
     };
   }
 
@@ -86,34 +88,36 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
-    const { showMap } = this.state;
-    const currentLocation = await Utils.getUserCurrentLocation();
-    try {
-      const params = {
-        Search: searchText,
-        Issuer: true,
-        WithAvailableChargers: true,
-        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
-        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
-        LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
-      };
-      // Get the Sites
-      const sites = await this.centralServerProvider.getSites(params, { skip, limit }, ['name']);
-      // Get total number of records
-      if (sites?.count === -1) {
-        const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
-        sites.count = sitesNbrRecordsOnly?.count;
+    if (this.state.filters) {
+      const { showMap } = this.state;
+      const currentLocation = await Utils.getUserCurrentLocation();
+      try {
+        const params = {
+          Search: searchText,
+          Issuer: !this.state.filters.issuer,
+          WithAvailableChargers: true,
+          LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
+          LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
+          LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
+        };
+        // Get the Sites
+        const sites = await this.centralServerProvider.getSites(params, { skip, limit }, ['name']);
+        // Get total number of records
+        if (sites?.count === -1) {
+          const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
+          sites.count = sitesNbrRecordsOnly?.count;
+        }
+        return sites;
+      } catch (error) {
+        // Other common Error
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'sites.siteUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
-      return sites;
-    } catch (error) {
-      // Other common Error
-      await Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        'sites.siteUnexpectedError',
-        this.props.navigation,
-        this.refresh.bind(this)
-      );
     }
     return null;
   };
@@ -217,14 +221,16 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public filterChanged(newFilters: SitesFiltersDef) {
-    delete this.currentRegion;
-    this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh(true));
+    this.setState({ filters: newFilters,
+      ...(Utils.isEmptyArray(this.state.sites) ? {loading: true} : {refreshing : true})
+      },
+      async () => this.refresh(true));
   }
 
   public showMapSiteDetail = (site: Site) => {
     this.setState({
       visible: true,
-      siteSelected: site
+      selectedSite: site
     });
   };
 
@@ -262,9 +268,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, showMap, siteSelected, refreshing, sites, satelliteMap } = this.state;
-    const fabStyles = computeFabStyles();
-    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    const { loading, skip, count, showMap, selectedSite, refreshing, sites } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -272,54 +276,58 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('sidebar.sites')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
-        <View style={style.fabContainer}>
-          {showMap && (
-            <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
-              <Image
-                source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
-                style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
-              />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={fabStyles.fab}
-            onPress={() => this.setState({ showMap: ! showMap}, () => this.refresh(true)) }
-          >
-            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
-          </TouchableOpacity>
-        </View>
-        {loading ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
-          <View style={style.content}>
-            <View style={style.searchBar}>
-              <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        <View style={style.content}>
+          {this.renderFilters()}
+          {this.renderFabs()}
+          {selectedSite && this.buildModal(navigation, selectedSite, modalStyle)}
+          {loading ? <Spinner style={style.spinner} color="grey" /> : (
+            <View style={style.sitesContainer}>
+              {showMap ? this.renderMap() : (
+                <ItemsList<Site>
+                  skip={skip}
+                  count={count}
+                  onEndReached={this.onEndScroll}
+                  renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation}/>}
+                  data={sites}
+                  manualRefresh={this.manualRefresh}
+                  refreshing={refreshing}
+                  emptyTitle={I18n.t('sites.noSites')}
+                  navigation={navigation}
+                  limit={this.listLimit}
+                />
+              )}
             </View>
-            {showMap ? (
-              <View style={style.map}>
-                {this.renderMap()}
-                {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
-              </View>
-            ) : (
-              <ItemsList<Site>
-                skip={skip}
-                count={count}
-                onEndReached={this.onEndScroll}
-                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation}/>}
-                data={sites}
-                manualRefresh={this.manualRefresh}
-                refreshing={refreshing}
-                emptyTitle={I18n.t('sites.noSites')}
-                navigation={navigation}
-                limit={this.listLimit}
-              />
-            )}
-          </View>
-        )}
+          )}
+        </View>
       </Container>
     );
   }
 
+  private renderFabs() {
+    const style = computeStyleSheet();
+    const fabStyles = computeFabStyles();
+    const { showMap, satelliteMap } = this.state;
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    return (
+      <View style={style.fabContainer}>
+        {showMap && (
+          <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
+            <Image
+              source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
+              style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
+            />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          delayPressIn={0}
+          style={[fabStyles.fab, style.fab]}
+          onPress={() => this.setState({ showMap: !showMap, sites: []}, () => this.refresh()) }
+        >
+          <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   private renderMap() {
     const style = computeStyleSheet();
@@ -350,5 +358,23 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     )
   }
 
-
+  private renderFilters() {
+    const { showMap } = this.state;
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    const style = computeStyleSheet();
+    const fabStyles = computeFabStyles();
+    const commonColors = Utils.getCurrentCommonColor();
+    return (
+      <View style={[style.filtersContainer, showMap && style.mapFiltersContainer]}>
+        <SitesFilters
+          onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
+          ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
+        />
+        <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
+          <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }

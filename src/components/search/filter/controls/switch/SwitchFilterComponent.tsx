@@ -32,7 +32,7 @@ export default class SwitchFilterComponent<T> extends FilterControlComponent<T> 
     const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
-        <Text style={internalStyle.textFilter}>{label}</Text>
+        <Text numberOfLines={2} ellipsizeMode={'tail'} style={internalStyle.textFilter}>{label}</Text>
         <Switch trackColor={{ true: commonColors.primary, false: commonColors.disabledDark }} thumbColor={commonColors.disabled} style={internalStyle.switchFilter} value={!!value} onValueChange={this.onValueChanged} />
       </View>
     );

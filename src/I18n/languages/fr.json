@@ -79,8 +79,7 @@
     "defaultSettings": "Paramètres par défaut",
     "notApplicable": "N/A",
     "showMore": "Voir plus",
-    "showLess": "Voir moins",
-    "roaming": "Afficher les bornes en itinérance"
+    "showLess": "Voir moins"
   },
   "sidebar": {
     "home": "Home",
@@ -520,6 +519,8 @@
   },
   "filters": {
     "myUser": "Mon utilisateur",
-    "clearUser": "Supprimer"
+    "clearUser": "Supprimer",
+    "chargingStationsRoamingFilterLabel": "Afficher les bornes en itinérance",
+    "sitesRoamingFilterLabel": "Afficher les sites en itinérance"
   }
 }
