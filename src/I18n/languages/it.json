@@ -521,6 +521,7 @@
     "myUser": "My user",
     "clearUser": "Clear user",
     "chargingStationsRoamingFilterLabel": "Show roaming charging stations",
-    "sitesRoamingFilterLabel": "Show roaming sites"
+    "sitesRoamingFilterLabel": "Show roaming sites",
+    "siteAreasRoamingFilterLabel": "Show roaming site areas"
   }
 }

@@ -521,6 +521,7 @@
     "myUser": "Mon utilisateur",
     "clearUser": "Supprimer",
     "chargingStationsRoamingFilterLabel": "Afficher les bornes en itinérance",
-    "sitesRoamingFilterLabel": "Afficher les sites en itinérance"
+    "sitesRoamingFilterLabel": "Afficher les sites en itinérance",
+    "siteAreasRoamingFilterLabel": "Afficher les zones en itinérance"
   }
 }
