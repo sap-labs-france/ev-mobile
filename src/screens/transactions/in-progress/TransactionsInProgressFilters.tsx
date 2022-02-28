@@ -50,6 +50,7 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
             <SwitchFilterComponent<boolean>
               filterID={'issuer'}
               internalFilterID={GlobalFilters.ROAMING}
+              onFilterChanged={(id, value) => this.onFiltersChanged(null, {...filters, issuer: value}, false)}
               enabledValue={true}
               style={style.switchFilterControlComponentContainer}
               label={I18n.t('filters.transactionsRoamingFilterLabel')}
@@ -62,6 +63,7 @@ export default class TransactionsInProgressFilters extends ScreenFilters<Transac
           {this.securityProvider?.canListUsers() && (
             <UserFilterComponent
               filterID={'users'}
+              issuer={!filters.issuer}
               initialValue={filters.users}
               ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
             />

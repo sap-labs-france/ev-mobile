@@ -18,11 +18,13 @@ import Utils from '../../../../../utils/Utils';
 import { withBadge } from 'react-native-elements';
 import ListItem from '../../../../../types/ListItem';
 
-export interface Props extends FilterControlComponentProps<string> {}
+export interface Props extends FilterControlComponentProps<User[]> {
+  issuer?: boolean;
+}
 
 export default class UserFilterComponent extends FilterControlComponent<User[]> {
   public state: FilterControlComponentState<User[]>;
-  public props: FilterControlComponentProps<User[]>;
+  public props: Props;
   private userModalRef = React.createRef<ModalSelect<User>>();
   private currentUser: User;
 
@@ -51,7 +53,6 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
 
   public render = () => {
     const style = computeStyleSheet();
-    //const defaultItems = Utils.isEmptyArray(this.state.selectedUsers) ?
     return (
       <View style={style.container}>
         <View style={style.modalContainer}>
@@ -65,7 +66,7 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
             selectionMode={ItemSelectionMode.MULTI}
             openable={true}
           >
-            <Users navigation={null} />
+            <Users filters={{issuer: this.props.issuer}} navigation={null} />
           </ModalSelect>
         </View>
         <View style={style.buttonsContainer}>

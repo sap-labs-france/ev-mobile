@@ -1,10 +1,9 @@
 import { View } from 'native-base';
 import React from 'react';
 
-import ScreenFilters from '../../../components/search/filter/screen/ScreenFilters';
+import ScreenFilters, { ScreenFiltersProps } from '../../../components/search/filter/screen/ScreenFilters';
 import FilterModalContainerComponent
   from '../../../components/search/filter/containers/FilterModalContainerComponent';
-import User from '../../../types/User';
 import SwitchFilterComponent
   from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
 import { GlobalFilters } from '../../../types/Filter';
@@ -13,7 +12,6 @@ import computeStyleSheet from './UsersFiltersStyles';
 import SecuredStorage from '../../../utils/SecuredStorage';
 
 export interface UsersFiltersDef {
-  users?: User[];
   issuer?: boolean;
 }
 

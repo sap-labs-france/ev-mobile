@@ -65,6 +65,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
           }>
           {this.securityProvider?.isComponentOrganizationActive() && (
             <SwitchFilterComponent<boolean>
+              onFilterChanged={(id, value) => this.onFiltersChanged(null, {...filters, issuer: value}, false)}
               filterID={'issuer'}
               internalFilterID={GlobalFilters.ROAMING}
               enabledValue={true}
@@ -80,6 +81,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
             <View>
               {this.securityProvider?.canListUsers() && (
                 <UserFilterComponent
+                  issuer={!filters.issuer}
                   filterID={'users'}
                   initialValue={filters.users}
                   ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}

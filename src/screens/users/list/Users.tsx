@@ -16,7 +16,9 @@ import SelectableList, { SelectableProps, SelectableState } from '../../base-scr
 import computeListItemCommonStyles from '../../../components/list/ListItemCommonStyle';
 import UsersFilters, { UsersFiltersDef } from './UsersFilters';
 
-export interface Props extends SelectableProps<User> {}
+export interface Props extends SelectableProps<User> {
+  filters?: UsersFiltersDef;
+}
 
 export interface State extends SelectableState<Users> {
   users?: User[];
@@ -64,11 +66,12 @@ export default class Users extends SelectableList<User> {
 
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     if (this.state.filters) {
+      const { isModal, filters } = this.props;
       try {
         const params = {
           Search: searchText,
           UserID: this.userIDs?.join('|'),
-          Issuer: !this.state.filters.issuer
+          Issuer: isModal ?  filters?.issuer : !this.state.filters.issuer
         };
         const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
         // Get total number of records
@@ -180,7 +183,7 @@ export default class Users extends SelectableList<User> {
   }
 
   private onFiltersChanged(newFilters: UsersFiltersDef): void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+    this.setState({filters: newFilters, ...(!Utils.isEmptyArray(this.state.users) ? {refreshing: true} : {loading: true})}, () => this.refresh());
   }
 
   private renderFilters() {
@@ -194,7 +197,7 @@ export default class Users extends SelectableList<User> {
           ref={(usersFilters: UsersFilters) => this.setScreenFilters(usersFilters, false)}
         />
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        {this.screenFilters?.canOpenModal() && (
+        {this.screenFilters?.canOpenModal() && !this.props.isModal && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
             <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
