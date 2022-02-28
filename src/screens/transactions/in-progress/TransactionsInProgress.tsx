@@ -68,9 +68,11 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     if (this.state.filters) {
       try {
+        const { users, issuer } = this.state.filters;
         const params = {
-          UserID: this.state.filters?.users?.map(user => user.id).join('|'),
-          Search: searchText
+          UserID: users?.map(user => user.id).join('|'),
+          Search: searchText,
+          Issuer: !issuer
         };
         // Get the Transactions
         const transactions = await this.centralServerProvider.getTransactionsActive(params, { skip, limit }, ['-timestamp']);
