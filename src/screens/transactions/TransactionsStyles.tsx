@@ -13,10 +13,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      alignItems: 'center'
     },
     content: {
-      flex: 1
+      flex: 1,
+      width: '98%'
     },
     searchBar: {
       marginVertical: '10@s'
@@ -31,7 +33,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginVertical: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginHorizontal: '5@s'
+      width: '95%'
     },
     filterButton: {
       borderRadius: '8@s',

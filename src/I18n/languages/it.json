@@ -523,6 +523,7 @@
     "chargingStationsRoamingFilterLabel": "Show roaming charging stations",
     "sitesRoamingFilterLabel": "Show roaming sites",
     "siteAreasRoamingFilterLabel": "Show roaming site areas",
-    "transactionsRoamingFilterLabel": "Show roaming sessions"
+    "transactionsRoamingFilterLabel": "Show roaming sessions",
+    "usersRoamingFilterLabel": "Show roaming users"
   }
 }
