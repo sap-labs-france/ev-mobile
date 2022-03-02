@@ -1,7 +1,7 @@
 import { default as I18n } from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList, { ItemSelectionMode } from '../../../components/list/ItemsList';
@@ -14,6 +14,7 @@ import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UsersStyle';
 import SelectableList, { SelectableProps, SelectableState } from '../../base-screen/SelectableList';
 import computeListItemCommonStyles from '../../../components/list/ListItemCommonStyle';
+import UsersFilters, { UsersFiltersDef } from './UsersFilters';
 
 export interface Props extends SelectableProps<User> {}
 
@@ -23,6 +24,7 @@ export interface State extends SelectableState<Users> {
   limit?: number;
   refreshing?: boolean;
   loading?: boolean;
+  filters?: UsersFiltersDef;
 }
 
 export default class Users extends SelectableList<User> {
@@ -50,7 +52,8 @@ export default class Users extends SelectableList<User> {
       count: 0,
       refreshing: false,
       loading: true,
-      selectedItems: []
+      selectedItems: [],
+      filters: null
     };
   }
 
@@ -60,28 +63,31 @@ export default class Users extends SelectableList<User> {
   }
 
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
-    try {
-      const params = {
-        Search: searchText,
-        UserID: this.userIDs?.join('|')
-      };
-      const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
-      // Get total number of records
-      if (users?.count === -1) {
-        const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
-        users.count = usersNbrRecordsOnly?.count;
-      }
-      return users;
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request) {
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'users.userUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
+    if (this.state.filters) {
+      try {
+        const params = {
+          Search: searchText,
+          UserID: this.userIDs?.join('|'),
+          Issuer: !this.state.filters.issuer
+        };
+        const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
+        // Get total number of records
+        if (users?.count === -1) {
+          const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
+          users.count = usersNbrRecordsOnly?.count;
+        }
+        return users;
+      } catch (error) {
+        // Check if HTTP?
+        if (!error.request) {
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            'users.userUnexpectedError',
+            this.props.navigation,
+            this.refresh.bind(this)
+          );
+        }
       }
     }
     return null;
@@ -121,7 +127,7 @@ export default class Users extends SelectableList<User> {
         loading: false,
         refreshing: false,
         users: usersResult,
-        count: users.count
+        count: users?.count ?? 0
       });
     }
   }
@@ -134,7 +140,7 @@ export default class Users extends SelectableList<User> {
   public render(): React.ReactElement {
     const style = computeStyleSheet();
     const listItemCommonStyles = computeListItemCommonStyles();
-    const { users, count, skip, limit, refreshing, loading } = this.state;
+    const { users, count, skip, limit, refreshing, loading, filters } = this.state;
     const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
@@ -146,10 +152,8 @@ export default class Users extends SelectableList<User> {
           navigation={this.props.navigation}
           displayTenantLogo={false}
         />
-        <View style={style.searchBar}>
-          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
-        </View>
-        {loading ? (
+        {this.renderFilters()}
+        {(loading || !filters) ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
@@ -172,6 +176,30 @@ export default class Users extends SelectableList<User> {
           </View>
         )}
       </Container>
+    );
+  }
+
+  private onFiltersChanged(newFilters: UsersFiltersDef): void {
+    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+  }
+
+  private renderFilters() {
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    const style = computeStyleSheet();
+    const commonColors = Utils.getCurrentCommonColor();
+    return (
+      <View style={style.filtersContainer}>
+        <UsersFilters
+          onFilterChanged={(newFilters: UsersFiltersDef) => this.onFiltersChanged(newFilters)}
+          ref={(usersFilters: UsersFilters) => this.setScreenFilters(usersFilters, false)}
+        />
+        <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        {this.screenFilters?.canOpenModal() && (
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
+            <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          </TouchableOpacity>
+        )}
+      </View>
     );
   }
 }
