@@ -5,7 +5,7 @@ import I18nManager, {
   FormatNumberOptions,
   MetricCompactEnum,
   NumberFormatCompactStyleEnum,
-  NumberFormatNotationEnum
+  NumberFormatNotationEnum, NumberFormatStyleEnum
 } from '../src/I18n/I18nManager';
 
 test('computeMetricCompact', () => {
@@ -208,5 +208,31 @@ test('formatNumberWithCompacts MinDigits', () => {
   expect(formattedNumber?.value).toEqual('1,200000457');
   expect(formattedNumber?.compact).toEqual('millones');
 });
+
+test('formatNumberWithCompacts Currency', () => {
+  let formatNumberOptions = {
+    style: NumberFormatStyleEnum.CURRENCY,
+    maximumFractionDigits: 0
+  } as FormatNumberOptions
+  let formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
+  expect(formattedNumber.value).toEqual('1.200.000');
+
+  formatNumberOptions.currency = null;
+  formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
+  expect(formattedNumber.value).toEqual('1.200.000');
+})
+
+test('formatNumberWithCompacts Unit', () => {
+  let formatNumberOptions = {
+    style: NumberFormatStyleEnum.UNIT,
+    maximumFractionDigits: 0
+  } as FormatNumberOptions
+  let formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
+  expect(formattedNumber.value).toEqual('1.200.000');
+
+  formatNumberOptions.unit = null;
+  formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
+  expect(formattedNumber.value).toEqual('1.200.000');
+})
 
 jest.unmock('../src/utils/Utils')

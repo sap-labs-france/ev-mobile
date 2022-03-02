@@ -24,6 +24,7 @@ import ptJsonLanguage from './languages/pt.json';
 import DurationUnitFormat, { DurationUnitFormatOptions } from 'intl-unofficial-duration-unit-format';
 
 export interface FormatNumberOptions extends Intl.NumberFormatOptions {
+  [option: string] : any;
   compactThreshold?: number;
   compactStyle?: NumberFormatCompactStyleEnum;
 }
@@ -122,35 +123,58 @@ export default class I18nManager {
 
   public static formatNumberWithCompacts(value: number, options: FormatNumberOptions = {}, locale: string = i18n.locale): FormatNumberResult {
     options = {... options };
-    const isCompactForm =
-      options.notation === NumberFormatNotationEnum.COMPACT &&
-      (!options.compactThreshold || (options.compactThreshold && value > options.compactThreshold));
-    const isCurrency = options.style === NumberFormatStyleEnum.CURRENCY;
-    options.currency = options.currency || I18nManager.currency;
-    if(!options.currency) {
-      delete options.currency
-    }
-    const isUnit = options.unit && options.style === NumberFormatStyleEnum.UNIT;
-    const isPercent = options.style === NumberFormatStyleEnum.PERCENT;
 
-    if (!isCompactForm) {
+    // Check currency options
+    if (!options.currency) {
+      delete options.currency
+      delete options.currencySign
+      delete options.currencyDisplay
+      // Intl doc: If the style is "currency", currency option must be provided
+      if (options.style === NumberFormatStyleEnum.CURRENCY) {
+        delete options.style
+      }
+    }
+
+    // Check unit options
+    if (!options.unit) {
+      delete options.unit;
+      delete options.unitDisplay;
+      // Intl doc: If the style is "unit", unit option must be provided
+      if (options.style === NumberFormatStyleEnum.UNIT) {
+        delete options.style;
+      }
+    }
+
+    const isUnit = options.unit;
+    const isPercent = options.style === NumberFormatStyleEnum.PERCENT;
+    const isCurrency = options.currency;
+    const shouldCompact = !options.compactThreshold || (options.compactThreshold && value > options.compactThreshold);
+
+    if (!shouldCompact && options.notation === NumberFormatNotationEnum.COMPACT) {
       delete options.notation;
     }
-    // Format the given value with the given options
-    const parts = Intl.NumberFormat(locale, options).formatToParts(value);
 
-    // Compute the compact (prefix) if needed (Intl namespace does not supports metric compacts yet)
-    let compact = this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.COMPACT);
-    if (isCompactForm && options.compactStyle === NumberFormatCompactStyleEnum.METRIC) {
-      compact = this.computeMetricCompact(value);
+    // Delete all unset options
+    Object.keys(options).forEach((option) => options[option] ?? delete options[option]);
+
+    // Format the given value with the given options
+    try {
+      const parts = Intl.NumberFormat(locale, options).formatToParts(value);
+      // Compute the compact (prefix) if needed (Intl namespace does not supports metric compacts yet)
+      let compact = this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.COMPACT);
+      if (compact && options.compactStyle === NumberFormatCompactStyleEnum.METRIC) {
+        compact = this.computeMetricCompact(value);
+      }
+      return {
+        value: this.concatenateNumberFormatParts(parts),
+        ...({currency: isCurrency && this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.CURRENCY)}),
+        ...({unit: isUnit && this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.UNIT)}),
+        ...({compact}),
+        ...({percentSign: isPercent && this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.PERCENT_SIGN)})
+      };
+    } catch ( e ) {
+      return null;
     }
-    return {
-      value: this.concatenateNumberFormatParts(parts),
-      currency: isCurrency && this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.CURRENCY),
-      unit: isUnit && this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.UNIT),
-      compact: isCompactForm && compact,
-      percentSign: isPercent && this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.PERCENT_SIGN)
-    };
   }
 
   public static formatCurrency(value: number, currency?: string): string {
