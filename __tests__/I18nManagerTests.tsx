@@ -235,4 +235,17 @@ test('formatNumberWithCompacts Unit', () => {
   expect(formattedNumber.value).toEqual('1.200.000');
 })
 
+test('formatNumberWithCompacts NullOptions', () => {
+  let formatNumberOptions = {
+    style: NumberFormatStyleEnum.UNIT,
+    unit: null,
+    currency: 'EUR',
+    compactStyle: null,
+    currencySign: null,
+    maximumFractionDigits: null
+  } as FormatNumberOptions
+  let formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
+  expect(formattedNumber.value).toEqual('1.200.000');
+})
+
 jest.unmock('../src/utils/Utils')
