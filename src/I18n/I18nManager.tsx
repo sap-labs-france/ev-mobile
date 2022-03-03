@@ -166,10 +166,10 @@ export default class I18nManager {
       }
       return {
         value: this.concatenateNumberFormatParts(parts),
-        ...({currency: isCurrency && this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.CURRENCY)}),
-        ...({unit: isUnit && this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.UNIT)}),
-        ...({compact}),
-        ...({percentSign: isPercent && this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.PERCENT_SIGN)})
+        ...(isCurrency && {currency: this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.CURRENCY)}),
+        ...(isUnit && {unit: this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.UNIT)}),
+        ...(compact && {compact}),
+        ...(isPercent && {percentSign: this.getNumberFormatPartValue(parts, NumberFormatSymbolsEnum.PERCENT_SIGN)})
       };
     } catch ( e ) {
       return null;
