@@ -1216,12 +1216,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       if (userDefaultTagCar?.car) {
         userDefaultTagCar.car.user = selectedUser;
       }
-      this.setState({ 
-        selectedCar: userDefaultTagCar?.car, 
-        selectedTag: userDefaultTagCar?.tag, 
-        tagCarLoading: false,
-        userDefaultTagCar
-      });
+      this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
     } catch (error) {
       this.setState({ tagCarLoading: false });
     }
