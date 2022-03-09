@@ -776,12 +776,15 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getUserDefaultTagCar(userID: string): Promise<UserDefaultTagCar> {
+  public async getUserDefaultTagCar(userID: string, chargingStationID: string): Promise<UserDefaultTagCar> {
     this.debugMethod('getUserDefaultTagCar');
     const url = this.buildRestEndpointUrl(ServerRoute.REST_USER_DEFAULT_TAG_CAR, { id: userID });
     const res = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders(),
-      params: { UserID: userID }
+      params: { 
+        UserID: userID, // Should be removed - already part of the URL path
+        ChargingStationID: chargingStationID // This information will soon be mandatory server-side
+      }
     });
     return res?.data as UserDefaultTagCar;
   }

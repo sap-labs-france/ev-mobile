@@ -343,7 +343,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       userInactiveError = true;
     }
     // Get the default tag and car of the selected user (only to get errors codes)
-    const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser);
+    const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser, chargingStationID);
     // If error codes, disabled the button
     if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
       buttonDisabled = true;
@@ -998,9 +998,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  private async getUserDefaultTagAndCar(user: User): Promise<UserDefaultTagCar> {
+  private async getUserDefaultTagAndCar(user: User, chargingStationID: string): Promise<UserDefaultTagCar> {
     try {
-      return this.centralServerProvider?.getUserDefaultTagCar(user?.id as string);
+      return this.centralServerProvider?.getUserDefaultTagCar(user?.id as string, chargingStationID);
     } catch (error) {
       await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
@@ -1205,7 +1205,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private async loadSelectedUserDefaultTagAndCar(selectedUser: User): Promise<void> {
     this.setState({ tagCarLoading: true });
     try {
-      const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser);
+      const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser, this.state.chargingStation?.id);
       this.carModalRef.current?.resetInput();
       this.tagModalRef.current?.resetInput();
       // Temporary workaround to ensure that the default property is set (server-side changes are to be done)
@@ -1216,7 +1216,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       if (userDefaultTagCar?.car) {
         userDefaultTagCar.car.user = selectedUser;
       }
-      this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
+      this.setState({ 
+        selectedCar: userDefaultTagCar?.car, 
+        selectedTag: userDefaultTagCar?.tag, 
+        tagCarLoading: false,
+        userDefaultTagCar
+      });
     } catch (error) {
       this.setState({ tagCarLoading: false });
     }
