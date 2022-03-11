@@ -770,8 +770,8 @@ export default class Utils {
         if (key.startsWith('error')) {
           // Clear
           const clearError: any = {};
-          clearError[key] = null;
-          screen.setState(clearError);
+          clearError[key] = [];
+          screen.state =  {...screen.state , ...clearError};
         }
       }
     }
@@ -788,8 +788,9 @@ export default class Utils {
       formValid = false;
     }
     // Set
-    screen.setState(errorState);
+    screen.state = {...screen.state,  ...errorState};
     // Return
+    screen.setState(screen.state);
     return formValid;
   }
 

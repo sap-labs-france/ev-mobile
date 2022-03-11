@@ -9,10 +9,11 @@ import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import DialogModal, { DialogCommonProps } from '../DialogModal';
-import { Input } from 'react-native-elements';
+import { Button, Input } from 'react-native-elements';
 import computeStyleSheet from './AddTenantManuallyDialogStyle';
 import computeModalCommonStyle from '../ModalCommonStyle';
 import Message from '../../../utils/Message';
+import { TouchableOpacity } from 'react-native';
 
 export interface Props extends BaseProps, DialogCommonProps {
   tenants: TenantConnection[];
@@ -23,12 +24,19 @@ export interface Props extends BaseProps, DialogCommonProps {
 interface State {
   newTenantSubDomain?: string;
   newTenantName?: string;
-  tenantEndpointClouds: EndpointCloud[];
+  newEndpointName?: string;
+  newEndpointURL?: string;
   newTenantEndpointCloud?: EndpointCloud;
-  errorNewTenantName?: Record<string, unknown>[];
-  errorNewTenantSubDomain?: Record<string, unknown>[];
-  tenantNameWithSameSubdomain?: TenantConnection;
-  errorSubdomainAlreadyUsed: boolean;
+  errorNewTenantName?: string[];
+  errorNewTenantSubDomain?: string[];
+  errorNewEndpointName?: string[];
+  errorNewEndpointURL?: string[];
+  endpointWithSameName?: EndpointCloud;
+  errorEndpointNameAlreadyUsed: boolean;
+  showEndpointCreationForm: boolean;
+  loadingAddNewEndpoint: boolean;
+  userEndpoints?: EndpointCloud[];
+  staticEndpoints?: EndpointCloud[];
 }
 
 export enum TenantDialogMode {
@@ -39,7 +47,7 @@ export enum TenantDialogMode {
 export default class AddEditTenantDialog extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  public tenantEndpointClouds: EndpointCloud[];
+  public staticEndpoints: EndpointCloud[] = Configuration.getEndpoints();
   private tenant: TenantConnection;
 
   private formCreateTenantValidationDef = {
@@ -57,29 +65,49 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     }
   };
 
+  private formCreateEndpointValidationDef = {
+    newEndpointName: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryEndpointName')
+      }
+    },
+    newEndpointURL: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryEndpointURL')
+      }
+    }
+  };
+
   public constructor(props: Props) {
     super(props);
-    const tenantEndpointClouds: EndpointCloud[] = Configuration.getEndpoints();
     this.tenant = props.tenants?.[props.tenantIndex];
     // Set initial state
     this.state = {
       newTenantSubDomain: null,
       newTenantName: null,
-      tenantEndpointClouds,
       newTenantEndpointCloud: null,
-      errorSubdomainAlreadyUsed: false
-    };
+      showEndpointCreationForm: false,
+      userEndpoints: [],
+      loadingAddNewEndpoint: false,
+      errorEndpointNameAlreadyUsed: false,
+      errorNewEndpointName: [],
+      errorNewTenantSubDomain: []
+    }
   }
 
-  public componentDidMount() {
-    const { tenantEndpointClouds } = this.state;
+  public async componentDidMount() {
+    const userEndpoints = await SecuredStorage.getEndpoints() || [];
+    const allEndpoints = [...this.staticEndpoints, ...userEndpoints];
     // Set the endpoint of the tenant being edited otherwise default to the first endpoint in the list
     const newTenantEndpointCloud =
-      Configuration.getEndpoints()?.find((e) => e.endpoint === this.tenant?.endpoint) ?? tenantEndpointClouds?.[0];
+     allEndpoints.find((e) => e.endpoint === this.tenant?.endpoint) ?? allEndpoints?.[0];
     this.setState({
       newTenantSubDomain: this.tenant?.subdomain,
       newTenantName: this.tenant?.name,
-      newTenantEndpointCloud
+      newTenantEndpointCloud,
+      userEndpoints
     });
   }
 
@@ -119,7 +147,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
               {
                 text: I18n.t('general.back'),
                 buttonTextStyle: modalCommonStyle.outlinedButton,
-                buttonStyle: modalCommonStyle.outlinedButton,
+                buttonStyle: {...modalCommonStyle.outlinedButton, ...style.backButton},
                 action: () => back?.()
               }
             ]
@@ -142,14 +170,19 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
 
   private renderControls(style: any) {
     const {
-      tenantEndpointClouds,
+      loadingAddNewEndpoint,
       newTenantEndpointCloud,
-      tenantNameWithSameSubdomain,
-      errorSubdomainAlreadyUsed,
       newTenantName,
-      newTenantSubDomain
+      newTenantSubDomain,
+      showEndpointCreationForm,
+      newEndpointName,
+      newEndpointURL,
+      userEndpoints
     } = this.state;
     const commonColor = Utils.getCurrentCommonColor();
+    const modalCommonStyles = computeModalCommonStyle();
+    const allEndpoints = [...this.staticEndpoints, ...userEndpoints];
+    allEndpoints.sort((endpoint1, endpoint2) => endpoint1.name.toUpperCase() < endpoint2.name.toUpperCase() ? -1 : 1 );
     return (
       <View style={style.modalControlsContainer}>
         <Input
@@ -185,31 +218,117 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
         {/* TODO style arrow icon */}
         <Input
           label={I18n.t('authentication.tenantEndpoint')}
+          rightIcon={
+            <TouchableOpacity onPress={() => this.setState({showEndpointCreationForm: !this.state.showEndpointCreationForm})}>
+            <Icon style={style.addEndpointIcon} name={this.state.showEndpointCreationForm ? 'keyboard-arrow-up' : 'add'} type={'MaterialIcons'}  />
+            </TouchableOpacity>
+            }
+          rightIconContainerStyle={style.rightIconContainerStyle}
           labelStyle={[style.inputLabel, style.selectLabel]}
           containerStyle={style.inputContainer}
           inputStyle={style.inputText}
-          inputContainerStyle={style.inputInnerContainer}
+          inputContainerStyle={style.inputInnerContainerNoBorder}
           InputComponent={() => (
             <SelectDropdown
-              data={tenantEndpointClouds}
+              data={allEndpoints}
               defaultButtonText={newTenantEndpointCloud?.name}
               buttonTextAfterSelection={(selectedItem: EndpointCloud) => selectedItem.name}
-              rowTextForSelection={(item: EndpointCloud) => item.name}
+              renderCustomizedRowChild={(item: EndpointCloud) => (
+                <View style={style.selectDropdownRowContainer}>
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.selectDropdownRowText}>{item.name}</Text>
+                  {userEndpoints.map(userEndpoint => userEndpoint.name).includes(item.name) && (
+                    <TouchableOpacity style={style.selectDropdownRowIconContainer} onPress={() => this.deleteEndpoint(item.name)}>
+                      <Icon style={style.selectDropdownRowIcon} name={'close'} type={'EvilIcons'} />
+                    </TouchableOpacity>
+                  )}
+                </View>
+              )}
               buttonStyle={style.selectField}
               buttonTextStyle={style.selectFieldText}
               dropdownStyle={style.selectDropdown}
               rowStyle={style.selectDropdownRow}
               rowTextStyle={style.selectDropdownRowText}
-              renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
+              renderDropdownIcon={() => <Icon style={style.selectDropdownIcon} type={'MaterialIcons'} name={'arrow-drop-down'} />}
               onSelect={(endpointCloud: EndpointCloud) => this.setState({ newTenantEndpointCloud: endpointCloud })}
             />
           )}
         />
-        {errorSubdomainAlreadyUsed && (
-          <Text style={style.inputError}>{I18n.t('general.subdomainAlreadyUsed', { tenantName: tenantNameWithSameSubdomain.name })}</Text>
+        {showEndpointCreationForm && (
+          <View style={style.endpointCreationFormContainer}>
+            <Input
+              defaultValue={newEndpointName}
+              label={`${I18n.t('authentication.endpointName')}*`}
+              placeholder={I18n.t('authentication.endpointName')}
+              placeholderTextColor={commonColor.placeholderTextColor}
+              errorMessage={this.state.errorNewEndpointName?.join(' ')}
+              errorStyle={style.inputError}
+              labelStyle={style.endpointCreationFormInputLabel}
+              containerStyle={style.inputContainer}
+              inputContainerStyle={style.inputInnerContainer}
+              inputStyle={style.inputText}
+              onChangeText={(value: string) => this.setState({newEndpointName: value})}
+            />
+            <Input
+              defaultValue={newEndpointURL}
+              label={`${I18n.t('authentication.endpointURL')}*`}
+              placeholder={I18n.t('authentication.endpointURL')}
+              placeholderTextColor={commonColor.placeholderTextColor}
+              errorMessage={this.state.errorNewEndpointURL?.join(' ')}
+              errorStyle={style.inputError}
+              labelStyle={style.endpointCreationFormInputLabel}
+              containerStyle={style.inputContainer}
+              inputContainerStyle={style.inputInnerContainer}
+              inputStyle={style.inputText}
+              onChangeText={(value: string) => this.setState({newEndpointURL: value})}
+            />
+            <Button
+              buttonStyle={modalCommonStyles.primaryButton}
+              title={I18n.t('authentication.addEndpoint').toUpperCase()}
+              loading={loadingAddNewEndpoint}
+              onPress={() => this.addEndpoint(newEndpointName, newEndpointURL)}
+            />
+          </View>
         )}
       </View>
     );
+  }
+
+  private async deleteEndpoint(endpointName: string): Promise<void> {
+    let { userEndpoints, newTenantEndpointCloud } = this.state;
+    userEndpoints = userEndpoints.filter((endpoint) => endpoint.name !== endpointName);
+    // Handle deletion of the currently selected endpoint
+    if (endpointName === newTenantEndpointCloud.name) {
+      const allEndpoints = [...userEndpoints, ...this.staticEndpoints];
+      allEndpoints.sort((endpoint1, endpoint2) => endpoint1.name.toUpperCase() < endpoint2.name.toUpperCase() ? -1 : 1 );
+      newTenantEndpointCloud = allEndpoints[0];
+    }
+    await SecuredStorage.saveEndpoints(userEndpoints);
+    this.setState({userEndpoints, newTenantEndpointCloud});
+  }
+
+  private addEndpoint(newEndpointName: string, newEndpointURL: string): void {
+    this.setState({loadingAddNewEndpoint: true}, async () => {
+      const { userEndpoints } = this.state;
+      let isFormValid = Utils.validateInput(this, this.formCreateEndpointValidationDef);
+      const allEndpoints = [...userEndpoints, ...this.staticEndpoints];
+      const foundEndpoint = allEndpoints.find((endpoint) => endpoint.name === newEndpointName);
+      if ( foundEndpoint ) {
+        isFormValid = false;
+        const { errorNewEndpointName } = this.state;
+        if (Utils.isEmptyArray(errorNewEndpointName)) {
+          errorNewEndpointName.push(I18n.t('general.endpointAlreadyExist'));
+        }
+        this.setState({ endpointWithSameName: foundEndpoint, errorEndpointNameAlreadyUsed: true, errorNewEndpointName });
+      }
+      if ( isFormValid ) {
+        const newEndpoint = { name: newEndpointName, endpoint: newEndpointURL } as EndpointCloud;
+        userEndpoints.push(newEndpoint);
+        await SecuredStorage.saveEndpoints(userEndpoints);
+        Message.showSuccess(I18n.t('general.createEndpointSuccess', { endpointName: newEndpointName }));
+        this.setState({ userEndpoints });
+      }
+      this.setState({loadingAddNewEndpoint: false})
+    })
   }
 
   private async editTenant(newSubdomain: string, newName: string, newEndpointCloud: EndpointCloud) {
@@ -219,7 +338,9 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
       const foundTenant = tenants.find((tenantConnection) => tenantConnection.subdomain === newSubdomain);
       if (foundTenant) {
         formIsValid = false;
-        this.setState({ tenantNameWithSameSubdomain: foundTenant, errorSubdomainAlreadyUsed: true });
+        const { errorNewTenantSubDomain } = this.state;
+        errorNewTenantSubDomain.push(`${I18n.t('general.subdomainAlreadyUsed', { tenantName: foundTenant.name })}`);
+        this.setState({ errorNewTenantSubDomain });
       }
     }
     if (formIsValid) {
@@ -242,8 +363,10 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain);
     // Already exists
     if (foundTenant) {
+      const { errorNewTenantSubDomain } = this.state;
+      errorNewTenantSubDomain.push(`${I18n.t('general.subdomainAlreadyUsed', { tenantName: foundTenant.name })}`);
       formIsValid = false;
-      this.setState({ tenantNameWithSameSubdomain: foundTenant, errorSubdomainAlreadyUsed: true });
+      this.setState({ errorNewTenantSubDomain });
     }
     const newTenant: TenantConnection = {
       subdomain,
