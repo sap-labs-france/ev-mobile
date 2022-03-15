@@ -32,7 +32,7 @@ interface State {
   errorNewEndpointName?: string[];
   errorNewEndpointURL?: string[];
   endpointWithSameName?: EndpointCloud;
-  errorEndpointNameAlreadyUsed: boolean;
+  endpointWithSameURL?: EndpointCloud;
   showEndpointCreationForm: boolean;
   loadingAddNewEndpoint: boolean;
   userEndpoints?: EndpointCloud[];
@@ -91,8 +91,8 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
       showEndpointCreationForm: false,
       userEndpoints: [],
       loadingAddNewEndpoint: false,
-      errorEndpointNameAlreadyUsed: false,
       errorNewEndpointName: [],
+      errorNewEndpointURL: [],
       errorNewTenantSubDomain: []
     }
   }
@@ -102,7 +102,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     const allEndpoints = [...this.staticEndpoints, ...userEndpoints];
     // Set the endpoint of the tenant being edited otherwise default to the first endpoint in the list
     const newTenantEndpointCloud =
-     allEndpoints.find((e) => e.endpoint === this.tenant?.endpoint) ?? allEndpoints?.[0];
+     allEndpoints.find((e) => e.name === this.tenant?.endpoint?.name) ?? allEndpoints?.[0];
     this.setState({
       newTenantSubDomain: this.tenant?.subdomain,
       newTenantName: this.tenant?.name,
@@ -218,6 +218,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
         {/* TODO style arrow icon */}
         <Input
           label={I18n.t('authentication.tenantEndpoint')}
+          autoCorrect={false}
           rightIcon={
             <TouchableOpacity onPress={() => this.setState({showEndpointCreationForm: !this.state.showEndpointCreationForm})}>
             <Icon style={style.addEndpointIcon} name={this.state.showEndpointCreationForm ? 'keyboard-arrow-up' : 'add'} type={'MaterialIcons'}  />
@@ -270,6 +271,8 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
             />
             <Input
               defaultValue={newEndpointURL}
+              autoCapitalize={'none'}
+              autoCorrect={false}
               label={`${I18n.t('authentication.endpointURL')}*`}
               placeholder={I18n.t('authentication.endpointURL')}
               placeholderTextColor={commonColor.placeholderTextColor}
@@ -303,7 +306,9 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
       newTenantEndpointCloud = allEndpoints[0];
     }
     await SecuredStorage.saveEndpoints(userEndpoints);
-    this.setState({userEndpoints, newTenantEndpointCloud});
+    this.setState({userEndpoints, newTenantEndpointCloud}, () => {
+      Message.showSuccess(I18n.t('general.deleteEndpointSuccess', { endpointName: endpointName }));
+    });
   }
 
   private addEndpoint(newEndpointName: string, newEndpointURL: string): void {
@@ -311,21 +316,27 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
       const { userEndpoints } = this.state;
       let isFormValid = Utils.validateInput(this, this.formCreateEndpointValidationDef);
       const allEndpoints = [...userEndpoints, ...this.staticEndpoints];
-      const foundEndpoint = allEndpoints.find((endpoint) => endpoint.name === newEndpointName);
-      if ( foundEndpoint ) {
+      const endpointWithSameName = allEndpoints.find((endpoint) => endpoint.name === newEndpointName);
+      const endpointWithSameURL = allEndpoints.find((endpoint) => endpoint.endpoint === newEndpointURL);
+      if ( endpointWithSameName ) {
         isFormValid = false;
         const { errorNewEndpointName } = this.state;
-        if (Utils.isEmptyArray(errorNewEndpointName)) {
-          errorNewEndpointName.push(I18n.t('general.endpointAlreadyExist'));
-        }
-        this.setState({ endpointWithSameName: foundEndpoint, errorEndpointNameAlreadyUsed: true, errorNewEndpointName });
+        errorNewEndpointName.push(I18n.t('general.endpointNameAlreadyExist'));
+        this.setState({ endpointWithSameName, errorNewEndpointName });
+      }
+      if ( endpointWithSameURL ) {
+        isFormValid = false;
+        const { errorNewEndpointURL } = this.state;
+        errorNewEndpointURL.push(I18n.t('general.endpointURLAlreadyExist', {endpointName: endpointWithSameURL.name}));
+        this.setState({ endpointWithSameURL, errorNewEndpointURL });
       }
       if ( isFormValid ) {
         const newEndpoint = { name: newEndpointName, endpoint: newEndpointURL } as EndpointCloud;
         userEndpoints.push(newEndpoint);
         await SecuredStorage.saveEndpoints(userEndpoints);
-        Message.showSuccess(I18n.t('general.createEndpointSuccess', { endpointName: newEndpointName }));
-        this.setState({ userEndpoints });
+        this.setState({ userEndpoints }, () => {
+          Message.showSuccess(I18n.t('general.createEndpointSuccess', { endpointName: newEndpointName }));
+        });
       }
       this.setState({loadingAddNewEndpoint: false})
     })
@@ -347,7 +358,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
       const editedTenant: TenantConnection = {
         subdomain: newSubdomain,
         name: newName,
-        endpoint: newEndpointCloud?.endpoint
+        endpoint: newEndpointCloud
       };
       tenants[tenantIndex] = editedTenant;
       await SecuredStorage.saveTenants(tenants);
@@ -371,7 +382,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     const newTenant: TenantConnection = {
       subdomain,
       name,
-      endpoint: endpointCloud?.endpoint
+      endpoint: endpointCloud
     };
     if (formIsValid) {
       // Save

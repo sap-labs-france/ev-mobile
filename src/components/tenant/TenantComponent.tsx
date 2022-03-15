@@ -6,7 +6,6 @@ import Utils from '../../utils/Utils';
 import computeStyleSheet from './TenantComponentStyle';
 import { TenantConnection } from '../../types/Tenant';
 import BaseProps from '../../types/BaseProps';
-import Configuration from '../../config/Configuration';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 
 interface State {}
@@ -23,7 +22,7 @@ export default class TenantComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
     const { tenant } = this.props;
-    const tenantEndpointName = Configuration.getEndpoints().find((e) => e.endpoint === tenant?.endpoint)?.name;
+    const tenantEndpointName = tenant?.endpoint?.name;
     return (
       <TouchableOpacity
         style={[listItemCommonStyle.container, style.container]}

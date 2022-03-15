@@ -31,11 +31,11 @@ export interface TenantComponentContent {
 export interface TenantConnection {
   subdomain: string;
   name: string;
-  endpoint: string;
+  endpoint: EndpointCloud;
 }
 
 export interface EndpointCloud {
-  id: string;
+  id?: string;
   name: string;
   endpoint: string;
 }

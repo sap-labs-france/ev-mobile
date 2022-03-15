@@ -38,10 +38,13 @@ import Type3C from '../../assets/connectorType/type3c.svg';
 import NoConnector from '../../assets/connectorType/no-connector.svg';
 import React from 'react';
 import { scale } from 'react-native-size-matters';
+import SecuredStorage from './SecuredStorage';
 
 export default class Utils {
-  public static getEndpointCloud(): EndpointCloud[] {
-    return Configuration.ENDPOINT_CLOUDS;
+  public static async getEndpointClouds(): Promise<EndpointCloud[]> {
+    const staticEndpoints =  Configuration.ENDPOINT_CLOUDS;
+    const userEndpoints = await SecuredStorage.getEndpoints() ?? [];
+    return [...staticEndpoints, ...userEndpoints];
   }
 
   public static objectHasProperty(object: any, key: string): boolean {

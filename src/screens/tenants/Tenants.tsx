@@ -15,7 +15,6 @@ import AddEditTenantDialog, { TenantDialogMode } from '../../components/modal/te
 import CreateTenantQrCode from './TenantQrCode';
 import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
-import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
 import TenantComponent from '../../components/tenant/TenantComponent';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 
@@ -76,7 +75,6 @@ export default class Tenants extends BaseScreen<Props, State> {
       tenantToBeEditedIndex
     } = this.state;
     const style = computeTenantStyleSheet();
-    const listItemCommonStyle = computeListItemCommonStyle();
     const fabStyles = computeFabStyles();
     return (
       <View style={{ flex: 1 }}>
@@ -116,7 +114,7 @@ export default class Tenants extends BaseScreen<Props, State> {
             <View style={style.listContainer}>
               <FlatList
                 data={tenants}
-                keyExtractor={(item) => item.subdomain}
+                keyExtractor={(item) => `${item.subdomain}${item.endpoint?.name}`}
                 renderItem={({ item, index }) => (
                   <Swipeable
                     overshootRight={false}

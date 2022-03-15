@@ -85,7 +85,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     endpointCreationFormContainer: {
       backgroundColor: commonColor.selectDropdownBackgroundColor,
       padding: '10@s',
-      width: '100%'
+      width: '95%'
     },
     endpointCreationFormInputLabel: {
       fontSize: '13@s',
