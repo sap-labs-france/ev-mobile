@@ -339,7 +339,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
         });
       }
       this.setState({loadingAddNewEndpoint: false})
-    })
+    });
   }
 
   private async editTenant(newSubdomain: string, newName: string, newEndpointCloud: EndpointCloud) {

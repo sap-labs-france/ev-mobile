@@ -3,7 +3,7 @@ import { Icon, View } from 'native-base';
 import React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { TenantConnection } from '../../types/Tenant';
+import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
@@ -49,10 +49,9 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
-    const tenants = await this.centralServerProvider.getTenants();
+    await this.refreshTenants();
     const showAddTenantWithQRCode = Utils.getParamFromNavigation(this.props.route, 'openQRCode', this.state.showAddTenantWithQRCode);
     this.setState({
-      tenants,
       showAddTenantWithQRCode
     });
   }
@@ -63,6 +62,18 @@ export default class Tenants extends BaseScreen<Props, State> {
   ) => {
     super.setState(state, callback);
   };
+
+  private async refreshTenants(): Promise<void> {
+    const tenants = await SecuredStorage.getTenants();
+    // Check tenants endpoints exist and set them to empty object if not
+    const allEndpoints = await Utils.getEndpointClouds();
+    const endpointNames = allEndpoints.map(endpoint => endpoint.name);
+    tenants.forEach(tenant => {
+      if (!endpointNames.includes(tenant.endpoint?.name)) {
+        tenant.endpoint = {} as EndpointCloud;
+      }});
+    this.setState({tenants});
+  }
 
   public render() {
     const navigation = this.props.navigation;
@@ -232,13 +243,12 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   private async addEditTenantDialogClosed(newTenant?: TenantConnection): Promise<void> {
     // Always close pop-up
-    const newTenants = await this.centralServerProvider.getTenants();
+    await this.refreshTenants();
     this.setState({
       showAddTenantWithQRCode: false,
       showAddTenantManuallyDialog: false,
       tenantToBeEditedIndex: null,
       showNewTenantAddedDialog: !!newTenant,
-      tenants: newTenants,
       newTenant
     });
   }

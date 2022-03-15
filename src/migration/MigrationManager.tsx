@@ -4,11 +4,10 @@ import Configuration from '../config/Configuration';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Message from '../utils/Message';
 import SecuredStorage from '../utils/SecuredStorage';
-import Utils from '../utils/Utils';
 
 export default class MigrationManager {
   private static instance: MigrationManager;
-  private currentMigrationVersion = '1.41';
+  private currentMigrationVersion = '2.0.21';
   private centralServerProvider: CentralServerProvider;
 
   // eslint-disable-next-line no-useless-constructor
@@ -25,13 +24,13 @@ export default class MigrationManager {
     this.centralServerProvider = centralServerProvider;
   }
 
-  public migrate = async () => {
+  public async migrate ()  {
     const lastMigrationVersion = await SecuredStorage.getLastMigrationVersion();
     // Check
     if (lastMigrationVersion !== this.currentMigrationVersion) {
       try {
         // Migrate Tenant endpoints
-        await this.removeUnusedTenants();
+        await this.refactorTenants();
         // Save
         await SecuredStorage.setLastMigrationVersion(this.currentMigrationVersion);
       } catch (error) {
@@ -41,7 +40,22 @@ export default class MigrationManager {
     }
   };
 
-  private async removeUnusedTenants() {
+  private async refactorTenants(): Promise<void> {
+    const tenants = await SecuredStorage.getTenants();
+    tenants.forEach(tenant => {
+      const tenantEndpoint = tenant?.endpoint;
+      // Only search among static endpoints because custom endpoints are new
+      const endpoints = Configuration.getEndpoints();
+      const endpoint = endpoints.find(e => e?.endpoint === tenantEndpoint as unknown as string);
+      tenant.endpoint = {
+        name: endpoint?.name,
+        endpoint: endpoint?.endpoint
+      }
+    });
+    await SecuredStorage.saveTenants(tenants);
+  }
+
+/*  private async removeUnusedTenants() {
     // Get tenants
     const tenants = await this.centralServerProvider.getTenants();
     if (!Utils.isEmptyArray(tenants)) {
@@ -56,5 +70,5 @@ export default class MigrationManager {
       }
     }
     await SecuredStorage.saveTenants(tenants);
-  }
+  }*/
 }
