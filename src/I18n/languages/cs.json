@@ -175,6 +175,7 @@
     "addEndpoint": "Add endpoint",
     "endpointName": "Endpoint Name",
     "endpointURL": "Endpoint URL",
+    "noEndpoint": "No endpoint",
     "phone": "Telefon",
     "mandatoryPhone": "Telefonní číslo je povinné",
     "mandatoryErrorTitle": "Záhlaví je povinné",

@@ -7,6 +7,7 @@ import computeStyleSheet from './TenantComponentStyle';
 import { TenantConnection } from '../../types/Tenant';
 import BaseProps from '../../types/BaseProps';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
+import I18n from 'i18n-js';
 
 interface State {}
 
@@ -26,6 +27,7 @@ export default class TenantComponent extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={[listItemCommonStyle.container, style.container]}
+        disabled={!tenantEndpointName}
         onPress={() => {
           this.props.navigation.dispatch(
             StackActions.replace('AuthNavigator', {
@@ -41,7 +43,11 @@ export default class TenantComponent extends React.Component<Props, State> {
           <Text style={[style.text, style.tenantName]}>
             {tenant?.name} ({tenant?.subdomain})
           </Text>
-          <Text style={style.text}>{tenantEndpointName}</Text>
+          {tenantEndpointName ? (
+            <Text style={style.text}>{tenantEndpointName}</Text>
+          ) : (
+            <Text style={[style.text, style.errorText]}>{I18n.t('authentication.noEndpoint')}</Text>
+          )}
         </View>
       </TouchableOpacity>
     );

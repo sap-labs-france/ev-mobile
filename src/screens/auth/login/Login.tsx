@@ -168,7 +168,7 @@ export default class Login extends BaseScreen<Props, State> {
     if (tenantSubDomain) {
       // Get the current Tenant
       const tenant = await this.centralServerProvider.getTenant(tenantSubDomain.toString());
-      if (!tenant) {
+      if (!tenant || !tenant?.endpoint?.name) {
         // Refresh
         this.tenants = await this.centralServerProvider.getTenants();
         this.setState({

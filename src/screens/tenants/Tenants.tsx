@@ -49,10 +49,11 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
-    await this.refreshTenants();
+    const tenants = await this.refreshTenants();
     const showAddTenantWithQRCode = Utils.getParamFromNavigation(this.props.route, 'openQRCode', this.state.showAddTenantWithQRCode);
     this.setState({
-      showAddTenantWithQRCode
+      showAddTenantWithQRCode,
+      tenants
     });
   }
 
@@ -63,7 +64,7 @@ export default class Tenants extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  private async refreshTenants(): Promise<void> {
+  private async refreshTenants(): Promise<TenantConnection[]> {
     const tenants = await SecuredStorage.getTenants();
     // Check tenants endpoints exist and set them to empty object if not
     const allEndpoints = await Utils.getEndpointClouds();
@@ -72,7 +73,8 @@ export default class Tenants extends BaseScreen<Props, State> {
       if (!endpointNames.includes(tenant.endpoint?.name)) {
         tenant.endpoint = {} as EndpointCloud;
       }});
-    this.setState({tenants});
+    await SecuredStorage.saveTenants(tenants);
+    return tenants;
   }
 
   public render() {
@@ -243,13 +245,14 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   private async addEditTenantDialogClosed(newTenant?: TenantConnection): Promise<void> {
     // Always close pop-up
-    await this.refreshTenants();
+    const tenants = await this.refreshTenants();
     this.setState({
       showAddTenantWithQRCode: false,
       showAddTenantManuallyDialog: false,
       tenantToBeEditedIndex: null,
       showNewTenantAddedDialog: !!newTenant,
-      newTenant
+      newTenant,
+      tenants
     });
   }
 

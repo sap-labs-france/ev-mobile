@@ -175,6 +175,7 @@
     "addEndpoint": "Add endpoint",
     "endpointName": "Endpoint Name",
     "endpointURL": "Endpoint URL",
+    "noEndpoint": "No endpoint",
     "phone": "Telefonnummer",
     "mandatoryPhone": "Die Telefonnummer ist notwendig",
     "mandatoryErrorTitle": "Der Titel ist notwendig",
