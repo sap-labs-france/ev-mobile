@@ -4,6 +4,7 @@ import Configuration from '../config/Configuration';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Message from '../utils/Message';
 import SecuredStorage from '../utils/SecuredStorage';
+import { TenantConnection } from '../types/Tenant';
 
 export default class MigrationManager {
   private static instance: MigrationManager;
@@ -30,7 +31,9 @@ export default class MigrationManager {
     if (lastMigrationVersion !== this.currentMigrationVersion) {
       try {
         // Migrate Tenant endpoints
-        await this.refactorTenants();
+        let tenants = await SecuredStorage.getTenants();
+        tenants = await this.refactorTenants(tenants);
+        await SecuredStorage.saveTenants(tenants);
         // Save
         await SecuredStorage.setLastMigrationVersion(this.currentMigrationVersion);
       } catch (error) {
@@ -40,8 +43,7 @@ export default class MigrationManager {
     }
   };
 
-  private async refactorTenants(): Promise<void> {
-    const tenants = await SecuredStorage.getTenants();
+  public async refactorTenants(tenants: any[]): Promise<TenantConnection[]> {
     tenants.forEach(tenant => {
       const tenantEndpoint = tenant?.endpoint;
       // Only search among static endpoints because custom endpoints are new
@@ -52,7 +54,7 @@ export default class MigrationManager {
         endpoint: endpoint?.endpoint
       }
     });
-    await SecuredStorage.saveTenants(tenants);
+    return tenants
   }
 
 /*  private async removeUnusedTenants() {
