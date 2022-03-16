@@ -42,7 +42,7 @@ import SecuredStorage from './SecuredStorage';
 
 export default class Utils {
   public static async getEndpointClouds(): Promise<EndpointCloud[]> {
-    const staticEndpoints =  Configuration.ENDPOINT_CLOUDS;
+    const staticEndpoints =  Configuration.getEndpoints();
     const userEndpoints = await SecuredStorage.getEndpoints() ?? [];
     return [...staticEndpoints, ...userEndpoints];
   }
