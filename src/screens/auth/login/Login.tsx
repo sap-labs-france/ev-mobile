@@ -142,8 +142,8 @@ export default class Login extends BaseScreen<Props, State> {
         email,
         password,
         tenantLogo,
-        tenantName: tenant ? tenant.name : I18n.t('authentication.tenant'),
-        tenantSubDomain: tenant ? tenant.subdomain : null,
+        tenantName: tenant?.endpoint?.name ? tenant.name : I18n.t('authentication.tenant'),
+        tenantSubDomain: tenant?.endpoint?.name ? tenant.subdomain : null,
         initialLoading: false
       },
       async () => this.checkAutoLogin(tenant, email, password)
