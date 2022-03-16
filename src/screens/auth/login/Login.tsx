@@ -276,35 +276,6 @@ export default class Login extends BaseScreen<Props, State> {
     this.props.navigation.navigate('AppDrawerNavigator', { screen: 'ChargingStationsNavigator', key: `${Utils.randomNumber()}` });
   }
 
-  public setTenantWithIndex = async (buttonIndex: number) => {
-    // Provided?
-    if (buttonIndex !== undefined && this.tenants[buttonIndex]) {
-      const tenant = this.tenants[buttonIndex];
-      const tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
-      // Get stored data
-      const credentials = await SecuredStorage.getUserCredentials(this.tenants[buttonIndex].subdomain);
-      if (credentials) {
-        // Set Tenant
-        this.setState({
-          email: credentials.email,
-          password: credentials.password,
-          tenantSubDomain: tenant?.subdomain,
-          tenantName: tenant?.name,
-          tenantLogo
-        });
-      } else {
-        // Set Tenant
-        this.setState({
-          email: null,
-          password: null,
-          tenantSubDomain: tenant?.subdomain,
-          tenantName: tenant?.name,
-          tenantLogo
-        });
-      }
-    }
-  };
-
   public newUser = () => {
     const navigation = this.props.navigation;
     // Tenant selected?
@@ -335,16 +306,6 @@ export default class Login extends BaseScreen<Props, State> {
       Message.showError(I18n.t('authentication.mustSelectTenant'));
     }
   };
-
-  public async selectTenant(searchTenant: TenantConnection) {
-    if (searchTenant) {
-      // Search index
-      const index = this.tenants.findIndex((tenant) => tenant.subdomain === searchTenant.subdomain);
-      if (index !== -1) {
-        await this.setTenantWithIndex(index);
-      }
-    }
-  }
 
   public render() {
     const style = computeStyleSheet();
