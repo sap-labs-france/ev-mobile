@@ -31,7 +31,7 @@ export default class MigrationManager {
     if (lastMigrationVersion !== this.currentMigrationVersion) {
       try {
         // Migrate Tenant endpoints
-        let tenants = await SecuredStorage.getTenants();
+        let tenants = await SecuredStorage.getTenants() || [];
         tenants = await this.refactorTenants(tenants);
         await SecuredStorage.saveTenants(tenants);
         // Save
@@ -49,9 +49,11 @@ export default class MigrationManager {
       // Only search among static endpoints because custom endpoints are new
       const endpoints = Configuration.getEndpoints();
       const endpoint = endpoints.find(e => e?.endpoint === tenantEndpoint as unknown as string);
-      tenant.endpoint = {
-        name: endpoint?.name,
-        endpoint: endpoint?.endpoint
+      if (!tenant.endpoint?.name) {
+        tenant.endpoint = {
+          name: endpoint?.name,
+          endpoint: endpoint?.endpoint
+        }
       }
     });
     return tenants

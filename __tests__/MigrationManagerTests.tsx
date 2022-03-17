@@ -18,16 +18,23 @@ test('refactorTenants', async () => {
       name: 'Tenant1',
       subdomain: 'slf',
       endpoint: 'newendpoint'
+    },
+    {
+      name: 'Tenant3',
+      subdomain: 'chargex',
+      endpoint: {
+        name: 'QA',
+        endpoint: 'http://...'
+      }
     }
   ]
   const migrationManager = MigrationManager.getInstance()
   const refactoredTenants = await migrationManager.refactorTenants(tenants);
-  expect(refactoredTenants.length).toEqual(3);
-  for (let i = 0; i < 3; i++) {
+  expect(refactoredTenants.length).toEqual(4);
+  for (let i = 0; i < 4; i++) {
     expect(refactoredTenants[i].name === tenants[i].name);
     expect(refactoredTenants[i].subdomain === tenants[i].subdomain);
   }
-  console.log(Configuration.getEndpoints()[0].name);
   const tenant1 = refactoredTenants[0];
   expect(tenant1.endpoint.name).toEqual('Amazon Web Service');
   expect(tenant1.endpoint.endpoint).toEqual(Configuration.AWS_REST_ENDPOINT_PROD);
@@ -37,5 +44,8 @@ test('refactorTenants', async () => {
   const tenant3 = refactoredTenants[2];
   expect(tenant3.endpoint.name).toEqual(undefined);
   expect(tenant3.endpoint.endpoint).toEqual(undefined);
+  const tenant4 = refactoredTenants[3];
+  expect(tenant4.endpoint.name).toEqual('QA');
+  expect(tenant4.endpoint.endpoint).toEqual('http://...');
 });
 
