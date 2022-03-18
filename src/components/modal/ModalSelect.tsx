@@ -96,7 +96,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           <SafeAreaView style={style.modalContainer}>
             <View style={style.modalHeader}>
               <TouchableOpacity onPress={() => this.setState({ isVisible: false })}>
-                <Icon style={style.closeIcon} type="Feather" name={'x'} />
+                <Icon style={style.closeIcon} type="EvilIcons" name={'close'} />
               </TouchableOpacity>
             </View>
             <View style={style.listContainer}>

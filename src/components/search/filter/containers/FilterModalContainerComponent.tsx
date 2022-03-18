@@ -87,7 +87,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
           <View style={style.modalContent}>
             <View style={style.header}>
               <Text style={style.title}>{I18n.t('general.filters')}</Text>
-              <Icon onPress={() => this.setState({visible: false})} name={'x'} type={'Feather'} style={style.closeIcon}/>
+              <Icon onPress={() => this.setState({visible: false})} name={'close'} type={'EvilIcons'} style={style.closeIcon}/>
             </View>
             {this.props.children}
             <View style={style.buttonsContainer}>

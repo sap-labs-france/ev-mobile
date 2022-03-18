@@ -41,31 +41,29 @@ export default class PaymentMethodComponent extends React.Component<Props, State
     const statusStyle = this.buildStatusStyle(status, style);
     const paymentMethodType = I18n.t('paymentMethodType.card');
     return (
-      <View style={[listItemCommonStyle.container, ...(containerStyle || [])]}>
-        <View style={style.paymentMethodContainer}>
-          <View style={style.paymentMethodLogoContainer}>{this.renderPaymentMethodLogo(paymentMethod.brand, style)}</View>
-          <View style={style.paymentMethodDetailsContainer}>
-            <View style={style.cardNumberContainer}>
-              {[...Array(12)].map((el, index: number) => (
-                <View key={index} style={{ flexDirection: 'row' }}>
-                  <View style={[style.maskCharacter, (index + 1) % 4 === 0 && style.maskCharacterSpace]} />
-                </View>
-              ))}
-              <Text style={style.text}>{paymentMethod.last4} </Text>
-              {paymentMethod.isDefault && (
-                <View style={style.defaultContainer}>
-                  <Text style={style.badgeText}>{I18n.t('general.default')}</Text>
-                </View>
-              )}
-            </View>
-            <View style={style.expirationDateContainer}>
-              <Text style={style.text}>{expirationDate}</Text>
-              <View style={[style.status, statusStyle]}>
-                <Text style={style.badgeText}>{I18n.t(`paymentMethodStatus.${status}`)}</Text>
+      <View style={[listItemCommonStyle.container, style.paymentMethodContainer, ...(containerStyle || [])]}>
+        <View style={style.paymentMethodLogoContainer}>{this.renderPaymentMethodLogo(paymentMethod.brand, style)}</View>
+        <View style={style.paymentMethodDetailsContainer}>
+          <View style={style.cardNumberContainer}>
+            {[...Array(12)].map((el, index: number) => (
+              <View key={index} style={{ flexDirection: 'row' }}>
+                <View style={[style.maskCharacter, (index + 1) % 4 === 0 && style.maskCharacterSpace]} />
               </View>
-            </View>
-            <Text style={style.text}>{paymentMethodType}</Text>
+            ))}
+            <Text style={style.text}>{paymentMethod.last4} </Text>
+            {paymentMethod.isDefault && (
+              <View style={style.defaultContainer}>
+                <Text style={style.badgeText}>{I18n.t('general.default')}</Text>
+              </View>
+            )}
           </View>
+          <View style={style.expirationDateContainer}>
+            <Text style={style.text}>{expirationDate}</Text>
+            <View style={[style.status, statusStyle]}>
+              <Text style={style.badgeText}>{I18n.t(`paymentMethodStatus.${status}`)}</Text>
+            </View>
+          </View>
+          <Text style={style.text}>{paymentMethodType}</Text>
         </View>
     </View>
     );

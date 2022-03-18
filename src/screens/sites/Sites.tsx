@@ -287,7 +287,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                   skip={skip}
                   count={count}
                   onEndReached={this.onEndScroll}
-                  renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation}/>}
+                  renderItem={(site: Site) => <SiteComponent containerStyle={[style.siteComponentContainer]} site={site} navigation={navigation}/>}
                   data={sites}
                   manualRefresh={this.manualRefresh}
                   refreshing={refreshing}

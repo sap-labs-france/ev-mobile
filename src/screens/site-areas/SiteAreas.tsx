@@ -286,7 +286,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                   skip={skip}
                   count={count}
                   onEndReached={this.onEndScroll}
-                  renderItem={(site: SiteArea) => <SiteAreaComponent siteArea={site} navigation={this.props.navigation} />}
+                  renderItem={(site: SiteArea) => <SiteAreaComponent containerStyle={[style.siteAreaComponentContainer]} siteArea={site} navigation={this.props.navigation} />}
                   data={siteAreas}
                   manualRefresh={this.manualRefresh}
                   refreshing={refreshing}

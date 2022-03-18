@@ -9,10 +9,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     content: {
-      marginHorizontal: '2.5%',
-      width: '95%',
       flex: 1,
-      marginTop: '10@s'
+      marginTop: '10@s',
+      width: '100%'
     },
     container: {
       alignItems: 'center',
@@ -75,8 +74,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '20@s'
     },
     paymentMethodContainer: {
-      width: '100%',
-      alignItems: 'center',
+      width: '95%',
+      alignSelf: 'center',
       marginBottom: '11@s'
     },
     paymentMethodItemContainer: {

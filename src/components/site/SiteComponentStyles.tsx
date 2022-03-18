@@ -8,35 +8,11 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    container: {
-      flex: 1,
-      width: '97%',
-      alignSelf: 'center',
-      borderColor: 'transparent',
-      backgroundColor: commonColor.listHeaderBgColor,
-      shadowColor: commonColor.cardShadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62,
-      elevation: 11
+    siteContainer: {
+      justifyContent: 'space-between',
+      flexDirection: 'row'
     },
     siteContent: {
-      width: '100%',
-      height: '100%',
-      justifyContent: 'space-between',
-      backgroundColor: commonColor.listHeaderBgColor,
-      flexDirection: 'row',
-      margin: 0,
-      flex: 1,
-      paddingLeft: 0,
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingRight: 0
-    },
-    siteContainer: {
       flexDirection: 'row',
       flex: 1,
       justifyContent: 'space-between',
@@ -48,19 +24,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
-      height: '100%',
       flex: 1
     },
     rightContainer: {
       flexDirection: 'column',
       alignItems: 'flex-end',
       justifyContent: 'center',
-      width: '20@s',
-      height: '100%'
+      width: '20@s'
     },
     statusIndicator: {
       height: '100%',
-      width: '5@s'
+      width: '5@s',
+      borderTopLeftRadius: '8@s',
+      borderBottomLeftRadius: '8@s'
     },
     statusNotAvailable: {
       backgroundColor: commonColor.danger

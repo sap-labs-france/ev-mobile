@@ -18,7 +18,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     content: {
       flex: 1,
-      width: '98%'
+      width: '100%'
     },
     searchBar: {
       marginVertical: '10@s'
@@ -49,6 +49,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    transactionComponentContainer: {
+      marginBottom: '11@s',
+      width: '95%'
     }
   });
   const portraitStyles = {};

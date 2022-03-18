@@ -16,7 +16,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1
     },
     content: {
-      flex: 1
+      flex: 1,
+      width: '100%'
     },
     searchBar: {
       marginVertical: '10@s'
@@ -105,6 +106,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     fab: {
       marginTop: '14@s'
+    },
+    siteAreaComponentContainer: {
+      marginBottom: '11@s',
+      width: '95%'
     }
   });
   const portraitStyles = {};

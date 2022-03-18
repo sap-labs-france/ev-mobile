@@ -19,7 +19,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     invoiceComponentContainer: {
-      marginBottom: '5@s'
+      marginBottom: '11@s',
+      width: '95%'
     }
   });
   const portraitStyles = {};
