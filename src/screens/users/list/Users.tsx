@@ -194,7 +194,7 @@ export default class Users extends SelectableList<User> {
           ref={(usersFilters: UsersFilters) => this.setScreenFilters(usersFilters, false)}
         />
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        {this.screenFilters?.canOpenModal() && (
+        {!this.props.isModal && this.screenFilters?.canOpenModal() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
             <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>

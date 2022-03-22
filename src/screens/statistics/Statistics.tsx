@@ -100,12 +100,13 @@ export default class Statistics extends BaseScreen<Props, State> {
     if (this.state.filters) {
       try {
         // Get active transaction
-        const { startDateTime, endDateTime, users } = this.state.filters;
+        const { startDateTime, endDateTime, users, issuer } = this.state.filters;
         params = params ?? {
           Statistics: 'history',
           UserID: users?.map(user => user?.id).join('|'),
           StartDateTime: startDateTime ? startDateTime.toISOString() : null,
-          EndDateTime: endDateTime ? endDateTime.toISOString() : null
+          EndDateTime: endDateTime ? endDateTime.toISOString() : null,
+          Issuer: !issuer
         }
         return await this.centralServerProvider?.getTransactions(params, Constants.ONLY_RECORD_COUNT);
       } catch (error) {
