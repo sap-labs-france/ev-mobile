@@ -41,7 +41,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     leftHeader: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'flex-start'
+      justifyContent: 'flex-start',
+      height: '100%'
     },
     titleContainer: {
       flex: 1,
@@ -51,6 +52,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       alignContent: 'stretch',
       justifyContent: 'flex-start',
+      height: '100%'
     },
     title: {
       fontSize: '17@s',

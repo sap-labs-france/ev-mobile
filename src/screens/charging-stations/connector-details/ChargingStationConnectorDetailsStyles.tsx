@@ -134,7 +134,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       alignItems: 'center',
       height: 'auto',
-      paddingTop: '10@s'
+      paddingTop: '10@s',
+      paddingBottom: '20@s'
     },
     rowContainer: {
       flexDirection: 'row',
