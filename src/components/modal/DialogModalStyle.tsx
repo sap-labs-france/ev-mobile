@@ -14,14 +14,24 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '10@s',
       paddingVertical: '20@s',
       borderRadius: '8@s',
+      marginHorizontal: '2.5%',
+      maxHeight: '90%',
       alignItems: 'center'
+    },
+    controlsContent: {
+      alignItems: 'center',
+      height: 'auto',
+      width: '100%'
+    },
+    controlsContainer: {
+      width: '100%'
     },
     closeButtonContainer: {
       width: '100%'
     },
     closeButton: {
       alignSelf: 'flex-end',
-      fontSize: '25@s'
+      fontSize: '35@s'
     },
     title: {
       marginTop: '10@s',
@@ -48,10 +58,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       marginTop: '30@s'
     },
+    buttonContainer: {
+      borderRadius: '8@s'
+    },
     button: {
       padding: '5@s',
-      paddingVertical: '10@s',
-      borderRadius: '8@s'
+      paddingVertical: '5@s',
+      borderRadius: '8@s',
+      borderWidth: 0.8
     },
     buttonText: {
       fontSize: '12@s',
@@ -59,7 +73,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     cancelButton: {
       borderColor: commonColor.textColor,
-      borderWidth: 0.8
+      borderWidth: 0.8,
+      backgroundColor: 'transparent'
     },
     horizontalButton: {
       width: '49%'

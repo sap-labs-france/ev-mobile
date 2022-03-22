@@ -2,7 +2,7 @@ import { NavigationState } from '@react-navigation/native';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 
 import { SecuredStorageKey } from '../types/SecuredStorageKeys';
-import Tenant, { TenantConnection } from '../types/Tenant';
+import Tenant, { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
 import UserToken from '../types/UserToken';
 import Utils from './Utils';
@@ -35,6 +35,7 @@ export default class SecuredStorage {
         // Clear dups
         if (__DEV__ && !Utils.isEmptyArray(navigationState.navigationState?.routes)) {
           // FIXME: 'routes' is a read-only property.
+          // @ts-ignore
           navigationState.navigationState.routes = navigationState.navigationState?.routes.filter((route) => {
             if (!routeNames.includes(route.name)) {
               routeNames.push(route.name);
@@ -155,6 +156,15 @@ export default class SecuredStorage {
   public static async getTenants(): Promise<TenantConnection[]> {
     const tenants = await SecuredStorage.getJson(SecuredStorageKey.TENANTS);
     return tenants as TenantConnection[];
+  }
+
+  public static async saveEndpoints(endpoints: EndpointCloud[]): Promise<void> {
+    await RNSecureStorage.set(SecuredStorageKey.ENDPOINTS, JSON.stringify(endpoints), { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+  }
+
+  public static async getEndpoints(): Promise<EndpointCloud[]> {
+    const endpoints = await SecuredStorage.getJson(SecuredStorageKey.ENDPOINTS);
+    return endpoints as EndpointCloud[];
   }
 
   private static async getJson(key: string): Promise<any> {

@@ -1,10 +1,14 @@
 import React from 'react';
 import Modal from 'react-native-modal';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'native-base';
 import I18n from 'i18n-js';
 import computeStyleSheet from './DialogModalStyle';
+import computeModalCommonStyles from '../modal/ModalCommonStyle';
 import { Animation } from 'react-native-animatable';
+import { Button } from 'react-native-elements';
+import { RootSiblingParent } from 'react-native-root-siblings';
+
 
 export interface DialogModalButton {
   text: string;
@@ -67,8 +71,9 @@ export default class DialogModal extends React.Component<Props, State> {
       onBackDropPress
     } = this.props;
     const style = computeStyleSheet();
+    const modalCommonStyles = computeModalCommonStyles();
     const buttonsContainerStyle = this.computeButtonsContainerStyle(style);
-    const buttonCommonStyle = this.computeButtonCommonStyle(style);
+    const buttonContainerCommonStyle = this.computeButtonContainerCommonStyle(style);
     const iconStyle = style.icon;
     return (
       <Modal
@@ -78,33 +83,44 @@ export default class DialogModal extends React.Component<Props, State> {
         animationOutTiming={600}
         isVisible
         onBackdropPress={() => (onBackDropPress ? onBackDropPress() : close?.())}
-        onBackButtonPress={() => (onBackButtonPressed ? onBackButtonPressed() : close?.())}>
-        <View style={style.modalContainer}>
-          {withCloseButton && (
-            <TouchableOpacity onPress={() => close?.()} style={style.closeButtonContainer}>
-              <Icon style={style.closeButton} name={'close'} type={'MaterialIcons'} />
-            </TouchableOpacity>
-          )}
-          {renderIcon?.(iconStyle)}
-          <Text style={[style.text, style.title]}>{title?.toUpperCase()}</Text>
-          <Text style={[style.text, style.description]}>{description}</Text>
-          {renderControls?.()}
-          <View style={[style.buttonsContainer, buttonsContainerStyle]}>
-            {buttons?.filter((b) => b).map((button: DialogModalButton, index) => (
-                <TouchableOpacity onPress={button.action} style={[button.buttonStyle, buttonCommonStyle]} key={index}>
-                  {button.renderIcon?.()}
-                  <Text style={{ ...style.buttonText, ...button.buttonTextStyle }}>{button.text?.toUpperCase()}</Text>
-                </TouchableOpacity>
-              ))}
-            {withCancel && (
-              <TouchableOpacity style={[buttonCommonStyle, style.cancelButton]} onPress={() => close?.()}>
-                <Text style={[style.buttonText, style.cancelButtonText]}>
-                  {(cancelButtonText ?? I18n.t('general.cancel')).toUpperCase()}
-                </Text>
+        onBackButtonPress={() => (onBackButtonPressed ? onBackButtonPressed() : close?.())}
+      >
+        <RootSiblingParent>
+          <View style={style.modalContainer}>
+            {withCloseButton && (
+              <TouchableOpacity onPress={() => close?.()} style={style.closeButtonContainer}>
+                <Icon style={style.closeButton} name={'close'} type={'EvilIcons'} />
               </TouchableOpacity>
             )}
+            {renderIcon?.(iconStyle)}
+            <Text style={[style.text, style.title]}>{title?.toUpperCase()}</Text>
+            <Text style={[style.text, style.description]}>{description}</Text>
+            <ScrollView contentContainerStyle={style.controlsContent} style={style.controlsContainer} >
+              {renderControls?.()}
+            </ScrollView>
+            <View style={[style.buttonsContainer, buttonsContainerStyle]}>
+              {buttons?.filter((b) => b).map((button: DialogModalButton, index) => (
+                <Button
+                  key={index}
+                  title={button.text?.toUpperCase()}
+                  containerStyle={buttonContainerCommonStyle}
+                  buttonStyle={[modalCommonStyles.primaryButton , button.buttonStyle, style.button]}
+                  titleStyle={style.buttonText}
+                  onPress={button.action}
+                />
+              ))}
+              {withCancel && (
+                <Button
+                  title={(cancelButtonText ?? I18n.t('general.cancel')).toUpperCase()}
+                  containerStyle={buttonContainerCommonStyle}
+                  buttonStyle={[modalCommonStyles.primaryButton, style.cancelButton, style.button]}
+                  titleStyle={[style.buttonText, style.cancelButtonText]}
+                  onPress={() => close?.()}
+                />
+              )}
+            </View>
           </View>
-        </View>
+        </RootSiblingParent>
       </Modal>
     );
   }
@@ -119,13 +135,13 @@ export default class DialogModal extends React.Component<Props, State> {
     }
   }
 
-  private computeButtonCommonStyle(style: any) {
+  private computeButtonContainerCommonStyle(style: any) {
     const { buttons, withCancel } = this.props;
     const horizontalLayoutCount = withCancel ? 1 : 2;
     if (buttons?.filter((b) => b).length === horizontalLayoutCount) {
-      return { ...style.button, ...style.horizontalButton };
+      return {...style.buttonContainer, ...style.horizontalButton};
     } else if (buttons && buttons?.filter((b) => b).length !== horizontalLayoutCount) {
-      return { ...style.button, ...style.verticalButton };
+      return {...style.buttonContainer, ...style.verticalButton};
     }
   }
 }

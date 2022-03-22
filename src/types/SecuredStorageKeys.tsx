@@ -3,5 +3,6 @@ export enum SecuredStorageKey {
   CREDENTIALS = 'credentials',
   NAVIGATION_STATE = 'navigationState',
   MIGRATION_VERSION = 'migrationVersion',
-  TENANTS = 'tenants'
+  TENANTS = 'tenants',
+  ENDPOINTS = 'endpoinst'
 }

@@ -28,11 +28,11 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
 
   public constructor(props: Props) {
     super(props);
-    this.tenantEndpointClouds = Utils.getEndpointCloud();
   }
 
   public async componentDidMount() {
     await super.componentDidMount();
+    this.tenantEndpointClouds = await Utils.getEndpointClouds();
     Orientation.lockToPortrait();
   }
 
@@ -53,7 +53,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     const newTenant: TenantConnection = {
       subdomain: tenantQrCode.tenantSubDomain,
       name: tenantQrCode.tenantName,
-      endpoint: newTenantEndpointCloud?.endpoint
+      endpoint: newTenantEndpointCloud
     };
     // Add
     tenants.push(newTenant);

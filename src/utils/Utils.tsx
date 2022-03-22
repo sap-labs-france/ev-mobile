@@ -38,10 +38,13 @@ import Type3C from '../../assets/connectorType/type3c.svg';
 import NoConnector from '../../assets/connectorType/no-connector.svg';
 import React from 'react';
 import { scale } from 'react-native-size-matters';
+import SecuredStorage from './SecuredStorage';
 
 export default class Utils {
-  public static getEndpointCloud(): EndpointCloud[] {
-    return Configuration.ENDPOINT_CLOUDS;
+  public static async getEndpointClouds(): Promise<EndpointCloud[]> {
+    const staticEndpoints =  Configuration.getEndpoints();
+    const userEndpoints = await SecuredStorage.getEndpoints() ?? [];
+    return [...staticEndpoints, ...userEndpoints];
   }
 
   public static objectHasProperty(object: any, key: string): boolean {
@@ -770,8 +773,8 @@ export default class Utils {
         if (key.startsWith('error')) {
           // Clear
           const clearError: any = {};
-          clearError[key] = null;
-          screen.setState(clearError);
+          clearError[key] = [];
+          screen.state =  {...screen.state , ...clearError};
         }
       }
     }
@@ -788,8 +791,9 @@ export default class Utils {
       formValid = false;
     }
     // Set
-    screen.setState(errorState);
+    screen.state = {...screen.state,  ...errorState};
     // Return
+    screen.setState(screen.state);
     return formValid;
   }
 

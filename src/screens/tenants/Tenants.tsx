@@ -3,7 +3,7 @@ import { Icon, View } from 'native-base';
 import React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { TenantConnection } from '../../types/Tenant';
+import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
@@ -15,7 +15,6 @@ import AddEditTenantDialog, { TenantDialogMode } from '../../components/modal/te
 import CreateTenantQrCode from './TenantQrCode';
 import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
-import computeListItemCommonStyle from '../../components/list/ListItemCommonStyle';
 import TenantComponent from '../../components/tenant/TenantComponent';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 
@@ -50,11 +49,11 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
-    const tenants = await this.centralServerProvider.getTenants();
+    const tenants = await this.refreshTenants();
     const showAddTenantWithQRCode = Utils.getParamFromNavigation(this.props.route, 'openQRCode', this.state.showAddTenantWithQRCode);
     this.setState({
-      tenants,
-      showAddTenantWithQRCode
+      showAddTenantWithQRCode,
+      tenants
     });
   }
 
@@ -64,6 +63,19 @@ export default class Tenants extends BaseScreen<Props, State> {
   ) => {
     super.setState(state, callback);
   };
+
+  private async refreshTenants(): Promise<TenantConnection[]> {
+    const tenants = await SecuredStorage.getTenants();
+    // Check tenants endpoints exist and set them to empty object if not
+    const allEndpoints = await Utils.getEndpointClouds();
+    const endpointNames = allEndpoints.map(endpoint => endpoint.name);
+    tenants.forEach(tenant => {
+      if (!endpointNames.includes(tenant.endpoint?.name)) {
+        tenant.endpoint = {} as EndpointCloud;
+      }});
+    await SecuredStorage.saveTenants(tenants);
+    return tenants;
+  }
 
   public render() {
     const navigation = this.props.navigation;
@@ -76,7 +88,6 @@ export default class Tenants extends BaseScreen<Props, State> {
       tenantToBeEditedIndex
     } = this.state;
     const style = computeTenantStyleSheet();
-    const listItemCommonStyle = computeListItemCommonStyle();
     const fabStyles = computeFabStyles();
     return (
       <View style={{ flex: 1 }}>
@@ -116,7 +127,7 @@ export default class Tenants extends BaseScreen<Props, State> {
             <View style={style.listContainer}>
               <FlatList
                 data={tenants}
-                keyExtractor={(item) => item.subdomain}
+                keyExtractor={(item) => `${item.subdomain}${item.endpoint?.name}`}
                 renderItem={({ item, index }) => (
                   <Swipeable
                     overshootRight={false}
@@ -234,14 +245,14 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   private async addEditTenantDialogClosed(newTenant?: TenantConnection): Promise<void> {
     // Always close pop-up
-    const newTenants = await this.centralServerProvider.getTenants();
+    const tenants = await this.refreshTenants();
     this.setState({
       showAddTenantWithQRCode: false,
       showAddTenantManuallyDialog: false,
       tenantToBeEditedIndex: null,
       showNewTenantAddedDialog: !!newTenant,
-      tenants: newTenants,
-      newTenant
+      newTenant,
+      tenants
     });
   }
 

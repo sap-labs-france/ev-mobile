@@ -781,7 +781,7 @@ export default class CentralServerProvider {
     const url = this.buildRestEndpointUrl(ServerRoute.REST_USER_DEFAULT_TAG_CAR, { id: userID });
     const res = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders(),
-      params: { 
+      params: {
         UserID: userID, // Should be removed - already part of the URL path
         ChargingStationID: chargingStationID // This information will soon be mandatory server-side
       }
@@ -1067,19 +1067,19 @@ export default class CentralServerProvider {
   }
 
   private buildRestServerAuthURL(tenant: TenantConnection): string {
-    return tenant?.endpoint + '/v1/auth';
+    return (tenant?.endpoint?.endpoint) + '/v1/auth';
   }
 
   private buildRestServerURL(): string {
-    return this.tenant?.endpoint + '/v1/api';
+    return this.tenant?.endpoint?.endpoint + '/v1/api';
   }
 
   private buildUtilRestServerURL(tenant?: TenantConnection): string {
-    return (tenant?.endpoint ?? this.tenant?.endpoint) + '/v1/util';
+    return (tenant?.endpoint?.endpoint ?? this.tenant?.endpoint?.endpoint) + '/v1/util';
   }
 
   private buildCentralRestServerServiceSecuredURL(): string {
-    return this.tenant?.endpoint + '/client/api';
+    return this.tenant?.endpoint.endpoint + '/client/api';
   }
 
   public buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: { [name: string]: string | number | null } = {}, urlPrefix = this.buildRestServerURL()): string {
