@@ -302,7 +302,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     if (!Utils.isEmptyArray(priceValues) && this.securityProvider?.isComponentPricingActive()) {
       chartDefinition.data.dataSets.push({
         values: priceValues,
-        label: I18n.t('details.priceLabel', {priceCurrency: priceCurrencySymbol}),
+        label: I18n.t('details.priceLabel', {priceCurrency: priceCurrencySymbol ?? ''}),
         config: {
           axisDependency: 'LEFT',
           mode: 'LINEAR',
