@@ -30,7 +30,6 @@ export default class Configuration {
       name: 'QA',
       endpoint: Configuration.AWS_REST_ENDPOINT_QA
     }
-
   ];
 
   public static readonly DEVELOPMENT_ENDPOINT_CLOUDS: EndpointCloud[] = [

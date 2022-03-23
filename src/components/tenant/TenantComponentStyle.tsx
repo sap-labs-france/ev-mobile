@@ -21,6 +21,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '12@s',
       textAlign: 'center'
     },
+    errorText: {
+      color: commonColor.danger
+    },
     tenantName: {
       fontWeight: 'bold',
       fontSize: '14@s'
