@@ -178,7 +178,7 @@ export default class I18nManager {
   }
 
   public static formatCurrency(value: number, currency?: string): string {
-    currency = currency ? currency.toUpperCase() : I18nManager.currency;
+    currency = currency?.toUpperCase();
     if (!isNaN(value)) {
       if (currency) {
         return new Intl.NumberFormat(i18n.locale, { style: 'currency', currency }).format(value);
