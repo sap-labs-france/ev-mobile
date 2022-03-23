@@ -302,7 +302,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     if (!Utils.isEmptyArray(priceValues) && this.securityProvider?.isComponentPricingActive()) {
       chartDefinition.data.dataSets.push({
         values: priceValues,
-        label: I18n.t('details.priceLabel', {priceCurrency: priceCurrencySymbol ?? ''}),
+        label: I18n.t('details.priceLabel') + (priceCurrencySymbol ? ` (${priceCurrencySymbol})` : ''),
         config: {
           axisDependency: 'LEFT',
           mode: 'LINEAR',
@@ -458,7 +458,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
 
   private getDataSetFunctionOfTime(
     values: Consumption[],
-    dataSet: string, transformValuesCallback?: (y: number, value: Consumption) => number,
+    dataSet: string,
+    transformValuesCallback?: (y: number, value: Consumption) => number,
     formatMarkerValueCallback: (markerValue: number) => string = I18nManager.formatNumber
   ): LineValue[] {
     const { transaction } = this.state;

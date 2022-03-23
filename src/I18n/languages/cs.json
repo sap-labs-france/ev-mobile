@@ -462,7 +462,7 @@
     "gridLimitChartLabel": "Grid Limit (kW)",
     "cumulatedConsumptionLabel": "Energy Delivered (kW.h)",
     "connectorMax": "Maximální výkon konektoru (kW)",
-    "priceLabel": "Price ({{priceCurrency}})",
+    "priceLabel": "Price",
     "noData": "Žádné údaje",
     "noSessionInProgress": "Žádná relace neprobíhá",
     "noConsumptionData": "Žádné údaje o spotřebě",
