@@ -153,7 +153,7 @@ export default class Login extends BaseScreen<Props, State> {
   public getTenantLogo = async (tenant: TenantConnection): Promise<string> => {
     try {
       if (tenant) {
-        return await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+        return this.centralServerProvider.getTenantLogoBySubdomain(tenant);
       }
     } catch (error) {
       // Tenant has no logo

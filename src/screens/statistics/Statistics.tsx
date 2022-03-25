@@ -108,7 +108,7 @@ export default class Statistics extends BaseScreen<Props, State> {
           EndDateTime: endDateTime ? endDateTime.toISOString() : null,
           Issuer: !issuer
         }
-        return await this.centralServerProvider?.getTransactions(params, Constants.ONLY_RECORD_COUNT);
+        return this.centralServerProvider?.getTransactions(params, Constants.ONLY_RECORD_COUNT);
       } catch (error) {
         // Check if HTTP?
         if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
