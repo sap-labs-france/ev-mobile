@@ -126,7 +126,7 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-google-maps-directions": "^2.1.1",
     "react-native-htmlview": "^0.16.0",
-    "react-native-localize": "^1.4.3",
+    "react-native-localize": "^2.2.1",
     "react-native-location": "^2.5.0",
     "react-native-map-clustering": "^3.4.2",
     "react-native-map-link": "^2.8.0",
