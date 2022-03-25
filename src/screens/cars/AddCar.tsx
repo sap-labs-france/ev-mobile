@@ -104,7 +104,7 @@ export default class AddCar extends BaseScreen<Props, State> {
           title={I18n.t('cars.addCarTitle')}
           navigation={navigation}
         />
-        <ScrollView style={style.scrollview} contentContainerStyle={style.content}>
+        <ScrollView keyboardShouldPersistTaps={'always'} style={style.scrollview} contentContainerStyle={style.content}>
           <Input
             label={`${I18n.t('cars.model')}*`}
             labelStyle={style.inputLabel}
@@ -139,7 +139,7 @@ export default class AddCar extends BaseScreen<Props, State> {
                 dropdownStyle={style.selectDropdown}
                 rowStyle={style.selectDropdownRow}
                 rowTextStyle={style.selectDropdownRowText}
-                renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
+                renderDropdownIcon={() => <Icon style={style.dropdownIcon} type={'MaterialIcons'} name={'arrow-drop-down'} />}
                 onSelect={(carConverter: CarConverter) => this.setState({ selectedConverter: carConverter })}
               />
             )}

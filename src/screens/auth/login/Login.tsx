@@ -320,7 +320,7 @@ export default class Login extends BaseScreen<Props, State> {
       <View style={style.container}>
         {showNoTenantFoundDialog && this.renderNoTenantFoundDialog()}
         {showExitAppDialog && this.renderExitAppDialog()}
-        <ScrollView contentContainerStyle={style.scrollContainer}>
+        <ScrollView keyboardShouldPersistTaps={'always'} contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
             <TouchableOpacity style={[style.linksButton]} onPress={() => this.newUser()}>

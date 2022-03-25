@@ -85,6 +85,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
         <FlatList
           data={data}
           style={style.flatList}
+          keyboardShouldPersistTaps={'always'}
           onStartShouldSetResponder={() => true}
           renderItem={({ item }) => {
             const isItemDisabled = !!disableItem?.(item);
