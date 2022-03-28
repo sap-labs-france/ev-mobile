@@ -180,6 +180,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
                 <TransactionHistoryComponent
                   navigation={navigation}
                   transaction={transaction}
+                  containerStyle={[style.transactionComponentContainer]}
                   isAdmin={isAdmin}
                   isSiteAdmin={this.securityProvider?.isSiteAdmin(transaction.siteID)}
                   isPricingActive={isPricingActive}

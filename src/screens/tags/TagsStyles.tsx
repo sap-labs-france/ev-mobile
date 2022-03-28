@@ -22,7 +22,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     content: {
       flex: 1,
-      width: '95%'
+      width: '100%'
     },
     filtersContainer: {
       flexDirection: 'row',
@@ -51,7 +51,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
     },
     tagComponentContainer: {
-      marginBottom: '11@s'
+      marginBottom: '11@s',
+      width: '95%'
     }
   });
   const portraitStyles = {};

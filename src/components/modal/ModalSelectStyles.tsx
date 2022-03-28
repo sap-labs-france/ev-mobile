@@ -27,7 +27,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     closeIcon: {
       alignSelf: 'flex-end',
-      fontSize: '35@s',
+      fontSize: '40@s',
       margin: '3@s',
       color: commonColor.textColor,
     },

@@ -24,7 +24,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     closeIcon: {
       color: commonColor.textColor,
-      fontSize: '35@s'
+      fontSize: '40@s'
     },
     buttonsContainer: {
       flexDirection: 'row',

@@ -54,7 +54,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      flex: 1,
       width: '100%'
     },
     imageStyle: {
@@ -77,7 +76,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-end',
       alignItems: 'center',
       width: '60%',
-      height: '100%',
       paddingHorizontal: '5@s'
     },
     userContainer: {

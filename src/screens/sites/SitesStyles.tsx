@@ -100,6 +100,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     fab: {
       marginTop: '14@s'
+    },
+    siteComponentContainer: {
+      marginBottom: '11@s',
+      width: '95%'
     }
   });
   const portraitStyles = {};

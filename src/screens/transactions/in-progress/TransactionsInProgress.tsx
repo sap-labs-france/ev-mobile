@@ -168,6 +168,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
                   transaction={transaction}
                   navigation={navigation}
                   isAdmin={isAdmin}
+                  containerStyle={[style.transactionComponentContainer]}
                   isSiteAdmin={this.securityProvider?.isSiteAdmin(transaction.siteID)}
                   isPricingActive={isPricingActive}
                 />

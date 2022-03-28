@@ -15,7 +15,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     content: {
       flex: 1,
-      width: '95%'
+      width: '100%'
     },
     searchBar: {
       marginVertical: '10@s'
@@ -25,7 +25,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     userComponentContainer: {
-      marginBottom: '11@s'
+      marginBottom: '11@s',
+      width: '95%'
     },
     filtersContainer: {
       flexDirection: 'row',

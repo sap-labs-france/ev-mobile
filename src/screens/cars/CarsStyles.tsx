@@ -11,13 +11,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor,
-      alignItems: 'center',
-      width: '100%'
+      alignItems: 'center'
     },
     content: {
       flex: 1,
-      width: '95%',
-      marginHorizontal: '2.5%'
+      width: '100%'
     },
     icon: {
       color: commonColor.textColor,
@@ -65,7 +63,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
     },
     carComponentContainer: {
-      marginBottom: '11@s'
+      marginBottom: '11@s',
+      width: '95%'
     }
   });
   const portraitStyles = {};

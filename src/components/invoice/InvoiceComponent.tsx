@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Card, CardItem, Icon } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -16,6 +16,7 @@ import computeChipStyleSheet from '../chip/ChipStyle';
 import computeStyleSheet from './InvoiceComponentStyles';
 import DialogModal from '../modal/DialogModal';
 import computeModalCommonStyle from '../modal/ModalCommonStyle';
+import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;
@@ -50,68 +51,67 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     const { invoice, navigation, containerStyle } = this.props;
     const invoiceAmount = invoice.amount && invoice.amount / 100;
     const { downloading, showDownloadInvoiceDialog } = this.state;
+    const listItemCommonStyle = computeListItemCommonStyle();
     return (
-      <Card style={[style.container, ...(containerStyle || [])]}>
+      <View style={[listItemCommonStyle.container, style.invoiceContainer, ...(containerStyle || [])]}>
         {showDownloadInvoiceDialog && this.renderDownloadInvoiceDialog()}
-        <CardItem style={style.invoiceContent}>
-          <View style={[this.buildStatusIndicatorStyle(invoice.status, style), style.statusIndicator]} />
-          <View style={style.invoiceContainer}>
-            <View style={style.leftContainer}>
-              <View style={style.invoiceDetailsContainer}>
-                <Text numberOfLines={1} style={[style.text, style.invoiceCreatedOn]}>
-                  {I18nManager.formatDateTime(invoice.createdOn, {dateStyle: 'medium'})}
+        <View style={[this.buildStatusIndicatorStyle(invoice.status, style), style.statusIndicator]} />
+        <View style={style.invoiceContent}>
+          <View style={style.leftContainer}>
+            <View style={style.invoiceDetailsContainer}>
+              <Text numberOfLines={1} style={[style.text, style.invoiceCreatedOn]}>
+                {I18nManager.formatDateTime(invoice.createdOn, {dateStyle: 'medium'})}
+              </Text>
+              <Text numberOfLines={1} style={style.text}>
+                {invoice.number}
+              </Text>
+              <View style={style.transactionContainer}>
+                <Text numberOfLines={1} style={[style.text, style.sessionsCount]}>
+                  {invoice.sessions?.length}
+                </Text>
+                {invoice.sessions && (
+                  <Text numberOfLines={1} style={style.text}>
+                    {I18n.t('transactions.transactions')}
+                  </Text>
+                )}
+              </View>
+            </View>
+            {invoice.user && (
+              <View style={style.userContainer}>
+                <Text numberOfLines={1} style={[style.text, style.userName]}>
+                  {Utils.buildUserName(invoice.user)}
                 </Text>
                 <Text numberOfLines={1} style={style.text}>
-                  {invoice.number}
-                </Text>
-                <View style={style.transactionContainer}>
-                  <Text numberOfLines={1} style={[style.text, style.sessionsCount]}>
-                    {invoice.sessions?.length}
-                  </Text>
-                  {invoice.sessions && (
-                    <Text numberOfLines={1} style={style.text}>
-                      {I18n.t('transactions.transactions')}
-                    </Text>
-                  )}
-                </View>
-              </View>
-              {invoice.user && (
-                <View style={style.userContainer}>
-                  <Text numberOfLines={1} style={[style.text, style.userName]}>
-                    {Utils.buildUserName(invoice.user)}
-                  </Text>
-                  <Text numberOfLines={1} style={style.text}>
-                    {invoice.user.email}
-                  </Text>
-                </View>
-              )}
-            </View>
-            <View style={style.rightContainer}>
-              <View style={style.invoiceStatusContainer}>
-                <Chip
-                  statusStyle={[this.buildStatusStyle(invoice.status)]}
-                  text={this.buildStatus(invoice.status)}
-                  navigation={navigation}
-                />
-              </View>
-              <View style={style.invoiceAmountContainer}>
-                <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.invoiceAmount]}>
-                  {I18nManager.formatCurrency(invoiceAmount, invoice.currency)}
+                  {invoice.user.email}
                 </Text>
               </View>
-              {invoice.downloadable && (
-                <TouchableOpacity style={style.downloadButtonContainer} onPress={() => this.setState({ showDownloadInvoiceDialog: true })}>
-                  {downloading ? (
-                    <ActivityIndicator size={scale(26)} color={commonColor.textColor} />
-                  ) : (
-                    <Icon style={style.downloadIcon} type={'Feather'} name={'download'} />
-                  )}
-                </TouchableOpacity>
-              )}
-            </View>
+            )}
           </View>
-        </CardItem>
-      </Card>
+          <View style={style.rightContainer}>
+            <View style={style.invoiceStatusContainer}>
+              <Chip
+                statusStyle={[this.buildStatusStyle(invoice.status)]}
+                text={this.buildStatus(invoice.status)}
+                navigation={navigation}
+              />
+            </View>
+            <View style={style.invoiceAmountContainer}>
+              <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.invoiceAmount]}>
+                {I18nManager.formatCurrency(invoiceAmount, invoice.currency)}
+              </Text>
+            </View>
+            {invoice.downloadable && (
+              <TouchableOpacity style={style.downloadButtonContainer} onPress={() => this.setState({ showDownloadInvoiceDialog: true })}>
+                {downloading ? (
+                  <ActivityIndicator size={scale(26)} color={commonColor.textColor} />
+                ) : (
+                  <Icon style={style.downloadIcon} type={'Feather'} name={'download'} />
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+      </View>
     );
   }
 
