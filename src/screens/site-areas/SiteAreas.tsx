@@ -79,7 +79,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public async componentDidMount(triggerRefresh: boolean = true): Promise<void> {
-    super.componentDidMount(triggerRefresh);
+    await super.componentDidMount();
     this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
   }
 
@@ -133,7 +133,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public onBack () {
     // Back mobile button: Force navigation
     if (this.state.showMap) {
-      this.setState({ showMap: false, refreshing: true }, () => this.refresh());
+      this.setState({ showMap: false, siteAreas: [] }, () => this.refresh(true));
       return true;
     } else {
       this.props.navigation.goBack();
@@ -168,12 +168,12 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     return this.currentRegion;
   }
 
-  public refresh = async (showRefreshing = false) => {
+  public refresh = async (showSpinner = false) => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, showMap } = this.state;
-      if (showRefreshing) {
-        this.setState({ refreshing: true});
+      if (showSpinner) {
+        this.setState({ ...(Utils.isEmptyArray(this.state.siteAreas) ?  { loading: true } :  { refreshing: true } )});
       }
       // Refresh All
       const limit = showMap ? this.mapLimit : this.listLimit;
@@ -228,10 +228,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public filterChanged(newFilters: SitesFiltersDef) {
-    this.setState({ filters: newFilters,
-        ...(Utils.isEmptyArray(this.state.siteAreas) ? {loading: true} : {refreshing : true})
-      },
-      async () => this.refresh(true));
+    this.setState({ filters: newFilters }, async () => this.refresh(true));
   }
 
   public showMapSiteAreaDetail = (siteArea: SiteArea) => {
@@ -286,7 +283,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                   skip={skip}
                   count={count}
                   onEndReached={this.onEndScroll}
-                  renderItem={(site: SiteArea) => <SiteAreaComponent containerStyle={[style.siteAreaComponentContainer]} siteArea={site} navigation={this.props.navigation} />}
+                  renderItem={(siteArea: SiteArea) => <SiteAreaComponent containerStyle={[style.siteAreaComponentContainer]} siteArea={siteArea} navigation={this.props.navigation} />}
                   data={siteAreas}
                   manualRefresh={this.manualRefresh}
                   refreshing={refreshing}
@@ -320,7 +317,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         <TouchableOpacity
           delayPressIn={0}
           style={[fabStyles.fab, style.fab]}
-          onPress={() => this.setState({ showMap: !showMap, siteAreas: []}, () => this.refresh()) }
+          onPress={() => this.setState({ showMap: !showMap, siteAreas: []}, () => this.refresh(true)) }
         >
           <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
