@@ -84,7 +84,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     if (this.securityProvider && !this.securityProvider.isComponentOrganizationActive()) {
       this.props.navigation.navigate('ChargingStations', { key: `${Utils.randomNumber()}` });
     }
-    this.refresh(true);
   }
 
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
@@ -125,7 +124,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public onBack () {
     // Back mobile button: Force navigation
     if (this.state.showMap) {
-      this.setState({ showMap: false, refreshing: true }, () => this.refresh());
+      this.setState({ showMap: false, sites: [] }, () => this.refresh(true));
       return true;
     } else {
       this.props.navigation.goBack();
@@ -160,12 +159,12 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     return this.currentRegion;
   }
 
-  public refresh = async (showRefreshing = false) => {
+  public refresh = async (showSpinner = false) => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, showMap } = this.state;
-      if (showRefreshing) {
-        this.setState({ refreshing: true});
+      if (showSpinner) {
+        this.setState({ ...(Utils.isEmptyArray(this.state.sites) ? { loading: true } : { refreshing: true })});
       }
       // Refresh All
       const limit = showMap ? this.mapLimit : this.listLimit;
@@ -221,10 +220,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public filterChanged(newFilters: SitesFiltersDef) {
-    this.setState({ filters: newFilters,
-      ...(Utils.isEmptyArray(this.state.sites) ? {loading: true} : {refreshing : true})
-      },
-      async () => this.refresh(true));
+    this.setState({ filters: newFilters }, async () => this.refresh(!Utils.isEmptyArray(this.state.sites)));
   }
 
   public showMapSiteDetail = (site: Site) => {
@@ -321,7 +317,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <TouchableOpacity
           delayPressIn={0}
           style={[fabStyles.fab, style.fab]}
-          onPress={() => this.setState({ showMap: !showMap, sites: []}, () => this.refresh()) }
+          onPress={() => this.setState({ showMap: !showMap, sites: []}, () => this.refresh(true)) }
         >
           <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
