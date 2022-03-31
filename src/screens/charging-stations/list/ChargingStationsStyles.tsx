@@ -144,6 +144,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '8@s',
       fontSize: '35@s',
       color: commonColor.textColor
+    },
+    activityIndicator: {
+      marginTop: '70@s',
+      padding: '10@s',
+      backgroundColor: commonColor.containerBgColor,
+      borderRadius: 100
     }
   });
   const portraitStyles = {};
