@@ -50,7 +50,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public state: State;
   public props: Props;
   private searchText: string;
-  private siteArea: SiteArea;
+  private siteArea: SiteArea = { name: ''} as SiteArea;
   private currentRegion: Region;
   private parent: any;
   private mapLimit = 500;
@@ -59,6 +59,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public constructor(props: Props) {
     super(props);
     // Init State
+    this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     this.state = {
       chargingStations: [],
       loading: true,
@@ -78,7 +79,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public async componentDidMount() {
     // Get initial filters
     await super.componentDidMount()
-    this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     const { navigation } = this.props;
     // Enable swipe for opening sidebar
     this.parent = navigation.getParent();
