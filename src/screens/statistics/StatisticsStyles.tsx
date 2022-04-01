@@ -18,7 +18,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     activityIndicator: {
       marginTop: '70@s',
       padding: '10@s',
-      backgroundColor: commonColor.modalBackgroundColor,
+      backgroundColor: commonColor.containerBgColor,
       borderRadius: 100,
       zIndex: 2
     },
@@ -54,8 +54,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1
     },
     spinner: {
-      flex: 1,
-      backgroundColor: commonColor.containerBgColor
+      flex: 1
     },
   });
   const portraitStyles = {};

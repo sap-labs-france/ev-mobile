@@ -186,7 +186,12 @@ export default class Statistics extends BaseScreen<Props, State> {
             :
             (
             <View style={style.boxContainer}>
-              {refreshing && <ActivityIndicator size={scale(18)} color={commonColors.disabledDark} style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]} animating={true} /> }
+              {refreshing && <ActivityIndicator
+                size={scale(18)}
+                color={commonColors.textColor}
+                style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]}
+                animating={true}
+              /> }
               <StatisticsComponent
                 backgroundColor={style.sessions.backgroundColor.toString()}
                 textColor={commonColors.light}
