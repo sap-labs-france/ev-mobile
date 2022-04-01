@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Content, Icon, Spinner } from 'native-base';
+import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -15,18 +15,18 @@ import computeStyleSheet from './StatisticsStyles';
 import { View } from 'react-native';
 import StatisticsComponent from '../../components/statistics/StatisticsComponent';
 import computeActivityIndicatorCommonStyles from '../../components/activity-indicator/ActivityIndicatorCommonStyle';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator } from 'react-native';
 import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
 interface State {
   loading?: boolean;
+  refreshing?: boolean;
   totalNumberOfSession?: number;
   totalConsumptionWattHours?: number;
   totalDurationSecs?: number;
   totalInactivitySecs?: number;
-  filterLoading?: boolean;
   totalPrice?: number;
   priceCurrency?: string;
   isPricingActive?: boolean;
@@ -52,15 +52,8 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalPrice: 0,
       isPricingActive: false,
       showFilter: false,
-      filters: null,
-      filterLoading: false
+      filters: null
     };
-  }
-
-  public async componentDidMount() {
-    // Get initial filters
-    await super.componentDidMount();
-    await this.refresh();
   }
 
   public setState = (
@@ -70,8 +63,10 @@ export default class Statistics extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public refresh = async () => {
-    const { filters } = this.state;
+  public async refresh (showSpinner: boolean) {
+    if (showSpinner) {
+      this.setState({...(this.state.totalConsumptionWattHours ? { refreshing: true } : { loading: true })});
+    }
     // Get the ongoing Transaction stats
     const transactionsStats = await this.getTransactionsStats();
     // Retrieve all the transactions for the current userID
@@ -81,7 +76,6 @@ export default class Statistics extends BaseScreen<Props, State> {
     const maxTransactionDate = allTransactionsStats?.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
     // Set
     this.setState({
-      filters,
       totalNumberOfSession: transactionsStats?.stats?.count,
       totalConsumptionWattHours: transactionsStats?.stats?.totalConsumptionWattHours,
       totalDurationSecs: transactionsStats?.stats?.totalDurationSecs,
@@ -92,6 +86,7 @@ export default class Statistics extends BaseScreen<Props, State> {
       isPricingActive: this.securityProvider?.isComponentPricingActive(),
       priceCurrency: transactionsStats?.stats?.currency,
       loading: false,
+      refreshing: false,
       filterLoading: false
     });
   };
@@ -126,7 +121,7 @@ export default class Statistics extends BaseScreen<Props, State> {
   };
 
   private onFilterChanged(newFilters: TransactionsHistoryFiltersDef) : void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {filterLoading: true} : {loading: true})}, () => this.refresh());
+    this.setState( {filters: newFilters }, () => this.refresh(true));
   }
 
   public render = () => {
@@ -136,6 +131,7 @@ export default class Statistics extends BaseScreen<Props, State> {
     const commonColors = Utils.getCurrentCommonColor();
     const {
       loading,
+      refreshing,
       totalNumberOfSession,
       totalConsumptionWattHours,
       totalDurationSecs,
@@ -143,10 +139,8 @@ export default class Statistics extends BaseScreen<Props, State> {
       priceCurrency,
       totalPrice,
       isPricingActive,
-      filterLoading,
       minTransactionDate,
       maxTransactionDate,
-      filters
     } = this.state;
     const totalConsumption = I18nManager.formatNumberWithCompacts(totalConsumptionWattHours, {
       notation: NumberFormatNotationEnum.COMPACT,
@@ -173,7 +167,6 @@ export default class Statistics extends BaseScreen<Props, State> {
     });
     return (
       <Container style={style.container}>
-        {filterLoading && <ActivityIndicator color={'black'} size={scale(20)} style={activityIndicatorCommonStyles.activityIndicator} animating={filterLoading} />}
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
@@ -185,11 +178,15 @@ export default class Statistics extends BaseScreen<Props, State> {
           onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}
           ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, true)}
         />
-        {(loading || !filters) ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
-          <Content style={style.content}>
+        <View style={style.content}>
+          {loading ?
+            <View style={style.spinnerContainer}>
+              <Spinner style={style.spinner} color={commonColors.disabledDark} />
+            </View>
+            :
+            (
             <View style={style.boxContainer}>
+              {refreshing && <ActivityIndicator size={scale(18)} color={commonColors.disabledDark} style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]} animating={true} /> }
               <StatisticsComponent
                 backgroundColor={style.sessions.backgroundColor.toString()}
                 textColor={commonColors.light}
@@ -237,8 +234,8 @@ export default class Statistics extends BaseScreen<Props, State> {
                 />
               )}
             </View>
-          </Content>
-        )}
+          )}
+        </View>
       </Container>
     );
   };
