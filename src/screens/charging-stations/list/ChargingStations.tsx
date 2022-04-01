@@ -28,12 +28,16 @@ import ThemeManager from '../../../custom-theme/ThemeManager';
 import standardDarkLayout from '../../../../assets/map/standard-dark.png';
 import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
+import computeActivityIndicatorCommonStyle from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
 interface State {
   chargingStations?: ChargingStation[];
+  // Indicate loading of content when no content previously displayed
   loading?: boolean;
+  // Indicate loading of new content updating the one already displayed
   refreshing?: boolean;
   isAdmin?: boolean;
   skip?: number;
@@ -50,7 +54,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public state: State;
   public props: Props;
   private searchText: string;
-  private siteArea: SiteArea;
+  private siteArea: SiteArea = { name: ''} as SiteArea;
   private currentRegion: Region;
   private parent: any;
   private mapLimit = 500;
@@ -59,6 +63,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public constructor(props: Props) {
     super(props);
     // Init State
+    this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     this.state = {
       chargingStations: [],
       loading: true,
@@ -78,14 +83,12 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public async componentDidMount() {
     // Get initial filters
     await super.componentDidMount()
-    this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     const { navigation } = this.props;
     // Enable swipe for opening sidebar
     this.parent = navigation.getParent();
     this.parent?.setOptions({
       swipeEnabled: !this.siteArea
     });
-    this.refresh(true);
   }
 
   public componentWillUnmount() {
@@ -183,7 +186,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public onBack (): boolean {
     if (!this.state.showMap) {
-      this.setState({ showMap: true }, () => this.refresh());
+      this.setState({ showMap: true, chargingStations: [], count: 0 }, () => this.refresh(true));
       return true;
     }
     if (!!this.siteArea) {
@@ -194,9 +197,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     return true;
   };
 
-  public async computeRegion(chargingStations: ChargingStation[]): Promise<Region> {
+  public async computeRegion(): Promise<Region> {
     // If Site Area, use its coordinates
-    if(this.siteArea) {
+    if (this.siteArea) {
       return {
         longitude: this.siteArea.address.coordinates[0],
         latitude: this.siteArea.address.coordinates[1],
@@ -215,11 +218,10 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         }
     }
     // Else, use coordinates of the first charging station
-    if (!Utils.isEmptyArray(chargingStations)) {
-      let gpsCoordinates: number[];
-      if ( !Utils.isEmptyArray(chargingStations) && Utils.containsGPSCoordinates(chargingStations[0].coordinates) ) {
-        gpsCoordinates = chargingStations[0].coordinates;
-      }
+    const firstChargingStationResponse = await this.getChargingStations('', 0, 1);
+    const firstChargingStation = firstChargingStationResponse.result?.[0];
+    if ( firstChargingStation?.coordinates ) {
+      const gpsCoordinates = firstChargingStation.coordinates;
       return {
         longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
         latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
@@ -230,20 +232,20 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     return this.currentRegion;
   }
 
-  public refresh = async (showRefreshing = false) => {
+  public refresh = async (showSpinner = false) => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, showMap } = this.state;
       const limit = showMap ? this.mapLimit : this.listLimit;
-      if (showRefreshing) {
-        this.setState({ refreshing: true })
+      if (showSpinner) {
+        this.setState({ ...(Utils.isEmptyArray(this.state.chargingStations) ? { loading: true } : { refreshing: true }) });
+      }
+      // Refresh region
+      if(!this.currentRegion) {
+        this.currentRegion = await this.computeRegion();
       }
       // Refresh All
       const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
-      // Refresh region
-      if(!this.currentRegion) {
-        this.currentRegion = await this.computeRegion(chargingStations?.result);
-      }
       // Add ChargingStations
       this.setState(() => ({
         loading: false,
@@ -259,7 +261,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh
-    await this.refresh(true);
+    await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
   };
@@ -367,9 +369,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           {this.renderFilters()}
           {this.renderFabs()}
           {visible && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
-          {loading ? <Spinner style={style.spinner} color="grey" /> : (
+          {showMap ? this.renderMap() : (
             <View style={style.chargingStationsContainer}>
-              {showMap ? this.renderMap() : (
+              {loading ? <Spinner style={style.spinner} color="grey" /> : (
                 <ItemsList<ChargingStation>
                   skip={skip}
                   count={count}
@@ -399,12 +401,15 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   private renderMap() {
     const style = computeStyleSheet();
-    const { chargingStations, satelliteMap } = this.state
+    const { chargingStations, satelliteMap, loading, refreshing } = this.state
+    const activityIndicatorCommonStyle = computeActivityIndicatorCommonStyle();
+    const commonColors = Utils.getCurrentCommonColor();
     const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
       Utils.containsGPSCoordinates(chargingStation.coordinates)
     );
     return (
       <View style={style.map}>
+        {(loading || refreshing) && <ActivityIndicator size={scale(18)} color={commonColors.disabledDark} style={[activityIndicatorCommonStyle.activityIndicator, style.activityIndicator]} animating={true} />}
         <ClusterMap<ChargingStation>
           items={chargingStationsWithGPSCoordinates}
           satelliteMap={satelliteMap}
@@ -445,7 +450,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <TouchableOpacity
           delayPressIn={0}
           style={[fabStyles.fab, style.fab]}
-          onPress={() => this.setState({ showMap: !showMap, chargingStations: []}, () => this.refresh()) }
+          onPress={() => this.setState({ showMap: !showMap, chargingStations: [], count: 0}, () => this.refresh(true)) }
         >
           <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
