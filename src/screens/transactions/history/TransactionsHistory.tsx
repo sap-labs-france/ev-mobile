@@ -57,12 +57,6 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     };
   }
 
-  public async componentDidMount() {
-    // Get initial filters
-    await super.componentDidMount();
-    await this.refresh();
-  }
-
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
@@ -108,10 +102,13 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     return null;
   }
 
-  public async refresh() {
+  public async refresh(showSpinner = false) {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      if (showSpinner) {
+        this.setState({...(Utils.isEmptyArray(this.state.transactions) ? { loading: true} : {refreshing: true})});
+      }
       // Refresh All
       const allTransactions = await this.getTransactions(Constants.ONLY_RECORD_COUNT, {Statistics: 'history'});
       const allTransactionsStats = allTransactions?.stats;
@@ -147,11 +144,14 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     }
   };
 
-  public search = async (searchText: string) => {
-    this.setState({ refreshing: true })
+  public async search (searchText: string) {
     this.searchText = searchText;
-    await this.refresh();
+    this.refresh(true);
   };
+
+  private manualRefresh() {
+    this.refresh(true);
+  }
 
   public render () {
     const style = computeStyleSheet();
@@ -187,7 +187,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
                 />
               )}
               data={transactions}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={this.manualRefresh.bind(this)}
               refreshing={refreshing}
               emptyTitle={I18n.t('transactions.noTransactionsHistory')}
               navigation={navigation}
@@ -200,7 +200,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   }
 
   private onFiltersChanged(newFilters: TransactionsHistoryFiltersDef): void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+    this.setState({ filters: newFilters }, () => this.refresh(true));
   }
 
   private renderFilters() {
