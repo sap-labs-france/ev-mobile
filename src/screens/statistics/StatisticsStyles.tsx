@@ -12,21 +12,25 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
       height: '100%',
       backgroundColor: commonColor.containerBgColor
     },
-    spinner: {
-      flex: 1,
-      backgroundColor: commonColor.containerBgColor
+    activityIndicator: {
+      marginTop: '70@s',
+      padding: '10@s',
+      backgroundColor: commonColor.containerBgColor,
+      borderRadius: 100,
+      zIndex: 2
     },
     content: {
-      backgroundColor: commonColor.headerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      flex: 1
     },
     boxContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       alignItems: 'stretch',
+      justifyContent: 'center',
       paddingLeft: '10@s'
     },
     inactivity: {
@@ -43,7 +47,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     sessions: {
       backgroundColor: color(commonColor.primary).mix(Color('white'), 0.5).desaturate(0.2).hex()
-    }
+    },
+    spinnerContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1
+    },
+    spinner: {
+      flex: 1
+    },
   });
   const portraitStyles = {};
   const landscapeStyles = {};

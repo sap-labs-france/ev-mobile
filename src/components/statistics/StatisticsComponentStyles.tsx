@@ -11,20 +11,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       padding: '10@s',
       borderWidth: 0,
-     // borderRadius: '15@s',
       marginTop: '10@s',
       flexGrow: 1,
       flexBasis: 'auto',
       marginRight: '10@s',
-      justifyContent: 'space-between',
-      shadowColor: commonColor.cardShadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62,
-      elevation: 11
+      justifyContent: 'space-between'
     },
     icon: {
       fontSize: '52@s',
