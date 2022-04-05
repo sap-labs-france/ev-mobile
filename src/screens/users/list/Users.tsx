@@ -57,11 +57,6 @@ export default class Users extends SelectableList<User> {
     };
   }
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-  }
-
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     if (this.state.filters) {
       try {
@@ -115,8 +110,11 @@ export default class Users extends SelectableList<User> {
     super.setState(state, callback);
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
+      if (showSpinner) {
+        this.setState({...(Utils.isEmptyArray(this.state.users) ? {loading: true} : {refreshing: true})});
+      }
       const { skip, limit } = this.state;
       // Refresh All
       this.setState({ refreshing: true });
@@ -132,7 +130,7 @@ export default class Users extends SelectableList<User> {
     }
   }
 
-  public search = async (searchText: string) => {
+  public async search (searchText: string) {
     this.searchText = searchText;
     await this.refresh();
   };
@@ -140,7 +138,7 @@ export default class Users extends SelectableList<User> {
   public render(): React.ReactElement {
     const style = computeStyleSheet();
     const listItemCommonStyles = computeListItemCommonStyles();
-    const { users, count, skip, limit, refreshing, loading, filters } = this.state;
+    const { users, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
@@ -153,9 +151,7 @@ export default class Users extends SelectableList<User> {
           displayTenantLogo={false}
         />
         {this.renderFilters()}
-        {(loading || !filters) ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
+        {loading ? <Spinner style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<User>
               ref={this.itemsListRef}
@@ -180,7 +176,7 @@ export default class Users extends SelectableList<User> {
   }
 
   private onFiltersChanged(newFilters: UsersFiltersDef): void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+    this.setState({ filters: newFilters }, () => this.refresh(true));
   }
 
   private renderFilters() {

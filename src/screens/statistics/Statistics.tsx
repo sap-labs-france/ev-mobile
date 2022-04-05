@@ -65,7 +65,7 @@ export default class Statistics extends BaseScreen<Props, State> {
 
   public async refresh (showSpinner: boolean) {
     if (showSpinner) {
-      this.setState({...(this.state.totalConsumptionWattHours ? { refreshing: true } : { loading: true })});
+      this.setState({...(Utils.isNullOrUndefined(this.state.totalConsumptionWattHours) ? { loading: true } : { refreshing: true })});
     }
     // Get the ongoing Transaction stats
     const transactionsStats = await this.getTransactionsStats();
