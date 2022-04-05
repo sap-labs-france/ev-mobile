@@ -537,6 +537,10 @@ export default class Utils {
     return false;
   }
 
+  public static isNullOrUndefined(value: any) {
+    return value == null;
+  }
+
   public static async sleep(millis: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
