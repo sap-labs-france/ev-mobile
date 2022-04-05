@@ -46,11 +46,6 @@ export default class Invoices extends BaseScreen<Props, State> {
     };
   }
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-  }
-
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
@@ -104,8 +99,11 @@ export default class Invoices extends BaseScreen<Props, State> {
     }
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
+      if (showSpinner) {
+        this.setState({...(Utils.isEmptyArray(this.state.invoices) ? {loading: true} : {refreshing: true})});
+      }
       const { skip, limit } = this.state;
       // Refresh All
       const invoices = await this.getInvoices(0, skip + limit);
@@ -120,11 +118,15 @@ export default class Invoices extends BaseScreen<Props, State> {
   }
 
   private onFilterChanged(newFilters: InvoicesFiltersDef): void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+    this.setState({ filters: newFilters }, () => this.refresh(true));
+  }
+
+  private manualRefresh() {
+    this.refresh(true);
   }
 
   public render() {
-    const { invoices, loading, skip, limit, refreshing, count, filters } = this.state;
+    const { invoices, loading, skip, limit, refreshing, count } = this.state;
     const { navigation } = this.props;
     const style = computeStyleSheet();
     return (
@@ -139,9 +141,7 @@ export default class Invoices extends BaseScreen<Props, State> {
           onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}
           ref={(invoicesFilters: InvoicesFilters) => this.setScreenFilters(invoicesFilters, true)}
         />
-          {(loading || !filters) ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
+          {loading ? <Spinner style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<BillingInvoice>
               data={invoices}
@@ -151,7 +151,7 @@ export default class Invoices extends BaseScreen<Props, State> {
               skip={skip}
               renderItem={(invoice: BillingInvoice) => <InvoiceComponent containerStyle={[style.invoiceComponentContainer]} navigation={navigation} invoice={invoice} />}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={this.manualRefresh.bind(this)}
               onEndReached={this.onEndScroll}
               emptyTitle={i18n.t('invoices.noInvoices')}
             />
