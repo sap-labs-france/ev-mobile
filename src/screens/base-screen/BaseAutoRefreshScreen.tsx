@@ -79,12 +79,17 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     return this.refreshPeriodMillis;
   }
 
-  public async refresh(showSpinner = false) {
+  public async refresh() {
     console.warn('BaseAutoRefreshScreen: Refresh not implemented!!!');
   }
 
-  protected manualRefresh = async () => {
-    await this.refresh(true);
+  protected async manualRefresh()  {
+    // Display spinner
+    this.setState({ refreshing: true });
+    // Refresh
+    await this.refresh();
+    // Hide spinner
+    this.setState({ refreshing: false });
   };
 
   private canRefresh(): boolean {
