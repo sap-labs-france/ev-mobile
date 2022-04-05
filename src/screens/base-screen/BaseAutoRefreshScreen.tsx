@@ -12,7 +12,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
   private timerRefresh: ReturnType<typeof setTimeout>;
   private timerRefreshActive: boolean;
   private refreshOngoing = false;
-  private refreshPeriodMillis: number;
+  protected refreshPeriodMillis: number;
   private lastRefreshDate: Date;
 
   public constructor(props: Props) {
@@ -79,17 +79,12 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     return this.refreshPeriodMillis;
   }
 
-  public async refresh() {
+  public async refresh(showSpinner = false) {
     console.warn('BaseAutoRefreshScreen: Refresh not implemented!!!');
   }
 
   protected manualRefresh = async () => {
-    // Display spinner
-    this.setState({ refreshing: true });
-    // Refresh
-    await this.refresh();
-    // Hide spinner
-    this.setState({ refreshing: false });
+    await this.refresh(true);
   };
 
   private canRefresh(): boolean {

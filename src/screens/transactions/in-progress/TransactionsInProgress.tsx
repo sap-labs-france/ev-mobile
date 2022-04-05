@@ -60,11 +60,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     super.setState(state, callback);
   };
 
-  public async componentDidMount() {
-    // Get initial filters
-    await super.componentDidMount();
-  }
-
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     if (this.state.filters) {
       try {
@@ -96,10 +91,13 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     return null;
   };
 
-  public refresh = async () => {
+  public async refresh(showSpinner = false) {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      if (showSpinner) {
+        this.setState({...(Utils.isEmptyArray(this.state.transactions) ? {loading: true} : {refreshing: true})});
+      }
       // Get transactions
       const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
       // Set
@@ -130,13 +128,13 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     }
   };
 
-  public search = async (searchText: string) => {
+  public async search(searchText: string) {
     this.searchText = searchText;
-    await this.refresh();
+    await this.refresh(true);
   };
 
   private onFiltersChanged(newFilters: TransactionsInProgressFiltersDef): void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+    this.setState({filters: newFilters}, () => this.refresh(true));
   }
 
   public render = () => {
