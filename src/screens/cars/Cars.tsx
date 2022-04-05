@@ -63,11 +63,6 @@ export default class Cars extends SelectableList<Car> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-  }
-
   public componentWillUnmount() {
     super.componentWillUnmount();
     Orientation.unlockAllOrientations();
@@ -76,8 +71,7 @@ export default class Cars extends SelectableList<Car> {
   public async componentDidFocus() {
     super.componentDidFocus();
     Orientation.lockToPortrait();
-    this.setState({ refreshing: true });
-    await this.refresh();
+    await this.refresh(true);
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
@@ -128,8 +122,11 @@ export default class Cars extends SelectableList<Car> {
     }
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
+      if (showSpinner) {
+        this.setState({...(Utils.isEmptyArray(this.state.cars) ? { loading: true } : { refreshing: true })});
+      }
       const { skip, limit } = this.state;
       // Refresh All
       const cars = await this.getCars(this.searchText, 0, skip + limit);
@@ -144,16 +141,15 @@ export default class Cars extends SelectableList<Car> {
     }
   }
 
-  public search = async (searchText: string): Promise<void> => {
-    this.setState({ refreshing: true });
+  public async search(searchText: string): Promise<void> {
     this.searchText = searchText;
-    await this.refresh();
+    this.refresh(true);
   };
 
   public render() {
     const transactionStyles = computeTransactionStyles();
     const style = computeStyleSheet();
-    const { cars, count, skip, limit, refreshing, loading, filters } = this.state;
+    const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
     const fabStyles = computeFabStyles();
     return (
@@ -172,9 +168,7 @@ export default class Cars extends SelectableList<Car> {
           navigation={this.props.navigation}
         />
         {this.renderFilters()}
-        {(loading || !filters) ? (
-          <Spinner style={transactionStyles.spinner} color="grey" />
-        ) : (
+        {loading ? <Spinner style={transactionStyles.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<Car>
               data={cars}
@@ -194,7 +188,7 @@ export default class Cars extends SelectableList<Car> {
                 />
               )}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={this.manualRefresh.bind(this)}
               onEndReached={this.onEndScroll}
               emptyTitle={I18n.t('cars.noCars')}
             />
@@ -205,7 +199,7 @@ export default class Cars extends SelectableList<Car> {
   }
 
   private onFilterChanged(newFilters: CarsFiltersDef) : void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+    this.setState({filters: newFilters}, () => this.refresh(true));
   }
 
   private renderFilters() {
