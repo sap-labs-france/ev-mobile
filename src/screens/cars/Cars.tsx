@@ -56,6 +56,12 @@ export default class Cars extends SelectableList<Car> {
     };
   }
 
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    const initialFilters = this.screenFilters?.getFilters();
+    this.setState({filters: initialFilters}, () => this.refresh(true));
+  }
+
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
@@ -76,32 +82,30 @@ export default class Cars extends SelectableList<Car> {
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
     const { isModal } = this.props;
-    if(this.state.filters || isModal) {
-      try {
-        const userID = isModal ? this.props.userIDs?.join('|') : this.state.filters.users?.map(user => user.id).join('|');
-        const params = {
-          Search: searchText,
-          WithUser: true,
-          UserID: userID
-        };
-        const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
-        // Get total number of records
-        if (cars?.count === -1) {
-          const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
-          cars.count = carsNbrRecordsOnly?.count;
-        }
-        return cars;
-      } catch (error) {
-        // Check if HTTP?
-        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-          await Utils.handleHttpUnexpectedError(
-            this.centralServerProvider,
-            error,
-            'cars.carUnexpectedError',
-            this.props.navigation,
-            this.refresh.bind(this)
-          );
-        }
+    try {
+      const userID = isModal ? this.props.userIDs?.join('|') : this.state.filters.users?.map(user => user.id).join('|');
+      const params = {
+        Search: searchText,
+        WithUser: true,
+        UserID: userID
+      };
+      const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
+      // Get total number of records
+      if (cars?.count === -1) {
+        const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
+        cars.count = carsNbrRecordsOnly?.count;
+      }
+      return cars;
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'cars.carUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
     }
     return null;
@@ -204,15 +208,18 @@ export default class Cars extends SelectableList<Car> {
 
   private renderFilters() {
     const style = computeStyleSheet();
+    const { isModal } = this.props;
     const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
     return (
       <View style={style.filtersContainer}>
-        <CarsFilters
-          onFilterChanged={(newFilters: CarsFiltersDef) => this.onFilterChanged(newFilters)}
-          ref={(chargingStationsFilters: CarsFilters) => this.setScreenFilters(chargingStationsFilters)}
-        />
+        {!isModal && (
+          <CarsFilters
+            onFilterChanged={(newFilters: CarsFiltersDef) => this.onFilterChanged(newFilters)}
+            ref={(chargingStationsFilters: CarsFilters) => this.setScreenFilters(chargingStationsFilters)}
+          />
+        )}
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        {!this.props.isModal && this.screenFilters?.canOpenModal() && (
+        {!isModal && this.screenFilters?.canOpenModal() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
             <Icon style={style.filterButtonIcon} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
