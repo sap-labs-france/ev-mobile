@@ -12,11 +12,6 @@ export interface CarsFiltersDef {
 
 export default class CarsFilters extends ScreenFilters<CarsFiltersDef> {
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    this.onFiltersChanged(null, null, true);
-  }
-
   public render = () => {
     const { filters } = this.state;
     return (
