@@ -149,7 +149,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: '70@s',
       padding: '10@s',
       backgroundColor: commonColor.containerBgColor,
-      borderRadius: 100
+      borderRadius: 100,
+      zIndex: 1
     }
   });
   const portraitStyles = {};

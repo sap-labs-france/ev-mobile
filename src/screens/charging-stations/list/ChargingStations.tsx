@@ -409,7 +409,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     );
     return (
       <View style={style.map}>
-        {(loading || refreshing) && <ActivityIndicator size={scale(18)} color={commonColors.disabledDark} style={[activityIndicatorCommonStyle.activityIndicator, style.activityIndicator]} animating={true} />}
+        {(loading || refreshing) && <ActivityIndicator size={scale(18)} color={commonColors.textColor} style={[activityIndicatorCommonStyle.activityIndicator, style.activityIndicator]} animating={true} />}
         <ClusterMap<ChargingStation>
           items={chargingStationsWithGPSCoordinates}
           satelliteMap={satelliteMap}

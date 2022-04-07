@@ -68,7 +68,7 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
     console.warn('BaseAutoRefreshScreen: Refresh not implemented!!!');
   }
 
-  protected manualRefresh = async () => {
+  protected async manualRefresh() {
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh

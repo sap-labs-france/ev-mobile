@@ -56,17 +56,18 @@ export default class Cars extends SelectableList<Car> {
     };
   }
 
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    const initialFilters = this.screenFilters?.getFilters();
+    this.setState({filters: initialFilters}, () => this.refresh(true));
+  }
+
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
   ): void => {
     super.setState(state, callback);
   };
-
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-  }
 
   public componentWillUnmount() {
     super.componentWillUnmount();
@@ -76,38 +77,35 @@ export default class Cars extends SelectableList<Car> {
   public async componentDidFocus() {
     super.componentDidFocus();
     Orientation.lockToPortrait();
-    this.setState({ refreshing: true });
-    await this.refresh();
+    await this.refresh(true);
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
     const { isModal } = this.props;
-    if(this.state.filters || isModal) {
-      try {
-        const userID = isModal ? this.props.userIDs?.join('|') : this.state.filters.users?.map(user => user.id).join('|');
-        const params = {
-          Search: searchText,
-          WithUser: true,
-          UserID: userID
-        };
-        const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
-        // Get total number of records
-        if (cars?.count === -1) {
-          const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
-          cars.count = carsNbrRecordsOnly?.count;
-        }
-        return cars;
-      } catch (error) {
-        // Check if HTTP?
-        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-          await Utils.handleHttpUnexpectedError(
-            this.centralServerProvider,
-            error,
-            'cars.carUnexpectedError',
-            this.props.navigation,
-            this.refresh.bind(this)
-          );
-        }
+    try {
+      const userID = isModal ? this.props.userIDs?.join('|') : this.state.filters.users?.map(user => user.id).join('|');
+      const params = {
+        Search: searchText,
+        WithUser: true,
+        UserID: userID
+      };
+      const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
+      // Get total number of records
+      if (cars?.count === -1) {
+        const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
+        cars.count = carsNbrRecordsOnly?.count;
+      }
+      return cars;
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'cars.carUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
     }
     return null;
@@ -128,8 +126,11 @@ export default class Cars extends SelectableList<Car> {
     }
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
+      if (showSpinner) {
+        this.setState({...(Utils.isEmptyArray(this.state.cars) ? { loading: true } : { refreshing: true })});
+      }
       const { skip, limit } = this.state;
       // Refresh All
       const cars = await this.getCars(this.searchText, 0, skip + limit);
@@ -144,16 +145,15 @@ export default class Cars extends SelectableList<Car> {
     }
   }
 
-  public search = async (searchText: string): Promise<void> => {
-    this.setState({ refreshing: true });
+  public async search(searchText: string): Promise<void> {
     this.searchText = searchText;
-    await this.refresh();
+    this.refresh(true);
   };
 
   public render() {
     const transactionStyles = computeTransactionStyles();
     const style = computeStyleSheet();
-    const { cars, count, skip, limit, refreshing, loading, filters } = this.state;
+    const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
     const fabStyles = computeFabStyles();
     return (
@@ -172,9 +172,7 @@ export default class Cars extends SelectableList<Car> {
           navigation={this.props.navigation}
         />
         {this.renderFilters()}
-        {(loading || !filters) ? (
-          <Spinner style={transactionStyles.spinner} color="grey" />
-        ) : (
+        {loading ? <Spinner style={transactionStyles.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<Car>
               data={cars}
@@ -194,7 +192,7 @@ export default class Cars extends SelectableList<Car> {
                 />
               )}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={this.manualRefresh.bind(this)}
               onEndReached={this.onEndScroll}
               emptyTitle={I18n.t('cars.noCars')}
             />
@@ -205,20 +203,23 @@ export default class Cars extends SelectableList<Car> {
   }
 
   private onFilterChanged(newFilters: CarsFiltersDef) : void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+    this.setState({filters: newFilters}, () => this.refresh(true));
   }
 
   private renderFilters() {
     const style = computeStyleSheet();
+    const { isModal } = this.props;
     const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
     return (
       <View style={style.filtersContainer}>
-        <CarsFilters
-          onFilterChanged={(newFilters: CarsFiltersDef) => this.onFilterChanged(newFilters)}
-          ref={(chargingStationsFilters: CarsFilters) => this.setScreenFilters(chargingStationsFilters)}
-        />
+        {!isModal && (
+          <CarsFilters
+            onFilterChanged={(newFilters: CarsFiltersDef) => this.onFilterChanged(newFilters)}
+            ref={(chargingStationsFilters: CarsFilters) => this.setScreenFilters(chargingStationsFilters)}
+          />
+        )}
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        {!this.props.isModal && this.screenFilters?.canOpenModal() && (
+        {!isModal && this.screenFilters?.canOpenModal() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
             <Icon style={style.filterButtonIcon} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
