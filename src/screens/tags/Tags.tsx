@@ -57,11 +57,6 @@ export default class Tags extends SelectableList<Tag> {
     };
   }
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-  }
-
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
@@ -120,8 +115,11 @@ export default class Tags extends SelectableList<Tag> {
     }
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
+      if (showSpinner) {
+        this.setState({...(Utils.isEmptyArray(this.state.tags) ? {loading: true} : {refreshing: true})});
+      }
       const { skip, limit } = this.state;
       // Refresh All
       const tags = await this.getTags(this.searchText, 0, skip + limit);
@@ -136,10 +134,9 @@ export default class Tags extends SelectableList<Tag> {
     }
   }
 
-  public search = async (searchText: string) => {
-    this.setState({ refreshing: true });
+  public async search (searchText: string) {
     this.searchText = searchText;
-    await this.refresh();
+    this.refresh(true);
   };
 
   public render = () => {
@@ -192,7 +189,7 @@ export default class Tags extends SelectableList<Tag> {
   };
 
   private onFilterChanged(newFilters: TagsFiltersDef) : void {
-    this.setState({filters: newFilters, ...(this.state.filters ? {refreshing: true} : {loading: true})}, () => this.refresh());
+    this.setState({ filters: newFilters }, () => this.refresh(true));
   }
 
   private renderFilters() {
