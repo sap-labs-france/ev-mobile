@@ -36,7 +36,7 @@ export default class AuthHeader extends React.Component<Props, State>{
             <View style={style.logo}/>
         }
         <View>
-          <Text style={style.appText}>Open e-Mobility</Text>
+          <Text style={style.appText}>Charge Angels</Text>
           <Text style={style.appVersionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
         </View>
         {tenantName ? (

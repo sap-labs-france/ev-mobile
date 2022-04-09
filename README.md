@@ -1,10 +1,10 @@
-# Open e-Mobility React-Native Mobile App
+# Charge Angels React-Native Mobile App
 
 ## Summary
 
 This application is the Electric Vehicle Charging Station (EVSE) mobile application for Android and iOS.
 
-It's linked to the Open e-Mobility backend: https://github.com/sap-labs-france/ev-server
+It's linked to the Charge Angels backend: https://github.com/sap-labs-france/ev-server
 
 **App Stores**
 
