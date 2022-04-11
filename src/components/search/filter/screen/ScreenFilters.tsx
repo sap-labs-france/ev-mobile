@@ -66,6 +66,15 @@ export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFi
     });
   }
 
+  public async loadInitialFilters(): Promise<void> {
+    const initialFilters = await this.getInitialFilters();
+    this.onFiltersChanged(initialFilters?.visibleFilters, initialFilters?.modalFilters, true);
+  }
+
+  protected getInitialFilters(): Promise<{visibleFilters: T, modalFilters: T}> {
+    return Promise.resolve({visibleFilters: null, modalFilters: null});
+  }
+
   public areModalFiltersActive() {
     const { modalFilters } = this.state;
     const nonNullFiltersValues =  Object.values(modalFilters).filter((filterValue) => filterValue)

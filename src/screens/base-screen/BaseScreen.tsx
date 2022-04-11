@@ -43,6 +43,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
     // Ok
     this.mounted = true;
+    this.screenFilters?.loadInitialFilters();
   }
 
   public componentWillUnmount() {
@@ -68,7 +69,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public setScreenFilters(screenFilters: ScreenFilters<any>, headerDisplay?: boolean) {
-    if (screenFilters) {
+    if (screenFilters && !this.screenFilters) {
       this.screenFilters = screenFilters;
       // Bind filters modal container to header
       if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent() && headerDisplay) {
