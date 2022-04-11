@@ -24,7 +24,7 @@ export default class UsersFilters extends ScreenFilters<UsersFiltersDef> {
     await this.loadInitialFilters();
   }
 
-  private async loadInitialFilters() {
+  private async loadInitialFilters(): Promise<void> {
     const issuer = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ROAMING);
     const initialFilters = { issuer: !!issuer };
     this.onFiltersChanged(null, initialFilters, true);
