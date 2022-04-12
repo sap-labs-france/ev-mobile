@@ -35,6 +35,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     commonConnectorValue: {
       fontSize: '22@s',
       fontWeight: 'bold',
+      padding: '3@s',
       color: commonColor.inverseTextColor
     },
     commonConnectorDescription: {

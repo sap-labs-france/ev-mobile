@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Text, View } from 'native-base';
 import React from 'react';
-import { Animated, Easing, Platform } from 'react-native';
+import { Animated, Easing } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import { ChargePointStatus, Connector } from '../../types/ChargingStation';
@@ -191,6 +191,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
           <View style={connectorStyles.container}>
             <Animated.Text
               adjustsFontSizeToFit={true}
+              numberOfLines={1}
               style={
                 isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
               }>

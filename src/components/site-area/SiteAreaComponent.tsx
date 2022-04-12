@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Card, CardItem, Icon, Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, ViewStyle } from 'react-native';
 
@@ -49,7 +49,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
             if (onNavigate) {
               onNavigate();
             }
-            if (siteArea.connectorStats.totalConnectors > 0) {
+            if (siteArea.connectorStats?.totalConnectors > 0) {
               navigation.navigate('ChargingStations', {
                 params: {
                   siteArea
@@ -87,7 +87,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           </View>
           <View style={style.rightContainer}>
             <Icon
-              style={siteArea.connectorStats.totalConnectors > 0 ? [style.icon, style.arrowIcon] : style.iconHidden}
+              style={siteArea.connectorStats?.totalConnectors > 0 ? [style.icon, style.arrowIcon] : style.iconHidden}
               type="MaterialIcons"
               name="navigate-next"
             />
