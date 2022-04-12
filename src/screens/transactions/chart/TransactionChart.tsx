@@ -54,7 +54,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   }
 
   public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
+    await super.componentDidMount(true);
   }
 
   public setState = (
@@ -386,71 +386,75 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     } = this.state;
     const chartDefinition = this.createChart();
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
-    return loading ? (
-      <Spinner style={style.spinner} color="grey" />
-    ) : (
+    return (
       <View style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
           subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
         />
-        {showTransactionDetails && transaction && (
-          <TransactionHeaderComponent
-            navigation={navigation}
-            transaction={transaction}
-            isAdmin={isAdmin}
-            isSiteAdmin={isSiteAdmin}
-          />
-        )}
-        {transaction && values && values.length > 1 && canDisplayTransaction ? (
-          <LineChart
-            style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
-            data={chartDefinition.data}
-            chartDescription={{ text: '' }}
-            legend={{
-              enabled: true,
-              textSize: scale(9),
-              textColor: processColor(commonColor.textColor),
-              wordWrapEnabled: true,
-              yEntrySpace: scale(10),
-              xEntrySpace: scale(15),
-            }}
-            marker={{
-              enabled: true,
-              markerColor: processColor(commonColor.listItemBackground),
-              textSize: scale(12),
-              textColor: processColor(commonColor.textColor)
-            }}
-            xAxis={chartDefinition.xAxis}
-            yAxis={chartDefinition.yAxis}
-            autoScaleMinMaxEnabled={false}
-            animation={{
-              durationX: 1000,
-              durationY: 1000,
-              easingY: 'EaseInOutQuart'
-            }}
-            drawGridBackground={false}
-            drawBorders={false}
-            touchEnabled
-            dragEnabled
-            scaleEnabled={false}
-            scaleXEnabled
-            scaleYEnabled={false}
-            pinchZoom
-            doubleTapToZoomEnabled={false}
-            dragDecelerationEnabled
-            dragDecelerationFrictionCoef={0.99}
-            keepPositionOnRotation={false}
-          />
-        ) : transaction || (connector && connector.currentTransactionID) ? (
-          canDisplayTransaction ? (
-            <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
-          ) : (
-            <Text style={style.notData}>{I18n.t('details.notAuthorized')}</Text>
-          )
-        ) : (
-          <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
+        {loading ? <Spinner style={style.spinner} color="grey" /> : (
+          <View>
+            {showTransactionDetails && transaction && (
+              <TransactionHeaderComponent
+                navigation={navigation}
+                transaction={transaction}
+                isAdmin={isAdmin}
+                isSiteAdmin={isSiteAdmin}
+              />
+            )}
+            {transaction && values && values.length > 1 && canDisplayTransaction ? (
+              <LineChart
+                style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
+                data={chartDefinition.data}
+                chartDescription={{ text: '' }}
+                legend={{
+                  enabled: true,
+                  textSize: scale(9),
+                  textColor: processColor(commonColor.textColor),
+                  wordWrapEnabled: true,
+                  yEntrySpace: scale(10),
+                  xEntrySpace: scale(15),
+                }}
+                marker={{
+                  enabled: true,
+                  markerColor: processColor(commonColor.listItemBackground),
+                  textSize: scale(12),
+                  textColor: processColor(commonColor.textColor)
+                }}
+                xAxis={chartDefinition.xAxis}
+                yAxis={chartDefinition.yAxis}
+                autoScaleMinMaxEnabled={false}
+                animation={{
+                  durationX: 1000,
+                  durationY: 1000,
+                  easingY: 'EaseInOutQuart'
+                }}
+                drawGridBackground={false}
+                drawBorders={false}
+                touchEnabled
+                dragEnabled
+                scaleEnabled={false}
+                scaleXEnabled
+                scaleYEnabled={false}
+                pinchZoom
+                doubleTapToZoomEnabled={false}
+                dragDecelerationEnabled
+                dragDecelerationFrictionCoef={0.99}
+                keepPositionOnRotation={false}
+              />
+            ) : (
+              transaction || (connector && connector.currentTransactionID) ? (
+                canDisplayTransaction ? (
+                  <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
+                ) : (
+                  <Text style={style.notData}>{I18n.t('details.notAuthorized')}</Text>
+                )
+              ) : (
+                <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
+              )
+            )}
+          </View>
         )}
       </View>
     );
