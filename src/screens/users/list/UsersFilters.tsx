@@ -19,15 +19,10 @@ export interface UsersFiltersDef {
 
 export default class UsersFilters extends ScreenFilters<UsersFiltersDef> {
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.loadInitialFilters();
-  }
-
-  private async loadInitialFilters() {
+  protected async getInitialFilters(): Promise<{ visibleFilters: UsersFiltersDef, modalFilters: UsersFiltersDef }> {
     const issuer = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ROAMING);
     const initialFilters = { issuer: !!issuer };
-    this.onFiltersChanged(null, initialFilters, true);
+    return { visibleFilters: null, modalFilters: initialFilters };
   }
 
   public render = () => {
