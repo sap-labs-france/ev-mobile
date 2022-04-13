@@ -104,8 +104,8 @@ export default class DialogModal extends React.Component<Props, State> {
                   key={index}
                   title={button.text?.toUpperCase()}
                   containerStyle={buttonContainerCommonStyle}
-                  buttonStyle={[modalCommonStyles.primaryButton , button.buttonStyle, style.button]}
-                  titleStyle={style.buttonText}
+                  buttonStyle={[modalCommonStyles.primaryButton , style.button, button.buttonStyle]}
+                  titleStyle={[style.buttonText, button.buttonTextStyle]}
                   onPress={button.action}
                 />
               ))}

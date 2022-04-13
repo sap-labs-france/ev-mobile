@@ -63,7 +63,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     button: {
       padding: '5@s',
-      paddingVertical: '5@s',
+      paddingVertical: '8@s',
       borderRadius: '8@s',
       borderWidth: 0.8
     },

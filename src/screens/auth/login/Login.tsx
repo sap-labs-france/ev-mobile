@@ -455,7 +455,7 @@ export default class Login extends BaseScreen<Props, State> {
           {
             text: I18n.t('general.yes'),
             action: () => this.setState({ showNoTenantFoundDialog: false }, () => this.goToTenants(true)),
-            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButtonText,
             buttonStyle: modalCommonStyle.primaryButton
           }
         ]}

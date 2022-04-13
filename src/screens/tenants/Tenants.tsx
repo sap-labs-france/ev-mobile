@@ -192,13 +192,13 @@ export default class Tenants extends BaseScreen<Props, State> {
           {
             text: I18n.t('qrCode.qrCode'),
             action: () => this.setState({ showAddTenantDialog: false }, () => this.openQrCodeScanner()),
-            buttonTextStyle: style.modalPrimaryButton,
+            buttonTextStyle: style.modalPrimaryButtonText,
             buttonStyle: style.modalPrimaryButton
           },
           {
             text: I18n.t('general.manually'),
             action: () => this.setState({ showAddTenantManuallyDialog: true, showAddTenantDialog: false }),
-            buttonTextStyle: style.modalPrimaryButton,
+            buttonTextStyle: style.modalPrimaryButtonText,
             buttonStyle: style.modalPrimaryButton
           }
         ]}
@@ -237,7 +237,7 @@ export default class Tenants extends BaseScreen<Props, State> {
         buttons={[
           {
             text: I18n.t('authentication.signUp'),
-            buttonTextStyle: style.modalPrimaryButton,
+            buttonTextStyle: style.modalPrimaryButtonText,
             buttonStyle: style.modalPrimaryButton,
             action: () =>
               this.setState({ newTenant: null }, () =>
@@ -246,7 +246,7 @@ export default class Tenants extends BaseScreen<Props, State> {
           },
           {
             text: I18n.t('authentication.signIn'),
-            buttonTextStyle: style.modalPrimaryButton,
+            buttonTextStyle: style.modalPrimaryButtonText,
             buttonStyle: style.modalPrimaryButton,
             action: () =>
               this.setState({ newTenant: null }, () =>
