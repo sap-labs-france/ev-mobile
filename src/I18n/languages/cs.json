@@ -201,7 +201,8 @@
     "unknownConnector": "Neznámé ID konektoru '{{connectorID}}' ",
     "scanTenantQrCodeTitle": "Scan Organization",
     "scanTenantQrCodeSuccess": "Organizace '{{tenantName}}' byla úspěšně uložena",
-    "scanChargingStationQrCodeTitle": "Naskenovat nabíjecí stanici"
+    "scanChargingStationQrCodeTitle": "Naskenovat nabíjecí stanici",
+    "saveOrganizationError": "Error while saving the organization"
   },
   "users": {
     "userUnexpectedError": "Nelze načíst uživatele",
