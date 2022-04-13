@@ -221,7 +221,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
         buttons={[
           {
             text: I18n.t('general.yes'),
-            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButtonText,
             buttonStyle: modalCommonStyle.primaryButton,
             action: async () => this.deletePaymentMethod(paymentMethod.id as string)
           }
