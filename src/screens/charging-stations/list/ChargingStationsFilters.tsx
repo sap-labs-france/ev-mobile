@@ -21,18 +21,13 @@ export interface ChargingStationsFiltersDef {
 
 export default class ChargingStationsFilters extends ScreenFilters<ChargingStationsFiltersDef> {
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.loadInitialFilters();
-  }
-
-  private async loadInitialFilters() {
+  protected async getInitialFilters(): Promise<{visibleFilters: ChargingStationsFiltersDef, modalFilters: ChargingStationsFiltersDef}> {
     const connectorStatus = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS);
     let connectorTypes = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
     connectorTypes = connectorTypes || null;
     const issuer = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ROAMING);
     const initialFilters = { connectorStatus: connectorStatus as string, connectorTypes: connectorTypes as string, issuer: !!issuer };
-    this.onFiltersChanged(null, initialFilters, true);
+    return { visibleFilters: null, modalFilters: initialFilters };
   }
 
   public render = () => {
