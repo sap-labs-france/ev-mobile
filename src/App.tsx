@@ -51,6 +51,7 @@ import AddCar from './screens/cars/AddCar';
 import ChargingStationQrCode from './screens/home/ChargingStationQrCode';
 import ThemeManager from './custom-theme/ThemeManager';
 import { PLATFORM } from './theme/variables/commonColor';
+import TenantQrCode from './screens/tenants/TenantQrCode';
 
 // Init i18n
 I18nManager.initialize();
@@ -126,6 +127,7 @@ function createAuthNavigator(props: BaseProps) {
     <AuthStack.Navigator initialRouteName={'Login'} screenOptions={{ headerShown: false }}>
       <AuthStack.Screen name="Login" component={Login} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="Tenants" component={Tenants} initialParams={props?.route?.params?.params} />
+      <AuthStack.Screen name="TenantQrCode" component={TenantQrCode} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="Eula" component={Eula} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="SignUp" component={SignUp} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="ResetPassword" component={ResetPassword} initialParams={props?.route?.params?.params} />

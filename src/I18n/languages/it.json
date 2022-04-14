@@ -201,7 +201,8 @@
     "unknownConnector": "ID Presa '{{connectorID}}' sconosciuto",
     "scanTenantQrCodeTitle": "Scansiona Organizzazione",
     "scanTenantQrCodeSuccess": "L'organizzazione '{{tenantName}}' è stata scansionata con successo",
-    "scanChargingStationQrCodeTitle": "Scansiona Stazione di Ricarica"
+    "scanChargingStationQrCodeTitle": "Scansiona Stazione di Ricarica",
+    "saveOrganizationError": "Error while saving the organization"
   },
   "users": {
     "userUnexpectedError": "Non posso leggere gli utenti",

@@ -848,9 +848,9 @@ export default class Utils {
 
   public static getOrganizationConnectorStatusesStyle(connectorStats: ConnectorStats, style: any): ViewStyle {
     // No Connector available
-    if (connectorStats.availableConnectors === 0) {
+    if (connectorStats?.availableConnectors === 0) {
       // Some connectors will be soon available
-      if (connectorStats.finishingConnectors > 0 || connectorStats.suspendedConnectors > 0) {
+      if (connectorStats?.finishingConnectors > 0 || connectorStats?.suspendedConnectors > 0) {
         return style.statusAvailableSoon;
       } else {
         return style.statusNotAvailable;
@@ -962,7 +962,7 @@ export default class Utils {
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
 
-  public static computeSiteMarkerStyle(connectorStats: ConnectorStats) {
+  public static computeSiteMarkerStyle(connectorStats: ConnectorStats = {}) {
     const connectorStatusStyles = computeConnectorStatusStyles();
     if (connectorStats.availableConnectors > 0) {
       return connectorStatusStyles.availableConnectorDescription;

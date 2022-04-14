@@ -32,7 +32,7 @@ export default class AppUpdateDialog extends React.Component<Props, State> {
           {
             text: I18n.t('general.update'),
             action: async () => Linking.openURL(appVersion?.url),
-            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButtonText,
             buttonStyle: modalCommonStyle.primaryButton
           }
         ]}

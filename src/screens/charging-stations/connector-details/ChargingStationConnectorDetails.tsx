@@ -563,13 +563,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               this.setState({ showStopTransactionDialog: false });
             },
             buttonStyle: modalCommonStyle.primaryButton,
-            buttonTextStyle: modalCommonStyle.primaryButton
+            buttonTextStyle: modalCommonStyle.primaryButtonText
           },
           {
             text: I18n.t('general.no'),
             action: () => this.setState({ showStopTransactionDialog: false }),
             buttonStyle: modalCommonStyle.primaryButton,
-            buttonTextStyle: modalCommonStyle.primaryButton
+            buttonTextStyle: modalCommonStyle.primaryButtonText
           }
         ]}
       />
@@ -1236,13 +1236,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           {
             text: I18n.t('general.yes'),
             action: () => this.setState({ showStartTransactionDialog: false }, async () => this.startTransaction()),
-            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButtonText,
             buttonStyle: modalCommonStyle.primaryButton
           },
           {
             text: I18n.t('general.no'),
             action: () => this.setState({ showStartTransactionDialog: false }),
-            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButtonText,
             buttonStyle: modalCommonStyle.primaryButton
           }
         ]}

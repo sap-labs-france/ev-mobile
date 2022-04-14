@@ -59,12 +59,20 @@ export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFi
         hasSiteAdmin = this.securityProvider.hasSiteAdmin();
       }
     }
-    this.loadInitialFilters();
     this.setState({
       isAdmin,
       hasSiteAdmin,
       locale
     });
+  }
+
+  public async loadInitialFilters(): Promise<void> {
+    const initialFilters = await this.getInitialFilters();
+    this.onFiltersChanged(initialFilters?.visibleFilters, initialFilters?.modalFilters, true);
+  }
+
+  protected getInitialFilters(): Promise<{visibleFilters: T, modalFilters: T}> {
+    return Promise.resolve({visibleFilters: null, modalFilters: null});
   }
 
   public areModalFiltersActive() {
@@ -73,30 +81,21 @@ export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFi
     return nonNullFiltersValues?.length > 0;
   }
 
-  public getFilters() {
-    return this.state.filters;
-  }
-
   public openModal() {
     this.filterModalContainerComponent.setVisible(true);
   }
 
-  public canOpenModal() {
+  // Check if at least one filter is available
+  public canFilter() {
     return this.filterModalContainerComponent?.countFilters() > 0;
   }
-
-  protected loadInitialFilters() {
-    this.onFiltersChanged(null, null);
-  };
 
   onFiltersChanged(newVisibleFilters: T = {} as T, newModalFilters: T = {} as T, applyFilters?: boolean) {
     const { onFilterChanged } = this.props;
     const filters = { ...this.state.filters, ...newVisibleFilters, ...newModalFilters };
     const modalFilters = { ...this.state.modalFilters, ...newModalFilters}
-    this.setState({ filters, modalFilters });
-    if (applyFilters) {
-      onFilterChanged(filters);
-    }};
+    this.setState({ filters, modalFilters }, applyFilters ? () => onFilterChanged(filters) : () => {});
+  }
 
   public setViewExpanded = (expanded: boolean, styleFrom?: ViewStyle, styleTo?: ViewStyle) => {
     if (expanded && styleFrom && styleTo) {

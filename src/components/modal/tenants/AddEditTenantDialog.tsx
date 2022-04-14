@@ -138,7 +138,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
             [
               {
                 text: I18n.t('general.create'),
-                buttonTextStyle: modalCommonStyle.primaryButton,
+                buttonTextStyle: modalCommonStyle.primaryButtonText,
                 buttonStyle: modalCommonStyle.primaryButton,
                 action: () => {
                   this.createTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
@@ -146,7 +146,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
               },
               {
                 text: I18n.t('general.back'),
-                buttonTextStyle: modalCommonStyle.outlinedButton,
+                buttonTextStyle: modalCommonStyle.outlinedButtonText,
                 buttonStyle: {...modalCommonStyle.outlinedButton, ...style.backButton},
                 action: () => back?.()
               }
@@ -155,7 +155,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
             [
               {
                 text: I18n.t('general.save'),
-                buttonTextStyle: modalCommonStyle.primaryButton,
+                buttonTextStyle: modalCommonStyle.primaryButtonText,
                 buttonStyle: modalCommonStyle.primaryButton,
                 action: () => {
                   this.editTenant(newTenantSubDomain, newTenantName, newTenantEndpointCloud);
