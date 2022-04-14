@@ -84,6 +84,10 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     if (this.securityProvider && !this.securityProvider.isComponentOrganizationActive()) {
       this.props.navigation.navigate('ChargingStations', { key: `${Utils.randomNumber()}` });
     }
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
   }
 
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
@@ -162,23 +166,23 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public refresh = async (showSpinner = false) => {
     // Component Mounted?
     if (this.isMounted()) {
-      const { skip, showMap } = this.state;
-      if (showSpinner) {
-        this.setState({ ...(Utils.isEmptyArray(this.state.sites) ? { loading: true } : { refreshing: true })});
-      }
-      // Refresh All
-      const limit = showMap ? this.mapLimit : this.listLimit;
-      const sites = await this.getSites(this.searchText, 0, skip + limit);
-      // Refresh region
-      if (!this.currentRegion) {
-        this.currentRegion = await this.computeRegion(sites?.result);
-      }
-      // Add sites
-      this.setState({
-        loading: false,
-        refreshing: false,
-        sites: sites ? sites.result : [],
-        count: sites ? sites.count : 0
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.sites) ? { loading: true } : { refreshing: true }) : this.state;
+      this.setState(newState, async () => {
+        const { skip, showMap } = this.state;
+        // Refresh All
+        const limit = showMap ? this.mapLimit : this.listLimit;
+        const sites = await this.getSites(this.searchText, 0, skip + limit);
+        // Refresh region
+        if (!this.currentRegion) {
+          this.currentRegion = await this.computeRegion(sites?.result);
+        }
+        // Add sites
+        this.setState({
+          loading: false,
+          refreshing: false,
+          sites: sites ? sites.result : [],
+          count: sites ? sites.count : 0
+        });
       });
     }
   };
