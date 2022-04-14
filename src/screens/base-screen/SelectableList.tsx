@@ -10,6 +10,7 @@ export interface SelectableProps<T> extends BaseProps {
   selectionMode?: ItemSelectionMode;
   isModal?: boolean;
   onItemsSelected?: (selectedItems: T[]) => void;
+  filters?: {}
 }
 
 export interface SelectableState<T> {

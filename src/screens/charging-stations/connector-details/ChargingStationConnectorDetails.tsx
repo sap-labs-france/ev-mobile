@@ -1074,7 +1074,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             onItemsSelected={this.onUserSelected.bind(this)}
             navigation={navigation}
             selectionMode={ItemSelectionMode.SINGLE}>
-            <Users navigation={navigation} />
+            <Users filters={{issuer: false}} navigation={navigation} />
           </ModalSelect>
         )}
         {showBillingErrorMessage && this.renderBillingErrorMessages(style)}
