@@ -201,7 +201,8 @@
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
     "scanTenantQrCodeTitle": "Scan Organization",
     "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has saved",
-    "scanChargingStationQrCodeTitle": "Scan Charging Station"
+    "scanChargingStationQrCodeTitle": "Scan Charging Station",
+    "saveOrganizationError": "Error while saving the organization"
   },
   "users": {
     "userUnexpectedError": "Não posso ler os utilizadores",

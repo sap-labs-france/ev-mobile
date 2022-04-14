@@ -16,9 +16,11 @@ import SelectableList, { SelectableProps, SelectableState } from '../../base-scr
 import computeListItemCommonStyles from '../../../components/list/ListItemCommonStyle';
 import UsersFilters, { UsersFiltersDef } from './UsersFilters';
 
-export interface Props extends SelectableProps<User> {}
+export interface Props extends SelectableProps<User> {
+  filters?: UsersFiltersDef
+}
 
-export interface State extends SelectableState<Users> {
+export interface State extends SelectableState<User> {
   users?: User[];
   skip?: number;
   limit?: number;
@@ -32,7 +34,6 @@ export default class Users extends SelectableList<User> {
     selectionMode: ItemSelectionMode.NONE,
     isModal: false
   };
-
   public state: State;
   public props: Props;
   private searchText: string;
@@ -52,40 +53,46 @@ export default class Users extends SelectableList<User> {
       count: 0,
       refreshing: false,
       loading: true,
-      selectedItems: [],
-      filters: null
+      selectedItems: []
     };
   }
 
-  public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
-    if (this.state.filters) {
-      try {
-        const params = {
-          Search: searchText,
-          UserID: this.userIDs?.join('|'),
-          Issuer: !this.state.filters.issuer
-        };
-        const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
-        // Get total number of records
-        if (users?.count === -1) {
-          const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
-          users.count = usersNbrRecordsOnly?.count;
-        }
-        return users;
-      } catch (error) {
-        // Check if HTTP?
-        if (!error.request) {
-          await Utils.handleHttpUnexpectedError(
-            this.centralServerProvider,
-            error,
-            'users.userUnexpectedError',
-            this.props.navigation,
-            this.refresh.bind(this)
-          );
-        }
-      }
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
     }
-    return null;
+  }
+
+  public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
+    try {
+      const issuer = this.props.filters?.issuer ?? this.state.filters?.issuer;
+      const params = {
+        Search: searchText,
+        UserID: this.userIDs?.join('|'),
+        ...(!Utils.isNullOrUndefined(issuer) && {Issuer: !issuer})
+      };
+      const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
+      // Get total number of records
+      if (users?.count === -1) {
+        const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
+        users.count = usersNbrRecordsOnly?.count;
+      }
+      return users;
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request) {
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'users.userUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
+      }
+      return null;
+    }
   }
 
   public onEndScroll = async () => {
@@ -112,27 +119,26 @@ export default class Users extends SelectableList<User> {
 
   public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
-      if (showSpinner) {
-        this.setState({...(Utils.isEmptyArray(this.state.users) ? {loading: true} : {refreshing: true})});
-      }
-      const { skip, limit } = this.state;
-      // Refresh All
-      this.setState({ refreshing: true });
-      const users = await this.getUsers(this.searchText, 0, skip + limit);
-      const usersResult = users ? users.result : [];
-      // Set
-      this.setState({
-        loading: false,
-        refreshing: false,
-        users: usersResult,
-        count: users?.count ?? 0
+      const newState = showSpinner ? {...(Utils.isEmptyArray(this.state.users) ? {loading: true} : {refreshing: true})} : this.state;
+      this.setState(newState, async () => {
+        const { skip, limit } = this.state;
+        // Refresh All
+        const users = await this.getUsers(this.searchText, 0, skip + limit);
+        const usersResult = users ? users.result : [];
+        // Set
+        this.setState({
+          loading: false,
+          refreshing: false,
+          users: usersResult,
+          count: users?.count ?? 0
+        });
       });
     }
   }
 
-  public async search (searchText: string) {
+  public async search (searchText: string): Promise<void> {
     this.searchText = searchText;
-    await this.refresh();
+    await this.refresh(true);
   };
 
   public render(): React.ReactElement {
@@ -165,7 +171,7 @@ export default class Users extends SelectableList<User> {
               renderItem={(item: User, selected: boolean) =>
                 <UserComponent containerStyle={[style.userComponentContainer, selected && listItemCommonStyles.outlinedSelected]} user={item} selected={selected} navigation={this.props.navigation} />}
               refreshing={refreshing}
-              manualRefresh={isModal ? null : this.manualRefresh}
+              manualRefresh={isModal ? null : this.manualRefresh.bind(this)}
               onEndReached={this.onEndScroll}
               emptyTitle={I18n.t('users.noUsers')}
             />
@@ -179,18 +185,21 @@ export default class Users extends SelectableList<User> {
     this.setState({ filters: newFilters }, () => this.refresh(true));
   }
 
-  private renderFilters() {
+  private renderFilters(): React.ReactElement {
     const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    const { isModal } = this.props;
     const style = computeStyleSheet();
     const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={style.filtersContainer}>
-        <UsersFilters
-          onFilterChanged={(newFilters: UsersFiltersDef) => this.onFiltersChanged(newFilters)}
-          ref={(usersFilters: UsersFilters) => this.setScreenFilters(usersFilters, false)}
-        />
+        {!isModal && (
+          <UsersFilters
+            onFilterChanged={(newFilters: UsersFiltersDef) => this.onFiltersChanged(newFilters)}
+            ref={(usersFilters: UsersFilters) => this.setScreenFilters(usersFilters, false)}
+          />
+        )}
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        {!this.props.isModal && this.screenFilters?.canOpenModal() && (
+        {!isModal && this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
             <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>

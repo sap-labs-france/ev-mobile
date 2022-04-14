@@ -23,13 +23,13 @@ export default class ExitAppDialog extends React.Component<Props, State> {
             text: I18n.t('general.yes'),
             action: () => BackHandler.exitApp(),
             buttonStyle: modalCommonStyle.primaryButton,
-            buttonTextStyle: modalCommonStyle.primaryButton
+            buttonTextStyle: modalCommonStyle.primaryButtonText
           },
           {
             text: I18n.t('general.no'),
             action: () => this.props.close?.(),
             buttonStyle: modalCommonStyle.primaryButton,
-            buttonTextStyle: modalCommonStyle.primaryButton
+            buttonTextStyle: modalCommonStyle.primaryButtonText
           }
         ]}
       />

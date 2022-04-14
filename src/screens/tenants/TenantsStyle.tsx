@@ -67,6 +67,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderColor: commonColor.textColor,
       color: commonColor.textColor
     },
+    spinner: {
+      flex: 1
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

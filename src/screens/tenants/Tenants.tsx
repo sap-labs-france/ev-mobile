@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Icon, View } from 'native-base';
+import { Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { FlatList, RefreshControl, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 
@@ -12,7 +12,6 @@ import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import AddEditTenantDialog, { TenantDialogMode } from '../../components/modal/tenants/AddEditTenantDialog';
-import CreateTenantQrCode from './TenantQrCode';
 import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
 import TenantComponent from '../../components/tenant/TenantComponent';
@@ -23,11 +22,11 @@ export interface Props extends BaseProps {}
 interface State {
   tenants?: TenantConnection[];
   showAddTenantManuallyDialog?: boolean;
-  showAddTenantWithQRCode?: boolean;
   tenantToBeEditedIndex?: number;
   showAddTenantDialog?: boolean;
-  showNewTenantAddedDialog?: boolean;
   newTenant?: TenantConnection;
+  loading?: boolean;
+  refreshing?: boolean;
 }
 
 export default class Tenants extends BaseScreen<Props, State> {
@@ -37,24 +36,33 @@ export default class Tenants extends BaseScreen<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = {
-      showAddTenantWithQRCode: false,
       showAddTenantManuallyDialog: false,
       tenantToBeEditedIndex: null,
       showAddTenantDialog: false,
-      showNewTenantAddedDialog: false,
       newTenant: null,
-      tenants: []
+      tenants: [],
+      loading: true
     };
   }
 
   public async componentDidMount() {
     await super.componentDidMount();
-    const tenants = await this.refreshTenants();
-    const showAddTenantWithQRCode = Utils.getParamFromNavigation(this.props.route, 'openQRCode', this.state.showAddTenantWithQRCode);
-    this.setState({
-      showAddTenantWithQRCode,
-      tenants
-    });
+    const showAddTenantWithQRCode = Utils.getParamFromNavigation(this.props.route, 'openQRCode', false);
+    if (showAddTenantWithQRCode) {
+       this.openQrCodeScanner();
+    } else {
+      this.refreshTenants(true);
+    }
+  }
+
+  public async componentDidFocus() {
+    await super.componentDidFocus();
+    const newTenantSubdomain = Utils.getParamFromNavigation(this.props.route, 'newTenantSubdomain', null, true);
+    if (newTenantSubdomain) {
+      const tenants = await this.getTenants();
+      this.setState({newTenant: tenants.find(e => e.subdomain === newTenantSubdomain) });
+    }
+    this.refreshTenants(true);
   }
 
   public setState = (
@@ -64,7 +72,19 @@ export default class Tenants extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  private async refreshTenants(): Promise<TenantConnection[]> {
+  private openQrCodeScanner(): void {
+    this.props.navigation.navigate('TenantQrCode');
+  }
+
+  private async refreshTenants(showSpinner = false): Promise<void> {
+    const newState = showSpinner ? (Utils.isEmptyArray(this.state.tenants) ? {loading: true} : {refreshing: true}) : this.state;
+    this.setState(newState, async () => {
+      const tenants = await this.getTenants();
+      this.setState({tenants, loading: false, refreshing: false});
+    } );
+  }
+
+  private async getTenants(): Promise<TenantConnection[]> {
     const tenants = await SecuredStorage.getTenants();
     // Check tenants endpoints exist and set them to empty object if not
     const allEndpoints = await Utils.getEndpointClouds();
@@ -82,51 +102,46 @@ export default class Tenants extends BaseScreen<Props, State> {
     const {
       tenants,
       showAddTenantManuallyDialog,
-      showAddTenantWithQRCode,
       showAddTenantDialog,
-      showNewTenantAddedDialog,
-      tenantToBeEditedIndex
+      newTenant,
+      tenantToBeEditedIndex,
+      loading,
+      refreshing
     } = this.state;
     const style = computeTenantStyleSheet();
     const fabStyles = computeFabStyles();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={{ flex: 1 }}>
         {showAddTenantDialog && this.renderAddTenantDialog(style)}
-        {showNewTenantAddedDialog && this.renderNewTenantAddedDialog(style)}
+        {newTenant && this.renderNewTenantAddedDialog(style)}
         {tenantToBeEditedIndex !== null && this.renderEditTenantDialog(style)}
-        {showAddTenantWithQRCode ? (
-          <CreateTenantQrCode
-            tenants={Utils.cloneObject(this.state.tenants)}
-            navigation={navigation}
-            close={(tenant: TenantConnection) => {
-              this.addEditTenantDialogClosed(tenant);
-              return true;
-            }}
-          />
-        ) : (
-          <View style={style.container}>
-            <TouchableOpacity delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={[fabStyles.fab, fabStyles.placedFab]}>
-              <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
-            </TouchableOpacity>
-            {showAddTenantManuallyDialog && (
-              <AddEditTenantDialog
-                mode={TenantDialogMode.ADD}
-                navigation={navigation}
-                tenants={Utils.cloneObject(this.state.tenants)}
-                back={() => this.setState({ showAddTenantManuallyDialog: false, showAddTenantDialog: true })}
-                close={(newTenantAdded: TenantConnection) => {
-                  this.addEditTenantDialogClosed(newTenantAdded);
-                }}
-              />
-            )}
-            <HeaderComponent
-              navigation={this.props.navigation}
-              title={I18n.t('general.tenants')}
-              sideBar={false}
+        <View style={style.container}>
+          <TouchableOpacity delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={[fabStyles.fab, fabStyles.placedFab]}>
+            <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
+          </TouchableOpacity>
+          {showAddTenantManuallyDialog && (
+            <AddEditTenantDialog
+              mode={TenantDialogMode.ADD}
+              navigation={navigation}
+              tenants={Utils.cloneObject(this.state.tenants)}
+              back={() => this.setState({ showAddTenantManuallyDialog: false, showAddTenantDialog: true })}
+              close={(newTenantAdded: TenantConnection) => {
+                this.addEditTenantDialogClosed(newTenantAdded);
+              }}
             />
+          )}
+          <HeaderComponent
+            navigation={this.props.navigation}
+            title={I18n.t('general.tenants')}
+            backAction={() => this.onBack()}
+            sideBar={false}
+          />
+          {loading ? <Spinner style={style.spinner} color={commonColors.disabledDark} /> : (
             <View style={style.listContainer}>
               <FlatList
                 data={tenants}
+                refreshControl={<RefreshControl onRefresh={() => this.refreshTenants(true)} refreshing={refreshing} />}
                 keyExtractor={(item) => `${item.subdomain}${item.endpoint?.name}`}
                 renderItem={({ item, index }) => (
                   <Swipeable
@@ -140,8 +155,8 @@ export default class Tenants extends BaseScreen<Props, State> {
                 )}
               />
             </View>
-          </View>
-        )}
+          )}
+        </View>
       </View>
     );
   }
@@ -176,14 +191,14 @@ export default class Tenants extends BaseScreen<Props, State> {
         buttons={[
           {
             text: I18n.t('qrCode.qrCode'),
-            action: () => this.setState({ showAddTenantWithQRCode: true, showAddTenantDialog: false }),
-            buttonTextStyle: style.modalPrimaryButton,
+            action: () => this.setState({ showAddTenantDialog: false }, () => this.openQrCodeScanner()),
+            buttonTextStyle: style.modalPrimaryButtonText,
             buttonStyle: style.modalPrimaryButton
           },
           {
             text: I18n.t('general.manually'),
             action: () => this.setState({ showAddTenantManuallyDialog: true, showAddTenantDialog: false }),
-            buttonTextStyle: style.modalPrimaryButton,
+            buttonTextStyle: style.modalPrimaryButtonText,
             buttonStyle: style.modalPrimaryButton
           }
         ]}
@@ -218,23 +233,23 @@ export default class Tenants extends BaseScreen<Props, State> {
         withCancel={true}
         animationIn={'fadeInLeft'}
         cancelButtonText={I18n.t('general.close')}
-        close={() => this.setState({ showNewTenantAddedDialog: false })}
+        close={() => this.setState({ newTenant: null })}
         buttons={[
           {
             text: I18n.t('authentication.signUp'),
-            buttonTextStyle: style.modalPrimaryButton,
+            buttonTextStyle: style.modalPrimaryButtonText,
             buttonStyle: style.modalPrimaryButton,
             action: () =>
-              this.setState({ showNewTenantAddedDialog: false }, () =>
+              this.setState({ newTenant: null }, () =>
                 navigation.navigate('SignUp', { tenantSubDomain: newTenant?.subdomain })
               )
           },
           {
             text: I18n.t('authentication.signIn'),
-            buttonTextStyle: style.modalPrimaryButton,
+            buttonTextStyle: style.modalPrimaryButtonText,
             buttonStyle: style.modalPrimaryButton,
             action: () =>
-              this.setState({ showNewTenantAddedDialog: false }, () =>
+              this.setState({ newTenant: null }, () =>
                 navigation.navigate('Login', { tenantSubDomain: newTenant?.subdomain })
               )
           }
@@ -245,7 +260,7 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   private async addEditTenantDialogClosed(newTenant?: TenantConnection): Promise<void> {
     // Always close pop-up
-    const tenants = await this.refreshTenants();
+    const tenants = await this.getTenants();
     this.setState({
       showAddTenantWithQRCode: false,
       showAddTenantManuallyDialog: false,

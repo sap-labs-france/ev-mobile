@@ -178,7 +178,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
           {
             text: I18n.t('general.yes'),
             buttonStyle: modalCommonStyle.primaryButton,
-            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButtonText,
             action: async () => this.downloadInvoice()
           }
         ]}

@@ -105,7 +105,7 @@
     "intl-unofficial-duration-unit-format": "^3.1.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "native-base": "^2.15.2",
     "react": "17.0.1",
     "react-native": "0.64.2",

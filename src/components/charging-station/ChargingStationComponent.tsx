@@ -146,7 +146,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
           {
             text: I18n.t('general.ok'),
             buttonStyle: modalCommonStyle.primaryButton,
-            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButtonText,
             action: () => this.setState({ showHeartbeatDialog: false })
           }
         ]}

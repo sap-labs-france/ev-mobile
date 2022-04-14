@@ -201,7 +201,8 @@
     "unknownConnector": "Le connecteur '{{connectorID}}' est inconnu",
     "scanTenantQrCodeTitle": "Scanner Organisation",
     "scanTenantQrCodeSuccess": "L'organisation '{{tenantName}}' a été sauvegardée",
-    "scanChargingStationQrCodeTitle": "Scanner Borne"
+    "scanChargingStationQrCodeTitle": "Scanner Borne",
+    "saveOrganizationError": "Erreur en sauvegardant l'organisation"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur",
