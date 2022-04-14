@@ -57,6 +57,14 @@ export default class Tags extends SelectableList<Tag> {
     };
   }
 
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
+  }
+
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
@@ -66,33 +74,31 @@ export default class Tags extends SelectableList<Tag> {
 
   public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
     const { sorting, isModal } = this.props;
-    if (this.state.filters || isModal) {
-      try {
-        const userID = isModal ? this.props.userIDs?.join('|') : this.state.filters.users?.map(user => user.id).join('|');
-        const params = {
-          Search: searchText,
-          WithUser: true,
-          UserID: userID
-        };
-        // Get the Tags
-        const tags = await this.centralServerProvider.getTags(params, { skip, limit }, [sorting ?? '-createdOn']);
-        // Get total number of records
-        if (tags?.count === -1) {
-          const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
-          tags.count = tagsNbrRecordsOnly?.count;
-        }
-        return tags;
-      } catch (error) {
-        // Check if HTTP?
-        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-          await Utils.handleHttpUnexpectedError(
-            this.centralServerProvider,
-            error,
-            'transactions.transactionUnexpectedError',
-            this.props.navigation,
-            this.refresh.bind(this)
-          );
-        }
+    try {
+      const userID = isModal ? this.props.userIDs?.join('|') : this.state.filters?.users?.map(user => user.id).join('|');
+      const params = {
+        Search: searchText,
+        WithUser: true,
+        UserID: userID
+      };
+      // Get the Tags
+      const tags = await this.centralServerProvider.getTags(params, { skip, limit }, [sorting ?? '-createdOn']);
+      // Get total number of records
+      if (tags?.count === -1) {
+        const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
+        tags.count = tagsNbrRecordsOnly?.count;
+      }
+      return tags;
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'transactions.transactionUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
     }
     return null;
@@ -117,19 +123,19 @@ export default class Tags extends SelectableList<Tag> {
 
   public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
-      if (showSpinner) {
-        this.setState({...(Utils.isEmptyArray(this.state.tags) ? {loading: true} : {refreshing: true})});
-      }
-      const { skip, limit } = this.state;
-      // Refresh All
-      const tags = await this.getTags(this.searchText, 0, skip + limit);
-      // Set
-      this.setState({
-        loading: false,
-        refreshing: false,
-        tags: tags ? tags.result : [],
-        projectFields: tags ? tags.projectFields : [],
-        count: tags ? tags.count : 0
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.tags) ? {loading: true} : {refreshing: true}) : this.state;
+      this.setState(newState, async () => {
+        const { skip, limit } = this.state;
+        // Refresh All
+        const tags = await this.getTags(this.searchText, 0, skip + limit);
+        // Set
+        this.setState({
+          loading: false,
+          refreshing: false,
+          tags: tags ? tags.result : [],
+          projectFields: tags ? tags.projectFields : [],
+          count: tags ? tags.count : 0
+        });
       });
     }
   }
@@ -178,7 +184,7 @@ export default class Tags extends SelectableList<Tag> {
                 />
               )}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={this.manualRefresh.bind(this)}
               onEndReached={this.onEndScroll}
               emptyTitle={i18n.t('tags.noTags')}
             />
@@ -194,15 +200,18 @@ export default class Tags extends SelectableList<Tag> {
 
   private renderFilters() {
     const style = computeStyleSheet();
+    const { isModal } = this.props;
     const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
     return (
       <View style={style.filtersContainer}>
-        <TagsFilters
-          onFilterChanged={(newFilters: TagsFiltersDef) => this.onFilterChanged(newFilters)}
-          ref={(chargingStationsFilters: TagsFilters) => this.setScreenFilters(chargingStationsFilters)}
-        />
+        {!isModal && (
+          <TagsFilters
+            onFilterChanged={(newFilters: TagsFiltersDef) => this.onFilterChanged(newFilters)}
+            ref={(chargingStationsFilters: TagsFilters) => this.setScreenFilters(chargingStationsFilters)}
+          />
+        )}
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        {!this.props.isModal && this.screenFilters?.canOpenModal() && (
+        {!isModal && this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
             <Icon style={style.filterButtonIcon} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
