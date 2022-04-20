@@ -40,7 +40,7 @@ export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
   private debug = false;
   private captchaBaseUrl: string = Configuration.AWS_REST_ENDPOINT_PROD;
-  private captchaSiteKey: string = Configuration.SCP_CAPTCHA_SITE_KEY;
+  private captchaSiteKey: string = Configuration.CAPTCHA_SITE_KEY;
 
   // Paste the token below
   private token: string = null;
