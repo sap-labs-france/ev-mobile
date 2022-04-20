@@ -16,7 +16,9 @@ import SelectableList, { SelectableProps, SelectableState } from '../../base-scr
 import computeListItemCommonStyles from '../../../components/list/ListItemCommonStyle';
 import UsersFilters, { UsersFiltersDef } from './UsersFilters';
 
-export interface Props extends SelectableProps<User> {}
+export interface Props extends SelectableProps<User> {
+  filters?: UsersFiltersDef
+}
 
 export interface State extends SelectableState<User> {
   users?: User[];
@@ -65,11 +67,11 @@ export default class Users extends SelectableList<User> {
 
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     try {
-      const issuer = this.state.filters?.issuer;
+      const issuer = this.props.filters?.issuer ?? this.state.filters?.issuer;
       const params = {
         Search: searchText,
         UserID: this.userIDs?.join('|'),
-        ...( !this.props.isModal && {Issuer: !issuer})
+        ...(!Utils.isNullOrUndefined(issuer) && {Issuer: !issuer})
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
       // Get total number of records

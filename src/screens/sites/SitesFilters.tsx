@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ScreenFilters from '../../components/search/filter/screen/ScreenFilters';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -16,15 +15,10 @@ export interface SitesFiltersDef {
 
 export default class SitesFilters extends ScreenFilters<SitesFiltersDef> {
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.loadInitialFilters();
-  }
-
-  private async loadInitialFilters() {
+  protected async getInitialFilters(): Promise<{visibleFilters: SitesFiltersDef, modalFilters: SitesFiltersDef}> {
     const issuer = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ROAMING);
     const initialFilters = { issuer: !!issuer };
-    this.onFiltersChanged(null, initialFilters, true);
+    return {visibleFilters: null, modalFilters: initialFilters};
   }
 
   public render() {

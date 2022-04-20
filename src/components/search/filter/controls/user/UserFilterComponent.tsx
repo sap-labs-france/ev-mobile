@@ -65,7 +65,7 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
             selectionMode={ItemSelectionMode.MULTI}
             openable={true}
           >
-            <Users navigation={null} />
+            <Users filters={{issuer: null}} navigation={null} />
           </ModalSelect>
         </View>
         <View style={style.buttonsContainer}>
