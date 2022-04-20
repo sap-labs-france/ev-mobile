@@ -141,7 +141,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.emobility"
+        applicationId "com.chargeangels"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 200

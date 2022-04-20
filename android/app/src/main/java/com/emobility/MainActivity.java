@@ -1,4 +1,4 @@
-package com.emobility;
+package com.chargeangels;
 
 import android.os.Bundle;
 import android.content.Intent;

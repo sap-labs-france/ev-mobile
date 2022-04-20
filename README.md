@@ -8,7 +8,7 @@ It's linked to the Charge Angels backend: https://github.com/sap-labs-france/ev-
 
 **App Stores**
 
-<a href="https://play.google.com/store/apps/details?id=com.emobility" target="_blank">Google Play</a>
+<a href="https://play.google.com/store/apps/details?id=com.chargeangels" target="_blank">Google Play</a>
 
 <a href="https://apps.apple.com/us/app/e-mobility/id1443813480?ls=1" target="_blank">Apple Store</a>
 
