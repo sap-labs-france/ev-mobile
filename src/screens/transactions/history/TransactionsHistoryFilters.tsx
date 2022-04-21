@@ -35,7 +35,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
     await this.loadInitialFilters();
   }
 
-  private async loadInitialFilters() {
+  protected async getInitialFilters(): Promise<{visibleFilters: TransactionsHistoryFiltersDef, modalFilters: TransactionsHistoryFiltersDef}> {
     const startDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_START_DATE_FILTER);
     const endDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_END_DATE_FILTER);
     const issuer = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ROAMING);
@@ -46,7 +46,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
       endDateTime,
       issuer: !!issuer
     };
-    this.onFiltersChanged(null, initialFilters, true);
+    return { visibleFilters: null, modalFilters: initialFilters };
 
   }
 
