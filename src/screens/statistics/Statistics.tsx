@@ -52,8 +52,16 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalPrice: 0,
       isPricingActive: false,
       showFilter: false,
-      filters: null
+      filters: {}
     };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
   }
 
   public setState = (
@@ -64,57 +72,54 @@ export default class Statistics extends BaseScreen<Props, State> {
   };
 
   public async refresh (showSpinner: boolean) {
-    if (showSpinner) {
-      this.setState({...(Utils.isNullOrUndefined(this.state.totalConsumptionWattHours) ? { loading: true } : { refreshing: true })});
-    }
-    // Get the ongoing Transaction stats
-    const transactionsStats = await this.getTransactionsStats();
-    // Retrieve all the transactions for the current userID
-    const allTransactions = await this.getTransactionsStats({ Statistics: 'history' });
-    const allTransactionsStats = allTransactions?.stats;
-    const minTransactionDate = allTransactionsStats?.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
-    const maxTransactionDate = allTransactionsStats?.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
-    // Set
-    this.setState({
-      totalNumberOfSession: transactionsStats?.stats?.count,
-      totalConsumptionWattHours: transactionsStats?.stats?.totalConsumptionWattHours,
-      totalDurationSecs: transactionsStats?.stats?.totalDurationSecs,
-      totalInactivitySecs: transactionsStats?.stats?.totalInactivitySecs,
-      maxTransactionDate,
-      minTransactionDate,
-      totalPrice: transactionsStats?.stats?.totalPrice,
-      isPricingActive: this.securityProvider?.isComponentPricingActive(),
-      priceCurrency: transactionsStats?.stats?.currency,
-      loading: false,
-      refreshing: false,
-      filterLoading: false
+    const newState = showSpinner ? (Utils.isNullOrUndefined(this.state.totalConsumptionWattHours) ? { loading: true } : { refreshing: true }) : this.state
+    this.setState(newState, async () => {
+      // Get the ongoing Transaction stats
+      const transactionsStats = await this.getTransactionsStats();
+      // Retrieve all the transactions for the current userID
+      const allTransactions = await this.getTransactionsStats({ Statistics: 'history' });
+      const allTransactionsStats = allTransactions?.stats;
+      const minTransactionDate = allTransactionsStats?.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
+      const maxTransactionDate = allTransactionsStats?.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
+      // Set
+      this.setState({
+        totalNumberOfSession: transactionsStats?.stats?.count,
+        totalConsumptionWattHours: transactionsStats?.stats?.totalConsumptionWattHours,
+        totalDurationSecs: transactionsStats?.stats?.totalDurationSecs,
+        totalInactivitySecs: transactionsStats?.stats?.totalInactivitySecs,
+        maxTransactionDate,
+        minTransactionDate,
+        totalPrice: transactionsStats?.stats?.totalPrice,
+        isPricingActive: this.securityProvider?.isComponentPricingActive(),
+        priceCurrency: transactionsStats?.stats?.currency,
+        loading: false,
+        refreshing: false
+      });
     });
   };
 
   public getTransactionsStats = async (params?: {}): Promise<TransactionDataResult> => {
-    if (this.state.filters) {
-      try {
-        // Get active transaction
-        const { startDateTime, endDateTime, users, issuer } = this.state.filters;
-        params = params ?? {
-          Statistics: 'history',
-          UserID: users?.map(user => user?.id).join('|'),
-          StartDateTime: startDateTime ? startDateTime.toISOString() : null,
-          EndDateTime: endDateTime ? endDateTime.toISOString() : null,
-          Issuer: !issuer
-        }
-        return this.centralServerProvider?.getTransactions(params, Constants.ONLY_RECORD_COUNT);
-      } catch (error) {
-        // Check if HTTP?
-        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-          await Utils.handleHttpUnexpectedError(
-            this.centralServerProvider,
-            error,
-            'transactions.transactionStatsUnexpectedError',
-            this.props.navigation,
-            this.refresh.bind(this)
-          );
-        }
+    try {
+      // Get active transaction
+      const { startDateTime, endDateTime, users, issuer } = this.state.filters;
+      params = params ?? {
+        Statistics: 'history',
+        UserID: users?.map(user => user?.id).join('|'),
+        StartDateTime: startDateTime ? startDateTime.toISOString() : null,
+        EndDateTime: endDateTime ? endDateTime.toISOString() : null,
+        Issuer: !issuer
+      }
+      return this.centralServerProvider?.getTransactions(params, Constants.ONLY_RECORD_COUNT);
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'transactions.transactionStatsUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
     }
     return null;
@@ -179,12 +184,7 @@ export default class Statistics extends BaseScreen<Props, State> {
           ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, true)}
         />
         <View style={style.content}>
-          {loading ?
-            <View style={style.spinnerContainer}>
-              <Spinner style={style.spinner} color={commonColors.disabledDark} />
-            </View>
-            :
-            (
+          {loading ? <Spinner style={style.spinner} color={commonColors.disabledDark} /> : (
             <View style={style.boxContainer}>
               {refreshing && <ActivityIndicator
                 size={scale(18)}
