@@ -37,7 +37,6 @@ interface State {
   refreshing?: boolean;
   skip?: number;
   count?: number;
-  initialFilters?: SiteAreasFiltersDef;
   filters?: SiteAreasFiltersDef;
   showMap?: boolean;
   visible?: boolean;
@@ -56,18 +55,17 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public constructor(props: Props) {
     super(props);
+    this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
     this.state = {
       siteAreas: [],
       loading: true,
       refreshing: false,
       skip: 0,
       count: 0,
-      initialFilters: {},
       showMap: false,
       visible: false,
       selectedSiteArea: null,
-      satelliteMap: false,
-      filters: null
+      satelliteMap: false
     };
   }
 
@@ -80,7 +78,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public async componentDidMount(triggerRefresh: boolean = true): Promise<void> {
     await super.componentDidMount();
-    this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
   }
 
   public componentDidFocus() {
@@ -94,40 +95,37 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getSiteAreas = async (searchText: string = '', skip: number, limit: number): Promise<DataResult<SiteArea>> => {
-    if (this.state.filters) {
-      try {
-        // Get current location
-        const currentLocation = await Utils.getUserCurrentLocation();
-        const { showMap } = this.state;
-        const params = {
-          Search: searchText,
-          SiteID: this.site?.id,
-          Issuer: !this.state.filters.issuer,
-          WithAvailableChargers: true,
-          LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
-          LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
-          LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
-        };
-        // Get the Site Areas
-        const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
-        // Get total number of records
-        if (siteAreas?.count === -1) {
-          const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSiteAreas(params, Constants.ONLY_RECORD_COUNT);
-          siteAreas.count = sitesAreasNbrRecordsOnly?.count;
-        }
-        return siteAreas;
-      } catch (error) {
-        // Other common Error
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'siteAreas.siteAreaUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
+    try {
+      // Get current location
+      const currentLocation = await Utils.getUserCurrentLocation();
+      const { showMap } = this.state;
+      const params = {
+        Search: searchText,
+        SiteID: this.site?.id,
+        WithAvailableChargers: true,
+        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
+        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
+        LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
+      };
+      // Get the Site Areas
+      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
+      // Get total number of records
+      if (siteAreas?.count === -1) {
+        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSiteAreas(params, Constants.ONLY_RECORD_COUNT);
+        siteAreas.count = sitesAreasNbrRecordsOnly?.count;
       }
+      return siteAreas;
+    } catch (error) {
+      // Other common Error
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'siteAreas.siteAreaUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
     }
-    return null;
+  return null;
   };
 
   public onBack () {
@@ -168,26 +166,26 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     return this.currentRegion;
   }
 
-  public refresh = async (showSpinner = false) => {
+  public async refresh(showSpinner = false) {
     // Component Mounted?
     if (this.isMounted()) {
-      const { skip, showMap } = this.state;
-      if (showSpinner) {
-        this.setState({ ...(Utils.isEmptyArray(this.state.siteAreas) ?  { loading: true } :  { refreshing: true } )});
-      }
-      // Refresh All
-      const limit = showMap ? this.mapLimit : this.listLimit;
-      const siteAreas = await this.getSiteAreas(this.searchText, 0, skip + limit);
-      // Refresh region
-      if (!this.currentRegion) {
-        this.currentRegion = await this.computeRegion(siteAreas?.result);
-      }
-      // Set Site Areas
-      this.setState({
-        loading: false,
-        refreshing: false,
-        siteAreas: siteAreas ? siteAreas.result : [],
-        count: siteAreas ? siteAreas.count : 0
+      const newState = showSpinner ?  (Utils.isEmptyArray(this.state.siteAreas) ?  { loading: true } :  { refreshing: true }) : this.state;
+      this.setState(newState, async () => {
+        const { skip, showMap } = this.state;
+        // Refresh All
+        const limit = showMap ? this.mapLimit : this.listLimit;
+        const siteAreas = await this.getSiteAreas(this.searchText, 0, skip + limit);
+        // Refresh region
+        if (!this.currentRegion) {
+          this.currentRegion = await this.computeRegion(siteAreas?.result);
+        }
+        // Set Site Areas
+        this.setState({
+          loading: false,
+          refreshing: false,
+          siteAreas: siteAreas ? siteAreas.result : [],
+          count: siteAreas ? siteAreas.count : 0
+        });
       });
     }
   };
@@ -218,7 +216,6 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public search = async (searchText: string) => {
-    this.setState({ refreshing: true });
     this.searchText = searchText;
     await this.refresh(true);
   };
@@ -367,9 +364,11 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
         />
         <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-          <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
-        </TouchableOpacity>
+        {this.screenFilters?.canFilter() && (
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
+            <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
