@@ -36,7 +36,6 @@ interface State {
   loading?: boolean;
   refreshing?: boolean;
   skip?: number;
-  initialFilters?: SitesFiltersDef;
   filters?: SitesFiltersDef;
   count?: number;
   showMap?: boolean;
@@ -60,13 +59,12 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       loading: true,
       refreshing: false,
       skip: 0,
-      initialFilters: {},
       count: 0,
       showMap: false,
       visible: false,
       selectedSite: null,
       satelliteMap: false,
-      filters: null
+      filters: {}
     };
   }
 
@@ -91,38 +89,36 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
-    if (this.state.filters) {
-      const { showMap } = this.state;
-      const currentLocation = await Utils.getUserCurrentLocation();
-      try {
-        const params = {
-          Search: searchText,
-          Issuer: !this.state.filters.issuer,
-          WithAvailableChargers: true,
-          LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
-          LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
-          LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
-        };
-        // Get the Sites
-        const sites = await this.centralServerProvider.getSites(params, { skip, limit }, ['name']);
-        // Get total number of records
-        if (sites?.count === -1) {
-          const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
-          sites.count = sitesNbrRecordsOnly?.count;
-        }
-        return sites;
-      } catch (error) {
-        // Other common Error
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'sites.siteUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
+    const { showMap } = this.state;
+    const currentLocation = await Utils.getUserCurrentLocation();
+    try {
+      const params = {
+        Search: searchText,
+        Issuer: !this.state.filters.issuer,
+        WithAvailableChargers: true,
+        LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
+        LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
+        LocMaxDistanceMeters: showMap ? Utils.computeMaxBoundaryDistanceKm(this.currentRegion) : null
+      };
+      // Get the Sites
+      const sites = await this.centralServerProvider.getSites(params, { skip, limit }, ['name']);
+      // Get total number of records
+      if (sites?.count === -1) {
+        const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
+        sites.count = sitesNbrRecordsOnly?.count;
       }
+      return sites;
+    } catch (error) {
+      // Other common Error
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'sites.siteUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
     }
-    return null;
+  return null;
   };
 
   public onBack () {
@@ -213,7 +209,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public search = async (searchText: string) => {
-    this.setState({ refreshing: true });
     this.searchText = searchText;
     delete this.currentRegion;
     await this.refresh(true);
@@ -371,9 +366,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
         />
         <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-          <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
-        </TouchableOpacity>
+        {this.screenFilters?.canFilter() && (
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
+            <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
