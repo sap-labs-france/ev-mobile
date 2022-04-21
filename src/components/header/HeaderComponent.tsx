@@ -102,7 +102,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
               {action.renderAction?.()}
             </TouchableOpacity>
           ))}
-          {this.modalFilters && this.modalFilters.canOpenModal() && (
+          {this.modalFilters && this.modalFilters.canFilter() && (
             <TouchableOpacity
               style={style.rightIcon}
               onPress={() => {

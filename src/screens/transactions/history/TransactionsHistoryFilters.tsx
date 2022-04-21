@@ -30,11 +30,6 @@ export interface TransactionsHistoryFiltersDef {
 
 export default class TransactionsHistoryFilters extends ScreenFilters<TransactionsHistoryFiltersDef, Props> {
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.loadInitialFilters();
-  }
-
   private async loadInitialFilters() {
     const startDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_START_DATE_FILTER);
     const endDateTimeString = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_END_DATE_FILTER);
