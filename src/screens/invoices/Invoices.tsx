@@ -42,8 +42,16 @@ export default class Invoices extends BaseScreen<Props, State> {
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
-      filters: null
+      filters: {}
     };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
   }
 
   public setState = (
@@ -54,31 +62,28 @@ export default class Invoices extends BaseScreen<Props, State> {
   };
 
   public async getInvoices(skip: number, limit: number): Promise<DataResult<BillingInvoice>> {
-    const { filters } = this.state;
-    if (filters) {
-      try {
-        const params = {
-          UserID: filters.users?.map(user => user.id).join('|')
-        }
-        // Get the invoices
-        const invoices = await this.centralServerProvider.getInvoices(params, { skip, limit }, ['-createdOn']);
-        // Get total number of records
-        if (invoices?.count === -1) {
-          const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);
-          invoices.count = invoicesNbrRecordsOnly?.count;
-        }
-        return invoices;
-      } catch (error) {
-        // Check if HTTP?
-        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-          await Utils.handleHttpUnexpectedError(
-            this.centralServerProvider,
-            error,
-            'invoices.invoiceUnexpectedError',
-            this.props.navigation,
-            this.refresh.bind(this)
-          );
-        }
+    try {
+      const params = {
+        UserID: this.state.filters?.users?.map(user => user.id).join('|')
+      }
+      // Get the invoices
+      const invoices = await this.centralServerProvider.getInvoices(params, { skip, limit }, ['-createdOn']);
+      // Get total number of records
+      if (invoices?.count === -1) {
+        const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);
+        invoices.count = invoicesNbrRecordsOnly?.count;
+      }
+      return invoices;
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'invoices.invoiceUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
     }
     return null;
@@ -101,18 +106,18 @@ export default class Invoices extends BaseScreen<Props, State> {
 
   public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
-      if (showSpinner) {
-        this.setState({...(Utils.isEmptyArray(this.state.invoices) ? {loading: true} : {refreshing: true})});
-      }
-      const { skip, limit } = this.state;
-      // Refresh All
-      const invoices = await this.getInvoices(0, skip + limit);
-      // Set
-      this.setState({
-        loading: false,
-        refreshing: false,
-        invoices: invoices ? invoices.result : [],
-        count: invoices ? invoices.count : 0
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.invoices) ? {loading: true} : {refreshing: true}) : this.state;
+      this.setState(newState, async () => {
+        const { skip, limit } = this.state;
+        // Refresh All
+        const invoices = await this.getInvoices(0, skip + limit);
+        // Set
+        this.setState({
+          loading: false,
+          refreshing: false,
+          invoices: invoices ? invoices.result : [],
+          count: invoices ? invoices.count : 0
+        });
       });
     }
   }
