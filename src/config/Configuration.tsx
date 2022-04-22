@@ -4,7 +4,7 @@ export default class Configuration {
   public static readonly AWS_REST_ENDPOINT_PROD = 'https://charge-angels.com';
   public static readonly AWS_REST_ENDPOINT_QA = 'https://qa-charge-angels.com';
 
-  public static readonly CAPTCHA_SITE_KEY = '6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw';
+  public static readonly CAPTCHA_SITE_KEY = '6LexeY8fAAAAAIOFsduiYfGeDlRuGfAYjoL_iNI-';
 
   public static readonly DEFAULT_ENDPOINT_CLOUD_ID = 'aws';
   public static readonly ENDPOINT_CLOUDS: EndpointCloud[] = [
