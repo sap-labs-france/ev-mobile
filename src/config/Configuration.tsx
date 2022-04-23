@@ -2,7 +2,6 @@ import { EndpointCloud } from '../types/Tenant';
 
 export default class Configuration {
   public static readonly AWS_REST_ENDPOINT_PROD = 'https://charge-angels.com';
-  public static readonly AWS_REST_ENDPOINT_QA = 'https://qa-charge-angels.com';
 
   public static readonly CAPTCHA_SITE_KEY = '6LexeY8fAAAAAIOFsduiYfGeDlRuGfAYjoL_iNI-';
 
@@ -23,11 +22,6 @@ export default class Configuration {
       id: '10.0.2.2:8080',
       name: 'android-local:8080',
       endpoint: 'http://10.0.2.2:8080'
-    },
-    {
-      id: 'kubernetes',
-      name: 'QA',
-      endpoint: Configuration.AWS_REST_ENDPOINT_QA
     }
   ];
 
