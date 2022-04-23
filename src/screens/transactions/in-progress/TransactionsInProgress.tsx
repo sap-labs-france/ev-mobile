@@ -49,8 +49,16 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       isPricingActive: false,
       isAdmin: false,
       hasSiteAdmin: false,
-      filters: null
+      filters: {}
     };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
   }
 
   public setState = (
@@ -61,32 +69,30 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   };
 
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
-    if (this.state.filters) {
-      try {
-        const { users, issuer } = this.state.filters;
-        const params = {
-          UserID: users?.map(user => user.id).join('|'),
-          Search: searchText,
-          Issuer: !issuer
-        };
-        // Get the Transactions
-        const transactions = await this.centralServerProvider.getTransactionsActive(params, { skip, limit }, ['-timestamp']);
-        // Get total number of records
-        if (transactions?.count === -1) {
-          const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive(params, Constants.ONLY_RECORD_COUNT);
-          transactions.count = transactionsNbrRecordsOnly?.count;
-        }
-        return transactions;
-      } catch (error) {
-        // Other common Error
-        await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'transactions.transactionUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
+    try {
+      const { users, issuer } = this.state.filters;
+      const params = {
+        UserID: users?.map(user => user.id).join('|'),
+        Search: searchText,
+        Issuer: !issuer
+      };
+      // Get the Transactions
+      const transactions = await this.centralServerProvider.getTransactionsActive(params, { skip, limit }, ['-timestamp']);
+      // Get total number of records
+      if (transactions?.count === -1) {
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive(params, Constants.ONLY_RECORD_COUNT);
+        transactions.count = transactionsNbrRecordsOnly?.count;
       }
+      return transactions;
+    } catch (error) {
+      // Other common Error
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'transactions.transactionUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
     }
     return null;
   };
@@ -95,20 +101,20 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
-      if (showSpinner) {
-        this.setState({...(Utils.isEmptyArray(this.state.transactions) ? {loading: true} : {refreshing: true})});
-      }
-      // Get transactions
-      const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
-      // Set
-      this.setState({
-        loading: false,
-        refreshing: false,
-        transactions: transactions ? transactions.result : [],
-        count: transactions ? transactions.count : 0,
-        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
-        hasSiteAdmin: this.securityProvider ? this.securityProvider.hasSiteAdmin() : false,
-        isPricingActive: this.securityProvider ? this.securityProvider.isComponentPricingActive() : false
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.transactions) ? {loading: true} : {refreshing: true}) : this.state;
+      this.setState(newState, async () => {
+        // Get transactions
+        const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
+        // Set
+        this.setState({
+          loading: false,
+          refreshing: false,
+          transactions: transactions ? transactions.result : [],
+          count: transactions ? transactions.count : 0,
+          isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
+          hasSiteAdmin: this.securityProvider ? this.securityProvider.hasSiteAdmin() : false,
+          isPricingActive: this.securityProvider ? this.securityProvider.isComponentPricingActive() : false
+        });
       });
     }
   };

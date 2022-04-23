@@ -21,15 +21,10 @@ export interface TransactionsInProgressFiltersDef {
 
 export default class TransactionsInProgressFilters extends ScreenFilters<TransactionsInProgressFiltersDef> {
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.loadInitialFilters();
-  }
-
-  private async loadInitialFilters() {
+  protected async getInitialFilters(): Promise<{visibleFilters: TransactionsInProgressFiltersDef, modalFilters: TransactionsInProgressFiltersDef}> {
     const issuer = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ROAMING);
     const initialFilters = { issuer: !!issuer };
-    this.onFiltersChanged(null, initialFilters, true);
+    return {visibleFilters: null, modalFilters: initialFilters};
   }
 
   public setState<K extends keyof ScreenFiltersState<TransactionsInProgressFiltersDef>>(state: ((prevState: Readonly<ScreenFiltersState<TransactionsInProgressFiltersDef>>, props: Readonly<ScreenFiltersProps<TransactionsInProgressFiltersDef>>) => (Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null)) | Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null, callback?: () => void) {

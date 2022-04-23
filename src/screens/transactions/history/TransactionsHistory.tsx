@@ -51,10 +51,18 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
       count: 0,
       isPricingActive: false,
       isAdmin: false,
-      filters: null,
+      filters: {},
       maxTransactionDate: null,
       minTransactionDate: null
     };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
   }
 
   public setState = (
@@ -65,38 +73,36 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   };
 
   public async getTransactions(paging: {skip: number, limit: number}, params?: {}): Promise<TransactionDataResult> {
-    if (this.state.filters) {
-      try {
-        const { startDateTime, endDateTime, users, issuer } = this.state.filters;
-        // Get active transaction
-        params = params ?? {
-          Statistics: 'history',
-          UserID: users?.map(user => user?.id).join('|'),
-          WithUser: true,
-          StartDateTime: startDateTime?.toISOString(),
-          EndDateTime: endDateTime?.toISOString(),
-          Search: this.searchText,
-          Issuer: !issuer
-        }
-        const transactions = await this.centralServerProvider.getTransactions(params, paging, ['-timestamp']);
-        // Get total number of records
-        if (transactions?.count === -1) {
-          const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(params, Constants.ONLY_RECORD_COUNT);
-          transactions.count = transactionsNbrRecordsOnly?.count;
-          transactions.stats = transactionsNbrRecordsOnly?.stats;
-        }
-        return transactions;
-      } catch (error) {
-        // Check if HTTP?
-        if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-          await Utils.handleHttpUnexpectedError(
-            this.centralServerProvider,
-            error,
-            'transactions.transactionUnexpectedError',
-            this.props.navigation,
-            this.refresh.bind(this)
-          );
-        }
+    try {
+      const { startDateTime, endDateTime, users, issuer } = this.state.filters;
+      // Get active transaction
+      params = params ?? {
+        Statistics: 'history',
+        UserID: users?.map(user => user?.id).join('|'),
+        WithUser: true,
+        StartDateTime: startDateTime?.toISOString(),
+        EndDateTime: endDateTime?.toISOString(),
+        Search: this.searchText,
+        Issuer: !issuer
+      }
+      const transactions = await this.centralServerProvider.getTransactions(params, paging, ['-timestamp']);
+      // Get total number of records
+      if (transactions?.count === -1) {
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(params, Constants.ONLY_RECORD_COUNT);
+        transactions.count = transactionsNbrRecordsOnly?.count;
+        transactions.stats = transactionsNbrRecordsOnly?.stats;
+      }
+      return transactions;
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'transactions.transactionUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
     }
     return null;
@@ -106,25 +112,25 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
-      if (showSpinner) {
-        this.setState({...(Utils.isEmptyArray(this.state.transactions) ? { loading: true} : {refreshing: true})});
-      }
-      // Refresh All
-      const allTransactions = await this.getTransactions(Constants.ONLY_RECORD_COUNT, {Statistics: 'history'});
-      const allTransactionsStats = allTransactions?.stats;
-      const minTransactionDate = allTransactionsStats?.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
-      const maxTransactionDate = allTransactionsStats?.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
-      const transactions = await this.getTransactions({skip, limit});
-      // Set
-      this.setState({
-        loading: false,
-        refreshing: false,
-        transactions: transactions ? transactions.result : [],
-        minTransactionDate,
-        maxTransactionDate,
-        count: transactions ? transactions.count : 0,
-        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
-        isPricingActive: this.securityProvider ? this.securityProvider.isComponentPricingActive() : false
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.transactions) ? { loading: true } : { refreshing: true}) : this.state;
+      this.setState(newState, async () => {
+        // Refresh All
+        const allTransactions = await this.getTransactions(Constants.ONLY_RECORD_COUNT, {Statistics: 'history'});
+        const allTransactionsStats = allTransactions?.stats;
+        const minTransactionDate = allTransactionsStats?.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
+        const maxTransactionDate = allTransactionsStats?.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
+        const transactions = await this.getTransactions({skip, limit});
+        // Set
+        this.setState({
+          loading: false,
+          refreshing: false,
+          transactions: transactions ? transactions.result : [],
+          minTransactionDate,
+          maxTransactionDate,
+          count: transactions ? transactions.count : 0,
+          isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
+          isPricingActive: this.securityProvider ? this.securityProvider.isComponentPricingActive() : false
+        });
       });
     }
   }
@@ -156,7 +162,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   public render () {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, refreshing, filters } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, refreshing } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -168,9 +174,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
         {this.renderFilters()}
-        {(loading || !filters) ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
+        {loading ? <Spinner style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<Transaction>
               skip={skip}
@@ -216,7 +220,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, false)}
         />
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
-        {this.screenFilters?.canOpenModal() && (
+        {this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
             <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
