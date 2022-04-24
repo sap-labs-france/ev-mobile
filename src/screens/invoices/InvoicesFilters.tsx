@@ -17,11 +17,6 @@ export default class InvoicesFilters extends ScreenFilters<InvoicesFiltersDef> {
   public state: State;
   public props: ScreenFiltersProps<InvoicesFiltersDef>;
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    this.onFiltersChanged(null, null, true);
-  }
-
   public render() {
     const { filters } = this.state;
     return (
