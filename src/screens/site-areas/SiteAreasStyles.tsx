@@ -84,7 +84,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     listSearchBarComponent: {
       backgroundColor: commonColor.listHeaderBgColor,
       flex: 1,
-      marginRight: '10@s',
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -102,6 +101,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '45@s',
       alignItems: 'center',
       justifyContent: 'center',
+      marginLeft: '10@s',
       backgroundColor: commonColor.listHeaderBgColor
     },
     fab: {
