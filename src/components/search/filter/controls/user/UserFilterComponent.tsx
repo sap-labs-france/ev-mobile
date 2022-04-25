@@ -45,8 +45,8 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
 
 
   public clearValue(callback?: () => unknown) {
-    super.clearValue(callback);
-    this.setState({connectorTypes: new Set()})
+    super.clearValue();
+    this.userModalRef?.current.resetInput();
   }
 
   public render = () => {
@@ -69,11 +69,12 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
           </ModalSelect>
         </View>
         <View style={style.buttonsContainer}>
-          <TouchableOpacity style={style.buttonContainer} onPress={() => this.userModalRef?.current?.resetInput(false, this.currentUser ? [this.currentUser] : [])}>
-            <Text style={style.button}>{I18n.t('filters.myUser')}</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={style.buttonContainer} onPress={() => this.userModalRef?.current?.resetInput()}>
-            <Text style={style.button}>{I18n.t('filters.clearUser')}</Text>
+            <Icon style={style.buttonIcon} type={'EvilIcons'} name={'close'} />
+          </TouchableOpacity>
+          <View style={style.buttonsSeparator}></View>
+          <TouchableOpacity style={style.buttonContainer} onPress={() => this.userModalRef?.current?.resetInput(false, this.currentUser ? [this.currentUser] : [])}>
+            <Icon style={style.buttonIcon} type={'Ionicons'} name={'person-circle'} />
           </TouchableOpacity>
         </View>
       </View>
@@ -85,8 +86,8 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
     const style = computeStyleSheet();
     return (
       <View style={[listItemCommonStyles.container, style.userFilterPlaceholder]}>
-        <Text style={style.userFilterPlaceholderText} >{I18n.t('users.user')}</Text>
-        <Icon style={style.userFilterPlaceholderIcon} type={'MaterialIcons'} name={'person'} />
+        <Icon style={style.userFilterPlaceholderIcon} type={'FontAwesome5'} name={'user-friends'} />
+        <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.userFilterPlaceholderText} >{I18n.t('users.selectOneOrSeveralUsers')}</Text>
       </View>
     )
   }

@@ -19,38 +19,53 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     buttonsContainer: {
       alignItems: 'center',
-      marginLeft: '10@s',
-      justifyContent: 'center'
+      marginLeft: '3@s',
+      justifyContent: 'center',
+      backgroundColor: commonColor.listItemBackground,
+      borderRadius: '8@s',
+      width: '13%'
     },
     modalContainer: {
       flex: 1
     },
     buttonContainer: {
       flex: 1,
-      justifyContent: 'center'
+      justifyContent: 'center',
+    },
+    buttonsSeparator: {
+      borderTopWidth: 0.8,
+      borderColor: commonColor.disabledDark,
+      width: '80%',
+      opacity: 0.6
+    },
+    buttonIcon: {
+      color: commonColor.textColor,
+      fontSize: '25@s',
+      alignSelf: 'center'
     },
     button: {
       color: commonColor.primaryLight,
       fontSize: '14@s'
     },
     userFilterPlaceholder: {
-      backgroundColor: commonColor.containerBgColor,
+      backgroundColor: commonColor.listItemBackground,
       width: '100%',
       height: '90@s',
       borderRadius: '8@s',
-      borderColor: commonColor.textColor,
-      borderWidth: 0.8,
       alignItems: 'center',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       padding: '5@s'
     },
     userFilterPlaceholderIcon: {
-      fontSize: '40@s',
-      color: commonColor.textColor
+      fontSize: '35@s',
+      color: commonColor.textColor,
+      marginLeft: '5@s',
+      marginRight: '8@s'
     },
     userFilterPlaceholderText: {
       color: commonColor.textColor,
-      fontSize: '14@s'
+      fontSize: '12@s',
+      flex: 1
     },
     badge: {
       padding: '3@s',
