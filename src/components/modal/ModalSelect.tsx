@@ -72,7 +72,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     const { selectionMode, label } = this.props;
     const { isVisible } = this.state;
     const itemsList = React.Children.only(this.props.children);
-    const canValidateMultiSelect = this.itemsListRef?.current?.state.selectedItems.length > 0;
+    const canValidateMultiSelect = this.itemsListRef?.current?.state.selectedItems?.length > 0;
     const modalCommonStyle = computeModalCommonStyle();
     return (
       <View style={style.container}>
@@ -110,16 +110,16 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
             {selectionMode === ItemSelectionMode.MULTI && (
               <View style={style.buttonsContainer}>
                 <Button
-                  containerStyle={[style.buttonContainer, modalCommonStyle.primaryButton]}
-                  title={I18n.t('general.reset')}
-                  onPress={() => this.clearSelection()} />
-                <Button
                   disabled={!canValidateMultiSelect}
                   title={I18n.t('general.validate')}
                   disabledStyle={style.disabledButton}
                   disabledTitleStyle={style.disabledButtonText}
                   containerStyle={[style.buttonContainer]}
                   onPress={() => this.validateSelection()}/>
+                <Button
+                  containerStyle={[style.buttonContainer, modalCommonStyle.primaryButton]}
+                  title={I18n.t('general.reset')}
+                  onPress={() => this.clearSelection()} />
               </View>
             )}
           </SafeAreaView>
@@ -169,23 +169,25 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
         </View>
       );
     }
-    if ((selectedItems[0] || defaultItems?.[0])) {
+    if ((selectedItems?.[0] || defaultItems?.[0])) {
       return (
-        <TouchableOpacity
-          disabled={disabled || !openable}
-          onPress={() => this.setState({ isVisible: true })}
-          style={[style.itemContainer, disabled && style.buttonDisabled]}>
+        <View style={style.itemContainer}>
+          <TouchableOpacity
+            disabled={disabled || !openable}
+            onPress={() => this.setState({ isVisible: true })}
+            style={[style.itemButtonContainer, disabled && style.buttonDisabled]}>
+            {selectionMode === ItemSelectionMode.MULTI ?
+              renderItems?.(Utils.isEmptyArray(selectedItems) ? defaultItems : selectedItems)
+              :
+              renderItem?.(selectedItems?.[0] ?? defaultItems?.[0])
+            }
+          </TouchableOpacity>
           {clearable && (
             <TouchableOpacity style={style.clearContainer} onPress={() => this.resetInput(true)}>
-              <Text style={{textAlign: 'right', color: commonColors.primary}}>{I18n.t('cars.clearCar')}</Text>
+              <Icon style={style.clearIcon} type={'EvilIcons'} name={'close'} />
             </TouchableOpacity>
           )}
-          {selectionMode === ItemSelectionMode.MULTI ?
-            renderItems?.(Utils.isEmptyArray(selectedItems) ? defaultItems : selectedItems)
-            :
-            renderItem?.(selectedItems[0] ?? defaultItems?.[0])
-          }
-        </TouchableOpacity>
+        </View>
       );
     } if (renderItemPlaceholder && (noneSelected || !renderNoItem)) {
       return (

@@ -88,10 +88,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingVertical: '10@s'
     },
     itemContainer: {
-      width: '100%',
       justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center'
+      flexDirection: 'row',
+      alignItems: 'stretch',
+      width: '100%',
+    },
+    itemButtonContainer: {
+      flex: 1
     },
     spinnerContainer: {
       width: '100%',
@@ -107,7 +110,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       textAlign: 'left'
     },
     clearContainer: {
-      width: '100%'
+      width: '10%',
+      alignContent: 'center',
+      justifyContent: 'center',
+      padding: '2@s',
+      backgroundColor: commonColor.listItemBackground,
+      borderRadius: '8@s',
+      marginLeft: '3@s'
+    },
+    clearIcon: {
+      fontSize: '25@s',
+      color: commonColor.textColor,
+      alignSelf: 'center',
+      justifyContent: 'center'
     },
     disabledButton: {
       backgroundColor: commonColor.disabledDark,
