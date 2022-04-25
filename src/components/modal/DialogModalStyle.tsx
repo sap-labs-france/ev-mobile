@@ -10,11 +10,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     modalContainer: {
       backgroundColor: commonColor.modalBackgroundColor,
-      paddingTop: '5@s',
       padding: '10@s',
-      paddingVertical: '20@s',
+      paddingBottom: '20@s',
       borderRadius: '8@s',
-      marginHorizontal: '2.5%',
       maxHeight: '90%',
       alignItems: 'center'
     },

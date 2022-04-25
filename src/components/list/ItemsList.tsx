@@ -80,6 +80,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
     const style = computeStyleSheet();
     const listItemCommonStyles = computeListItemCommonStyle();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={style.container}>
         <FlatList
@@ -104,7 +105,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
           keyExtractor={(item, index) => Utils.concatenateStrings(item?.id?.toString(), index?.toString())}
           removeClippedSubviews={true}
           onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-          refreshControl={<RefreshControl onRefresh={manualRefresh} refreshing={refreshing} />}
+          refreshControl={<RefreshControl progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]} onRefresh={manualRefresh} refreshing={refreshing} />}
           ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
           onEndReached={onEndReached}
           ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={emptyTitle} />}
