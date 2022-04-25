@@ -40,7 +40,7 @@ export default class CarComponent extends React.Component<Props, State> {
     const { car, navigation, containerStyle } = this.props;
     const userName = Utils.buildUserName(car?.user);
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
-    const carFullNameWords = carFullName.split(' ');
+    const carFullNameWords = carFullName?.split(' ') ?? [];
     const imageURI = car?.carCatalog?.image;
     return (
       <View style={[listItemCommonStyle.container, ...(containerStyle || [])]}>
