@@ -26,16 +26,12 @@ interface State extends SelectableState<Car> {
   loading?: boolean;
 }
 
-export interface Props extends SelectableProps<Car> {
-  userIDs?: string[];
-}
-
 export default class CarCatalogs extends SelectableList<Car> {
-  public props: Props;
+  public props: SelectableProps<Car>;
   public state: State;
   private searchText: string;
 
-  public constructor(props: Props) {
+  public constructor(props: SelectableProps<Car>) {
     super(props);
     this.selectMultipleTitle = 'cars.selectCars';
     this.selectSingleTitle = 'cars.selectCar';
@@ -53,7 +49,7 @@ export default class CarCatalogs extends SelectableList<Car> {
   }
 
   public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    state: State | ((prevState: Readonly<State>, props: Readonly<SelectableProps<Car>>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
   ): void => {
     super.setState(state, callback);

@@ -178,7 +178,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
                 />
               )}
               data={transactions}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={this.manualRefresh.bind(this)}
               refreshing={refreshing}
               emptyTitle={I18n.t('transactions.noTransactionsInProgress')}
               navigation={navigation}
