@@ -930,7 +930,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               <ScrollView
                 persistentScrollbar={true}
                 style={style.scrollviewContainer}
-                contentContainerStyle={style.chargingSettingsContainer}>
+                contentContainerStyle={style.chargingSettingsContainer}
+                keyboardShouldPersistTaps={'always'}
+              >
                 {/* User */}
                 {this.renderUserSelection(style)}
                 {/* Badge */}

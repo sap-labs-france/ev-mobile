@@ -193,7 +193,6 @@ export default class Login extends BaseScreen<Props, State> {
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
     // Check if user can be logged
     if (
-      !__DEV__ &&
       !this.centralServerProvider.hasAutoLoginDisabled() &&
       !Utils.isNullOrEmptyString(tenant?.subdomain) &&
       !Utils.isNullOrEmptyString(email) &&
