@@ -83,7 +83,8 @@
     "defaultSettings": "Paramètres par défaut",
     "notApplicable": "N/A",
     "showMore": "Voir plus",
-    "showLess": "Voir moins"
+    "showLess": "Voir moins",
+    "newEntry": "New entry"
   },
   "sidebar": {
     "home": "Home",

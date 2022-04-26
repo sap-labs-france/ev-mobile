@@ -183,6 +183,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     const modalCommonStyles = computeModalCommonStyle();
     const allEndpoints = [...this.staticEndpoints, ...userEndpoints];
     allEndpoints.sort((endpoint1, endpoint2) => endpoint1.name.toUpperCase() < endpoint2.name.toUpperCase() ? -1 : 1 );
+    const data = [{}, ...allEndpoints];
     return (
       <View style={style.modalControlsContainer}>
         <Input
@@ -219,11 +220,6 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
         <Input
           label={I18n.t('authentication.tenantEndpoint')}
           autoCorrect={false}
-          rightIcon={
-            <TouchableOpacity onPress={() => this.setState({showEndpointCreationForm: !this.state.showEndpointCreationForm})}>
-            <Icon style={style.addEndpointIcon} name={this.state.showEndpointCreationForm ? 'keyboard-arrow-up' : 'add'} type={'MaterialIcons'}  />
-            </TouchableOpacity>
-            }
           rightIconContainerStyle={style.rightIconContainerStyle}
           labelStyle={[style.inputLabel, style.selectLabel]}
           containerStyle={style.inputContainer}
@@ -231,19 +227,29 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
           inputContainerStyle={style.inputInnerContainerNoBorder}
           InputComponent={() => (
             <SelectDropdown
-              data={allEndpoints}
+              data={data}
               defaultButtonText={newTenantEndpointCloud?.name}
               buttonTextAfterSelection={(selectedItem: EndpointCloud) => selectedItem.name}
-              renderCustomizedRowChild={(item: EndpointCloud) => (
-                <View style={style.selectDropdownRowContainer}>
-                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.selectDropdownRowText}>{item.name}</Text>
-                  {userEndpoints.map(userEndpoint => userEndpoint.name).includes(item.name) && (
-                    <TouchableOpacity style={style.selectDropdownRowIconContainer} onPress={() => this.deleteEndpoint(item.name)}>
-                      <Icon style={style.selectDropdownRowIcon} name={'close'} type={'EvilIcons'} />
+              renderCustomizedRowChild={(item: EndpointCloud, index: number) => {
+                if ( index === 0 ) {
+                  return (
+                    <TouchableOpacity onPress={() => this.setState({showEndpointCreationForm: true})} style={style.selectDropdownRowContainer}>
+                      <Icon type={'MaterialIcons'} name={'add'} style={[style.newEntryText, style.newEntryIcon]}/>
+                      <Text style={[style.selectDropdownRowText, style.newEntryText]}>{I18n.t('general.newEntry')}</Text>
                     </TouchableOpacity>
-                  )}
-                </View>
-              )}
+                  );
+                }
+                return (
+                  <View style={style.selectDropdownRowContainer}>
+                    <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.selectDropdownRowText}>{item.name}</Text>
+                    {userEndpoints.map(userEndpoint => userEndpoint.name).includes(item.name) && (
+                      <TouchableOpacity style={style.selectDropdownRowIconContainer} onPress={() => this.deleteEndpoint(item.name)}>
+                        <Icon style={style.selectDropdownRowIcon} name={'close'} type={'EvilIcons'}/>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                );
+              }}
               buttonStyle={style.selectField}
               buttonTextStyle={style.selectFieldText}
               dropdownStyle={style.selectDropdown}
@@ -285,8 +291,9 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
               onChangeText={(value: string) => this.setState({newEndpointURL: value})}
             />
             <Button
-              buttonStyle={modalCommonStyles.primaryButton}
+              buttonStyle={[modalCommonStyles.primaryButton, style.button]}
               title={I18n.t('authentication.addEndpoint').toUpperCase()}
+              titleStyle={style.buttonText}
               loading={loadingAddNewEndpoint}
               onPress={() => this.addEndpoint(newEndpointName, newEndpointURL)}
             />
@@ -338,7 +345,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
           Message.showSuccess(I18n.t('general.createEndpointSuccess', { endpointName: newEndpointName }));
         });
       }
-      this.setState({loadingAddNewEndpoint: false})
+      this.setState({loadingAddNewEndpoint: false, showEndpointCreationForm: false});
     });
   }
 
