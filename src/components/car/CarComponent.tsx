@@ -10,7 +10,9 @@ import computeStyleSheet from './CarComponentStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import I18n from 'i18n-js';
 
-interface State {}
+interface State {
+  noImage?: boolean;
+}
 
 export interface Props extends BaseProps {
   car: Car;
@@ -42,6 +44,7 @@ export default class CarComponent extends React.Component<Props, State> {
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
     const carFullNameWords = carFullName?.split(' ') ?? [];
     const imageURI = car?.carCatalog?.image;
+    const image = this.state.noImage ? require('../../../assets/no-image.png') : {uri: imageURI};
     return (
       <View style={[listItemCommonStyle.container, ...(containerStyle || [])]}>
         <View style={style.header}>
@@ -63,7 +66,7 @@ export default class CarComponent extends React.Component<Props, State> {
         </View>
         <View style={style.bottomContainer}>
           {imageURI ? (
-            <Image resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={{ uri: imageURI }} />
+            <Image onError={() => this.setState({ noImage: true })} resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={image} />
           ) : (
             <View style={style.noImageContainer}>
               <Icon style={style.carImagePlaceholder} type={'Ionicons'} name={'car-sport'} />
