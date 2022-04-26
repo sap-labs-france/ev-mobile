@@ -100,6 +100,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '13@s',
       color: commonColor.textColor
     },
+    endpointCreationFormTitle: {
+      fontWeight: 'bold'
+    },
+    endpointCreationFormHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '15@s'
+    },
     backButton: {
       borderColor: commonColor.textColor
     },

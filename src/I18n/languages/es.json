@@ -183,7 +183,8 @@
     "mandatoryErrorSubject": "El tema es obligatorio",
     "mandatoryErrorDescription": "La descripción es obligatoria",
     "reportErrorSuccess": "El error se ha informado correctamente",
-    "reportErrorFailed": "No se puede informar el error"
+    "reportErrorFailed": "No se puede informar el error",
+    "createEndpoint": "Create endpoint"
   },
   "qrCode": {
     "qrCode": "Código QR",

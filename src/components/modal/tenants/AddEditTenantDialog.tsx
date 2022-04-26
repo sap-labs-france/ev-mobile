@@ -262,6 +262,12 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
         />
         {showEndpointCreationForm && (
           <View style={style.endpointCreationFormContainer}>
+            <View style={style.endpointCreationFormHeader}>
+              <Text style={[style.inputLabel, style.endpointCreationFormTitle]}>{I18n.t('authentication.createEndpoint')}</Text>
+              <TouchableOpacity onPress={() => this.setState({showEndpointCreationForm: false})}>
+                <Icon type={'EvilIcons'} name={'close'} />
+              </TouchableOpacity>
+            </View>
             <Input
               defaultValue={newEndpointName}
               label={`${I18n.t('authentication.endpointName')}*`}

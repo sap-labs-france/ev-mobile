@@ -183,7 +183,8 @@
     "mandatoryErrorSubject": "Předmět je povinný",
     "mandatoryErrorDescription": "Popis je povinný",
     "reportErrorSuccess": "Chyba byla úspěšně nahlášena",
-    "reportErrorFailed": "Chybu nelze nahlásit"
+    "reportErrorFailed": "Chybu nelze nahlásit",
+    "createEndpoint": "Create endpoint"
   },
   "qrCode": {
     "qrCode": "QR kód",
