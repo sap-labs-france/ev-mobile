@@ -83,7 +83,8 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "newEntry": "New entry"
   },
   "sidebar": {
     "home": "Home",
@@ -182,7 +183,8 @@
     "mandatoryErrorSubject": "Il soggetto è obbligatorio",
     "mandatoryErrorDescription": "La descrizione è obbligatoria",
     "reportErrorSuccess": "L'errore è stato segnalato con successo",
-    "reportErrorFailed": "Impossibile segnalare l'errore"
+    "reportErrorFailed": "Impossibile segnalare l'errore",
+    "createEndpoint": "Créer endpoint"
   },
   "qrCode": {
     "qrCode": "Codice QR",

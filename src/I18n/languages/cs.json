@@ -83,7 +83,8 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "newEntry": "New entry"
   },
   "sidebar": {
     "home": "Domovská stránka",
@@ -182,7 +183,8 @@
     "mandatoryErrorSubject": "Předmět je povinný",
     "mandatoryErrorDescription": "Popis je povinný",
     "reportErrorSuccess": "Chyba byla úspěšně nahlášena",
-    "reportErrorFailed": "Chybu nelze nahlásit"
+    "reportErrorFailed": "Chybu nelze nahlásit",
+    "createEndpoint": "Create endpoint"
   },
   "qrCode": {
     "qrCode": "QR kód",
