@@ -43,6 +43,7 @@ import Cars from '../../cars/Cars';
 import Tags from '../../tags/Tags';
 import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
+import { StatusCodes } from 'http-status-codes';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -178,14 +179,16 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       const siteImage = await this.centralServerProvider.getSiteImage(siteID);
       return siteImage;
     } catch (error) {
-      // Other common Error
-      await Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        'sites.siteUnexpectedError',
-        this.props.navigation,
-        this.refresh.bind(this)
-      );
+      if (error.request.status !== StatusCodes.NOT_FOUND) {
+        // Other common Error
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'sites.siteUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
+      }
     }
     return null;
   };

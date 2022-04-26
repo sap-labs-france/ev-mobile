@@ -83,7 +83,8 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "newEntry": "New entry"
   },
   "sidebar": {
     "home": "Home",
@@ -182,7 +183,8 @@
     "mandatoryErrorSubject": "Das Thema ist notwendig",
     "mandatoryErrorDescription": "Die Beschreibung ist notwendig",
     "reportErrorSuccess": "Der Fehler wurde erfolgreich gemeldet",
-    "reportErrorFailed": "Der Fehler kann nicht gemeldet werden"
+    "reportErrorFailed": "Der Fehler kann nicht gemeldet werden",
+    "createEndpoint": "Create endpoint"
   },
   "qrCode": {
     "qrCode": "QR Code",

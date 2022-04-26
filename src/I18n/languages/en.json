@@ -83,7 +83,8 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "newEntry": "New entry"
   },
   "sidebar": {
     "home": "Home",
@@ -182,7 +183,8 @@
     "mandatoryErrorSubject": "The subject is mandatory",
     "mandatoryErrorDescription": "The description is mandatory",
     "reportErrorSuccess": "The error has been reported successfully",
-    "reportErrorFailed": "Cannot report the error"
+    "reportErrorFailed": "Cannot report the error",
+    "createEndpoint": "Create endpoint"
   },
   "qrCode": {
     "qrCode": "QR Code",

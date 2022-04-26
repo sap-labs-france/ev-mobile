@@ -83,7 +83,8 @@
     "defaultSettings": "Paramètres par défaut",
     "notApplicable": "N/A",
     "showMore": "Voir plus",
-    "showLess": "Voir moins"
+    "showLess": "Voir moins",
+    "newEntry": "Nouveau"
   },
   "sidebar": {
     "home": "Home",
@@ -182,7 +183,8 @@
     "mandatoryErrorSubject": "Le sujet est obligatoire",
     "mandatoryErrorDescription": "La description est obligatoire",
     "reportErrorSuccess": "L'erreur a été envoyée avec succès",
-    "reportErrorFailed": "Impossible d'envoyer l'erreur"
+    "reportErrorFailed": "Impossible d'envoyer l'erreur",
+    "createEndpoint": "Créer endpoint"
   },
   "qrCode": {
     "qrCode": "QR Code",

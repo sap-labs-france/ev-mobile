@@ -738,7 +738,9 @@ export default class Utils {
       await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
     } else {
       // Error in code
-      centralServerProvider.sendErrorReport(null,  error.message, error.stack);
+      if (!__DEV__) {
+        centralServerProvider.sendErrorReport(null,  error.message, error.stack);
+      }
       Message.showError(I18n.t('general.unexpectedError'));
     }
   }

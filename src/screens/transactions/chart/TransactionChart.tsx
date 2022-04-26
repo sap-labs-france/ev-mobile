@@ -390,11 +390,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       <View style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
-          title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
-          subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+          title={chargingStation ? chargingStation.id : ''}
+          subTitle={chargingStation ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
         />
         {loading ? <Spinner style={style.spinner} color="grey" /> : (
-          <View>
+          <View style={{flex: 1}}>
             {showTransactionDetails && transaction && (
               <TransactionHeaderComponent
                 navigation={navigation}
@@ -415,6 +415,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
                   wordWrapEnabled: true,
                   yEntrySpace: scale(10),
                   xEntrySpace: scale(15),
+
                 }}
                 marker={{
                   enabled: true,
