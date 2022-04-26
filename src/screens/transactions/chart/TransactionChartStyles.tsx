@@ -19,7 +19,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     chart: {
-      height: '87%'
+      height: '100%'
     },
     chartWithHeader: {
       height: '78%'
