@@ -212,7 +212,8 @@
     "users": "Utilisateurs",
     "user": "Utilisateur",
     "selectUser" : "Sélectionnez un utilisateur",
-    "selectUsers" : "Sélectionnez des utilisateurs"
+    "selectUsers" : "Sélectionnez des utilisateurs",
+    "selectOneOrSeveralUsers": "Sélectionnez un ou plusieurs utilisateur(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Une erreur est survenue",

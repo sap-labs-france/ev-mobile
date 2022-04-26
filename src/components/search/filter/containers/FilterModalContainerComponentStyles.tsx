@@ -18,6 +18,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       height: '100%',
       padding: '5@s',
+      paddingHorizontal: '10@s',
       paddingTop: getStatusBarHeight(),
       alignItems: 'center',
       backgroundColor: commonColor.containerBgColor

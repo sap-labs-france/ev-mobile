@@ -5,7 +5,7 @@ import { ConnectorType } from '../../../../../types/ChargingStation';
 import Utils from '../../../../../utils/Utils';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
-import { TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 export interface Props extends FilterControlComponentProps<string> {}
 
@@ -36,14 +36,16 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
   }
 
   public render = () => {
-    const style = computeStyleSheet();
+    const internalStyle = computeStyleSheet();
+    const { style } = this.props;
     const { connectorTypes } = this.state;
+    const commonColors = Utils.getCurrentCommonColor();
     return (
-        <View style={style.connectorTypeFilterContainer}>
+        <View style={StyleSheet.compose(internalStyle.connectorTypeFilterContainer, style)}>
           {Object.values(ConnectorType)?.map((connector, index) => (
-            <TouchableOpacity key={index} onPress={() => this.onValueChanged(connector)} style={[style.connectorContainer, connectorTypes.has(connector) && style.selectedConnectorContainer]}>
-              {Utils.buildConnectorTypeSVG(connector)}
-              <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.connectorLabel}>{Utils.translateConnectorType(connector)}</Text>
+            <TouchableOpacity key={index} onPress={() => this.onValueChanged(connector)} style={[internalStyle.connectorContainer, connectorTypes.has(connector) && internalStyle.selectedConnectorContainer]}>
+              {Utils.buildConnectorTypeSVG(connector, connectorTypes.has(connector) ? commonColors.containerBgColor : commonColors.textColor)}
+              <Text numberOfLines={2} ellipsizeMode={'tail'} style={[internalStyle.connectorLabel, connectorTypes.has(connector) && internalStyle.selectedConnectorLabel]}>{Utils.translateConnectorType(connector)}</Text>
             </TouchableOpacity>
           ))}
         </View>

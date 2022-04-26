@@ -3,7 +3,7 @@ import React from 'react';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
 import computeModalCommonStyle from '../../../modal/ModalCommonStyle';
 import computeStyleSheet from'./FilterModalContainerComponentStyles';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
@@ -64,7 +64,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     // Notify
     onFilterChanged(this.getFilters(), true);
     // Close
-    this.setState({visible: false, clearLoading: false});
+    this.setState({clearLoading: false});
   };
 
   public render = () => {
@@ -87,7 +87,9 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
           <View style={style.modalContent}>
             <View style={style.header}>
               <Text style={style.title}>{I18n.t('general.filters')}</Text>
-              <Icon onPress={() => this.setState({visible: false})} name={'close'} type={'EvilIcons'} style={style.closeIcon}/>
+              <TouchableOpacity onPress={() => this.setState({visible: false})}>
+                <Icon name={'close'} type={'EvilIcons'} style={style.closeIcon}/>
+              </TouchableOpacity>
             </View>
             {this.props.children}
             <View style={style.buttonsContainer}>
@@ -98,7 +100,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
               <Button
                 loading={clearLoading}
                 containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
-                onPress={() => this.clearFiltersAndNotify()} title={I18n.t('general.clear')}/>
+                onPress={() => this.clearFilters()} title={I18n.t('general.clear')}/>
             </View>
           </View>
         </Modal>

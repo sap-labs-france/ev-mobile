@@ -8,7 +8,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     switchFilterControlComponentContainer: {
-      width: '95%',
       justifyContent: 'space-between',
       marginBottom: '30@s'
     }

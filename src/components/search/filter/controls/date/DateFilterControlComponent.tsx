@@ -32,7 +32,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
     const { initialValue } = this.props;
-    // If filter is not aware of initialValue change, set new initialValue to state
+    // If filter is not aware of initialValue change, put new initialValue to state
     if ( (initialValue?.getTime() !== prevProps.initialValue?.getTime()) && (this.state.value?.getTime() !== initialValue?.getTime()) ) {
       this.setState({value: initialValue });
     }
@@ -60,9 +60,9 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public render = () => {
     const internalStyle = computeStyleSheet();
-    const { label, minimumDate, maximumDate, locale, style, initialValue, defaultValue } = this.props;
+    const { label, minimumDate, maximumDate, locale, style, defaultValue } = this.props;
     let { value } = this.state;
-    value = value ?? initialValue ?? defaultValue ;
+    value = value ?? defaultValue ;
     return (
       <View style={[internalStyle.container, style]}>
         <Text style={internalStyle.label}>{label}</Text>
