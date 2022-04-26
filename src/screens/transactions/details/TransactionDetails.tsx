@@ -16,6 +16,7 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
+import { StatusCodes } from 'http-status-codes';
 
 export interface Props extends BaseProps {}
 
@@ -114,7 +115,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       const siteImage = await this.centralServerProvider.getSiteImage(siteID);
       return siteImage;
     } catch (error) {
-      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation);
+      if (error.request.status !== StatusCodes.NOT_FOUND) {
+        await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation);
+      }
     }
     return null;
   };
