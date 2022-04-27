@@ -69,7 +69,6 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
             filterID={'connectorTypes'}
             internalFilterID={GlobalFilters.CONNECTOR_TYPES}
             initialValue={filters?.connectorTypes}
-            style={controlStyle.rowFilterWithBorder}
             label={I18n.t('details.connectors')}
             ref={async (connectorTypeFilterControlComponent: ConnectorTypeFilterControlComponent) =>
               this.addModalFilter(connectorTypeFilterControlComponent)

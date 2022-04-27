@@ -212,7 +212,8 @@
     "users": "Uživatelé",
     "user": "User",
     "selectUser": "Select User",
-    "selectUsers": "Select Users"
+    "selectUsers": "Select Users",
+    "selectOneOrSeveralUsers": "Select one or several user(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Došlo k chybě",
