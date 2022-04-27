@@ -17,7 +17,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '48%'
     },
     switchFilterControlComponentContainer: {
-      width: '95%',
       justifyContent: 'space-between',
       marginBottom: '30@s'
     }
