@@ -1,6 +1,6 @@
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
 
@@ -41,6 +41,7 @@ export default class NotificationManager {
     this.navigator = navigator;
     // Check if user has given permission
     let enabled = await firebase.messaging().hasPermission();
+    Alert.alert(`FCM Permission: '${enabled}'`);
     if (!enabled) {
       // Request permission
       try {
@@ -55,10 +56,12 @@ export default class NotificationManager {
     if (enabled) {
       try {
         const fcmToken = await firebase.messaging().getToken();
+        Alert.alert(`FCM Token: '${fcmToken}'`);
         if (fcmToken) {
           this.token = fcmToken;
         }
       } catch (error) {
+        Alert.alert(`Error FCM Token: '${error.message}'`);
         console.error(error);
       }
     }
