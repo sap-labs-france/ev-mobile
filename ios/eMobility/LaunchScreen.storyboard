@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_5" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,32 +13,38 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-screen" translatesAutoresizingMaskIntoConstraints="NO" id="6uP-9c-Tj4">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vu9-nc-xrd">
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                                <color key="backgroundColor" red="0.039215686274509803" green="0.43137254901960786" blue="0.81960784313725488" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-screen" translatesAutoresizingMaskIntoConstraints="NO" id="mMP-JW-09r">
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="6uP-9c-Tj4" firstAttribute="bottom" secondItem="Bcu-3y-fUS" secondAttribute="bottom" id="SDG-ro-MTY"/>
-                            <constraint firstItem="6uP-9c-Tj4" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" id="aJB-DN-g2C"/>
-                            <constraint firstItem="6uP-9c-Tj4" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="aal-bD-vut"/>
-                            <constraint firstItem="6uP-9c-Tj4" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" id="ajl-L6-5P5"/>
+                            <constraint firstAttribute="bottom" secondItem="mMP-JW-09r" secondAttribute="bottom" id="72C-Dm-T25"/>
+                            <constraint firstItem="mMP-JW-09r" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="K97-0i-N65"/>
+                            <constraint firstItem="vu9-nc-xrd" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="MWD-R1-hu8"/>
+                            <constraint firstItem="vu9-nc-xrd" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="Wo8-FL-yQv"/>
+                            <constraint firstItem="mMP-JW-09r" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="YhQ-QI-OFg"/>
+                            <constraint firstItem="vu9-nc-xrd" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="bEz-QP-dJt"/>
+                            <constraint firstAttribute="trailing" secondItem="mMP-JW-09r" secondAttribute="trailing" id="jUk-yf-3en"/>
+                            <constraint firstAttribute="trailing" secondItem="vu9-nc-xrd" secondAttribute="trailing" id="vhM-ga-5TI"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50.724637681159422" y="374.18478260869568"/>
+            <point key="canvasLocation" x="-30" y="-482"/>
         </scene>
     </scenes>
     <resources>
-        <image name="splash-screen" width="2048" height="2048"/>
+        <image name="splash-screen" width="220.33332824707031" height="73.333335876464844"/>
     </resources>
 </document>

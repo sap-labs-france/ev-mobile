@@ -37,11 +37,9 @@ export default class Users extends SelectableList<User> {
   public state: State;
   public props: Props;
   private searchText: string;
-  private userIDs: string[];
 
   public constructor(props: Props) {
     super(props);
-    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
     this.singleItemTitle = I18n.t('users.user');
     this.multiItemsTitle = I18n.t('users.users');
     this.selectMultipleTitle = 'users.selectUsers';
@@ -67,11 +65,10 @@ export default class Users extends SelectableList<User> {
 
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     try {
-      const issuer = this.props.filters?.issuer ?? this.state.filters?.issuer;
+      const issuer = this.props?.filters?.hasOwnProperty('issuer') ? this.props.filters.issuer : !this.state.filters?.issuer;
       const params = {
         Search: searchText,
-        UserID: this.userIDs?.join('|'),
-        ...(!Utils.isNullOrUndefined(issuer) && {Issuer: !issuer})
+        Issuer: issuer
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
       // Get total number of records

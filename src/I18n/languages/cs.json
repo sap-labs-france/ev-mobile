@@ -83,7 +83,8 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "newEntry": "New entry"
   },
   "sidebar": {
     "home": "Domovská stránka",
@@ -182,7 +183,8 @@
     "mandatoryErrorSubject": "Předmět je povinný",
     "mandatoryErrorDescription": "Popis je povinný",
     "reportErrorSuccess": "Chyba byla úspěšně nahlášena",
-    "reportErrorFailed": "Chybu nelze nahlásit"
+    "reportErrorFailed": "Chybu nelze nahlásit",
+    "createEndpoint": "Create endpoint"
   },
   "qrCode": {
     "qrCode": "QR kód",
@@ -210,7 +212,8 @@
     "users": "Uživatelé",
     "user": "User",
     "selectUser": "Select User",
-    "selectUsers": "Select Users"
+    "selectUsers": "Select Users",
+    "selectOneOrSeveralUsers": "Select one or several user(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Došlo k chybě",

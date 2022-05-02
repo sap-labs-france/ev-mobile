@@ -16,6 +16,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import { StatusCodes } from 'http-status-codes';
 
 export interface Props extends BaseProps {}
 
@@ -153,10 +154,10 @@ export default class Login extends BaseScreen<Props, State> {
   public getTenantLogo = async (tenant: TenantConnection): Promise<string> => {
     try {
       if (tenant) {
-        return this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+        return await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
       }
     } catch (error) {
-      // Tenant has no logo
+      return null;
     }
     return null;
   };
@@ -193,7 +194,6 @@ export default class Login extends BaseScreen<Props, State> {
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
     // Check if user can be logged
     if (
-      !__DEV__ &&
       !this.centralServerProvider.hasAutoLoginDisabled() &&
       !Utils.isNullOrEmptyString(tenant?.subdomain) &&
       !Utils.isNullOrEmptyString(email) &&

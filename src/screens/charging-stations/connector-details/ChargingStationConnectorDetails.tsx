@@ -43,6 +43,7 @@ import Cars from '../../cars/Cars';
 import Tags from '../../tags/Tags';
 import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
+import { StatusCodes } from 'http-status-codes';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -178,14 +179,16 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       const siteImage = await this.centralServerProvider.getSiteImage(siteID);
       return siteImage;
     } catch (error) {
-      // Other common Error
-      await Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        'sites.siteUnexpectedError',
-        this.props.navigation,
-        this.refresh.bind(this)
-      );
+      if (error.request.status !== StatusCodes.NOT_FOUND) {
+        // Other common Error
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'sites.siteUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
+      }
     }
     return null;
   };
@@ -930,7 +933,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               <ScrollView
                 persistentScrollbar={true}
                 style={style.scrollviewContainer}
-                contentContainerStyle={style.chargingSettingsContainer}>
+                contentContainerStyle={style.chargingSettingsContainer}
+                keyboardShouldPersistTaps={'always'}
+              >
                 {/* User */}
                 {this.renderUserSelection(style)}
                 {/* Badge */}
@@ -1074,7 +1079,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             onItemsSelected={this.onUserSelected.bind(this)}
             navigation={navigation}
             selectionMode={ItemSelectionMode.SINGLE}>
-            <Users filters={{issuer: false}} navigation={navigation} />
+            <Users filters={{issuer: true}} navigation={navigation} />
           </ModalSelect>
         )}
         {showBillingErrorMessage && this.renderBillingErrorMessages(style)}

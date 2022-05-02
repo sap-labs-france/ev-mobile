@@ -53,10 +53,13 @@ export default class NotificationManager {
     // Check again
     enabled = await firebase.messaging().hasPermission();
     if (enabled) {
-      const fcmToken = await firebase.messaging().getToken();
-      if (fcmToken) {
-        console.log(fcmToken);
-        this.token = fcmToken;
+      try {
+        const fcmToken = await firebase.messaging().getToken();
+        if (fcmToken) {
+          this.token = fcmToken;
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
   }

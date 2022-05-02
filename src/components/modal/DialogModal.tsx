@@ -95,7 +95,7 @@ export default class DialogModal extends React.Component<Props, State> {
             {renderIcon?.(iconStyle)}
             <Text style={[style.text, style.title]}>{title?.toUpperCase()}</Text>
             <Text style={[style.text, style.description]}>{description}</Text>
-            <ScrollView contentContainerStyle={style.controlsContent} style={style.controlsContainer} >
+            <ScrollView keyboardShouldPersistTaps={'always'} contentContainerStyle={style.controlsContent} style={style.controlsContainer} >
               {renderControls?.()}
             </ScrollView>
             <View style={[style.buttonsContainer, buttonsContainerStyle]}>

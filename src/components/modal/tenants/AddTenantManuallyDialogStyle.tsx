@@ -59,6 +59,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '14@s',
       flex: 1
     },
+    newEntryText: {
+      color: commonColor.brandPrimaryLight
+    },
+    newEntryIcon: {
+      fontSize: '25@s',
+      marginRight: '5@s',
+      flex: 0
+    },
     selectDropdownIcon: {
       color: commonColor.textColor
     },
@@ -74,7 +82,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       padding: '2@s',
       alignItems: 'center',
-      paddingHorizontal: '5@s'
+      paddingHorizontal: '5@s',
+      justifyContent: 'flex-start'
     },
     selectLabel: {
       marginBottom: '10@s'
@@ -91,11 +100,26 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '13@s',
       color: commonColor.textColor
     },
-    addEndpointIcon: {
-      color: commonColor.primaryLight
+    endpointCreationFormTitle: {
+      fontWeight: 'bold'
+    },
+    endpointCreationFormHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '15@s'
     },
     backButton: {
       borderColor: commonColor.textColor
+    },
+    buttonText: {
+      fontSize: '12@s'
+    },
+    button: {
+      padding: '5@s',
+      paddingVertical: '8@s',
+      borderRadius: '8@s',
+      borderWidth: 0.8
     }
 
   });

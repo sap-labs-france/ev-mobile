@@ -32,6 +32,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingRight: '5@s',
       fontSize: '22@s',
       color: commonColor.textColor
+    },
+    clearIcon: {
+      color: commonColor.disabledDark
     }
   });
   const portraitStyles = {};

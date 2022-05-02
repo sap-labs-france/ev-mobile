@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
 import React from 'react';
-import { TextInput, View } from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
@@ -60,7 +60,9 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
-        <Icon type="Entypo" name="erase" style={style.icon} onPress={() => this.clearSearch()} />
+        <TouchableOpacity onPress={() => this.clearSearch()}>
+          <Icon type="MaterialCommunityIcons" name="close-circle" style={[style.icon, style.clearIcon]} />
+        </TouchableOpacity>
       </View>
     );
   }

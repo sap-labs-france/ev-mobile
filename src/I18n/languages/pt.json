@@ -83,7 +83,8 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "newEntry": "New entry"
   },
   "sidebar": {
     "home": "Home",
@@ -182,7 +183,8 @@
     "mandatoryErrorSubject": "O assunto é obrigatório",
     "mandatoryErrorDescription": "A descrição é obrigatória",
     "reportErrorSuccess": "O erro foi relatado com sucesso",
-    "reportErrorFailed": "Não é possível comunicar o erro"
+    "reportErrorFailed": "Não é possível comunicar o erro",
+    "createEndpoint": "Créer endpoint"
   },
   "qrCode": {
     "qrCode": "QR Code",
@@ -210,7 +212,8 @@
     "users": "Users",
     "user": "User",
     "selectUser": "Select User",
-    "selectUsers": "Select Users"
+    "selectUsers": "Select Users",
+    "selectOneOrSeveralUsers": "Select one or several user(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",

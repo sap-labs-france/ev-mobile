@@ -83,7 +83,8 @@
     "defaultSettings": "Paramètres par défaut",
     "notApplicable": "N/A",
     "showMore": "Voir plus",
-    "showLess": "Voir moins"
+    "showLess": "Voir moins",
+    "newEntry": "Nouveau"
   },
   "sidebar": {
     "home": "Home",
@@ -182,7 +183,8 @@
     "mandatoryErrorSubject": "Le sujet est obligatoire",
     "mandatoryErrorDescription": "La description est obligatoire",
     "reportErrorSuccess": "L'erreur a été envoyée avec succès",
-    "reportErrorFailed": "Impossible d'envoyer l'erreur"
+    "reportErrorFailed": "Impossible d'envoyer l'erreur",
+    "createEndpoint": "Créer endpoint"
   },
   "qrCode": {
     "qrCode": "QR Code",
@@ -210,7 +212,8 @@
     "users": "Utilisateurs",
     "user": "Utilisateur",
     "selectUser" : "Sélectionnez un utilisateur",
-    "selectUsers" : "Sélectionnez des utilisateurs"
+    "selectUsers" : "Sélectionnez des utilisateurs",
+    "selectOneOrSeveralUsers": "Sélectionnez un ou plusieurs utilisateur(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Une erreur est survenue",
