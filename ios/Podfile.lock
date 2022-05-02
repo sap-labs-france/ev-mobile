@@ -772,8 +772,8 @@ SPEC CHECKSUMS:
   Crashlytics: 9220f5bc89e7a618df411b4f639389dbfb0e03d2
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   Fabric: ea977e3cd9c20425516d3dafd3bf8c941c51223f
-  FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 3e2492d856a096c718a0dc06fbd3e7473ac45e0d
+  FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
+  FBReactNativeSpec: 7db5a2abe67df1f57d6e0a04459a3e7d7db71536
   Firebase: 8db6f2d1b2c5e2984efba4949a145875a8f65fe5
   FirebaseAnalytics: 5dd088bd2e67bb9d13dbf792d1164ceaf3052193
   FirebaseCore: d889d9e12535b7f36ac8bfbf1713a0836a3012cd
@@ -856,6 +856,6 @@ SPEC CHECKSUMS:
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 4cc72b6d7a44fd579713c428163c1838e6d4bd25
+PODFILE CHECKSUM: ce14ae24f0afb82f214e9d71120d3fe8f53c3fe1
 
 COCOAPODS: 1.11.3
