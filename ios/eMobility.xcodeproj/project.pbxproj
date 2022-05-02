@@ -467,7 +467,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					D2336F5723510E6F00A1BCB0 = {
-						DevelopmentTeam = SG7N28T3A2;
+						DevelopmentTeam = 296EA3CE69;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -990,7 +990,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = SG7N28T3A2;
+				DEVELOPMENT_TEAM = 296EA3CE69;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eMobility.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1035,13 +1035,13 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-splash-screen\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/yoga\"",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.$(BUNDLE_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.chargeangels;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RNCharts/eMobility-Bridging-Header.h";
@@ -1063,7 +1063,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SG7N28T3A2;
+				DEVELOPMENT_TEAM = 296EA3CE69;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eMobility.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1108,13 +1108,13 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-splash-screen\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/yoga\"",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.$(BUNDLE_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.chargeangels;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RNCharts/eMobility-Bridging-Header.h";
