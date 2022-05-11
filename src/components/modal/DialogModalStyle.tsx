@@ -33,7 +33,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     title: {
       marginTop: '10@s',
-      fontSize: '14@s',
+      fontSize: '13@s',
       color: commonColor.textColor
     },
     text: {
@@ -85,7 +85,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     icon: {
-      fontSize: '65@s',
+      fontSize: '60@s',
       alignSelf: 'center'
     }
   });
