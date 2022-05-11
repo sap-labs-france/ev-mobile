@@ -97,28 +97,28 @@ export default class DialogModal extends React.Component<Props, State> {
             <Text style={[style.text, style.description]}>{description}</Text>
             <ScrollView keyboardShouldPersistTaps={'always'} contentContainerStyle={style.controlsContent} style={style.controlsContainer} >
               {renderControls?.()}
+              <View style={[style.buttonsContainer, buttonsContainerStyle]}>
+                {buttons?.filter((b) => b).map((button: DialogModalButton, index) => (
+                  <Button
+                    key={index}
+                    title={button.text?.toUpperCase()}
+                    containerStyle={buttonContainerCommonStyle}
+                    buttonStyle={[modalCommonStyles.primaryButton , style.button, button.buttonStyle]}
+                    titleStyle={[style.buttonText, button.buttonTextStyle]}
+                    onPress={button.action}
+                  />
+                ))}
+                {withCancel && (
+                  <Button
+                    title={(cancelButtonText ?? I18n.t('general.cancel')).toUpperCase()}
+                    containerStyle={buttonContainerCommonStyle}
+                    buttonStyle={[modalCommonStyles.primaryButton, style.cancelButton, style.button]}
+                    titleStyle={[style.buttonText, style.cancelButtonText]}
+                    onPress={() => close?.()}
+                  />
+                )}
+              </View>
             </ScrollView>
-            <View style={[style.buttonsContainer, buttonsContainerStyle]}>
-              {buttons?.filter((b) => b).map((button: DialogModalButton, index) => (
-                <Button
-                  key={index}
-                  title={button.text?.toUpperCase()}
-                  containerStyle={buttonContainerCommonStyle}
-                  buttonStyle={[modalCommonStyles.primaryButton , style.button, button.buttonStyle]}
-                  titleStyle={[style.buttonText, button.buttonTextStyle]}
-                  onPress={button.action}
-                />
-              ))}
-              {withCancel && (
-                <Button
-                  title={(cancelButtonText ?? I18n.t('general.cancel')).toUpperCase()}
-                  containerStyle={buttonContainerCommonStyle}
-                  buttonStyle={[modalCommonStyles.primaryButton, style.cancelButton, style.button]}
-                  titleStyle={[style.buttonText, style.cancelButtonText]}
-                  onPress={() => close?.()}
-                />
-              )}
-            </View>
           </View>
         </RootSiblingParent>
       </Modal>
