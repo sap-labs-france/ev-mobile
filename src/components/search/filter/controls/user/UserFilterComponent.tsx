@@ -17,6 +17,7 @@ import I18n from 'i18n-js';
 import Utils from '../../../../../utils/Utils';
 import { withBadge } from 'react-native-elements';
 import ListItem from '../../../../../types/ListItem';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends FilterControlComponentProps<string> {}
 
@@ -99,7 +100,7 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
         <UserComponent user={users[0]} navigation={null} />
       );
     }
-    const Badged = withBadge(this.renderMultiSelectBadge(users), {badgeStyle: style.badge})(UserComponent)
+    const Badged = withBadge(this.renderMultiSelectBadge(users), {badgeStyle: style.badge, right: scale(3), top: -scale(4)})(UserComponent)
     return (<Badged user={users[0]} navigation={null} />)
   }
 
