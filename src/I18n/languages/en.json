@@ -141,6 +141,7 @@
     "forgotYourPassword": "Forgot Password?",
     "retrievePassword": "Retrieve Password",
     "resetPassword": "Reset Password",
+    "createPassword": "Create Password",
     "backLogin": "Back to Login",
     "required": "Required",
     "acceptEula": "I accept the ",

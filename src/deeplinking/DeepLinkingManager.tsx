@@ -11,8 +11,10 @@ import Utils from '../utils/Utils';
 
 export default class DeepLinkingManager {
   private static instance: DeepLinkingManager;
-  private navigator: NavigationContainerRef;
+  private navigator: NavigationContainerRef<ReactNavigation.RootParamList>;
   private centralServerProvider: CentralServerProvider;
+  private url: string;
+  private readonly scheme: string = 'https://';
 
   // eslint-disable-next-line no-useless-constructor
   private constructor() {}
@@ -24,119 +26,125 @@ export default class DeepLinkingManager {
     return DeepLinkingManager.instance;
   }
 
-  public initialize(navigator: NavigationContainerRef, centralServerProvider: CentralServerProvider) {
+  public async initialize(navigator: NavigationContainerRef<ReactNavigation.RootParamList>, centralServerProvider: CentralServerProvider) {
     // Keep
     this.navigator = navigator;
     this.centralServerProvider = centralServerProvider;
     // Activate Deep Linking
-    DeepLinking.addScheme('eMobility://');
-    DeepLinking.addScheme('emobility://');
+    DeepLinking.addScheme(this.scheme);
     // Init Routes
     this.addResetPasswordRoute();
     this.addVerifyAccountRoute();
     // Init URL
-    Linking.getInitialURL()
-      .then((url) => {
-        if (url) {
-          Linking.openURL(url);
-        }
-      })
-      .catch((err) => {
-        console.error('An error occurred', err);
-      });
+    try {
+      const initialURL = await Linking.getInitialURL();
+      if ( initialURL ) {
+        this.handleUrl({ url: initialURL });
+      }
+    } catch ( err ) {
+      console.error('An error occurred', err);
+    }
   }
 
   public startListening() {
-    Linking.addEventListener('url', this.handleUrl);
+    const linkingSubscription = Linking.addEventListener('url', this.handleUrl.bind(this));
+    return () => {
+      linkingSubscription?.remove();
+    }
   }
 
-  public stopListening() {
-    Linking.removeEventListener('url', this.handleUrl);
+  public async handleUrl({ url }: { url: string }): Promise<void> {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      this.url = url;
+      DeepLinking.evaluateUrl(url);
+
+    }
   }
 
-  public handleUrl = ({ url }: { url: string }) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        DeepLinking.evaluateUrl(url);
-      }
-    });
-  };
-
-  private addResetPasswordRoute = () => {
+  private addResetPasswordRoute(): void {
     // Add Route
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: { tenant: string; hash: string }) => {
-      // Check params
-      if (!response.tenant) {
-        Message.showError(I18n.t('authentication.mandatoryTenant'));
-      }
-      // Get the Tenant
-      const tenant = await this.centralServerProvider.getTenant(response.tenant);
+    DeepLinking.addRoute('/define-password:hash', async (response) => {
+      const subdomain = this.getTenant();
+      const tenant = await this.centralServerProvider.getTenant(subdomain);
       if (!tenant) {
         Message.showError(I18n.t('authentication.unknownTenant'));
+        return;
       }
-      if (!response.hash) {
+      const hash = response.hash.split('=')?.[1];
+      if (!hash) {
         Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
+        return;
       }
       // Disable
       this.centralServerProvider.setAutoLoginDisabled(true);
       // Navigate
-      this.navigator.dispatch(
-        CommonActions.navigate({
-          name: 'ResetPassword',
-          key: `${Utils.randomNumber()}`,
-          params: { tenantSubDomain: response.tenant, hash: response.hash }
-        })
-      );
+      this.navigator.navigate('ResetPassword', {
+        key: `${Utils.randomNumber()}`,
+        tenantSubDomain: subdomain,
+        hash
+      })
     });
-  };
+  }
 
-  private addVerifyAccountRoute = () => {
+  private getTenant(): string {
+    const regex = new RegExp('\\/\\/(.*?)\\.');
+    const res =  this.url?.match(regex);
+    return res?.[1];
+  }
+
+  private addVerifyAccountRoute(): void {
     // Add Route
     DeepLinking.addRoute(
-      '/verifyAccount/:tenant/:email/:token/:resetToken',
+      '/verify-email:params',
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      async (response: { tenant: string; email: string; token: string; resetToken: string }) => {
+      async (response) => {
+        const params = Utils.getURLParameters(this.url) as {Email: string, VerificationToken: string, ResetToken: string};
+        const subdomain = this.getTenant();
+        const tenant = await this.centralServerProvider.getTenant(subdomain);
+        const email = params.Email;
+        const token = params.VerificationToken;
+        let resetToken = params.ResetToken;
         // Check params
-        if (!response.tenant) {
-          Message.showError(I18n.t('authentication.mandatoryTenant'));
-        }
-        if (!response.email) {
+        if (!email) {
           Message.showError(I18n.t('authentication.mandatoryEmail'));
+          return;
         }
         // Get the Tenant
-        const tenant = await this.centralServerProvider.getTenant(response.tenant);
         if (!tenant) {
           Message.showError(I18n.t('authentication.unknownTenant'));
+          return;
         }
-        if (!response.token) {
+        if (!token) {
           Message.showError(I18n.t('authentication.verifyAccountTokenNotValid'));
+          return;
         }
         // Disable
         this.centralServerProvider.setAutoLoginDisabled(true);
         await this.centralServerProvider.logoff();
         // Navigate to login page
-        this.navigator.dispatch(
-          CommonActions.navigate({
-            name: 'Login',
-            key: `${Utils.randomNumber()}`,
-            params: { tenantSubDomain: response.tenant, email: response.email }
-          })
-        );
+        this.navigator.navigate('Login', {
+          key: `${Utils.randomNumber()}`,
+          tenantSubDomain: subdomain,
+          email
+        });
         // Call the backend
         try {
           // Validate Account
-          const result = await this.centralServerProvider.verifyEmail(response.tenant, response.email, response.token);
+          //const result = await this.centralServerProvider.verifyEmail(subdomain, email, token);
+          resetToken = 'qrgqrgqsdqwed23fvwre';
+          const result = {status: Constants.REST_RESPONSE_SUCCESS}
           if (result.status === Constants.REST_RESPONSE_SUCCESS) {
             Message.showSuccess(I18n.t('authentication.accountVerifiedSuccess'));
             // Check if user has to change his password
-            if (response.resetToken && response.resetToken !== 'null') {
+            if (resetToken && resetToken !== 'null') {
               // Change password
               this.navigator.dispatch(
                 CommonActions.navigate({
                   name: 'ResetPassword',
                   key: `${Utils.randomNumber()}`,
-                  params: { tenantSubDomain: response.tenant, hash: response.resetToken }
+                  params: { tenantSubDomain: subdomain, hash: response.resetToken, email }
                 })
               );
             }
@@ -168,5 +176,5 @@ export default class DeepLinkingManager {
         }
       }
     );
-  };
+  }
 }

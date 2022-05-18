@@ -4,5 +4,11 @@
 <dict>
 	<key>aps-environment</key>
 	<string>development</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:*.e-mobility-group.com</string>
+		<string>applinks:*.localhost:45000</string>
+		<string>applinks:986e-2a01-cb1d-6e8-d200-b918-bca6-eef6-4d63.eu.ngrok.io</string>
+	</array>
 </dict>
 </plist>

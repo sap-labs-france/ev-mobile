@@ -26,9 +26,10 @@ interface State {
   loading?: boolean;
   hideRepeatPassword?: boolean;
   hidePassword?: boolean;
+  email?: string;
 }
 
-export default class ResetPassword extends BaseScreen<Props, State> {
+export default class CreatePassword extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private repeatPasswordInput: TextInput;
@@ -62,8 +63,8 @@ export default class ResetPassword extends BaseScreen<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', '') as string,
-      hash: Utils.getParamFromNavigation(this.props.navigation, 'hash', null) as string,
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
+      hash: Utils.getParamFromNavigation(this.props.route, 'hash', null) as string,
       tenantName: '',
       password: '',
       repeatPassword: '',
@@ -71,6 +72,12 @@ export default class ResetPassword extends BaseScreen<Props, State> {
       hidePassword: true,
       hideRepeatPassword: true
     };
+  }
+
+  // Enforce goBack to Login page as deeplinking is broken with react-navigation
+  public onBack(): boolean {
+    this.props.navigation.navigate('Login');
+    return true;
   }
 
   public setState = (
@@ -90,6 +97,15 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     });
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
+  }
+
+  public async componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
+    const hash = Utils.getParamFromNavigation(this.props.route, 'hash', null) as string;
+    const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string;
+    const tenant = await this.centralServerProvider.getTenant(tenantSubDomain);
+    if (hash !== this.state.hash || tenantSubDomain !== this.state.tenantSubDomain) {
+      this.setState({hash, tenantSubDomain, tenantName: tenant?.name});
+    }
   }
 
   public resetPassword = async () => {
@@ -221,7 +237,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               ) : (
                 <Button primary block style={formStyle.button} onPress={async () => this.resetPassword()}>
                   <Text style={formStyle.buttonText} uppercase={false}>
-                    {I18n.t('authentication.resetPassword')}
+                    {I18n.t('authentication.createPassword')}
                   </Text>
                 </Button>
               )}

@@ -18,7 +18,7 @@ import CentralServerProvider from './provider/CentralServerProvider';
 import ProviderFactory from './provider/ProviderFactory';
 import Eula from './screens/auth/eula/Eula';
 import Login from './screens/auth/login/Login';
-import ResetPassword from './screens/auth/reset-password/ResetPassword';
+import CreatePassword from './screens/auth/create-password/CreatePassword';
 import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
 import SignUp from './screens/auth/sign-up/SignUp';
 import Cars from './screens/cars/Cars';
@@ -130,7 +130,7 @@ function createAuthNavigator(props: BaseProps) {
       <AuthStack.Screen name="TenantQrCode" component={TenantQrCode} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="Eula" component={Eula} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="SignUp" component={SignUp} initialParams={props?.route?.params?.params} />
-      <AuthStack.Screen name="ResetPassword" component={ResetPassword} initialParams={props?.route?.params?.params} />
+      <AuthStack.Screen name="ResetPassword" component={CreatePassword} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="RetrievePassword" component={RetrievePassword} initialParams={props?.route?.params?.params} />
     </AuthStack.Navigator>
   );
@@ -497,6 +497,7 @@ export default class App extends React.Component<Props, State> {
   public centralServerProvider: CentralServerProvider;
   private location: LocationManager;
   private appVersion: CheckVersionResponse;
+  private deepLinkingUnsubscribe: () => void;
 
   public constructor(props: Props) {
     super(props);
@@ -529,7 +530,7 @@ export default class App extends React.Component<Props, State> {
     // Init Deep Linking ---------------------------------------
     this.deepLinkingManager = DeepLinkingManager.getInstance();
     // Activate Deep links
-    this.deepLinkingManager.startListening();
+    this.deepLinkingUnsubscribe = this.deepLinkingManager.startListening();
     // Location ------------------------------------------------
     this.location = await LocationManager.getInstance();
     this.location.startListening();
@@ -549,7 +550,7 @@ export default class App extends React.Component<Props, State> {
 
   public componentWillUnmount() {
     // Deactivate Deep links
-    this.deepLinkingManager?.stopListening();
+    this.deepLinkingUnsubscribe?.();
     // Stop Notifications
     this.notificationManager?.stop();
     // Stop Location
