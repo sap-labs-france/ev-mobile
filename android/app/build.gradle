@@ -129,10 +129,6 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
-def keystorePropertiesFile = rootProject.file("keystore.properties");
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -168,11 +164,11 @@ android {
             keyPassword 'android'
         }
         release {
-            if ( keystorePropertiesFile.exists() ) {
-              storeFile file(keystoreProperties['EMOBILITY_UPLOAD_STORE_FILE'])
-              storePassword keystoreProperties['EMOBILITY_UPLOAD_STORE_PASSWORD']
-              keyAlias keystoreProperties['EMOBILITY_UPLOAD_KEY_ALIAS']
-              keyPassword keystoreProperties['EMOBILITY_UPLOAD_KEY_PASSWORD']
+            if (EMOBILITY_UPLOAD_STORE_FILE) {
+              storeFile file(EMOBILITY_UPLOAD_STORE_FILE)
+              storePassword EMOBILITY_UPLOAD_STORE_PASSWORD
+              keyAlias EMOBILITY_UPLOAD_KEY_ALIAS
+              keyPassword EMOBILITY_UPLOAD_KEY_PASSWORD
             }
         }
     }
