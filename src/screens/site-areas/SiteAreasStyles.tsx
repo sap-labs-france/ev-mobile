@@ -71,7 +71,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     mapSearchBarComponent: {
       backgroundColor: commonColor.containerBgColor,
       flex: 1,
-      height: '50@s',
       elevation: 4,
       shadowOffset: {
         width: 0,
@@ -97,8 +96,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
 },
     listFilterButton: {
       borderRadius: '8@s',
-      width: '45@s',
-      height: '45@s',
+      height: '50@s',
+      width: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
       marginLeft: '10@s',
