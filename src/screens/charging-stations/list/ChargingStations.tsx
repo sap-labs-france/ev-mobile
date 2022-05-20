@@ -499,6 +499,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     return (
       <View style={[style.filtersContainer, showMap && style.mapFiltersContainer]}>
         <ChargingStationsFilters
+          showRoamingFilter={!this.siteArea}
           onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
           ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
         />
