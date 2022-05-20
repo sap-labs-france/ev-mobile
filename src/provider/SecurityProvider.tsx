@@ -78,6 +78,7 @@ export default class SecurityProvider {
 
   public canStopTransaction(siteArea: SiteArea, badgeID: string): boolean {
     if (this.canAccess(Entity.CHARGING_STATION, Action.REMOTE_STOP_TRANSACTION)) {
+      // TO CHANGE
       if (this.loggedUser.tagIDs.includes(badgeID)) {
         return true;
       }
