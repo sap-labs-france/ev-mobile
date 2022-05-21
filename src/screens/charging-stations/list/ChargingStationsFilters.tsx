@@ -4,7 +4,7 @@ import React from 'react';
 
 import ConnectorTypeFilterControlComponent from '../../../components/search/filter/controls/connector-type/ConnectorTypeFilterControlComponent';
 import computeControlStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
-import ScreenFilters from '../../../components/search/filter/screen/ScreenFilters';
+import ScreenFilters, { ScreenFiltersProps } from '../../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../../types/Filter';
 import SwitchFilterComponent
   from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
@@ -19,7 +19,14 @@ export interface ChargingStationsFiltersDef {
   issuer?: boolean;
 }
 
-export default class ChargingStationsFilters extends ScreenFilters<ChargingStationsFiltersDef> {
+export interface Props extends ScreenFiltersProps<ChargingStationsFiltersDef> {
+  showRoamingFilter?: boolean;
+}
+
+export default class ChargingStationsFilters extends ScreenFilters<ChargingStationsFiltersDef, Props> {
+  public static defaultProps = {
+    showRoamingFilter: true
+  }
 
   protected async getInitialFilters(): Promise<{visibleFilters: ChargingStationsFiltersDef, modalFilters: ChargingStationsFiltersDef}> {
     const connectorStatus = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS);
@@ -52,17 +59,17 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
               onlyAvailableChargingStationSwitchFilterControlComponent: SwitchFilterComponent<string>
             ) => this.addModalFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
           />
-          {this.securityProvider?.isComponentOrganizationActive() && (
+          {this.securityProvider?.isComponentOrganizationActive() && this.props.showRoamingFilter && (
             <SwitchFilterComponent<boolean>
-            filterID={'issuer'}
-            internalFilterID={GlobalFilters.ROAMING}
-            enabledValue={true}
-            style={filtersStyles.switchFilterControlComponentContainer}
-            label={I18n.t('filters.chargingStationsRoamingFilterLabel')}
-            initialValue={filters?.issuer}
-            ref={async (
-            roamingFilterControlComponent : SwitchFilterComponent<boolean>
-            ) => this.addModalFilter(roamingFilterControlComponent)}
+              filterID={'issuer'}
+              internalFilterID={GlobalFilters.ROAMING}
+              enabledValue={true}
+              style={filtersStyles.switchFilterControlComponentContainer}
+              label={I18n.t('filters.chargingStationsRoamingFilterLabel')}
+              initialValue={filters?.issuer}
+              ref={async (
+              roamingFilterControlComponent : SwitchFilterComponent<boolean>
+              ) => this.addModalFilter(roamingFilterControlComponent)}
             />
           )}
           <ConnectorTypeFilterControlComponent
