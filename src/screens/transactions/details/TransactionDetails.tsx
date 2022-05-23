@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
@@ -16,7 +17,6 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
-import { StatusCodes } from 'http-status-codes';
 
 export interface Props extends BaseProps {}
 
@@ -95,7 +95,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       return transaction;
     } catch (error) {
       switch (error.request.status) {
-        case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+        case StatusCodes.NOT_FOUND:
           Message.showError(I18n.t('transactions.transactionDoesNotExist'));
           break;
         default:
