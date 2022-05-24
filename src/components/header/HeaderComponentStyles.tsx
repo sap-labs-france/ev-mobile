@@ -11,7 +11,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     header: {
       width: '100%',
-      padding: '5@s',
+      paddingHorizontal: '2.5@s',
+      paddingVertical: '4@s',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
