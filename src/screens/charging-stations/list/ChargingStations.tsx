@@ -241,23 +241,23 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     if (this.isMounted()) {
       const { skip, showMap } = this.state;
       const limit = showMap ? this.mapLimit : this.listLimit;
-      if (showSpinner) {
-        this.setState({ ...(Utils.isEmptyArray(this.state.chargingStations) ? { loading: true } : { refreshing: true }) });
-      }
-      // Refresh region
-      if(!this.currentRegion) {
-        this.currentRegion = await this.computeRegion();
-      }
-      // Refresh All
-      const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
-      // Add ChargingStations
-      this.setState(() => ({
-        loading: false,
-        refreshing: false,
-        chargingStations: chargingStations ? chargingStations.result : [],
-        count: chargingStations ? chargingStations.count : 0,
-        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false
-      }));
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.chargingStations) ? { loading: true } : { refreshing: true }) : this.state;
+      this.setState(newState, async () => {
+        // Refresh region
+        if(!this.currentRegion) {
+          this.currentRegion = await this.computeRegion();
+        }
+        // Refresh All
+        const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
+        // Add ChargingStations
+        this.setState(() => ({
+          loading: false,
+          refreshing: false,
+          chargingStations: chargingStations ? chargingStations.result : [],
+          count: chargingStations ? chargingStations.count : 0,
+          isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false
+        }));
+      })
     }
   };
 
