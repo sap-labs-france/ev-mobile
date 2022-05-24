@@ -44,6 +44,11 @@ export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
   distanceMeters?: number;
 }
 
+export enum OCPPGeneralResponse {
+  ACCEPTED = 'Accepted',
+  REJECTED = 'Rejected',
+}
+
 export enum CurrentType {
   AC = 'AC',
   DC = 'DC'
