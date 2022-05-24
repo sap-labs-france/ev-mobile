@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
@@ -29,7 +30,7 @@ import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import Car from '../../../types/Car';
-import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
+import ChargingStation, { ChargePointStatus, Connector, OCPPGeneralResponse } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Tag from '../../../types/Tag';
 import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
@@ -43,7 +44,6 @@ import Cars from '../../cars/Cars';
 import Tags from '../../tags/Tags';
 import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
-import { StatusCodes } from 'http-status-codes';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -518,7 +518,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         selectedCar?.id as string,
         selectedUser?.id as string
       );
-      if (response?.status === 'Accepted') {
+      if (response?.status === OCPPGeneralResponse.ACCEPTED) {
         // Show success message
         Message.showSuccess(I18n.t('details.accepted'));
         // Nb trials the button stays disabled
