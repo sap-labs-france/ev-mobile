@@ -1,7 +1,9 @@
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import {
+  ActivityIndicator,
   Alert,
   ImageBackground,
   ImageStyle,
@@ -29,7 +31,7 @@ import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import Car from '../../../types/Car';
-import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
+import ChargingStation, { ChargePointStatus, Connector, OCPPGeneralResponse } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Tag from '../../../types/Tag';
 import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
@@ -43,11 +45,19 @@ import Cars from '../../cars/Cars';
 import Tags from '../../tags/Tags';
 import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
-import { StatusCodes } from 'http-status-codes';
+import { scale } from 'react-native-size-matters'
+import computeActivityIndicatorCommonStyles from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
 export interface Props extends BaseProps {}
+
+export type SettingsErrors = {
+  noBadgeError?: boolean,
+  inactiveBadgeError?: boolean,
+  billingError?: boolean,
+  inactiveUserError?: boolean
+}
 
 export interface State {
   loading?: boolean;
@@ -74,10 +84,7 @@ export interface State {
   selectedCar?: Car;
   selectedTag?: Tag;
   tagCarLoading?: boolean;
-  showNoBadgeErrorMessage?: boolean;
-  showBadgeInactiveErrorMessage?: boolean;
-  showBillingErrorMessage?: boolean;
-  userInactiveError?: boolean;
+  settingsErrors?: SettingsErrors,
   transactionPending?: boolean;
   didPreparing?: boolean;
   showAdviceMessage?: boolean;
@@ -119,10 +126,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       selectedCar: null,
       selectedTag: null,
       tagCarLoading: false,
-      showNoBadgeErrorMessage: false,
-      showBadgeInactiveErrorMessage: false,
-      showBillingErrorMessage: false,
-      userInactiveError: false,
+      settingsErrors: {},
       transactionPending: false,
       showAdviceMessage: false,
       didPreparing: false,
@@ -154,8 +158,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const selectedUser = userFromNavigation ?? currentUser;
     await this.loadSelectedUserDefaultTagAndCar(selectedUser);
     const selectedTag = tagFromNavigation ?? this.state.selectedTag;
-    this.setState({ selectedUser, selectedTag });
-    this.refresh();
+    this.setState({ selectedUser, selectedTag }, async() => this.refresh());
   }
 
   public componentDidFocus(): void {
@@ -297,123 +300,120 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   // eslint-disable-next-line complexity
-  public refresh = async () => {
-    let siteImage = this.state.siteImage;
-    let transaction = null;
-    let showNoBadgeErrorMessage: boolean;
-    let showBadgeInactiveErrorMessage: boolean;
-    let userInactiveError: boolean;
-    let showBillingErrorMessage: boolean;
-    let showStartTransactionDialog: boolean;
-    let showAdviceMessage = false;
-    let buttonDisabled = false;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
-    const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
-    const showChargingSettingsFromNavigation = Utils.getParamFromNavigation(this.props.route, 'showChargingSettings', false) as boolean;
-    const startTransactionFromQRCode = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
-    // Get Charging Station
-    const chargingStation = await this.getChargingStation(chargingStationID);
-    // Get Connector from Charging Station
-    const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;
+  public async refresh(showSpinner = false): Promise<void> {
+    const newState = showSpinner ? {refreshing: true} : this.state;
+    this.setState(newState, async () => {
+      let siteImage = this.state.siteImage;
+      let transaction = null;
+      const settingsErrors: SettingsErrors = {};
+      let showStartTransactionDialog: boolean;
+      let showAdviceMessage = false;
+      let buttonDisabled = false;
+      const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+      const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
+      const startTransactionFromQRCode = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
+      // Get Charging Station
+      const chargingStation = await this.getChargingStation(chargingStationID);
+      // Get Connector from Charging Station
+      const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;
 
-    const transactionStillPending = this.isTransactionStillPending(connector);
-    if (transactionStillPending) {
-      buttonDisabled = true;
-      userInactiveError = true;
-    } else {
-      // if the transaction is no longer pending, reset the flags
-      this.setState({ transactionPending: false, didPreparing: false });
-    }
+      const transactionStillPending = this.isTransactionStillPending(connector);
+      if (transactionStillPending) {
+        buttonDisabled = true;
+      } else {
+        // if the transaction is no longer pending, reset the flags
+        this.setState({ transactionPending: false, didPreparing: false });
+      }
 
-    // When Scanning a QR-Code, redirect if a session is already in progress. (if the connector has a non null userID)
-    if (startTransactionFromQRCode && connector?.currentUserID) {
-      Message.showWarning(I18n.t('transactions.sessionAlreadyInProgressError'));
-      this.props.navigation.goBack();
-      return;
-    }
-    // Get the site image if not already fetched
-    if (!siteImage && chargingStation?.siteArea) {
-      siteImage = await this.getSiteImage(chargingStation?.siteArea?.siteID);
-    }
-    // Get Current Transaction
-    if (connector?.currentTransactionID) {
-      transaction = await this.getTransaction(connector.currentTransactionID);
-    }
-    const { selectedUser, selectedTag } = this.state;
-    // Check selected user is active
-    if (selectedUser?.status !== UserStatus.ACTIVE) {
-      buttonDisabled = true;
-      userInactiveError = true;
-    }
-    // Get the default tag and car of the selected user (only to get errors codes)
-    const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser, chargingStationID);
-    // If error codes, disabled the button
-    if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
-      buttonDisabled = true;
-      showBillingErrorMessage = true;
-    }
+      // When Scanning a QR-Code, redirect if a session is already in progress. (if the connector has a non null userID)
+      if (startTransactionFromQRCode && connector?.currentUserID) {
+        Message.showWarning(I18n.t('transactions.sessionAlreadyInProgressError'));
+        this.props.navigation.goBack();
+        return;
+      }
+      // Get the site image if not already fetched
+      if (!siteImage && chargingStation?.siteArea) {
+        siteImage = await this.getSiteImage(chargingStation?.siteArea?.siteID);
+      }
+      // Get Current Transaction
+      if (connector?.currentTransactionID) {
+        transaction = await this.getTransaction(connector.currentTransactionID);
+      }
+      const { selectedUser, selectedTag } = this.state;
+      // Check selected user is active
+      console.log(selectedUser.status);
+      console.log(selectedUser.status === UserStatus.ACTIVE);
+      if (selectedUser?.status !== UserStatus.ACTIVE) {
+        buttonDisabled = true;
+        settingsErrors.inactiveUserError = true;
+      }
+      // Get the default tag and car of the selected user (only to get errors codes)
+      const userDefaultTagCar = await this.getUserDefaultTagAndCar(selectedUser, chargingStationID);
+      // If error codes, disabled the button
+      if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
+        buttonDisabled = true;
+        settingsErrors.billingError = true;
+      }
 
-    // If the selected user has no badge, disable the button
-    if (!userDefaultTagCar?.tag) {
-      buttonDisabled = true;
-      showNoBadgeErrorMessage = true;
-    }
-    // Check if the selected badge is active
-    if (selectedTag && !selectedTag?.active) {
-      buttonDisabled = true;
-      showBadgeInactiveErrorMessage = true;
-    }
-    if (
-      connector?.status === ChargePointStatus.FINISHING ||
-      connector?.status === ChargePointStatus.FAULTED ||
-      connector?.status === ChargePointStatus.UNAVAILABLE ||
-      chargingStation?.inactive
-    ) {
-      buttonDisabled = true;
-    }
-    // // Compute Duration
-    const durationInfos = this.getDurationInfos(transaction, connector);
-    // Set
-    if (
-      startTransactionFromQRCode &&
-      (connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING) &&
-      !buttonDisabled
-    ) {
-      showStartTransactionDialog = true;
-    }
+      // If the selected user has no badge, disable the button
+      if (!userDefaultTagCar?.tag) {
+        buttonDisabled = true;
+        settingsErrors.noBadgeError = true;
+      }
+      // Check if the selected badge is active
+      if (selectedTag && !selectedTag?.active) {
+        buttonDisabled = true;
+        settingsErrors.inactiveBadgeError = true;
+      }
+      if (
+        connector?.status === ChargePointStatus.FINISHING ||
+        connector?.status === ChargePointStatus.FAULTED ||
+        connector?.status === ChargePointStatus.UNAVAILABLE ||
+        chargingStation?.inactive
+      ) {
+        buttonDisabled = true;
+      }
+      // // Compute Duration
+      const durationInfos = this.getDurationInfos(transaction, connector);
+      // Set
+      if (
+        startTransactionFromQRCode &&
+        (connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING) &&
+        !buttonDisabled
+      ) {
+        showStartTransactionDialog = true;
+      }
 
-    // Show a message to advice to check that the cable is connected to both car and CS
-    if (!buttonDisabled && (connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING)) {
-      showAdviceMessage = true;
-    }
+      // Show a message to advice to check that the cable is connected to both car and CS
+      if (!buttonDisabled && (connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING)) {
+        showAdviceMessage = true;
+      }
 
-    // await this.loadSelectedUserDefaultTagAndCar(this.state.selectedUser);
+      // await this.loadSelectedUserDefaultTagAndCar(this.state.selectedUser);
 
-    this.setState({
-      showStartTransactionDialog: this.state.showStartTransactionDialog ?? showStartTransactionDialog,
-      showBillingErrorMessage,
-      showNoBadgeErrorMessage,
-      showBadgeInactiveErrorMessage,
-      userInactiveError,
-      showAdviceMessage,
-      buttonDisabled,
-      chargingStation,
-      connector,
-      transaction,
-      userDefaultTagCar,
-      siteImage,
-      showChargingSettings:
-        this.state.showChargingSettings ??
-        (showNoBadgeErrorMessage || showBillingErrorMessage || showBadgeInactiveErrorMessage || showChargingSettingsFromNavigation),
-      isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
-      isSiteAdmin: this.securityProvider?.isSiteAdmin(chargingStation?.siteArea?.siteID) ?? false,
-      canDisplayTransaction: chargingStation ? this.securityProvider?.canReadTransaction() : false,
-      canStartTransaction: chargingStation ? this.canStartTransaction(chargingStation, connector) : false,
-      canStopTransaction: chargingStation ? this.canStopTransaction(chargingStation, connector) : false,
-      isPricingActive: this.securityProvider?.isComponentPricingActive(),
-      ...durationInfos,
-      loading: false
-    });
+      this.setState({
+        showStartTransactionDialog: this.state.showStartTransactionDialog ?? showStartTransactionDialog,
+        showAdviceMessage,
+        buttonDisabled,
+        chargingStation,
+        connector,
+        transaction,
+        settingsErrors,
+        userDefaultTagCar,
+        siteImage,
+        refreshing: false,
+        showChargingSettings:
+          this.state.showChargingSettings ?? Object.values(settingsErrors ?? {}).some(error => error === true),
+        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
+        isSiteAdmin: this.securityProvider?.isSiteAdmin(chargingStation?.siteArea?.siteID) ?? false,
+        canDisplayTransaction: chargingStation ? this.securityProvider?.canReadTransaction() : false,
+        canStartTransaction: chargingStation ? this.canStartTransaction(chargingStation, connector) : false,
+        canStopTransaction: chargingStation ? this.canStopTransaction(chargingStation, connector) : false,
+        isPricingActive: this.securityProvider?.isComponentPricingActive(),
+        ...durationInfos,
+        loading: false
+      });
+    })
   };
 
   public getStartStopTransactionButtonStatus(
@@ -518,7 +518,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         selectedCar?.id as string,
         selectedUser?.id as string
       );
-      if (response?.status === 'Accepted') {
+      if (response?.status === OCPPGeneralResponse.ACCEPTED) {
         // Show success message
         Message.showSuccess(I18n.t('details.accepted'));
         // Nb trials the button stays disabled
@@ -892,8 +892,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive,
       showStartTransactionDialog,
       showStopTransactionDialog,
-      showAdviceMessage
+      showAdviceMessage,
+      refreshing
     } = this.state;
+    const commonColors = Utils.getCurrentCommonColor();
+    const activityIndicatorCommonStyles = computeActivityIndicatorCommonStyles();
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return loading ? (
       <Spinner style={style.spinner} color="grey" />
@@ -928,6 +931,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
           <View style={style.connectorInfoSettingsContainer}>
             {this.renderConnectorInfo(style)}
+            {refreshing && <ActivityIndicator
+              size={scale(18)}
+              color={commonColors.textColor}
+              style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]}
+              animating={true}
+            /> }
             {this.renderAccordion(style)}
             {showChargingSettings && (
               <ScrollView
@@ -972,13 +981,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   private renderAccordion(style: any) {
-    const { showChargingSettings, showBillingErrorMessage, showNoBadgeErrorMessage, showBadgeInactiveErrorMessage, userInactiveError } = this.state;
+    const { showChargingSettings, settingsErrors } = this.state;
+    console.log(settingsErrors);
     return (
       <TouchableOpacity onPress={() => this.setState({ showChargingSettings: !showChargingSettings })} style={style.accordion}>
         <Text style={style.accordionText}>
           {I18n.t('transactions.chargingSettings')}
-          {(showBillingErrorMessage || showNoBadgeErrorMessage || showBadgeInactiveErrorMessage || userInactiveError) && (
-            <Text style={style.errorAsterisque}>*</Text>
+          {Object.values(settingsErrors ?? {}).some(error => error) && (
+            <Text style={style.errorAsterisk}>*</Text>
           )}
         </Text>
         {showChargingSettings ? (
@@ -1064,7 +1074,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderUserSelection(style: any) {
     const { navigation } = this.props;
-    const { selectedUser, isAdmin, showBillingErrorMessage, connector } = this.state;
+    const { selectedUser, isAdmin, connector, settingsErrors } = this.state;
     const disabled = connector?.status !== ChargePointStatus.PREPARING && connector?.status !== ChargePointStatus.AVAILABLE;
     const listItemCommonStyles = computeListItemCommonStyle();
     return (
@@ -1082,7 +1092,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             <Users filters={{issuer: true}} navigation={navigation} />
           </ModalSelect>
         )}
-        {showBillingErrorMessage && this.renderBillingErrorMessages(style)}
+        {settingsErrors.billingError && this.renderBillingErrorMessages(style)}
       </View>
     );
   }
@@ -1195,14 +1205,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         selectedUser,
         selectedCar: null,
         selectedTag: null,
-        showBadgeInactiveErrorMessage: false,
-        showBillingErrorMessage: false,
-        showNoBadgeErrorMessage: false,
-        userDefaultTagCar: null
+        userDefaultTagCar: null,
+        settingsErrors: {},
+        buttonDisabled: true
       },
-      () => {
-        this.refresh();
-        this.loadSelectedUserDefaultTagAndCar(selectedUser);
+      async () => {
+        await this.loadSelectedUserDefaultTagAndCar(selectedUser);
+        this.refresh(true);
       }
     );
   }

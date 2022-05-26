@@ -37,8 +37,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     filterButton: {
       borderRadius: '8@s',
-      width: '45@s',
-      height: '45@s',
+      width: '50@s',
+      height: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
       marginLeft: '10@s',
