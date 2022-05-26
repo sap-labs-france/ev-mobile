@@ -98,7 +98,7 @@
     "http-status-codes": "^2.1.4",
     "i18n-js": "^3.8.0",
     "intl": "^1.2.5",
-    "intl-messageformat": "^9.11.4",
+    "intl-messageformat": "^10.0.1",
     "intl-unofficial-duration-unit-format": "^3.1.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
