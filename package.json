@@ -185,7 +185,7 @@
     "jest": "^26.6.3",
     "jest-junit": "^13.0.0",
     "jetifier": "^2.0.0",
-    "metro": "^0.70.0",
+    "metro": "^0.71.0",
     "metro-config": "^0.64.0",
     "metro-react-native-babel-preset": "^0.64.0",
     "npm-check": "^5.9.2",
