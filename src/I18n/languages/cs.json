@@ -529,7 +529,8 @@
   "appUpdate": {
     "appUpdateDialogTitle": "New version available",
     "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
-    "noUpdateAvailable": "You have the latest version"
+    "noUpdateAvailable": "You have the latest version",
+    "failedUpdateCheck": "Unable to check for updates"
   },
   "filters": {
     "myUser": "My user",

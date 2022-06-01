@@ -111,7 +111,7 @@
     "react-native-blob-util": "^0.13.16",
     "react-native-camera": "^3.43.9",
     "react-native-charts-wrapper": "^0.5.7",
-    "react-native-check-version": "^1.0.9",
+    "react-native-check-version": "^1.0.16",
     "react-native-deep-linking": "^2.2.0",
     "react-native-device-info": "^7.4.0",
     "react-native-elements": "^2.3.2",

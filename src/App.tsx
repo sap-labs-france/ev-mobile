@@ -538,7 +538,11 @@ export default class App extends React.Component<Props, State> {
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
     // Check for app updates
-    this.appVersion = await checkVersion();
+    try {
+      this.appVersion = await checkVersion();
+    } catch ( error ) {
+      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'appUpdate.failedUpdateCheck');
+    }
     // Set
     this.setState({
       navigationState,
