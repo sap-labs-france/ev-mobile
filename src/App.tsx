@@ -538,17 +538,21 @@ export default class App extends React.Component<Props, State> {
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
     // Check for app updates
-    try {
-      this.appVersion = await checkVersion();
-    } catch ( error ) {
-      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'appUpdate.failedUpdateCheck');
-    }
+    await this.checkForUpdates();
     // Set
     this.setState({
       navigationState,
       isNavigationStateLoaded: true,
       showAppUpdateDialog: !!this.appVersion?.needsUpdate
     });
+  }
+
+  private async checkForUpdates(){
+    try {
+      this.appVersion = await checkVersion();
+    } catch ( error ) {
+      // If version check fail, do nothing (user cannot do anything)
+    }
   }
 
   public componentWillUnmount() {
