@@ -730,7 +730,7 @@ export default class Utils {
           break;
         // Other errors
         default:
-          Message.showError(I18n.t(defaultErrorMessage ? defaultErrorMessage : 'general.unexpectedErrorBackend'));
+          Message.showError(I18n.t(defaultErrorMessage ?? 'general.unexpectedErrorBackend'));
           break;
       }
     } else if (error.name === 'InvalidTokenError') {
