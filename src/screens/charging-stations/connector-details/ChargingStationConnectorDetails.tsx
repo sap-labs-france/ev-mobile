@@ -580,28 +580,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   public stopTransaction = async () => {
-    const { chargingStation, connector } = this.state;
+    const { connector } = this.state;
     try {
       // Disable button
       this.setState({ buttonDisabled: true });
       // Remote Stop the Transaction
-      if (connector?.status !== ChargePointStatus.AVAILABLE) {
-        const response = await this.centralServerProvider.stopTransaction(chargingStation.id, connector.currentTransactionID);
-        if (response?.status === 'Accepted') {
-          Message.showSuccess(I18n.t('details.accepted'));
-          await this.refresh();
-        } else {
-          Message.showError(I18n.t('details.denied'));
-        }
-        // Soft Stop Transaction
+      const response = await this.centralServerProvider.stopTransaction(connector.currentTransactionID);
+      if (response?.status === 'Accepted') {
+        Message.showSuccess(I18n.t('details.accepted'));
+        await this.refresh();
       } else {
-        const response = await this.centralServerProvider.softStopTransaction(connector.currentTransactionID);
-        if (response?.status === 'Invalid') {
-          Message.showError(I18n.t('details.denied'));
-        } else {
-          Message.showSuccess(I18n.t('details.accepted'));
-          await this.refresh();
-        }
+        Message.showError(I18n.t('details.denied'));
       }
     } catch (error) {
       // Other common Error
