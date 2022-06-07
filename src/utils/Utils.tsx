@@ -1048,11 +1048,10 @@ export default class Utils {
     return <NoConnector width={scale(40)} height={scale(40)} fill={color} />;
   };
 
-  public static async checkForUpdate(): Promise<CheckVersionResponse> | null {
+  public static async checkForUpdate(): Promise<CheckVersionResponse | null> {
     try {
       return await checkVersion();
     } catch ( error ) {
-      // If version check fail, do nothing (user cannot do anything)
       return null;
     }
   }
