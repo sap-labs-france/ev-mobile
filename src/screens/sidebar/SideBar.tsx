@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, TouchableOpacity } from 'react-native';
-import { CheckVersionResponse, checkVersion } from 'react-native-check-version';
+import { CheckVersionResponse } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
 import AppUpdateDialog from '../../components/modal/app-update/AppUpdateDialog';
@@ -73,7 +73,7 @@ export default class SideBar extends React.Component<Props, State> {
 
   public refresh = async () => {
     await this.getUserInfo();
-    const appVersion = await checkVersion();
+    const appVersion = await Utils.checkForUpdate();
     this.setState({ appVersion });
   };
 

@@ -45,7 +45,7 @@ import Users from './screens/users/list/Users';
 import BaseProps from './types/BaseProps';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
-import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
+import { CheckVersionResponse } from 'react-native-check-version';
 import AppUpdateDialog from './components/modal/app-update/AppUpdateDialog';
 import AddCar from './screens/cars/AddCar';
 import ChargingStationQrCode from './screens/home/ChargingStationQrCode';
@@ -538,21 +538,13 @@ export default class App extends React.Component<Props, State> {
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
     // Check for app updates
-    await this.checkForUpdates();
+    this.appVersion = await Utils.checkForUpdate();
     // Set
     this.setState({
       navigationState,
       isNavigationStateLoaded: true,
       showAppUpdateDialog: !!this.appVersion?.needsUpdate
     });
-  }
-
-  private async checkForUpdates(){
-    try {
-      this.appVersion = await checkVersion();
-    } catch ( error ) {
-      // If version check fail, do nothing (user cannot do anything)
-    }
   }
 
   public componentWillUnmount() {
