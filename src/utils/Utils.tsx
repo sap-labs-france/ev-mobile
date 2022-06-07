@@ -39,7 +39,7 @@ import NoConnector from '../../assets/connectorType/no-connector.svg';
 import React from 'react';
 import { scale } from 'react-native-size-matters';
 import SecuredStorage from './SecuredStorage';
-import { checkVersion } from 'react-native-check-version';
+import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
 
 export default class Utils {
   public static async getEndpointClouds(): Promise<EndpointCloud[]> {
@@ -1048,9 +1048,9 @@ export default class Utils {
     return <NoConnector width={scale(40)} height={scale(40)} fill={color} />;
   };
 
-  public static async checkForUpdate() {
+  public static async checkForUpdate(): Promise<CheckVersionResponse> | null {
     try {
-      return await checkVersion({currentVersion: '1.0.9'});
+      return await checkVersion();
     } catch ( error ) {
       // If version check fail, do nothing (user cannot do anything)
       return null;
