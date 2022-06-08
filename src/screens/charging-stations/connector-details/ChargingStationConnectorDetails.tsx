@@ -312,6 +312,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
       const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
       const startTransactionFromQRCode = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
+
       // Get Charging Station
       const chargingStation = await this.getChargingStation(chargingStationID);
       // Get Connector from Charging Station
@@ -341,8 +342,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
       const { selectedUser, selectedTag } = this.state;
       // Check selected user is active
-      console.log(selectedUser.status);
-      console.log(selectedUser.status === UserStatus.ACTIVE);
       if (selectedUser?.status !== UserStatus.ACTIVE) {
         buttonDisabled = true;
         settingsErrors.inactiveUserError = true;

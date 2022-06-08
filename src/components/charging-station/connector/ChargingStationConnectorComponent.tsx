@@ -152,7 +152,6 @@ export default class ChargingStationConnectorComponent extends React.Component<P
           navigation.navigate('ChargingStationConnectorDetailsTabs', {
             params: {
               params: {
-                showChargingSettings: false,
                 chargingStationID: chargingStation.id,
                 connectorID: connector.connectorId
               }

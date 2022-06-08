@@ -118,8 +118,6 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         // User in wrong tenant!
         // Check if the tenant already exists
         if (tenant) {
-          console.log(tenant);
-          console.log(chargingStationQrCode?.tenantSubDomain);
           // Tenant exists: Propose the user to switch to the existing one and log off
           this.setState(
             {
@@ -175,8 +173,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         return;
       }
       // Ok: Navigate to connector
-      this.props.navigation.navigate('ChargingStationsNavigator', {
-        screen: 'ChargingStationConnectorDetailsTabs',
+      this.props.navigation.navigate('ChargingStationConnectorDetailsTabs', {
         key: `${Utils.randomNumber()}`,
         params: {
           params: {
