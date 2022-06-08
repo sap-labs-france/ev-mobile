@@ -945,7 +945,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         ) : (
           <ScrollView
             contentContainerStyle={style.scrollViewContainer}
-            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+            refreshControl={<RefreshControl  progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]}  refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
             <View style={style.rowContainer}>
               {this.renderConnectorStatus(style)}
               {this.renderUserInfo(style)}
