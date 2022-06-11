@@ -606,11 +606,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async stopTransaction(chargingStationID: string, transactionId: number): Promise<ActionResponse> {
+  public async stopTransaction(transactionId: number): Promise<ActionResponse> {
     this.debugMethod('stopTransaction');
     // Call
     const result = await this.axiosInstance.put<any>(
-      this.buildRestEndpointUrl(RESTServerRoute.REST_TRANSACTION_STOP, { id: chargingStationID }),
+      this.buildRestEndpointUrl(RESTServerRoute.REST_TRANSACTION_STOP, { id: transactionId }),
       { },
       {
         headers: this.buildSecuredHeaders()
