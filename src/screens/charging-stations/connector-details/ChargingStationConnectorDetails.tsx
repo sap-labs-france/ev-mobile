@@ -312,6 +312,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
       const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
       const startTransactionFromQRCode = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
+
       // Get Charging Station
       const chargingStation = await this.getChargingStation(chargingStationID);
       // Get Connector from Charging Station
@@ -341,8 +342,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
       const { selectedUser, selectedTag } = this.state;
       // Check selected user is active
-      console.log(selectedUser.status);
-      console.log(selectedUser.status === UserStatus.ACTIVE);
       if (selectedUser?.status !== UserStatus.ACTIVE) {
         buttonDisabled = true;
         settingsErrors.inactiveUserError = true;
@@ -580,28 +579,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   public stopTransaction = async () => {
-    const { chargingStation, connector } = this.state;
+    const { connector } = this.state;
     try {
       // Disable button
       this.setState({ buttonDisabled: true });
       // Remote Stop the Transaction
-      if (connector?.status !== ChargePointStatus.AVAILABLE) {
-        const response = await this.centralServerProvider.stopTransaction(chargingStation.id, connector.currentTransactionID);
-        if (response?.status === 'Accepted') {
-          Message.showSuccess(I18n.t('details.accepted'));
-          await this.refresh();
-        } else {
-          Message.showError(I18n.t('details.denied'));
-        }
-        // Soft Stop Transaction
+      const response = await this.centralServerProvider.stopTransaction(connector.currentTransactionID);
+      if (response?.status === 'Accepted') {
+        Message.showSuccess(I18n.t('details.accepted'));
+        await this.refresh();
       } else {
-        const response = await this.centralServerProvider.softStopTransaction(connector.currentTransactionID);
-        if (response?.status === 'Invalid') {
-          Message.showError(I18n.t('details.denied'));
-        } else {
-          Message.showSuccess(I18n.t('details.accepted'));
-          await this.refresh();
-        }
+        Message.showError(I18n.t('details.denied'));
       }
     } catch (error) {
       // Other common Error
@@ -957,7 +945,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         ) : (
           <ScrollView
             contentContainerStyle={style.scrollViewContainer}
-            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+            refreshControl={<RefreshControl  progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]}  refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
             <View style={style.rowContainer}>
               {this.renderConnectorStatus(style)}
               {this.renderUserInfo(style)}
