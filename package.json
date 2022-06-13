@@ -83,7 +83,7 @@
     "@formatjs/intl-numberformat": "^7.2.1",
     "@formatjs/intl-pluralrules": "^4.1.1",
     "@formatjs/intl-relativetimeformat": "^9.2.1",
-    "@react-native-community/datetimepicker": "^3.5.0",
+    "@react-native-community/datetimepicker": "^6.1.3",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/material-bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
