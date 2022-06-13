@@ -140,14 +140,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         // Get the consumption
         const transaction = await this.centralServerProvider.getTransactionConsumption(transactionID);
         // At least 2 values for the chart!!!
-        if (transaction.values && transaction.values.length > 1) {
-          // Add last point
-          if (transaction.values.length > 0) {
-            transaction.values.push({
-              ...transaction.values[transaction.values.length - 1],
-              startedAt: transaction.values[transaction.values.length - 1].endedAt
-            });
-          }
+        if (transaction?.values?.length > 1) {
           // Set
           return {
             transaction,
@@ -469,11 +462,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   ): LineValue[] {
     const { transaction } = this.state;
     return values
-      ?.filter((value) => value.startedAt)
+      ?.filter((value) => value.endedAt)
       ?.map((value) => {
         const y = Utils.roundTo(transformValuesCallback?.(value[dataSet], value) ?? value[dataSet], 2);
-        const x = new Date(value.startedAt);
-        const duration = (new Date(value.startedAt).getTime() - new Date(transaction?.timestamp).getTime()) / (1000);
+        const x = new Date(value.endedAt);
+        const duration = (new Date(value.endedAt).getTime() - new Date(transaction?.timestamp).getTime()) / (1000);
         const markerDate = `${I18nManager.formatDateTime(x, {timeStyle: 'short'})}`;
         const durationFormatOptions = {style: DurationUnitFormat.styles.SHORT, format: '{hour} {minutes} {seconds}'};
         const markerDuration = `(${I18nManager.formatDuration(duration, durationFormatOptions)})`;
