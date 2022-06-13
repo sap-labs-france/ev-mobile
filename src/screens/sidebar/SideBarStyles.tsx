@@ -1,30 +1,38 @@
 import deepmerge from 'deepmerge';
 import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { ScaledSheet } from 'react-native-size-matters';
+import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import { PLATFORM } from '../../theme/variables/commonColor';
 import Utils from '../../utils/Utils';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    container: {
+    sidebar: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor,
-      padding: '10@s'
+      paddingVertical: '10@s',
+      paddingTop: getStatusBarHeight() + scale(10),
+      alignItems: 'center'
+    },
+    header: {
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    border: {
+      width: '70%',
+      borderTopWidth: 0.8,
+      borderColor: commonColor.disabledDark,
+      marginVertical: '15@s'
     },
     background: {
       flex: 1
     },
     drawerContent: {
-      flex: 1
-    },
-    header: {
-      flexDirection: 'column',
-      backgroundColor: commonColor.containerBgColor,
-      height: '150@s',
-      marginTop: Platform.OS === 'ios' ? '-5@s' : '5@s'
+      height: 'auto',
+      paddingHorizontal: '10@s'
     },
     linkContainer: {
       paddingTop: '10@s'
@@ -39,7 +47,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     tenantName: {
       color: commonColor.textColor,
-      fontSize: '14@s',
+      fontSize: '13@s',
       margin: '2@s',
       alignSelf: 'center',
       textAlign: 'center',
@@ -72,7 +80,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     versionText: {
       color: commonColor.textColor,
-      fontSize: '14@s',
+      fontSize: '12@s',
       margin: '2@s',
       alignSelf: 'center',
       fontWeight: 'bold',
@@ -103,19 +111,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '16@s',
       paddingLeft: '15@s'
     },
-    logoutContainer: {
-      paddingBottom: Platform.OS === 'ios' ? '25@s' : '10@s',
-      paddingLeft: '10@s',
-      paddingRight: '10@s',
-      paddingTop: 0
-    },
-    logoutButton: {
-      paddingTop: '10@s',
-      flexDirection: 'row'
-    },
-    gridLogoutContainer: {
-      flex: 1,
-      flexDirection: 'row'
+    bottomContainer: {
+      paddingHorizontal: '10@s',
+      flexDirection: 'row',
+      marginTop: '5@s',
+      paddingVertical: '10@s',
+      backgroundColor: commonColor.listItemBackground
     },
     columnAccount: {
       flexDirection: 'column',
@@ -127,9 +128,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: 'transparent'
     },
     logoutText: {
-      fontWeight: 'bold',
       fontSize: '14@s',
-      color: commonColor.textColor
+      color: commonColor.primary,
+      paddingVertical: '3@s'
     },
     userName: {
       paddingTop: '5@s',

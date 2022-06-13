@@ -3,7 +3,7 @@ import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, View } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, TouchableOpacity } from 'react-native';
+import { Image, ImageStyle, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { CheckVersionResponse } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
@@ -122,8 +122,8 @@ export default class SideBar extends React.Component<Props, State> {
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
-      <Container style={style.container}>
-        <Header style={style.header}>
+      <SafeAreaView style={style.sidebar}>
+        <View style={style.header}>
           {tenantLogo && <Image source={{ uri: tenantLogo }} style={style.logo as ImageStyle} />}
           <Text numberOfLines={1} style={style.tenantName}>
             {tenantName}
@@ -141,8 +141,9 @@ export default class SideBar extends React.Component<Props, State> {
             )}
           </TouchableOpacity>
           {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
-        </Header>
-        <Content style={style.drawerContent}>
+        </View>
+        <View style={style.border} />
+        <ScrollView persistentScrollbar={true} style={style.drawerContent}>
           <View style={style.linkContainer}>
             <ListItem style={style.links} button iconLeft onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="qr-code-scanner" />
@@ -221,27 +222,21 @@ export default class SideBar extends React.Component<Props, State> {
               <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
           </View>
-        </Content>
-        <View style={style.logoutContainer}>
-          <View style={style.logoutButton}>
-            <View style={style.gridLogoutContainer}>
-              <View style={style.columnAccount}>
-                <TouchableOpacity style={style.buttonLogout} onPress={async () => this.logoff()}>
-                  <Text style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
-                  <Text note style={style.userName}>
-                    {Utils.buildUserName(user)}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={style.columnThumbnail}>
-                <View style={style.buttonThumbnail}>
-                  <UserAvatar user={user} navigation={this.props.navigation} />
-                </View>
-              </View>
-            </View>
+        </ScrollView>
+        <View style={style.bottomContainer}>
+          <View style={style.columnThumbnail}>
+            <UserAvatar user={user} navigation={this.props.navigation} />
+          </View>
+          <View style={style.columnAccount}>
+            <Text note style={style.userName}>
+              {Utils.buildUserName(user)}
+            </Text>
+            <TouchableOpacity style={style.buttonLogout} onPress={async () => this.logoff()}>
+              <Text style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </Container>
+      </SafeAreaView>
     );
   }
 }
