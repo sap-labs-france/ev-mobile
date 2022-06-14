@@ -1,9 +1,9 @@
 import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Container, Content, Header, Icon, ListItem, Text, View } from 'native-base';
+import { Icon, ListItem, View } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { Image, ImageStyle, SafeAreaView, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { CheckVersionResponse } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
@@ -143,7 +143,7 @@ export default class SideBar extends React.Component<Props, State> {
           {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
         </View>
         <View style={style.border} />
-        <ScrollView persistentScrollbar={true} style={style.drawerContent}>
+        <ScrollView style={style.drawerContent}>
           <View style={style.linkContainer}>
             <ListItem style={style.links} button iconLeft onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="qr-code-scanner" />
@@ -224,14 +224,14 @@ export default class SideBar extends React.Component<Props, State> {
           </View>
         </ScrollView>
         <View style={style.bottomContainer}>
-          <View style={style.columnThumbnail}>
+          <View style={style.avatarContainer}>
             <UserAvatar user={user} navigation={this.props.navigation} />
           </View>
-          <View style={style.columnAccount}>
-            <Text note style={style.userName}>
+          <View style={style.rightContainer}>
+            <Text style={style.userName}>
               {Utils.buildUserName(user)}
             </Text>
-            <TouchableOpacity style={style.buttonLogout} onPress={async () => this.logoff()}>
+            <TouchableOpacity style={style.logoutContainer} onPress={async () => this.logoff()}>
               <Text style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
             </TouchableOpacity>
           </View>

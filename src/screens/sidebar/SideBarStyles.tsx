@@ -13,36 +13,37 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     sidebar: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor,
-      paddingVertical: '10@s',
+      paddingTop: '10@s',
       paddingTop: getStatusBarHeight() + scale(10),
       alignItems: 'center'
     },
     header: {
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      paddingHorizontal: '10@s'
     },
     border: {
       width: '70%',
       borderTopWidth: 0.8,
       borderColor: commonColor.disabledDark,
-      marginVertical: '15@s'
+      marginVertical: '10@s'
     },
     background: {
       flex: 1
     },
     drawerContent: {
       height: 'auto',
-      paddingHorizontal: '10@s'
+      width: '100%'
     },
     linkContainer: {
-      paddingTop: '10@s'
+      marginBottom: '10@s',
+      paddingHorizontal: '5@s',
+      marginHorizontal: 0
     },
     logo: {
       resizeMode: 'contain',
-      width: '90%',
-      height: '50@s',
-      alignSelf: 'center',
-      margin: '5@s',
+      width: '100@s',
+      height: '60@s',
       marginBottom: '10@s'
     },
     tenantName: {
@@ -114,16 +115,18 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     bottomContainer: {
       paddingHorizontal: '10@s',
       flexDirection: 'row',
-      marginTop: '5@s',
-      paddingVertical: '10@s',
+      marginTop: '10@s',
+      paddingVertical: '15@s',
       backgroundColor: commonColor.listItemBackground
     },
-    columnAccount: {
+    rightContainer: {
       flexDirection: 'column',
-      flexGrow: 2,
-      flex: 1
+      flex: 1,
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      marginLeft: '20@s'
     },
-    buttonLogout: {
+    logoutContainer: {
       alignSelf: 'flex-start',
       backgroundColor: 'transparent'
     },
@@ -137,17 +140,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '14@s',
       color: commonColor.textColor
     },
-    columnThumbnail: {
-      flex: 1,
-      flexDirection: 'column'
-    },
-    buttonThumbnail: {
-      alignSelf: 'flex-end'
-    },
-    profilePic: {
-      width: '40@s',
-      height: '40@s',
-      borderRadius: '20@s'
+    avatarContainer: {
+      alignItems: 'center',
+      justifyContent: 'center'
     }
   });
   const portraitStyles = {};
