@@ -442,7 +442,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const { showMap, satelliteMap } = this.state;
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
-      <View style={style.fabContainer}>
+      <SafeAreaView style={fabStyles.fabContainer}>
         {showMap && (
           <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
             <Image
@@ -458,7 +458,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         >
           <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 

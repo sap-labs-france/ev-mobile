@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -160,10 +160,12 @@ export default class Cars extends SelectableList<Car> {
     return (
       <Container style={style.container}>
         {!isModal && (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={[fabStyles.fab, fabStyles.placedFab]}>
-            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={'plus'} />
-          </TouchableOpacity>
+          <SafeAreaView style={fabStyles.fabContainer}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={fabStyles.fab}>
+              <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={'plus'} />
+            </TouchableOpacity>
+          </SafeAreaView>
         )}
         <HeaderComponent
           title={this.buildHeaderTitle()}
