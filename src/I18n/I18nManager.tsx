@@ -114,9 +114,9 @@ export default class I18nManager {
     I18nManager.currency = currency;
   }
 
-  public static formatNumber(value: number): string {
+  public static formatNumber(value: number, options: Intl.NumberFormatOptions = {}): string {
     if (!isNaN(value)) {
-     return Intl.NumberFormat(i18n.locale).format(value);
+     return Intl.NumberFormat(i18n.locale, options).format(value);
     }
     return '-';
   }
