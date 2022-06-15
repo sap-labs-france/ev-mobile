@@ -30,9 +30,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '18@s',
       color: commonColor.light
     },
-    placedFab: {
-      margin: '14@s',
-      position: 'absolute'
+    fabContainer: {
+      position: 'absolute',
+      zIndex: 1,
+      bottom: 0,
+      right: 0,
+      margin: '12@s',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: 0
     }
   });
   const portraitStyles = {};

@@ -71,16 +71,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     mapFiltersContainer: {
       position: 'absolute',
     },
-    fabContainer: {
-      position: 'absolute',
-      zIndex: 1,
-      bottom: 0,
-      right: 0,
-      margin: '12@s',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: 0
-    },
     imageStyle: {
       height: '100%',
       width: '100%',
