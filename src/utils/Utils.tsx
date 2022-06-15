@@ -595,34 +595,6 @@ export default class Utils {
     return Constants.DEFAULT_LANGUAGE;
   }
 
-  public static formatDuration(durationSecs: number): string {
-    let result = '';
-    if (durationSecs === 0) {
-      return `0 ${I18n.t('general.second')}`;
-    }
-    const days = Math.floor(durationSecs / (3600 * 24));
-    durationSecs -= days * 3600 * 24;
-    const hours = Math.floor(durationSecs / 3600);
-    durationSecs -= hours * 3600;
-    const minutes = Math.floor(durationSecs / 60);
-    const seconds = Math.floor(durationSecs - minutes * 60);
-    if (days !== 0) {
-      result += `${days}${I18n.t('general.day')} `;
-    }
-    if ((hours !== 0 || days !== 0) && (hours !== 0 || (minutes !== 0 && days === 0))) {
-      result += `${hours}${I18n.t('general.hour')} `;
-    }
-    if (days === 0) {
-      if (minutes !== 0 || (hours !== 0 && (minutes !== 0 || (seconds !== 0 && hours === 0)))) {
-        result += `${minutes}${I18n.t('general.minute')} `;
-      }
-      if (hours === 0 && seconds !== 0) {
-        result += `${seconds}${I18n.t('general.second')}`;
-      }
-    }
-    return result;
-  }
-
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): Record<string, unknown> {
     const commonColor = Utils.getCurrentCommonColor();
     switch (inactivityStatus) {
