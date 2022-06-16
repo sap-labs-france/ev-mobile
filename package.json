@@ -96,7 +96,7 @@
     "color": "^3.2.1",
     "deepmerge": "^4.2.2",
     "http-status-codes": "^2.1.4",
-    "i18n-js": "^3.8.0",
+    "i18n-js": "^3.9.2",
     "intl": "^1.2.5",
     "intl-messageformat": "^9.11.4",
     "intl-unofficial-duration-unit-format": "^3.1.0",
