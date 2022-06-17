@@ -136,7 +136,7 @@
     "react-native-root-toast": "^3.2.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.0.0",
-    "react-native-select-dropdown": "^1.2.0",
+    "react-native-select-dropdown": "^2.0.3",
     "react-native-size-matters": "^0.4.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-status-bar-height": "^2.6.0",
