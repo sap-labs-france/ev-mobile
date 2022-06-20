@@ -62,33 +62,28 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
               key: `${Utils.randomNumber()}`
             });
           }}>
-          <View style={style.leftContainer}>
-            <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
-            <View style={style.transactionDetailsContainer}>
-              <View style={style.transactionDetailContainer}>
-                <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
-                <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{consumption} kW.h</Text>
-              </View>
-              <View style={style.transactionDetailContainer}>
-                <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
-                <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{duration}</Text>
-              </View>
-              <View style={style.transactionDetailContainer}>
-                <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
-                <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
-              </View>
-              {isPricingActive && (
-                <View style={style.transactionDetailContainer}>
-                  <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-                  <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>
-                    {price}
-                  </Text>
-                </View>
-              )}
+          <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
+          <View style={style.transactionDetailsContainer}>
+            <View style={style.transactionDetailContainer}>
+              <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
+              <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{consumption} kW.h</Text>
             </View>
-          </View>
-          <View style={style.rightContainer}>
-            <Icon style={[style.icon, style.arrowIcon]} type="MaterialIcons" name="navigate-next" />
+            <View style={style.transactionDetailContainer}>
+              <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+              <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{duration}</Text>
+            </View>
+            <View style={style.transactionDetailContainer}>
+              <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+              <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
+            </View>
+            {isPricingActive && (
+              <View style={style.transactionDetailContainer}>
+                <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+                <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>
+                  {price}
+                </Text>
+              </View>
+            )}
           </View>
         </TouchableOpacity>
       </View>
