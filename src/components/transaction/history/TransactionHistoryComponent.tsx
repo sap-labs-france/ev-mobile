@@ -87,9 +87,6 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
               )}
             </View>
           </View>
-          <View style={style.rightContainer}>
-            <Icon style={[style.icon, style.arrowIcon]} type="MaterialIcons" name="navigate-next" />
-          </View>
         </TouchableOpacity>
       </View>
     );

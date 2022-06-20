@@ -27,9 +27,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     rightContainer: {
       flexDirection: 'column',
-      alignItems: 'flex-end',
+      alignItems: 'center',
       justifyContent: 'center',
-      width: '20@s'
     },
     statusIndicator: {
       height: '100%',
@@ -74,22 +73,26 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingTop: '5@s'
     },
     transactionDetailsContainer2: {
-      paddingBottom: '5@s'
+      paddingBottom: '2@s'
     },
     transactionDetailContainer: {
-      margin: '3@s',
+      marginTop: '3@s',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      width: '60@s'
+      width: '25%'
     },
     icon: {
       color: commonColor.textColor,
       fontSize: '30@s',
       justifyContent: 'flex-end'
     },
+    arrowIcon: {
+      fontSize: '18@s',
+      color: commonColor.disabledDark
+    },
     labelValue: {
-      fontSize: '15@s',
+      fontSize: '13@s',
       color: commonColor.textColor
     },
     subLabelValue: {

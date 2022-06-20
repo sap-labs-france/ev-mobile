@@ -1,4 +1,4 @@
-import { Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 
 import I18nManager from '../../../I18n/I18nManager';
@@ -38,7 +38,10 @@ export default class TransactionHeaderComponent extends React.Component<Props, S
     const { transaction, isAdmin, isSiteAdmin } = this.props;
     return (
       <View style={style.container}>
-        <Text style={style.transactionTimestamp}>{I18nManager.formatDateTime(transaction.timestamp, {dateStyle: 'medium', timeStyle: 'short'})}</Text>
+        <View style={style.firstLine}>
+          <Text numberOfLines={1} style={style.transactionTimestamp}>{I18nManager.formatDateTime(transaction.timestamp, {dateStyle: 'medium', timeStyle: 'short'})}</Text>
+          <Icon style={style.arrowIcon} type="MaterialCommunityIcons" name="arrow-right-circle-outline" />
+        </View>
         <Text numberOfLines={1} style={[style.subHeaderName, style.chargingStationName]}>
           {transaction.chargeBoxID} - {Utils.getConnectorLetterFromConnectorID(transaction.connectorId)}
         </Text>

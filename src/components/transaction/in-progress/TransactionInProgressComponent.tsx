@@ -68,7 +68,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
           }}>
           <View style={style.leftContainer}>
             <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
-            <View style={[style.transactionDetailsContainer, style.transactionDetailsContainer1]}>
+            <View style={[style.transactionDetailsContainer]}>
               <View style={style.transactionDetailContainer}>
                 <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
                 <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{instantPower} kW</Text>
@@ -98,9 +98,6 @@ export default class TransactionInProgressComponent extends React.Component<Prop
                 </View>
               )}
             </View>
-          </View>
-          <View style={style.rightContainer}>
-            <Icon style={[style.icon, style.arrowIcon]} type="MaterialIcons" name="navigate-next" />
           </View>
         </TouchableOpacity>
       </View>
