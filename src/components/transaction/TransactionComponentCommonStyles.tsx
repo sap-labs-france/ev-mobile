@@ -13,10 +13,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between'
     },
     transactionContent: {
-      flexDirection: 'row',
       flex: 1,
       justifyContent: 'space-between',
-      padding: '5@s',
+      padding: '10@s',
       alignItems: 'center'
     },
     leftContainer: {
@@ -24,11 +23,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'flex-start',
       margin: '5@s',
       flex: 1
-    },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
     statusIndicator: {
       height: '100%',
