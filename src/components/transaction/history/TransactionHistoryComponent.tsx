@@ -45,9 +45,11 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
     const { navigation, containerStyle } = this.props;
     const { transaction, isAdmin, isSiteAdmin, isPricingActive } = this.props;
     const consumption = I18nManager.formatNumber(transaction.stop.totalConsumptionWh / 1000, {maximumFractionDigits: 1});
-    const duration = I18nManager.formatDuration(transaction.stop.totalDurationSecs, {style: DurationUnitFormat.styles.NARROW, format: '{hour}{minutes}'});
-    const inactivity = I18nManager.formatDuration(transaction.stop.totalInactivitySecs + transaction.stop.extraInactivitySecs, {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'});
+    const totalDurationSecs = transaction.stop.totalDurationSecs;
+    const duration = I18nManager.formatDuration(totalDurationSecs, {style: DurationUnitFormat.styles.TIMER});
+    const inactivity = I18nManager.formatDuration(transaction.stop.totalInactivitySecs + transaction.stop.extraInactivitySecs, {style: DurationUnitFormat.styles.TIMER});
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.inactivityStatus);
+    const price = I18nManager.formatCurrency(transaction.stop.roundedPrice, transaction.stop.priceUnit);
     const listItemCommonStyle = computeListItemCommonStyle();
     return (
       <View style={[listItemCommonStyle.container, style.transactionContainer, ...(containerStyle || [])]}>
@@ -78,8 +80,8 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
               {isPricingActive && (
                 <View style={style.transactionDetailContainer}>
                   <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-                  <Text style={[style.labelValue, style.info]}>
-                    {I18nManager.formatCurrency(transaction.stop.roundedPrice, transaction.stop.priceUnit)}
+                  <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>
+                    {price}
                   </Text>
                 </View>
               )}

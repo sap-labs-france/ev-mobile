@@ -125,7 +125,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   public computeDurationInfos = (transaction: Transaction) => {
     if (transaction?.stop) {
       // Compute duration
-      const elapsedTimeFormatted = I18nManager.formatDuration(transaction.stop.totalDurationSecs, {style: DurationUnitFormat.styles.NARROW, format: '{hour}{minutes}'});
+      const elapsedTimeFormatted = I18nManager.formatDuration(transaction.stop.totalDurationSecs, {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'});
       // Compute inactivity
       const totalInactivitySecs =
         transaction.stop.totalInactivitySecs + (transaction.stop.extraInactivitySecs ? transaction.stop.extraInactivitySecs : 0);
@@ -203,9 +203,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
-          {transaction?.stop ? I18nManager.formatNumber(transaction.stop.totalConsumptionWh / 1000, {maximumFractionDigits: 2}) : '-'}
+          {transaction?.stop ? `${I18nManager.formatNumber(transaction.stop.totalConsumptionWh / 1000, {maximumFractionDigits: 2})} kW.h` : '-'}
         </Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
   };
@@ -215,7 +214,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return transaction && transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
           {transaction.stateOfCharge}% {'>'} {transaction.stop.stateOfCharge}%
         </Text>
       </View>
@@ -245,8 +244,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
         <View style={style.headerContent}>
           <View style={style.headerRowContainer}>
-            <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-            <Text style={style.subHeaderName}>({transaction?.stop ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
+            <Text style={style.headerName}>{transaction ? I18nManager.formatDateTime(transaction.timestamp, {dateStyle: 'medium', timeStyle: 'short'}) : ''}</Text>
+            <Text style={style.subHeaderName}>({transaction?.stop ? I18nManager.formatDateTime(transaction.stop.timestamp, {dateStyle: 'medium', timeStyle: 'short'}) : ''})</Text>
             {transaction?.userID !== transaction?.stop?.userID && (
               <Text style={style.subSubHeaderName}>
                 ({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction?.stop?.user)})

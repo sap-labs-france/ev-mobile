@@ -207,7 +207,12 @@ export default class I18nManager {
   }
 
   // We use an external lib until ECMAScript Intl namespace features DurationFormat pending proposition
+  // Default format for TIMER style is hh:mm
   public static formatDuration(durationSecs: number, options?: DurationUnitFormatOptions): string {
+    // Add 0 to have double-digit hours when < 10
+    if (options?.style === DurationUnitFormat.styles.TIMER && !options?.format) {
+      options.format =  `${durationSecs < 36000 ? '0' : ''}{hour}:{minutes}`;
+    }
     const formatter =  new DurationUnitFormat(i18n.locale, options);
     return formatter.format(durationSecs)
   }

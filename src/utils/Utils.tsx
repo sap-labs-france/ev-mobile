@@ -914,29 +914,6 @@ export default class Utils {
     return null;
   }
 
-  public static formatDurationHHMMSS = (durationSecs: number, withSecs: boolean = true): string => {
-    if (durationSecs <= 0) {
-      return withSecs ? Constants.DEFAULT_DURATION_WITH_SECS : Constants.DEFAULT_DURATION;
-    }
-    // Set Hours
-    const hours = Math.trunc(durationSecs / 3600);
-    durationSecs -= hours * 3600;
-    // Set Mins
-    let minutes = 0;
-    if (durationSecs > 0) {
-      minutes = Math.trunc(durationSecs / 60);
-      durationSecs -= minutes * 60;
-    }
-    // Set Secs
-    if (withSecs) {
-      const seconds = Math.trunc(durationSecs);
-      // Format
-      return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}:${Utils.formatTimer(seconds)}`;
-    }
-    // Format
-    return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
-  };
-
   public static computeSiteMarkerStyle(connectorStats: ConnectorStats = {}) {
     const connectorStatusStyles = computeConnectorStatusStyles();
     if (connectorStats.availableConnectors > 0) {
@@ -953,16 +930,6 @@ export default class Utils {
   public static concatenateStrings(...args: string[]): string {
     return args.join('');
   }
-
-  private static formatTimer = (value: number): string => {
-    // Put 0 next to the digit if lower than 10
-    const valueStr = value.toString();
-    if (valueStr.length < 2) {
-      return '0' + valueStr;
-    }
-    // Return new digit
-    return valueStr;
-  };
 
   private static getDeviceLocale(): string {
     return Platform.OS === 'ios' ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
