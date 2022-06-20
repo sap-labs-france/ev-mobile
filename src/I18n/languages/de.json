@@ -117,7 +117,7 @@
     "invalidEmail": "Die E-Mail ist ungültig",
     "invalidMobile": "Die Handynummer ist ungültig",
     "mandatoryPassword": "Das Passwort ist notwendig",
-    "logOut": "Ausloggen",
+    "logOut": "Abmelden",
     "mustSelectTenant": "Wählen Sie eine Organisation",
     "wrongEmailOrPassword": "Falsche E-Mail oder Passwort",
     "authenticationFailed": "Authentifizierung gescheitert",

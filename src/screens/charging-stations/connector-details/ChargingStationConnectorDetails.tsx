@@ -47,6 +47,7 @@ import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 import { scale } from 'react-native-size-matters'
 import computeActivityIndicatorCommonStyles from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
+import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -612,15 +613,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
       let inactivityFormatted = Constants.DEFAULT_DURATION;
       // Elapsed Time?
-      if (transaction.timestamp) {
+      if (transaction.currentTotalDurationSecs) {
         // Format
-        const durationSecs = (Date.now() - new Date(transaction.timestamp).getTime()) / 1000;
-        elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
+        elapsedTimeFormatted = I18nManager.formatDuration(transaction.currentTotalDurationSecs, {style: DurationUnitFormat.styles.TIMER});
       }
       // Inactivity?
       if (transaction.currentTotalInactivitySecs) {
         // Format
-        inactivityFormatted = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
+        inactivityFormatted = I18nManager.formatDuration(transaction.currentTotalInactivitySecs, {style: DurationUnitFormat.styles.TIMER});
       }
       // Set
       return {
@@ -636,12 +636,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       if (connector.currentTransactionDate) {
         // Format
         const durationSecs = (Date.now() - new Date(connector.currentTransactionDate).getTime()) / 1000;
-        elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
+        elapsedTimeFormatted = I18nManager.formatDuration(durationSecs, {style: DurationUnitFormat.styles.TIMER});
       }
       // Inactivity?
-      if (connector && connector.currentTotalInactivitySecs) {
+      if (connector?.currentTotalInactivitySecs) {
         // Format
-        inactivityFormatted = Utils.formatDurationHHMMSS(connector.currentTotalInactivitySecs, false);
+        inactivityFormatted = I18nManager.formatDuration(connector.currentTotalInactivitySecs, {style: DurationUnitFormat.styles.TIMER});
       }
       // Set
       return {
@@ -686,15 +686,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public renderPrice = (style: any) => {
     const { transaction, connector } = this.state;
-    let price = 0;
+    let price;
     if (transaction) {
-      price = Utils.roundTo(transaction.currentCumulatedPrice, 2);
+      price = I18nManager.formatCurrency(transaction.currentCumulatedPrice, transaction.priceUnit);
     }
-    return connector && connector.currentTransactionID && transaction && !isNaN(price) ? (
+    return connector && connector.currentTransactionID && transaction ? (
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
-        <Text style={[style.subLabel, style.info]}>({transaction.stop ? transaction.stop.priceUnit : transaction.priceUnit})</Text>
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>{price}</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -710,9 +709,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {connector.currentInstantWatts / 1000 > 0 ? I18nManager.formatNumber(Math.round(connector.currentInstantWatts / 10) / 100) : 0}
+          {connector.currentInstantWatts > 0 ? I18nManager.formatNumber(connector.currentInstantWatts / 1000, {maximumFractionDigits: 2} ) : 0} kW
         </Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t('details.instant')} (kW)</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -727,8 +725,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return connector && connector.currentTransactionID ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t('details.duration')}</Text>
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -744,8 +741,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return connector && connector.currentTransactionID ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
-        <Text style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
-        <Text style={[style.subLabel, inactivityStyle]}>{I18n.t('details.duration')}</Text>
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -760,10 +756,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return connector && connector.currentTransactionID && !isNaN(connector.currentTotalConsumptionWh) ? (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
-        <Text style={[style.label, style.labelValue, style.info]}>
-          {connector ? I18nManager.formatNumber(Math.round(connector.currentTotalConsumptionWh / 10) / 100) : ''}
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
+          {connector ? I18nManager.formatNumber(connector.currentTotalConsumptionWh/ 1000, {maximumFractionDigits: 2}) : ''} kW.h
         </Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -778,10 +773,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return connector && connector.currentStateOfCharge && !isNaN(connector.currentStateOfCharge) ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>
-          {transaction ? `${transaction.stateOfCharge} > ${transaction.currentStateOfCharge}` : connector.currentStateOfCharge}
-        </Text>
-        <Text style={[style.subLabel, style.info]}>(%)</Text>
+        {transaction ?
+          (
+            <Text style={[style.label, style.labelValue, style.info]}><Text style={[style.label, style.batteryStartValue, style.info]}>{`${transaction.stateOfCharge}%`}</Text>
+              <Text style={[style.label, style.upToSymbol, style.info]}> {'>'} </Text>{`${transaction.currentStateOfCharge}%`} </Text>
+          ) :
+          <Text
+            style={[style.label, style.labelValue, style.info]}>{connector.currentStateOfCharge}</Text>
+        }
       </View>
     ) : (
       <View style={style.columnContainer}>

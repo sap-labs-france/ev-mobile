@@ -169,6 +169,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontWeight: 'bold',
       color: commonColor.textColor
     },
+    batteryStartValue: {
+      fontSize: '18@s'
+    },
+    upToSymbol: {
+      fontSize: '21@s'
+    },
     labelUser: {
       fontSize: '11@s',
       paddingTop: '5@s',
