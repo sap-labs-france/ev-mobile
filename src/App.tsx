@@ -306,17 +306,17 @@ function createSitesNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
       />
       <SitesStack.Screen name="ChargingStationDetailsTabs"
-        component={createChargingStationDetailsTabsNavigator}
+        children={createChargingStationDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <SitesStack.Screen
         name="ChargingStationConnectorDetailsTabs"
-        component={createChargingStationConnectorDetailsTabsNavigator}
+        children={createChargingStationConnectorDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <SitesStack.Screen
         name="TransactionDetailsTabs"
-        component={createTransactionDetailsTabsNavigator}
+        children={createTransactionDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <SitesStack.Screen
@@ -338,12 +338,12 @@ function createChargingStationsNavigator(props: BaseProps) {
       />
       <ChargingStationsStack.Screen
         name="ChargingStationDetailsTabs"
-        component={createChargingStationDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
+        children={createChargingStationDetailsTabsNavigator}
       />
       <ChargingStationsStack.Screen
         name="ChargingStationConnectorDetailsTabs"
-        component={createChargingStationConnectorDetailsTabsNavigator}
+        children={createChargingStationConnectorDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <ChargingStationsStack.Screen name="AddCar" component={AddCar} initialParams={props?.route?.params?.params} />
@@ -355,7 +355,7 @@ function createChargingStationsNavigator(props: BaseProps) {
       <ChargingStationsStack.Screen name="QRCodeScanner" component={ChargingStationQrCode} initialParams={props?.route?.params?.params} />
       <ChargingStationsStack.Screen
         name="TransactionDetailsTabs"
-        component={createTransactionDetailsTabsNavigator}
+        children={createTransactionDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <ChargingStationsStack.Screen
@@ -377,7 +377,7 @@ function createTransactionHistoryNavigator(props: BaseProps) {
       />
       <TransactionHistoryStack.Screen
         name="TransactionDetailsTabs"
-        component={createTransactionDetailsTabsNavigator}
+        children={createTransactionDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
     </TransactionHistoryStack.Navigator>
@@ -394,7 +394,7 @@ function createTransactionInProgressNavigator(props: BaseProps) {
       />
       <TransactionInProgressStack.Screen
         name="ChargingStationConnectorDetailsTabs"
-        component={createChargingStationConnectorDetailsTabsNavigator}
+        children={createChargingStationConnectorDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
     </TransactionInProgressStack.Navigator>
@@ -465,18 +465,18 @@ function createAppDrawerNavigator(props: BaseProps) {
       backBehavior={'history'}
       drawerPosition="left"
       drawerContent={(drawerProps) => <Sidebar {...drawerProps} />}>
-      <AppDrawer.Screen name="ChargingStationsNavigator" component={createChargingStationsNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="ChargingStationsNavigator" children={createChargingStationsNavigator} initialParams={props?.route?.params?.params}/>
       <AppDrawer.Screen name="QRCodeScanner" component={ChargingStationQrCode} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="SitesNavigator" component={createSitesNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="StatisticsNavigator" component={createStatsNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="ReportErrorNavigator" component={createReportErrorNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="TransactionHistoryNavigator" component={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name="TransactionInProgressNavigator" component={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name="UsersNavigator" component={createUsersNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="TagsNavigator" component={createTagsNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="CarsNavigator" component={createCarsNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="InvoicesNavigator" component={createInvoicesNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="PaymentMethodsNavigator" component={createPaymentMethodsNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="SitesNavigator" children={createSitesNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="StatisticsNavigator" children={createStatsNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="ReportErrorNavigator" children={createReportErrorNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="TransactionHistoryNavigator" children={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="TransactionInProgressNavigator" children={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="UsersNavigator" children={createUsersNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="TagsNavigator" children={createTagsNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="CarsNavigator" children={createCarsNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="InvoicesNavigator" children={createInvoicesNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="PaymentMethodsNavigator" children={createPaymentMethodsNavigator} initialParams={props?.route?.params?.params}/>
     </AppDrawer.Navigator>
   );
 }
@@ -584,8 +584,8 @@ export default class App extends React.Component<Props, State> {
         onStateChange={persistNavigationState}
         initialState={this.state.navigationState}>
         <rootStack.Navigator initialRouteName="AuthNavigator" screenOptions={{ headerShown: false }}>
-          <rootStack.Screen name="AuthNavigator" component={createAuthNavigator} />
-          <rootStack.Screen name="AppDrawerNavigator" component={createAppDrawerNavigator} />
+          <rootStack.Screen name="AuthNavigator" children={createAuthNavigator} />
+          <rootStack.Screen name="AppDrawerNavigator" children={createAppDrawerNavigator} />
         </rootStack.Navigator>
       </NavigationContainer>
     );
