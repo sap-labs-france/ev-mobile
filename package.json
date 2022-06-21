@@ -76,7 +76,7 @@
   },
   "dependencies": {
     "@formatjs/intl-datetimeformat": "^4.2.4",
-    "@formatjs/intl-displaynames": "^5.2.4",
+    "@formatjs/intl-displaynames": "^6.0.2",
     "@formatjs/intl-getcanonicallocales": "^1.7.3",
     "@formatjs/intl-listformat": "^6.3.1",
     "@formatjs/intl-locale": "^2.4.38",
@@ -102,7 +102,7 @@
     "intl-unofficial-duration-unit-format": "^3.1.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
-    "moment": "^2.29.2",
+    "moment": "^2.29.3",
     "native-base": "^2.15.2",
     "react": "17.0.1",
     "react-native": "0.64.3",
