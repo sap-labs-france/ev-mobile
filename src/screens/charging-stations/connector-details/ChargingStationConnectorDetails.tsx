@@ -886,85 +886,89 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     } = this.state;
     const commonColors = Utils.getCurrentCommonColor();
     const activityIndicatorCommonStyles = computeActivityIndicatorCommonStyles();
-    const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
-    return loading ? (
-      <Spinner style={style.spinner} color="grey" />
-    ) : (
+    const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector?.connectorId);
+    return (
       <Container style={style.container}>
         {showStartTransactionDialog && this.renderStartTransactionDialog()}
         {showStopTransactionDialog && this.renderStopTransactionDialog()}
         <HeaderComponent
           navigation={this.props.navigation}
-          title={chargingStation ? chargingStation.id : '-'}
-          subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
+          title={chargingStation ? chargingStation.id : ''}
+          subTitle={connector && connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
         />
-        {/* Site Image */}
-        <ImageBackground source={siteImage ? { uri: siteImage } : noSite} style={style.backgroundImage as ImageStyle}>
-          <View style={style.imageInnerContainer}>
-            {/* Show Last Transaction */}
-            {this.renderShowLastTransactionButton(style)}
-            {/* Start/Stop Transaction */}
-            {canStartTransaction && connector?.currentTransactionID === 0 ? (
-              <View style={style.transactionContainer}>{this.renderStartTransactionButton(style)}</View>
-            ) : canStopTransaction && connector?.currentTransactionID > 0 ? (
-              <View style={style.transactionContainer}>{this.renderStopTransactionButton(style)}</View>
+        {loading ? (
+          <Spinner style={style.spinner} color="grey" />
+        ) :
+          <View style={style.container}>
+            {/* Site Image */}
+            <ImageBackground source={siteImage ? { uri: siteImage } : noSite} style={style.backgroundImage as ImageStyle}>
+              <View style={style.imageInnerContainer}>
+                {/* Show Last Transaction */}
+                {this.renderShowLastTransactionButton(style)}
+                {/* Start/Stop Transaction */}
+                {canStartTransaction && connector?.currentTransactionID === 0 ? (
+                  <View style={style.transactionContainer}>{this.renderStartTransactionButton(style)}</View>
+                ) : canStopTransaction && connector?.currentTransactionID > 0 ? (
+                  <View style={style.transactionContainer}>{this.renderStopTransactionButton(style)}</View>
+                ) : (
+                  <View style={style.noButtonStopTransaction} />
+                )}
+                {/* Report Error */}
+                {this.renderReportErrorButton(style)}
+              </View>
+              {showAdviceMessage && this.renderAdviceMessage(style)}
+            </ImageBackground>
+            {/* Details */}
+            {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
+              <View style={style.connectorInfoSettingsContainer}>
+                {this.renderConnectorInfo(style)}
+                {refreshing && <ActivityIndicator
+                  size={scale(18)}
+                  color={commonColors.textColor}
+                  style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]}
+                  animating={true}
+                /> }
+                {this.renderAccordion(style)}
+                {showChargingSettings && (
+                  <ScrollView
+                    persistentScrollbar={true}
+                    style={style.scrollviewContainer}
+                    contentContainerStyle={style.chargingSettingsContainer}
+                    keyboardShouldPersistTaps={'always'}
+                  >
+                    {/* User */}
+                    {this.renderUserSelection(style)}
+                    {/* Badge */}
+                    {this.renderTagSelection(style)}
+                    {/* Car */}
+                    {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
+                  </ScrollView>
+                )}
+              </View>
             ) : (
-              <View style={style.noButtonStopTransaction} />
-            )}
-            {/* Report Error */}
-            {this.renderReportErrorButton(style)}
-          </View>
-          {showAdviceMessage && this.renderAdviceMessage(style)}
-        </ImageBackground>
-        {/* Details */}
-        {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
-          <View style={style.connectorInfoSettingsContainer}>
-            {this.renderConnectorInfo(style)}
-            {refreshing && <ActivityIndicator
-              size={scale(18)}
-              color={commonColors.textColor}
-              style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]}
-              animating={true}
-            /> }
-            {this.renderAccordion(style)}
-            {showChargingSettings && (
               <ScrollView
-                persistentScrollbar={true}
-                style={style.scrollviewContainer}
-                contentContainerStyle={style.chargingSettingsContainer}
-                keyboardShouldPersistTaps={'always'}
-              >
-                {/* User */}
-                {this.renderUserSelection(style)}
-                {/* Badge */}
-                {this.renderTagSelection(style)}
-                {/* Car */}
-                {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
+                contentContainerStyle={style.scrollViewContainer}
+                refreshControl={<RefreshControl  progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]}  refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+                <View style={style.rowContainer}>
+                  {this.renderConnectorStatus(style)}
+                  {this.renderUserInfo(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderInstantPower(style)}
+                  {this.renderTotalConsumption(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderElapsedTime(style)}
+                  {this.renderInactivity(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderBatteryLevel(style)}
+                  {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+                </View>
               </ScrollView>
             )}
           </View>
-        ) : (
-          <ScrollView
-            contentContainerStyle={style.scrollViewContainer}
-            refreshControl={<RefreshControl  progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]}  refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-            <View style={style.rowContainer}>
-              {this.renderConnectorStatus(style)}
-              {this.renderUserInfo(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderInstantPower(style)}
-              {this.renderTotalConsumption(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderElapsedTime(style)}
-              {this.renderInactivity(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderBatteryLevel(style)}
-              {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-            </View>
-          </ScrollView>
-        )}
+        }
       </Container>
     );
   }
