@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, Platform, TouchableOpacity } from 'react-native';
+import { Image, ImageStyle, Platform, SafeAreaView, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
@@ -304,7 +304,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const { showMap, satelliteMap } = this.state;
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
-      <View style={style.fabContainer}>
+      <SafeAreaView style={style.fabContainer}>
         {showMap && (
           <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
             <Image
@@ -320,7 +320,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         >
           <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 
