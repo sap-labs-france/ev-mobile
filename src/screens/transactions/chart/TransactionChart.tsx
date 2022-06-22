@@ -401,14 +401,14 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
                 style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
                 data={chartDefinition.data}
                 chartDescription={{ text: '' }}
+                extraOffsets={{"bottom": scale(10)}}
                 legend={{
                   enabled: true,
-                  textSize: scale(9),
+                  textSize: scale(10),
                   textColor: processColor(commonColor.textColor),
                   wordWrapEnabled: true,
                   yEntrySpace: scale(10),
                   xEntrySpace: scale(15),
-
                 }}
                 marker={{
                   enabled: true,
