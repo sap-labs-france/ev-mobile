@@ -9,9 +9,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     fab: {
-      width: '55@s',
-      height: '55@s',
-      borderRadius: '55@s',
+      width: '60@s',
+      height: '60@s',
+      borderRadius: '60@s',
       alignItems: 'center',
       justifyContent: 'center',
       bottom: 0,
