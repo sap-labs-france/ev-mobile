@@ -609,18 +609,20 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     connector: Connector
   ): { totalInactivitySecs?: number; elapsedTimeFormatted?: string; inactivityFormatted?: string } => {
     // Transaction loaded?
+    const durationFormatOptions = {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'};
+    const defaultDuration = I18nManager.formatDuration(0, durationFormatOptions);
     if (transaction) {
-      let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
-      let inactivityFormatted = Constants.DEFAULT_DURATION;
+      let elapsedTimeFormatted = defaultDuration;
+      let inactivityFormatted = defaultDuration;
       // Elapsed Time?
       if (transaction.currentTotalDurationSecs) {
         // Format
-        elapsedTimeFormatted = I18nManager.formatDuration(transaction.currentTotalDurationSecs, {style: DurationUnitFormat.styles.TIMER});
+        elapsedTimeFormatted = I18nManager.formatDuration(transaction.currentTotalDurationSecs, durationFormatOptions);
       }
       // Inactivity?
       if (transaction.currentTotalInactivitySecs) {
         // Format
-        inactivityFormatted = I18nManager.formatDuration(transaction.currentTotalInactivitySecs, {style: DurationUnitFormat.styles.TIMER});
+        inactivityFormatted = I18nManager.formatDuration(transaction.currentTotalInactivitySecs, durationFormatOptions);
       }
       // Set
       return {
@@ -630,18 +632,18 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       };
       // Basic User: Use the connector data
     } else if (connector && connector.currentTransactionID) {
-      let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
-      let inactivityFormatted = Constants.DEFAULT_DURATION;
+      let elapsedTimeFormatted = defaultDuration;
+      let inactivityFormatted = defaultDuration;
       // Elapsed Time?
       if (connector.currentTransactionDate) {
         // Format
         const durationSecs = (Date.now() - new Date(connector.currentTransactionDate).getTime()) / 1000;
-        elapsedTimeFormatted = I18nManager.formatDuration(durationSecs, {style: DurationUnitFormat.styles.TIMER});
+        elapsedTimeFormatted = I18nManager.formatDuration(durationSecs, durationFormatOptions);
       }
       // Inactivity?
       if (connector?.currentTotalInactivitySecs) {
         // Format
-        inactivityFormatted = I18nManager.formatDuration(connector.currentTotalInactivitySecs, {style: DurationUnitFormat.styles.TIMER});
+        inactivityFormatted = I18nManager.formatDuration(connector.currentTotalInactivitySecs, durationFormatOptions);
       }
       // Set
       return {
@@ -651,7 +653,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       };
     }
     return {
-      elapsedTimeFormatted: Constants.DEFAULT_DURATION
+      elapsedTimeFormatted: defaultDuration
     };
   };
 

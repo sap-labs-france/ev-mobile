@@ -123,13 +123,14 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public computeDurationInfos = (transaction: Transaction) => {
+    const durationFormatOptions = {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'};
     if (transaction?.stop) {
       // Compute duration
-      const elapsedTimeFormatted = I18nManager.formatDuration(transaction.stop.totalDurationSecs, {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'});
+      const elapsedTimeFormatted = I18nManager.formatDuration(transaction.stop.totalDurationSecs, durationFormatOptions);
       // Compute inactivity
       const totalInactivitySecs =
         transaction.stop.totalInactivitySecs + (transaction.stop.extraInactivitySecs ? transaction.stop.extraInactivitySecs : 0);
-      const inactivityFormatted = I18nManager.formatDuration(transaction.stop.totalInactivitySecs + transaction.stop.extraInactivitySecs, {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'});
+      const inactivityFormatted = I18nManager.formatDuration(transaction.stop.totalInactivitySecs + transaction.stop.extraInactivitySecs, durationFormatOptions);
       // Set
       this.setState({
         totalInactivitySecs,
@@ -137,11 +138,12 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         inactivityFormatted
       });
     } else {
+      const defaultDuration = I18nManager.formatDuration(0, durationFormatOptions);
       // Set
       this.setState({
         totalInactivitySecs: 0,
-        elapsedTimeFormatted: Constants.DEFAULT_DURATION,
-        inactivityFormatted: Constants.DEFAULT_DURATION
+        elapsedTimeFormatted: defaultDuration,
+        inactivityFormatted: defaultDuration
       });
     }
   };
