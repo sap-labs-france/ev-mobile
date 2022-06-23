@@ -114,9 +114,9 @@ export default class I18nManager {
     I18nManager.currency = currency;
   }
 
-  public static formatNumber(value: number): string {
+  public static formatNumber(value: number, options: Intl.NumberFormatOptions = {}): string {
     if (!isNaN(value)) {
-     return Intl.NumberFormat(i18n.locale).format(value);
+     return Intl.NumberFormat(i18n.locale, options).format(value);
     }
     return '-';
   }
@@ -207,7 +207,12 @@ export default class I18nManager {
   }
 
   // We use an external lib until ECMAScript Intl namespace features DurationFormat pending proposition
+  // Default format for TIMER style is hh:mm
   public static formatDuration(durationSecs: number, options?: DurationUnitFormatOptions): string {
+    // Add 0 to have double-digit hours when < 10
+    if (options?.style === DurationUnitFormat.styles.TIMER && !options?.format) {
+      options.format =  `${durationSecs < 36000 ? '0' : ''}{hour}:{minutes}`;
+    }
     const formatter =  new DurationUnitFormat(i18n.locale, options);
     return formatter.format(durationSecs)
   }

@@ -171,7 +171,7 @@ export default class Statistics extends BaseScreen<Props, State> {
       minimumFractionDigits: 1,
       maximumFractionDigits: 2
     });
-    const durationFormatOptions = {style: DurationUnitFormat.styles.NARROW, format: '{day} {hour}'};
+    const durationFormatOptions = {style: DurationUnitFormat.styles.SHORT, format: '{day} {hour}'};
     return (
       <Container style={style.container}>
         <HeaderComponent
