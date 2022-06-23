@@ -1,5 +1,7 @@
 // Note: test renderer must be required after react-native.
 
+import i18n from 'i18n-js';
+
 jest.mock('../src/utils/Utils');
 import I18nManager, {
   FormatNumberOptions,
@@ -246,6 +248,18 @@ test('formatNumberWithCompacts NullOptions', () => {
   } as FormatNumberOptions
   let formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
   expect(formattedNumber.value).toEqual('1.200.000');
+})
+
+test('formatDistance', () => {
+  i18n.locale = 'en'
+  let formattedDistance = I18nManager.formatDistance(999, true);
+  expect(formattedDistance).toEqual('999 m');
+  formattedDistance = I18nManager.formatDistance(999, false);
+  expect(formattedDistance).toEqual('1,093 yd');
+  formattedDistance = I18nManager.formatDistance(1700, true);
+  expect(formattedDistance).toEqual('1.7 km');
+  formattedDistance = I18nManager.formatDistance(1700, false);
+  expect(formattedDistance).toEqual('1.1 mi');
 })
 
 jest.unmock('../src/utils/Utils')

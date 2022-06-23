@@ -10,7 +10,6 @@ import validate from 'validate.js';
 import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ThemeManager from '../custom-theme/ThemeManager';
-import I18nManager from '../I18n/I18nManager';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Address from '../types/Address';
 import { BillingPaymentMethod, BillingPaymentMethodStatus } from '../types/Billing';
@@ -133,20 +132,6 @@ export default class Utils {
       return new Date(value);
     }
     return value;
-  }
-
-  public static formatDistance(distanceMeters: number): string {
-    let distance = distanceMeters;
-    // Convert to Yard
-    if (I18nManager.isMetricsSystem()) {
-      distance *= 1.09361;
-    }
-    if (distance < 1000) {
-      return I18nManager.isMetricsSystem() ? Math.round(distance).toString() + ' m' : Math.round(distance).toString() + ' yd';
-    }
-    return I18nManager.isMetricsSystem()
-      ? I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km'
-      : I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
   }
 
   public static getValuesFromEnum(enumType: any): number[] {
