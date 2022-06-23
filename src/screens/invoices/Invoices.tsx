@@ -141,6 +141,7 @@ export default class Invoices extends BaseScreen<Props, State> {
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
           navigation={this.props.navigation}
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
+          containerStyle={style.headerContainer}
         />
         <InvoicesFilters
           onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}

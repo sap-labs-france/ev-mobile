@@ -37,7 +37,6 @@ import Tag from '../../../types/Tag';
 import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
 import User, { UserDefaultTagCar, UserStatus } from '../../../types/User';
 import UserToken from '../../../types/UserToken';
-import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';

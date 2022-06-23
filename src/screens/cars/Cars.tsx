@@ -173,6 +173,7 @@ export default class Cars extends SelectableList<Car> {
           modalized={isModal}
           backArrow={!isModal}
           navigation={this.props.navigation}
+          containerStyle={style.headerContainer}
         />
         {this.renderFilters()}
         {loading ? <Spinner style={transactionStyles.spinner} color="grey" /> : (

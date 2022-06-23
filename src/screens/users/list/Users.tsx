@@ -152,6 +152,7 @@ export default class Users extends SelectableList<User> {
           backArrow={!isModal}
           navigation={this.props.navigation}
           displayTenantLogo={false}
+          containerStyle={style.headerContainer}
         />
         {this.renderFilters()}
         {loading ? <Spinner style={style.spinner} color="grey" /> : (

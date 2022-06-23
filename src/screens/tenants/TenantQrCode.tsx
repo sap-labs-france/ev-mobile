@@ -13,6 +13,7 @@ import Message from '../../utils/Message';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
+import computeStyleSheet from './TenantsStyle';
 
 export interface Props extends BaseProps {}
 
@@ -94,11 +95,13 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
   }
 
   public render() {
+    const style = computeStyleSheet();
     return (
       <Container>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanTenantQrCodeTitle')}
+          containerStyle={style.headerContainer}
         />
         <QRCodeScanner
           cameraProps={{ captureAudio: false }}

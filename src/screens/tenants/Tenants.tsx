@@ -138,6 +138,7 @@ export default class Tenants extends BaseScreen<Props, State> {
             title={I18n.t('general.tenants')}
             backAction={() => this.onBack()}
             sideBar={false}
+            containerStyle={style.headerContainer}
           />
           {loading ? <Spinner style={style.spinner} color={commonColors.disabledDark} /> : (
             <View style={style.listContainer}>

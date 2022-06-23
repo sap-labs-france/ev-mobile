@@ -158,6 +158,7 @@ export default class Tags extends SelectableList<Tag> {
           backArrow={!isModal}
           navigation={this.props.navigation}
           displayTenantLogo={false}
+          containerStyle={style.headerContainer}
         />
         {this.renderFilters()}
         {loading ? (

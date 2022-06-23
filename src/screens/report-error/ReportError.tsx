@@ -180,6 +180,7 @@ export default class ReportError extends BaseScreen<Props, State> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('sidebar.reportError')}
+          containerStyle={style.headerContainer}
         />
         <View style={style.container}>
           <View style={style.iconContainer}>

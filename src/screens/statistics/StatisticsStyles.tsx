@@ -15,6 +15,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '100%',
       backgroundColor: commonColor.containerBgColor
     },
+    headerContainer: {
+      marginBottom: '10@s'
+    },
     activityIndicator: {
       marginTop: '70@s',
       padding: '10@s',
