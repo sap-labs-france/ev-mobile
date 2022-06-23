@@ -12,6 +12,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
+    headerContainer: {
+      marginBottom: '10@s'
+    },
     listContainer: {
       flex: 1,
       marginTop: '10@s'
