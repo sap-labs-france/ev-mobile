@@ -13,10 +13,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between'
     },
     transactionContent: {
-      flexDirection: 'row',
       flex: 1,
       justifyContent: 'space-between',
-      padding: '5@s',
+      padding: '10@s',
       alignItems: 'center'
     },
     leftContainer: {
@@ -24,12 +23,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'flex-start',
       margin: '5@s',
       flex: 1
-    },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-      width: '20@s'
     },
     statusIndicator: {
       height: '100%',
@@ -74,22 +67,26 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingTop: '5@s'
     },
     transactionDetailsContainer2: {
-      paddingBottom: '5@s'
+      paddingBottom: '2@s'
     },
     transactionDetailContainer: {
-      margin: '3@s',
+      marginTop: '3@s',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      width: '60@s'
+      width: '25%'
     },
     icon: {
       color: commonColor.textColor,
       fontSize: '30@s',
       justifyContent: 'flex-end'
     },
+    arrowIcon: {
+      fontSize: '18@s',
+      color: commonColor.disabledDark
+    },
     labelValue: {
-      fontSize: '15@s',
+      fontSize: '13@s',
       color: commonColor.textColor
     },
     subLabelValue: {
