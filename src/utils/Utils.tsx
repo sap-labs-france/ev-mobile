@@ -39,6 +39,7 @@ import React from 'react';
 import { scale } from 'react-native-size-matters';
 import SecuredStorage from './SecuredStorage';
 import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
+import ProviderFactory from '../provider/ProviderFactory';
 
 export default class Utils {
   public static async getEndpointClouds(): Promise<EndpointCloud[]> {
@@ -686,6 +687,10 @@ export default class Utils {
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
+        case StatusCodes.MOVED_PERMANENTLY:
+          Message.showError('Moved');
+          this.redirect(error);
+          break;
         // Other errors
         default:
           Message.showError(I18n.t(defaultErrorMessage ?? 'general.unexpectedErrorBackend'));
@@ -701,6 +706,14 @@ export default class Utils {
       }
       Message.showError(I18n.t('general.unexpectedError'));
     }
+  }
+
+  private static redirect(error: RequestError) {
+    const centralServerProvider = ProviderFactory.getProvider();
+    const newURL = error?.response?.data?.errorDetailedMessage?.redirectToURL;
+    const newURLParts = this.parseURL(newURL);
+    const newTenantSubdomain = newURLParts.subdomain;
+    const newTenantEndpoint = newURLParts.domain;
   }
 
   public static buildUserName(user: User): string {
@@ -978,5 +991,20 @@ export default class Utils {
     } catch ( error ) {
       return null;
     }
+  }
+
+  //TODO finish implementation of other parts
+  public static parseURL(url: string = ''): {scheme: string, subdomain: string, domain: string, path: string, params: Record<string, string>, fragment: string} {
+    const scheme = url.split(':')?.[0];
+    const rightPart = url.split('//')?.[1];
+    const fullDomain = rightPart?.split('/')?.[0];
+    const domainParts = fullDomain?.split('.');
+    const domainLength = domainParts?.length;
+    const [subdomain, domain] = domainLength > 2 ? [domainParts?.slice(0, domainLength - 2)?.join('.'), domainParts?.slice(domainLength - 2, domainLength).join('.')] : [null, fullDomain];
+    return {
+      scheme,
+      subdomain,
+      domain
+    };
   }
 }
