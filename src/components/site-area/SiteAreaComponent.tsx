@@ -10,6 +10,7 @@ import Utils from '../../utils/Utils';
 import ConnectorStatusesContainerComponent from '../connector-status/ConnectorStatusesContainerComponent';
 import computeStyleSheet from './SiteAreaComponentStyles';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
+import I18nManager from '../../I18n/I18nManager';
 
 export interface Props extends BaseProps {
   siteArea: SiteArea;
@@ -60,8 +61,8 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
               Message.showError(I18n.t('siteAreas.noChargers'));
             }
           }}>
-          <View style={style.leftContainer}>
-            <View style={style.titleContainer}>
+          <View style={style.titleContainer}>
+            <View style={style.leftHeader}>
               <TouchableOpacity
                 disabled={!validGPSCoordinates}
                 onPress={() => Utils.jumpToMapWithAddress(siteArea.name, siteArea.address)}>
@@ -75,22 +76,16 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
                 {siteArea.name}
               </Text>
             </View>
-            <View style={style.subTitleContainer}>
-              <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>
-                {Utils.formatAddress(siteArea.address)} {Utils.formatAddress2(siteArea.address)}
-              </Text>
-              {siteArea.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(siteArea.distanceMeters)}</Text>}
-            </View>
-            <View style={style.connectorContent}>
-              <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />
-            </View>
+            <Icon style={style.arrowIcon} type="MaterialCommunityIcons" name="arrow-right-circle-outline" />
           </View>
-          <View style={style.rightContainer}>
-            <Icon
-              style={siteArea.connectorStats?.totalConnectors > 0 ? [style.icon, style.arrowIcon] : style.iconHidden}
-              type="MaterialIcons"
-              name="navigate-next"
-            />
+          <View style={style.subTitleContainer}>
+            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>
+              {Utils.formatAddress(siteArea.address)} {Utils.formatAddress2(siteArea.address)}
+            </Text>
+            {siteArea.distanceMeters > 0 && <Text style={style.distance}>{I18nManager.formatDistance(siteArea.distanceMeters)}</Text>}
+          </View>
+          <View style={style.connectorContent}>
+            <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />
           </View>
         </TouchableOpacity>
       </View>

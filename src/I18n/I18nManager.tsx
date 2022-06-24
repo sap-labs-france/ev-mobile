@@ -248,4 +248,18 @@ export default class I18nManager {
     }
     return MetricCompactEnum.TERA;
   }
+
+  public static formatDistance(distanceMeters: number, useMetricSystem?: boolean): string {
+    const isMetricSystem = useMetricSystem ?? I18nManager.isMetricsSystem();
+    if(isMetricSystem) {
+      return (
+        distanceMeters < 1000 ? `${I18nManager.formatNumber(distanceMeters, {maximumFractionDigits: 0})} m` : `${I18nManager.formatNumber(distanceMeters / 1000, {maximumFractionDigits: 1})} km`
+      );
+    } else {
+      const distanceYard = distanceMeters * 1.09361;
+      return (
+        distanceYard < 1760 ? `${I18nManager.formatNumber(distanceYard, {maximumFractionDigits: 0})} yd` : `${I18nManager.formatNumber(distanceYard / 1760, {maximumFractionDigits: 1})} mi`
+      );
+    }
+  }
 }
