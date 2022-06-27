@@ -18,7 +18,7 @@ import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorTy
 import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
 import { RequestError } from '../types/RequestError';
-import { EndpointCloud } from '../types/Tenant';
+import { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
@@ -689,7 +689,10 @@ export default class Utils {
           break;
         case StatusCodes.MOVED_PERMANENTLY:
           Message.showError('Moved');
-          this.redirect(error);
+          await this.redirect(error);
+          if(centralServerProvider.isUserConnected()){
+            await centralServerProvider.logoff()
+          }
           break;
         // Other errors
         default:
@@ -708,12 +711,17 @@ export default class Utils {
     }
   }
 
-  private static redirect(error: RequestError) {
-    const centralServerProvider = ProviderFactory.getProvider();
-    const newURL = error?.response?.data?.errorDetailedMessage?.redirectToURL;
-    const newURLParts = this.parseURL(newURL);
-    const newTenantSubdomain = newURLParts.subdomain;
-    const newTenantEndpoint = newURLParts.domain;
+  public static async redirect(error: RequestError) {
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
+    let currentTenant = centralServerProvider.getTenant2() || {} as TenantConnection;
+    const tenants = await SecuredStorage.getTenants();
+    const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === currentTenant.subdomain);
+    const endpoints = Configuration.getEndpoints();
+    const newEndpoint = endpoints.find(endpoint => endpoint.endpoint === Configuration.SERVER_URL_PREFIX + newURLDomain);
+    currentTenant.endpoint = newEndpoint;
+    tenants.splice(currentTenantIndex, 1, currentTenant);
+    await SecuredStorage.saveTenants(tenants);
   }
 
   public static buildUserName(user: User): string {
@@ -991,20 +999,5 @@ export default class Utils {
     } catch ( error ) {
       return null;
     }
-  }
-
-  //TODO finish implementation of other parts
-  public static parseURL(url: string = ''): {scheme: string, subdomain: string, domain: string, path: string, params: Record<string, string>, fragment: string} {
-    const scheme = url.split(':')?.[0];
-    const rightPart = url.split('//')?.[1];
-    const fullDomain = rightPart?.split('/')?.[0];
-    const domainParts = fullDomain?.split('.');
-    const domainLength = domainParts?.length;
-    const [subdomain, domain] = domainLength > 2 ? [domainParts?.slice(0, domainLength - 2)?.join('.'), domainParts?.slice(domainLength - 2, domainLength).join('.')] : [null, fullDomain];
-    return {
-      scheme,
-      subdomain,
-      domain
-    };
   }
 }

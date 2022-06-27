@@ -75,6 +75,10 @@ export default class CentralServerProvider {
     }
   }
 
+  public getTenant2(): TenantConnection {
+    return this.tenant;
+  }
+
   public setNotificationManager(notificationManager: NotificationManager): void {
     this.notificationManager = notificationManager;
   }
@@ -312,6 +316,7 @@ export default class CentralServerProvider {
     this.debugMethod('login');
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
+    this.tenant = tenant;
     // Call
     const result = await this.axiosInstance.post<any>(
       `${this.buildRestServerAuthURL(tenant)}/${RESTServerRoute.REST_SIGNIN}`,
@@ -330,7 +335,6 @@ export default class CentralServerProvider {
     this.decodedToken = jwtDecode(this.token);
     this.locale = this.decodedToken.locale;
     this.currency = this.decodedToken.currency;
-    this.tenant = tenant;
     this.securityProvider = new SecurityProvider(this.decodedToken);
     // Save
     await SecuredStorage.saveUserCredentials(tenantSubDomain, {

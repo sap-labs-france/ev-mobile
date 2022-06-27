@@ -257,6 +257,10 @@ export default class Login extends BaseScreen<Props, State> {
             case HTTPError.USER_EULA_ERROR:
               Message.showError(I18n.t('authentication.eulaNotAccepted'));
               break;
+            case StatusCodes.MOVED_PERMANENTLY:
+              await Utils.redirect(error);
+              this.login();
+              break;
             default:
               // Other common Error
               await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.loginUnexpectedError');
