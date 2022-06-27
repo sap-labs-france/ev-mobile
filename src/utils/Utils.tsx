@@ -689,24 +689,19 @@ export default class Utils {
           break;
         case StatusCodes.MOVED_PERMANENTLY:
           await this.redirect(error);
-          if (centralServerProvider.isUserConnected()){
+          if (centralServerProvider.isUserConnected()) {
             const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
-            const credentials = await SecuredStorage.getUserCredentials();
-            try {
-              await centralServerProvider.login(credentials?.email, credentials?.password, true, tenantSubDomain);
-            } catch ( error ) {
-              Message.showInfo('You have been logged off because the server moved.');
-              await centralServerProvider.logoff();
-              navigation.dispatch(
-                StackActions.replace('AuthNavigator', {
-                  name: 'Login',
-                  key: `${Utils.randomNumber()}`,
-                  params: {
-                    tenantSubDomain
-                  }
-                })
-              );
-            }
+            Message.showWarning(I18n.t('general.userOrTenantUpdated'));
+            await centralServerProvider.logoff();
+            navigation.dispatch(
+              StackActions.replace('AuthNavigator', {
+                name: 'Login',
+                key: `${Utils.randomNumber()}`,
+                params: {
+                  tenantSubDomain
+                }
+              })
+            );
           }
           break;
         // Other errors

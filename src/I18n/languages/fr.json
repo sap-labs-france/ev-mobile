@@ -84,7 +84,8 @@
     "notApplicable": "N/A",
     "showMore": "Voir plus",
     "showLess": "Voir moins",
-    "newEntry": "Nouveau"
+    "newEntry": "Nouveau",
+    "userOrTenantUpdated": "Vous avez été déconnecté suite à une modification de votre profil ou des paramètres de votre organisation"
   },
   "sidebar": {
     "home": "Home",
