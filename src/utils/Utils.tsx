@@ -707,7 +707,6 @@ export default class Utils {
                 })
               );
             }
-
           }
           break;
         // Other errors
