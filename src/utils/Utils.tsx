@@ -1,4 +1,4 @@
-import { NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
@@ -688,10 +688,26 @@ export default class Utils {
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
         case StatusCodes.MOVED_PERMANENTLY:
-          Message.showError('Moved');
           await this.redirect(error);
-          if(centralServerProvider.isUserConnected()){
-            await centralServerProvider.logoff()
+          if (centralServerProvider.isUserConnected()){
+            const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
+            const credentials = await SecuredStorage.getUserCredentials();
+            try {
+              await centralServerProvider.login(credentials?.email, credentials?.password, true, tenantSubDomain);
+            } catch ( error ) {
+              Message.showInfo('You have been logged off because the server moved.');
+              await centralServerProvider.logoff();
+              navigation.dispatch(
+                StackActions.replace('AuthNavigator', {
+                  name: 'Login',
+                  key: `${Utils.randomNumber()}`,
+                  params: {
+                    tenantSubDomain
+                  }
+                })
+              );
+            }
+
           }
           break;
         // Other errors
@@ -714,7 +730,7 @@ export default class Utils {
   public static async redirect(error: RequestError) {
     const centralServerProvider = await ProviderFactory.getProvider();
     const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
-    let currentTenant = centralServerProvider.getTenant2() || {} as TenantConnection;
+    let currentTenant = centralServerProvider.getUserTenant() || {} as TenantConnection;
     const tenants = await SecuredStorage.getTenants();
     const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === currentTenant.subdomain);
     const endpoints = Configuration.getEndpoints();

@@ -75,10 +75,6 @@ export default class CentralServerProvider {
     }
   }
 
-  public getTenant2(): TenantConnection {
-    return this.tenant;
-  }
-
   public setNotificationManager(notificationManager: NotificationManager): void {
     this.notificationManager = notificationManager;
   }
@@ -299,6 +295,7 @@ export default class CentralServerProvider {
   }
 
   public async logoff(): Promise<void> {
+    this.setAutoLoginDisabled(true);
     this.debugMethod('logoff');
     // Clear the token and tenant
     if (this.tenant) {
