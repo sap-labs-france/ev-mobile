@@ -149,7 +149,7 @@ export default class CentralServerProvider {
 
   public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
     this.debugMethod('getTenantLogoBySubdomain');
-    let tenantLogo = this.tenantLogosCache.get<any>(tenant.subdomain);
+    let tenantLogo = this.tenantLogosCache.get(tenant.subdomain);
     if (!tenantLogo) {
       // Call backend
       const result = await this.axiosInstance.get<any>(
@@ -178,7 +178,7 @@ export default class CentralServerProvider {
     return this.tenantLogo;
   }
 
-  public async triggerAutoLogin(navigation: NavigationContainerRef, fctRefresh: () => void): Promise<void> {
+  public async triggerAutoLogin(navigation: NavigationContainerRef<any>, fctRefresh: () => void): Promise<void> {
     this.debugMethod('triggerAutoLogin');
     try {
       // Force log the user
@@ -932,7 +932,7 @@ export default class CentralServerProvider {
   public async getSiteImage(id: string): Promise<string> {
     this.debugMethod('getSiteImage');
     // Check cache
-    let foundSiteImage = this.siteImagesCache.get<any>(id);
+    let foundSiteImage = this.siteImagesCache.get(id);
     if (!foundSiteImage) {
       // Call backend
       const result = await this.axiosInstance.get<any>(
