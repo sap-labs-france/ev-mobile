@@ -25,7 +25,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     closeIcon: {
       color: commonColor.textColor,
-      fontSize: '40@s'
+      fontSize: '37@s'
     },
     buttonsContainer: {
       flexDirection: 'row',
@@ -46,7 +46,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     title: {
       color: commonColor.textColor,
-      fontSize: '25@s'
+      fontSize: '22@s'
     }
   });
   const portraitStyles = {};

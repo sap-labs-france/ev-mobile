@@ -1,5 +1,5 @@
 import { Icon, Spinner, Text, View } from 'native-base';
-import React, { createRef } from 'react';
+import React from 'react';
 import Modal from 'react-native-modal';
 import BaseProps from '../../types/BaseProps';
 import Utils from '../../utils/Utils';
@@ -48,7 +48,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
   };
   public state: State<T>;
   public props: Props<T>;
-  private itemsListRef = createRef<SelectableList<T>>();
+  private itemsListRef: SelectableList<T>;
   public constructor(props: Props<T>) {
     super(props);
     this.state = {
@@ -59,11 +59,11 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
   }
 
   private clearSelection(): void {
-    this.itemsListRef?.current?.clearSelectedItems();
+    this.itemsListRef?.clearSelectedItems();
   }
 
   public resetInput(noneSelected: boolean = false, items: T[] = []): void {
-    this.itemsListRef?.current?.clearSelectedItems();
+    this.itemsListRef?.clearSelectedItems();
     this.setState({noneSelected, selectedItems: items, isVisible: false}, () => this.props.onItemsSelected(items));
   }
 
@@ -72,8 +72,10 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     const { selectionMode, label } = this.props;
     const { isVisible } = this.state;
     const itemsList = React.Children.only(this.props.children);
-    const canValidateMultiSelect = this.itemsListRef?.current?.state.selectedItems?.length > 0;
+    const canValidateMultiSelect = this.itemsListRef?.getSelectedItems()?.length > 0;
     const modalCommonStyle = computeModalCommonStyle();
+    const title = this.itemsListRef?.buildModalHeaderTitle();
+    const subtitle = this.itemsListRef?.buildModalHeaderSubtitle();
     return (
       <View style={style.container}>
         {label && <Text style={style.label}>{label}</Text>}
@@ -95,16 +97,26 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           hideModalContentWhileAnimating={true}>
           <SafeAreaView style={style.modalContainer}>
             <View style={style.modalHeader}>
+              <View style={style.modalTitleContainer}>
+                  {title && <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.modalTitle}>{title}</Text>}
+                  {subtitle && <Text numberOfLines={1} style={style.modalSubtitle}>{subtitle}</Text>}
+              </View>
               <TouchableOpacity onPress={() => this.setState({ isVisible: false })}>
                 <Icon style={style.closeIcon} type="EvilIcons" name={'close'} />
               </TouchableOpacity>
             </View>
             <View style={style.listContainer}>
               {React.cloneElement(itemsList, {
-                onItemsSelected: (selected: T[]) => this.onItemSelected(selected),
+                onItemsSelected: (selectedItems: T[]) => this.onItemSelected(selectedItems),
                 selectionMode,
                 isModal: true,
-                ref: this.itemsListRef
+                onContentLoaded: () => this.onListContentLoaded(),
+                ref: (itemsList: SelectableList<T>) => {
+                  if (itemsList && this.itemsListRef !== itemsList) {
+                    this.itemsListRef = itemsList;
+                    this.forceUpdate();
+                  }
+                }
               })}
             </View>
             {selectionMode === ItemSelectionMode.MULTI && (
@@ -130,9 +142,9 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
 
   private validateSelection(): void {
     const { onItemsSelected } = this.props;
-    const selectedItems = this.itemsListRef?.current?.state.selectedItems;
+    const selectedItems = this.itemsListRef?.getSelectedItems();
     if (!Utils.isEmptyArray(selectedItems)) {
-      this.setState({ isVisible: false, selectedItems }, () => onItemsSelected?.(selectedItems));
+      this.setState({ isVisible: false }, () => onItemsSelected?.(selectedItems));
     }
   }
 
@@ -141,8 +153,12 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     if (selectionMode === ItemSelectionMode.MULTI) {
       this.setState({ noneSelected: false });
     } else if (selectionMode === ItemSelectionMode.SINGLE && !Utils.isEmptyArray(selectedItems)) {
-      this.setState({ selectedItems, isVisible: false, noneSelected: false }, () => onItemsSelected?.(selectedItems));
+      this.setState({ isVisible: false, noneSelected: false }, () => onItemsSelected?.(selectedItems));
     }
+  }
+
+  private onListContentLoaded(): void {
+    this.forceUpdate();
   }
 
   private renderButton(style: any) {
