@@ -144,7 +144,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     const { onItemsSelected } = this.props;
     const selectedItems = this.itemsListRef?.getSelectedItems();
     if (!Utils.isEmptyArray(selectedItems)) {
-      this.setState({ isVisible: false }, () => onItemsSelected?.(selectedItems));
+      this.setState({ isVisible: false, selectedItems }, () => onItemsSelected?.(selectedItems));
     }
   }
 
@@ -153,7 +153,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     if (selectionMode === ItemSelectionMode.MULTI) {
       this.setState({ noneSelected: false });
     } else if (selectionMode === ItemSelectionMode.SINGLE && !Utils.isEmptyArray(selectedItems)) {
-      this.setState({ isVisible: false, noneSelected: false }, () => onItemsSelected?.(selectedItems));
+      this.setState({ selectedItems, isVisible: false, noneSelected: false }, () => onItemsSelected?.(selectedItems));
     }
   }
 
