@@ -58,17 +58,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     title: {
       fontSize: '17@s',
       color: commonColor.textColor,
-      marginRight: '5@s',
+      marginRight: '5@s'
     },
     subTitle: {
       fontSize: '17@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     actionsContainer: {
       flexDirection: 'row',
       marginLeft: '10@s'
-    },
-    action: {
     }
   });
   const portraitStyles = {};
