@@ -26,10 +26,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingHorizontal: '5@s'
     },
     closeIcon: {
-      alignSelf: 'flex-end',
-      fontSize: '40@s',
-      margin: '3@s',
-      color: commonColor.textColor,
+      fontSize: '37@s',
+      marginLeft: '10@s',
+      color: commonColor.textColor
     },
     rightIcon: {
       textAlign: 'right'
@@ -58,21 +57,35 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderTopLeftRadius: '20@s',
       borderTopRightRadius: '20@s'
     },
+    modalTitle: {
+      fontSize: '17@s',
+      flexShrink: 1,
+      marginRight: '5@s'
+    },
+    modalSubtitle: {
+      fontSize: '17@s',
+    },
+    modalTitleContainer: {
+      flexDirection: 'row',
+      flex: 1,
+      justifyContent: 'flex-start',
+      alignItems: 'center'
+    },
     modalContainer: {
       flexDirection: 'column',
       height: '100%'
     },
     modalHeader: {
-      width: '100%',
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      padding: '5@s',
+      width: '95%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignSelf: 'center',
+      justifyContent: 'space-between',
+      paddingBottom: '10@s',
+      paddingTop: '15@s',
       backgroundColor: commonColor.containerBgColor,
       borderTopLeftRadius: '20@s',
       borderTopRightRadius: '20@s'
-    },
-    modalTitle: {
-      fontSize: '16@s'
     },
     listContainer: {
       width: '100%',

@@ -55,17 +55,10 @@ export default class CarCatalogs extends SelectableList<Car> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-    Orientation.lockToPortrait();
-  }
-
   public componentWillUnmount() {
     super.componentWillUnmount();
     Orientation.unlockAllOrientations();
   }
-
 
   public async getCarCatalog(searchText: string, skip: number, limit: number): Promise<DataResult<CarCatalog>> {
     try {
@@ -109,7 +102,7 @@ export default class CarCatalogs extends SelectableList<Car> {
     }
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner:boolean = false, callback:() => void = () => null): Promise<void> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       this.setState({ refreshing: true });
@@ -122,7 +115,7 @@ export default class CarCatalogs extends SelectableList<Car> {
         refreshing: false,
         cars: carsResult,
         count: cars ? cars.count : 0
-      });
+      }, () => callback?.());
     }
   }
 
@@ -138,13 +131,15 @@ export default class CarCatalogs extends SelectableList<Car> {
     const { navigation, selectionMode, isModal } = this.props;
     return (
       <Container style={transactionStyles.container}>
-        <HeaderComponent
-          title={this.buildHeaderTitle()}
-          subTitle={this.buildHeaderSubtitle()}
-          modalized={isModal}
-          backArrow={!isModal}
-          navigation={this.props.navigation}
-        />
+        {!isModal && (
+          <HeaderComponent
+            title={this.buildHeaderTitle()}
+            subTitle={this.buildHeaderSubtitle()}
+            modalized={isModal}
+            backArrow={!isModal}
+            navigation={this.props.navigation}
+          />
+        )}
         <View style={transactionStyles.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
