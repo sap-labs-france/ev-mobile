@@ -178,7 +178,7 @@
     "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-jsdoc": "^36.1.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "eslint-plugin-react": "^7.26.0",
+    "eslint-plugin-react": "^7.30.1",
     "flow-bin": "^0.161.0",
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
