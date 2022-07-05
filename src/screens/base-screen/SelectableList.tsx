@@ -35,8 +35,9 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
-    if ( !this.screenFilters ) {
-      await this.refresh(true);
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
     }
   }
 
