@@ -81,8 +81,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       alignSelf: 'center',
       justifyContent: 'space-between',
-      paddingBottom: '10@s',
-      paddingTop: '15@s',
+      paddingBottom: '15@s',
+      paddingTop: '25@s',
       backgroundColor: commonColor.containerBgColor,
       borderTopLeftRadius: '20@s',
       borderTopRightRadius: '20@s'

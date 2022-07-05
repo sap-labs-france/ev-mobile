@@ -974,7 +974,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderAccordion(style: any) {
     const { showChargingSettings, settingsErrors } = this.state;
-    console.log(settingsErrors);
     return (
       <TouchableOpacity onPress={() => this.setState({ showChargingSettings: !showChargingSettings })} style={style.accordion}>
         <Text style={style.accordionText}>
