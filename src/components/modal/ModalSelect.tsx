@@ -110,7 +110,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
                 onItemsSelected: (selectedItems: T[]) => this.onItemSelected(selectedItems),
                 selectionMode,
                 isModal: true,
-                onContentLoaded: () => this.onListContentLoaded(),
+                onContentUpdated: () => this.onListContentUpdated(),
                 ref: (itemsList: SelectableList<T>) => {
                   if (itemsList && this.itemsListRef !== itemsList) {
                     this.itemsListRef = itemsList;
@@ -157,7 +157,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     }
   }
 
-  private onListContentLoaded(): void {
+  private onListContentUpdated(): void {
     this.forceUpdate();
   }
 

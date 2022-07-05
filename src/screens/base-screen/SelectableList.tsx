@@ -11,7 +11,7 @@ export interface SelectableProps<T> extends BaseProps {
   isModal?: boolean;
   onItemsSelected?: (selectedItems: T[]) => void;
   filters?: {}
-  onContentLoaded?: () => void;
+  onContentUpdated?: () => void;
 }
 
 export interface SelectableState<T> {
@@ -35,11 +35,9 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
-    const { isModal } = this.props;
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
     if (!this.screenFilters) {
-      await this.refresh(true,  isModal ? () => this.props.onContentLoaded?.() : () => null);
-    } else if (isModal) {
-      this.props.onContentLoaded?.();
+      this.refresh(true);
     }
   }
 

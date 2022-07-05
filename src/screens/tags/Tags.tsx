@@ -113,11 +113,12 @@ export default class Tags extends SelectableList<Tag> {
     }
   };
 
-  public async refresh(showSpinner:boolean = false, callback:() => void = () => null): Promise<void> {
+  public async refresh(showSpinner:boolean = false): Promise<void> {
     if (this.isMounted()) {
       const newState = showSpinner ? (Utils.isEmptyArray(this.state.tags) ? {loading: true} : {refreshing: true}) : this.state;
       this.setState(newState, async () => {
         const { skip, limit } = this.state;
+        const { isModal, onContentUpdated } = this.props;
         // Refresh All
         const tags = await this.getTags(this.searchText, 0, skip + limit);
         // Set
@@ -127,7 +128,7 @@ export default class Tags extends SelectableList<Tag> {
           tags: tags ? tags.result : [],
           projectFields: tags ? tags.projectFields : [],
           count: tags ? tags.count : 0
-        }, () => callback?.());
+        }, isModal ? () => onContentUpdated() : () => null);
       });
     }
   }

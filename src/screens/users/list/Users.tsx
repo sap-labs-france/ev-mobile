@@ -106,11 +106,12 @@ export default class Users extends SelectableList<User> {
     super.setState(state, callback);
   };
 
-  public async refresh(showSpinner = false, callback: () => void = () => null ): Promise<void> {
+  public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
       const newState = showSpinner ? {...(Utils.isEmptyArray(this.state.users) ? {loading: true} : {refreshing: true})} : this.state;
       this.setState(newState, async () => {
         const { skip, limit } = this.state;
+        const { isModal, onContentUpdated } = this.props;
         // Refresh All
         const users = await this.getUsers(this.searchText, 0, skip + limit);
         const usersResult = users ? users.result : [];
@@ -120,7 +121,7 @@ export default class Users extends SelectableList<User> {
           refreshing: false,
           users: usersResult,
           count: users?.count ?? 0
-        }, () => callback?.());
+        }, isModal ? () => onContentUpdated() : () => null);
       });
     }
   }
