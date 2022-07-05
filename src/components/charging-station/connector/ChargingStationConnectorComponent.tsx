@@ -168,7 +168,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
             </View>
             {!chargingStation.inactive && listed && (
               <View style={style.iconContainer}>
-                <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
+                <Icon style={style.arrowIcon} type="MaterialCommunityIcons" name="arrow-right-circle-outline" />
               </View>
             )}
           </View>
