@@ -119,11 +119,12 @@ export default class Cars extends SelectableList<Car> {
     }
   };
 
-  public async refresh(showSpinner:boolean = false, callback:() => void = () => null): Promise<void> {
+  public async refresh(showSpinner:boolean = false): Promise<void> {
     if (this.isMounted()) {
       const newState = showSpinner ? (Utils.isEmptyArray(this.state.cars) ? {loading: true} : {refreshing: true})  : this.state;
       this.setState(newState, async () => {
         const { skip, limit } = this.state;
+        const { isModal, onContentUpdated } = this.props;
         // Refresh All
         const cars = await this.getCars(this.searchText, 0, skip + limit);
         const carsResult = cars ? cars.result : [];
@@ -133,7 +134,7 @@ export default class Cars extends SelectableList<Car> {
           cars: carsResult,
           count: cars ? cars.count : 0,
           refreshing: false
-        }, () => callback?.());
+        }, isModal ? () => onContentUpdated() : () => null);
       });
     }
   }
