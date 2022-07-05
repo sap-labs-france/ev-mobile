@@ -1,4 +1,4 @@
-import { NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
@@ -18,7 +18,7 @@ import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorTy
 import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
 import { RequestError } from '../types/RequestError';
-import { EndpointCloud } from '../types/Tenant';
+import { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
@@ -39,6 +39,7 @@ import React from 'react';
 import { scale } from 'react-native-size-matters';
 import SecuredStorage from './SecuredStorage';
 import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
+import ProviderFactory from '../provider/ProviderFactory';
 
 export default class Utils {
   public static async getEndpointClouds(): Promise<EndpointCloud[]> {
@@ -686,6 +687,23 @@ export default class Utils {
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
+        case StatusCodes.MOVED_PERMANENTLY:
+          await this.redirect(error);
+          if (centralServerProvider.isUserConnected()) {
+            const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
+            Message.showWarning(I18n.t('general.userOrTenantUpdated'));
+            await centralServerProvider.logoff();
+            navigation.dispatch(
+              StackActions.replace('AuthNavigator', {
+                name: 'Login',
+                key: `${Utils.randomNumber()}`,
+                params: {
+                  tenantSubDomain
+                }
+              })
+            );
+          }
+          break;
         // Other errors
         default:
           Message.showError(I18n.t(defaultErrorMessage ?? 'general.unexpectedErrorBackend'));
@@ -701,6 +719,19 @@ export default class Utils {
       }
       Message.showError(I18n.t('general.unexpectedError'));
     }
+  }
+
+  public static async redirect(error: RequestError) {
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
+    let currentTenant = centralServerProvider.getUserTenant() || {} as TenantConnection;
+    const tenants = await SecuredStorage.getTenants();
+    const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === currentTenant.subdomain);
+    const endpoints = Configuration.getEndpoints();
+    const newEndpoint = endpoints.find(endpoint => endpoint.endpoint === Configuration.SERVER_URL_PREFIX + newURLDomain);
+    currentTenant.endpoint = newEndpoint;
+    tenants.splice(currentTenantIndex, 1, currentTenant);
+    await SecuredStorage.saveTenants(tenants);
   }
 
   public static buildUserName(user: User): string {

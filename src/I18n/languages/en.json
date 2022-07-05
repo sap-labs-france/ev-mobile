@@ -84,7 +84,8 @@
     "notApplicable": "N/A",
     "showMore": "Show more",
     "showLess": "Show less",
-    "newEntry": "New entry"
+    "newEntry": "New entry",
+    "userOrTenantUpdated": "You have been logged off because either your profile or your organization's settings have been updated"
   },
   "sidebar": {
     "home": "Home",
