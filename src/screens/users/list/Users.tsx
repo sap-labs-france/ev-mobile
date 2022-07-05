@@ -55,14 +55,6 @@ export default class Users extends SelectableList<User> {
     };
   }
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    // When filters are enabled, first refresh is triggered via onFiltersChanged
-    if (!this.screenFilters) {
-      this.refresh(true);
-    }
-  }
-
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     try {
       const issuer = this.props?.filters?.hasOwnProperty('issuer') ? this.props.filters.issuer : !this.state.filters?.issuer;
@@ -119,6 +111,7 @@ export default class Users extends SelectableList<User> {
       const newState = showSpinner ? {...(Utils.isEmptyArray(this.state.users) ? {loading: true} : {refreshing: true})} : this.state;
       this.setState(newState, async () => {
         const { skip, limit } = this.state;
+        const { isModal, onContentUpdated } = this.props;
         // Refresh All
         const users = await this.getUsers(this.searchText, 0, skip + limit);
         const usersResult = users ? users.result : [];
@@ -128,7 +121,7 @@ export default class Users extends SelectableList<User> {
           refreshing: false,
           users: usersResult,
           count: users?.count ?? 0
-        });
+        }, isModal ? () => onContentUpdated() : () => null);
       });
     }
   }
@@ -145,7 +138,8 @@ export default class Users extends SelectableList<User> {
     const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
-        <HeaderComponent
+        {!isModal && (
+          <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
           modalized={isModal}
@@ -153,7 +147,8 @@ export default class Users extends SelectableList<User> {
           navigation={this.props.navigation}
           displayTenantLogo={false}
           containerStyle={style.headerContainer}
-        />
+          />
+        )}
         {this.renderFilters()}
         {loading ? <Spinner style={style.spinner} color="grey" /> : (
           <View style={style.content}>

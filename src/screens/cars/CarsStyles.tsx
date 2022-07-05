@@ -63,7 +63,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.listHeaderBgColor,
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'center'
     },
     carComponentContainer: {
       marginBottom: '11@s',
