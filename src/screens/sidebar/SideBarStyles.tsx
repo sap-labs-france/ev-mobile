@@ -1,45 +1,54 @@
 import deepmerge from 'deepmerge';
 import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { ScaledSheet } from 'react-native-size-matters';
+import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import { PLATFORM } from '../../theme/variables/commonColor';
 import Utils from '../../utils/Utils';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    container: {
+    sidebar: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor,
-      padding: '10@s'
+      paddingTop: '10@s',
+      paddingTop: getStatusBarHeight() + scale(10),
+      alignItems: 'center'
+    },
+    header: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: '10@s'
+    },
+    border: {
+      width: '70%',
+      borderTopWidth: 0.8,
+      borderColor: commonColor.disabledDark,
+      marginVertical: '10@s'
     },
     background: {
       flex: 1
     },
     drawerContent: {
-      flex: 1
-    },
-    header: {
-      flexDirection: 'column',
-      backgroundColor: commonColor.containerBgColor,
-      height: '150@s',
-      marginTop: Platform.OS === 'ios' ? '-5@s' : '5@s'
+      height: 'auto',
+      width: '100%'
     },
     linkContainer: {
-      paddingTop: '10@s'
+      marginBottom: '10@s',
+      paddingHorizontal: '5@s',
+      marginHorizontal: 0
     },
     logo: {
       resizeMode: 'contain',
-      width: '90%',
-      height: '50@s',
-      alignSelf: 'center',
-      margin: '5@s',
+      width: '100@s',
+      height: '60@s',
       marginBottom: '10@s'
     },
     tenantName: {
       color: commonColor.textColor,
-      fontSize: '14@s',
+      fontSize: '13@s',
       margin: '2@s',
       alignSelf: 'center',
       textAlign: 'center',
@@ -72,7 +81,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     versionText: {
       color: commonColor.textColor,
-      fontSize: '14@s',
+      fontSize: '12@s',
       margin: '2@s',
       alignSelf: 'center',
       fontWeight: 'bold',
@@ -103,50 +112,37 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '16@s',
       paddingLeft: '15@s'
     },
-    logoutContainer: {
-      paddingBottom: Platform.OS === 'ios' ? '25@s' : '10@s',
-      paddingLeft: '10@s',
-      paddingRight: '10@s',
-      paddingTop: 0
+    bottomContainer: {
+      paddingHorizontal: '10@s',
+      flexDirection: 'row',
+      marginTop: '10@s',
+      paddingVertical: '15@s',
+      backgroundColor: commonColor.listItemBackground
     },
-    logoutButton: {
-      paddingTop: '10@s',
-      flexDirection: 'row'
-    },
-    gridLogoutContainer: {
-      flex: 1,
-      flexDirection: 'row'
-    },
-    columnAccount: {
+    rightContainer: {
       flexDirection: 'column',
-      flexGrow: 2,
-      flex: 1
+      flex: 1,
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      marginLeft: '20@s'
     },
-    buttonLogout: {
+    logoutContainer: {
       alignSelf: 'flex-start',
       backgroundColor: 'transparent'
     },
     logoutText: {
-      fontWeight: 'bold',
       fontSize: '14@s',
-      color: commonColor.textColor
+      color: commonColor.primary,
+      paddingVertical: '3@s'
     },
     userName: {
       paddingTop: '5@s',
       fontSize: '14@s',
       color: commonColor.textColor
     },
-    columnThumbnail: {
-      flex: 1,
-      flexDirection: 'column'
-    },
-    buttonThumbnail: {
-      alignSelf: 'flex-end'
-    },
-    profilePic: {
-      width: '40@s',
-      height: '40@s',
-      borderRadius: '20@s'
+    avatarContainer: {
+      alignItems: 'center',
+      justifyContent: 'center'
     }
   });
   const portraitStyles = {};

@@ -13,17 +13,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     content: {
-      flex: 1
-    },
-    searchBar: {
-      marginVertical: '10@s'
+      flex: 1,
+      alignItems: 'center'
     },
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
     map: {
-      flex: 1
+      height: '100%',
+      width: '100%'
     },
     fabContainer: {
       position: 'absolute',
@@ -49,7 +48,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '40@s',
     },
     sitesContainer: {
-      flex: 1
+      flex: 1,
+      width: '100%'
     },
     filtersContainer: {
       flexDirection: 'row',
@@ -57,7 +57,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginVertical: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginHorizontal: '7.5@s'
+      width: '95%'
     },
     mapFiltersContainer: {
       position: 'absolute',
@@ -66,7 +66,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor,
       flex: 1,
       marginRight: '10@s',
-      height: '50@s',
       elevation: 4,
       shadowOffset: {
         width: 0,
@@ -92,8 +91,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     listFilterButton: {
       borderRadius: '8@s',
-      width: '45@s',
-      height: '45@s',
+      width: '50@s',
+      height: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: commonColor.listHeaderBgColor

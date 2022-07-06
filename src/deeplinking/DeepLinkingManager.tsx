@@ -1,4 +1,5 @@
 import { CommonActions, NavigationContainerRef } from '@react-navigation/native';
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import { Linking } from 'react-native';
 import DeepLinking from 'react-native-deep-linking';
@@ -163,7 +164,7 @@ export default class DeepLinkingManager {
                 Message.showError(I18n.t('authentication.activationTokenNotValid'));
                 break;
               // Email does not exist
-              case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+              case StatusCodes.NOT_FOUND:
                 Message.showError(I18n.t('authentication.activationEmailNotValid'));
                 break;
               // Other common Error

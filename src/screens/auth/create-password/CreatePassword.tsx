@@ -1,4 +1,5 @@
 import { CommonActions } from '@react-navigation/native';
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
@@ -146,7 +147,7 @@ export default class CreatePassword extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Invalid Hash
-            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+            case StatusCodes.NOT_FOUND:
               Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
               break;
             default:

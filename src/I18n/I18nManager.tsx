@@ -114,9 +114,9 @@ export default class I18nManager {
     I18nManager.currency = currency;
   }
 
-  public static formatNumber(value: number): string {
+  public static formatNumber(value: number, options: Intl.NumberFormatOptions = {}): string {
     if (!isNaN(value)) {
-     return Intl.NumberFormat(i18n.locale).format(value);
+     return Intl.NumberFormat(i18n.locale, options).format(value);
     }
     return '-';
   }
@@ -207,7 +207,12 @@ export default class I18nManager {
   }
 
   // We use an external lib until ECMAScript Intl namespace features DurationFormat pending proposition
+  // Default format for TIMER style is hh:mm
   public static formatDuration(durationSecs: number, options?: DurationUnitFormatOptions): string {
+    // Add 0 to have double-digit hours when < 10
+    if (options?.style === DurationUnitFormat.styles.TIMER && !options?.format) {
+      options.format =  `${durationSecs < 36000 ? '0' : ''}{hour}:{minutes}`;
+    }
     const formatter =  new DurationUnitFormat(i18n.locale, options);
     return formatter.format(durationSecs)
   }
@@ -242,5 +247,19 @@ export default class I18nManager {
       return MetricCompactEnum.GIGA;
     }
     return MetricCompactEnum.TERA;
+  }
+
+  public static formatDistance(distanceMeters: number, useMetricSystem?: boolean): string {
+    const isMetricSystem = useMetricSystem ?? I18nManager.isMetricsSystem();
+    if(isMetricSystem) {
+      return (
+        distanceMeters < 1000 ? `${I18nManager.formatNumber(distanceMeters, {maximumFractionDigits: 0})} m` : `${I18nManager.formatNumber(distanceMeters / 1000, {maximumFractionDigits: 1})} km`
+      );
+    } else {
+      const distanceYard = distanceMeters * 1.09361;
+      return (
+        distanceYard < 1760 ? `${I18nManager.formatNumber(distanceYard, {maximumFractionDigits: 0})} yd` : `${I18nManager.formatNumber(distanceYard / 1760, {maximumFractionDigits: 1})} mi`
+      );
+    }
   }
 }

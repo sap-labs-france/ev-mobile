@@ -13,6 +13,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       backgroundColor: commonColor.containerBgColor
     },
+    headerContainer: {
+      marginBottom: '10@s'
+    },
     searchBar: {
       marginVertical: '10@s'
     },
@@ -27,15 +30,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     filtersContainer: {
       flexDirection: 'row',
       zIndex: 1,
-      marginVertical: '10@s',
+      marginBottom: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '95%'
     },
     filterButton: {
       borderRadius: '8@s',
-      width: '45@s',
-      height: '45@s',
+      width: '50@s',
+      height: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
       marginLeft: '10@s',

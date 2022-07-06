@@ -1,5 +1,5 @@
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import moment from 'moment';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, ScrollView } from 'react-native';
@@ -9,14 +9,12 @@ import HeaderComponent from '../../../components/header/HeaderComponent';
 import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
-import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
-import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
-import { StatusCodes } from 'http-status-codes';
+import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 
 export interface Props extends BaseProps {}
 
@@ -95,7 +93,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       return transaction;
     } catch (error) {
       switch (error.request.status) {
-        case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+        case StatusCodes.NOT_FOUND:
           Message.showError(I18n.t('transactions.transactionDoesNotExist'));
           break;
         default:
@@ -123,16 +121,14 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public computeDurationInfos = (transaction: Transaction) => {
+    const durationFormatOptions = {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'};
     if (transaction?.stop) {
       // Compute duration
-      const elapsedTimeFormatted = Utils.formatDurationHHMMSS(
-        (new Date(transaction.stop.timestamp).getTime() - new Date(transaction.timestamp).getTime()) / 1000,
-        false
-      );
+      const elapsedTimeFormatted = I18nManager.formatDuration(transaction.stop.totalDurationSecs, durationFormatOptions);
       // Compute inactivity
       const totalInactivitySecs =
         transaction.stop.totalInactivitySecs + (transaction.stop.extraInactivitySecs ? transaction.stop.extraInactivitySecs : 0);
-      const inactivityFormatted = Utils.formatDurationHHMMSS(totalInactivitySecs, false);
+      const inactivityFormatted = I18nManager.formatDuration(transaction.stop.totalInactivitySecs + transaction.stop.extraInactivitySecs, durationFormatOptions);
       // Set
       this.setState({
         totalInactivitySecs,
@@ -140,11 +136,12 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         inactivityFormatted
       });
     } else {
+      const defaultDuration = I18nManager.formatDuration(0, durationFormatOptions);
       // Set
       this.setState({
         totalInactivitySecs: 0,
-        elapsedTimeFormatted: Constants.DEFAULT_DURATION,
-        inactivityFormatted: Constants.DEFAULT_DURATION
+        elapsedTimeFormatted: defaultDuration,
+        inactivityFormatted: defaultDuration
       });
     }
   };
@@ -171,10 +168,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
           {transaction?.stop ? I18nManager.formatCurrency(transaction.stop.price, transaction.stop.priceUnit) : '-'}
         </Text>
-        <Text style={[style.subLabel, style.info]}>({transaction?.stop ? transaction.stop.priceUnit : '-'})</Text>
       </View>
     );
   };
@@ -184,8 +180,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t('details.duration')}</Text>
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
       </View>
     );
   };
@@ -197,8 +192,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
-        <Text style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
-        <Text style={[style.subLabel, inactivityStyle]}>{I18n.t('details.duration')}</Text>
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
       </View>
     );
   };
@@ -208,10 +202,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
-        <Text style={[style.label, style.labelValue, style.info]}>
-          {transaction?.stop ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumptionWh / 10) / 100) : '-'}
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
+          {transaction?.stop ? `${I18nManager.formatNumber(transaction.stop.totalConsumptionWh / 1000, {maximumFractionDigits: 2})} kW.h` : '-'}
         </Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
   };
@@ -221,10 +214,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return transaction && transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>
-          {transaction.stateOfCharge} {'>'} {transaction.stop.stateOfCharge}
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
+          {transaction.stateOfCharge}% {'>'} {transaction.stop.stateOfCharge}%
         </Text>
-        <Text style={[style.subLabel, style.info]}>(%)</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -247,13 +239,14 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           navigation={this.props.navigation}
           title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
           subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+          containerStyle={style.headerContainer}
         />
         {/* Site Image */}
         <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
         <View style={style.headerContent}>
           <View style={style.headerRowContainer}>
-            <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-            <Text style={style.subHeaderName}>({transaction?.stop ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
+            <Text style={style.headerName}>{transaction ? I18nManager.formatDateTime(transaction.timestamp, {dateStyle: 'medium', timeStyle: 'short'}) : ''}</Text>
+            <Text style={style.subHeaderName}>({transaction?.stop ? I18nManager.formatDateTime(transaction.stop.timestamp, {dateStyle: 'medium', timeStyle: 'short'}) : ''})</Text>
             {transaction?.userID !== transaction?.stop?.userID && (
               <Text style={style.subSubHeaderName}>
                 ({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction?.stop?.user)})

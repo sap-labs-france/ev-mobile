@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -53,14 +53,6 @@ export default class Cars extends SelectableList<Car> {
       loading: true,
       selectedItems: []
     };
-  }
-
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    // When filters are enabled, first refresh is triggered via onFiltersChanged
-    if (!this.screenFilters) {
-      this.refresh(true);
-    }
   }
 
   public setState = (
@@ -127,11 +119,12 @@ export default class Cars extends SelectableList<Car> {
     }
   };
 
-  public async refresh(showSpinner = false): Promise<void> {
+  public async refresh(showSpinner:boolean = false): Promise<void> {
     if (this.isMounted()) {
       const newState = showSpinner ? (Utils.isEmptyArray(this.state.cars) ? {loading: true} : {refreshing: true})  : this.state;
       this.setState(newState, async () => {
         const { skip, limit } = this.state;
+        const { isModal, onContentUpdated } = this.props;
         // Refresh All
         const cars = await this.getCars(this.searchText, 0, skip + limit);
         const carsResult = cars ? cars.result : [];
@@ -141,7 +134,7 @@ export default class Cars extends SelectableList<Car> {
           cars: carsResult,
           count: cars ? cars.count : 0,
           refreshing: false
-        });
+        }, isModal ? () => onContentUpdated() : () => null);
       });
     }
   }
@@ -160,18 +153,23 @@ export default class Cars extends SelectableList<Car> {
     return (
       <Container style={style.container}>
         {!isModal && (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={[fabStyles.fab, fabStyles.placedFab]}>
-            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={'plus'} />
-          </TouchableOpacity>
+          <SafeAreaView style={fabStyles.fabContainer}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={fabStyles.fab}>
+              <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={'plus'} />
+            </TouchableOpacity>
+          </SafeAreaView>
         )}
-        <HeaderComponent
-          title={this.buildHeaderTitle()}
-          subTitle={this.buildHeaderSubtitle()}
-          modalized={isModal}
-          backArrow={!isModal}
-          navigation={this.props.navigation}
-        />
+        {!isModal && (
+          <HeaderComponent
+            title={this.buildHeaderTitle()}
+            subTitle={this.buildHeaderSubtitle()}
+            modalized={isModal}
+            backArrow={!isModal}
+            navigation={this.props.navigation}
+            containerStyle={style.headerContainer}
+          />
+        )}
         {this.renderFilters()}
         {loading ? <Spinner style={transactionStyles.spinner} color="grey" /> : (
           <View style={style.content}>

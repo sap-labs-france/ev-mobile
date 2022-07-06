@@ -1,7 +1,14 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  ImageStyle,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native';
 import ClusterMap from '../../components/map/ClusterMap';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
@@ -273,9 +280,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           {this.renderFilters()}
           {this.renderFabs()}
           {selectedSiteArea && this.buildModal(navigation, selectedSiteArea, modalStyle)}
-          {loading ? <Spinner style={style.spinner} color="grey" /> : (
+          {showMap ? this.renderMap() : (
             <View style={style.siteAreasContainer}>
-              {showMap ? this.renderMap() : (
+              {loading ? <Spinner style={style.spinner} color="grey" /> : (
                 <ItemsList<SiteArea>
                   skip={skip}
                   count={count}
@@ -302,7 +309,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const { showMap, satelliteMap } = this.state;
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
-      <View style={style.fabContainer}>
+      <SafeAreaView style={style.fabContainer}>
         {showMap && (
           <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
             <Image
@@ -318,7 +325,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         >
           <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 

@@ -24,7 +24,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     titleAvatarContainer: {
-      borderWidth: '1@s',
+      borderWidth: '0.5@s',
       borderColor: commonColor.textColor,
       backgroundColor: commonColor.containerBgColor
     },

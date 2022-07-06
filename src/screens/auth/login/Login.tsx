@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
@@ -16,7 +17,6 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
-import { StatusCodes } from 'http-status-codes';
 
 export interface Props extends BaseProps {}
 
@@ -234,7 +234,7 @@ export default class Login extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Unknown Email
-            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+            case StatusCodes.NOT_FOUND:
               Message.showError(I18n.t('authentication.wrongEmailOrPassword'));
               break;
             // Account is locked
@@ -256,6 +256,10 @@ export default class Login extends BaseScreen<Props, State> {
             // Eula no accepted
             case HTTPError.USER_EULA_ERROR:
               Message.showError(I18n.t('authentication.eulaNotAccepted'));
+              break;
+            case StatusCodes.MOVED_PERMANENTLY:
+              await Utils.redirect(error);
+              this.login();
               break;
             default:
               // Other common Error

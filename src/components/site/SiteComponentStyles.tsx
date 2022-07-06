@@ -13,24 +13,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row'
     },
     siteContent: {
-      flexDirection: 'row',
       flex: 1,
       justifyContent: 'space-between',
-      padding: '5@s',
-      alignItems: 'center',
-      height: '100%'
-    },
-    leftContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      flex: 1
-    },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-      width: '20@s'
+      padding: '10@s',
+      alignItems: 'flex-start'
     },
     statusIndicator: {
       height: '100%',
@@ -49,51 +35,54 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     titleContainer: {
       flexDirection: 'row',
-      justifyContent: 'flex-start',
+      justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%'
+    },
+    leftHeader: {
+      flexDirection: 'row',
+      alignItems: 'center'
     },
     subTitleContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
       flexWrap: 'wrap',
-      width: '100%',
-      paddingRight: '5@s',
-      paddingLeft: '5@s'
+      paddingVertical: '3@s',
+      width: '100%'
     },
     address: {
       color: commonColor.headerTextColor,
       fontSize: '13@s',
-      width: '85%'
+      flex: 1,
+      marginRight: '10@s'
     },
     distance: {
       color: commonColor.textColor,
-      fontSize: '13@s'
+      fontSize: '13@s',
+      justifyContent: 'flex-end'
     },
     headerName: {
       marginLeft: '5@s',
-      fontSize: '20@s',
+      fontSize: '16@s',
       fontWeight: 'bold',
       color: commonColor.headerTextColor
     },
     connectorContent: {
       flexDirection: 'row',
       justifyContent: 'center',
-      paddingTop: '12@s',
-      paddingBottom: '12@s'
+      paddingTop: '12@s'
     },
     icon: {
       color: commonColor.headerTextColor
     },
-    arrowIcon: {
-      fontSize: '30@s'
-    },
     iconLeft: {
       fontSize: '30@s'
     },
-    iconRight: {
-      marginRight: '10@s'
+    arrowIcon: {
+      fontSize: '18@s',
+      color: commonColor.disabledDark,
+      marginLeft: '20@s'
     }
   });
   const portraitStyles = {};

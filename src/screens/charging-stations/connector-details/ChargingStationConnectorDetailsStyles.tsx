@@ -169,6 +169,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontWeight: 'bold',
       color: commonColor.textColor
     },
+    batteryStartValue: {
+      fontSize: '18@s'
+    },
+    upToSymbol: {
+      fontSize: '21@s'
+    },
     labelUser: {
       fontSize: '11@s',
       paddingTop: '5@s',
@@ -317,7 +323,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '14@s',
       marginRight: '10@s'
     },
-    errorAsterisque: {
+    errorAsterisk: {
       color: commonColor.danger,
       fontSize: '20@s'
     },
@@ -353,6 +359,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     itemComponentContainer: {
       marginBottom: '10@s'
+    },
+    activityIndicator: {
+      marginTop: '70@s',
+      padding: '10@s',
+      backgroundColor: commonColor.containerBgColor,
+      zIndex: 2
     }
   });
   const portraitStyles = {};

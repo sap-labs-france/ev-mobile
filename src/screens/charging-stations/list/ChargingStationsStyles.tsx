@@ -12,14 +12,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    listContainer: {
-      height: '100%'
-    },
     mapSearchBarComponent: {
       backgroundColor: commonColor.containerBgColor,
       flex: 1,
-      marginRight: '10@s',
-      height: '50@s',
       elevation: 4,
       shadowOffset: {
         width: 0,
@@ -41,25 +36,28 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      marginLeft: '10@s'
     },
     listFilterButton: {
       borderRadius: '8@s',
-      width: '45@s',
-      height: '45@s',
+      height: '50@s',
+      width: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: commonColor.listHeaderBgColor
     },
     content: {
-      flex: 1
+      flex: 1,
+      alignItems: 'center'
     },
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
     map: {
-      height: '100%'
+      height: '100%',
+      width: '100%'
     },
     filtersContainer: {
       flexDirection: 'row',
@@ -67,20 +65,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginVertical: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginHorizontal: '7.5@s'
+      width: '95%'
     },
     mapFiltersContainer: {
       position: 'absolute',
-    },
-    fabContainer: {
-      position: 'absolute',
-      zIndex: 1,
-      bottom: 0,
-      right: 0,
-      margin: '12@s',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: 0
     },
     imageStyle: {
       height: '100%',
@@ -113,8 +101,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.primary,
       borderRadius: '8@s',
       padding: '10@s',
-      width: '45@s',
-      height: '45@s',
+      width: '50@s',
+      height: '50@s',
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -142,7 +130,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     closeIcon: {
       padding: '8@s',
-      fontSize: '35@s',
+      fontSize: '37@s',
       color: commonColor.textColor
     },
     activityIndicator: {

@@ -154,6 +154,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
+          containerStyle={style.headerContainer}
         />
         <TransactionsInProgressFilters
           onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.onFiltersChanged(newFilters)}

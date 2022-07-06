@@ -17,6 +17,7 @@ import StatisticsComponent from '../../components/statistics/StatisticsComponent
 import computeActivityIndicatorCommonStyles from '../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import { ActivityIndicator } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 
 export interface Props extends BaseProps {}
 
@@ -170,12 +171,14 @@ export default class Statistics extends BaseScreen<Props, State> {
       minimumFractionDigits: 1,
       maximumFractionDigits: 2
     });
+    const durationFormatOptions = {style: DurationUnitFormat.styles.SHORT, format: '{day} {hour}'};
     return (
       <Container style={style.container}>
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
           title={I18n.t('home.statistics')}
+          containerStyle={style.headerContainer}
         />
         <TransactionsHistoryFilters
           minTransactionDate={minTransactionDate}
@@ -214,7 +217,7 @@ export default class Statistics extends BaseScreen<Props, State> {
               <StatisticsComponent
                 backgroundColor={style.duration.backgroundColor.toString()}
                 textColor={commonColors.light}
-                value={Utils.formatDuration(totalDurationSecs)}
+                value={I18nManager.formatDuration(totalDurationSecs, durationFormatOptions)}
                 renderIcon={(iconStyle) => <Icon style={iconStyle} type="MaterialIcons" name="timer" />}
                 description={I18n.t('home.totalDurationNote')}
               />
@@ -222,7 +225,7 @@ export default class Statistics extends BaseScreen<Props, State> {
                 backgroundColor={style.inactivity.backgroundColor.toString()}
                 textColor={commonColors.light}
                 secondLine={I18nManager.formatPercentage(totalInactivitySecs / totalDurationSecs)}
-                value={Utils.formatDuration(totalInactivitySecs)}
+                value={I18nManager.formatDuration(totalInactivitySecs, durationFormatOptions)}
                 renderIcon={(iconStyle) => <Icon style={iconStyle} type="MaterialIcons" name="timer-off" />}
                 description={I18n.t('home.totalInactivityNote')}
               />

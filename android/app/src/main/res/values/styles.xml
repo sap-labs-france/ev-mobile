@@ -1,21 +1,13 @@
 <resources>
-    <!-- Base application theme. -->
+  <!-- Base application theme. -->
   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="android:datePickerDialogTheme">@style/DialogDatePicker.Theme</item>
-    <item name="android:forceDarkAllowed">false</item>
   </style>
 
   <style name="DialogDatePicker.Theme" parent="Theme.AppCompat.Light.Dialog">
-
     <item name="android:windowBackground">@color/white</item>
     <item name="android:textColor">@color/primary</item>
-
     <!-- Buttons color -->
     <item name="colorAccent">@color/primary</item>
   </style>
-
-  <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
-      <item name="colorPrimaryDark">@color/status_bar_color</item>
-  </style>
-
 </resources>

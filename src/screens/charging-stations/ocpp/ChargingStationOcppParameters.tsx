@@ -1,4 +1,3 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
@@ -159,6 +158,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
+          containerStyle={style.headerContainer}
         />
         <Button
           disabled={chargingStation ? chargingStation.inactive : true}

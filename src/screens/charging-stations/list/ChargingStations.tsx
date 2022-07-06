@@ -241,23 +241,23 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     if (this.isMounted()) {
       const { skip, showMap } = this.state;
       const limit = showMap ? this.mapLimit : this.listLimit;
-      if (showSpinner) {
-        this.setState({ ...(Utils.isEmptyArray(this.state.chargingStations) ? { loading: true } : { refreshing: true }) });
-      }
-      // Refresh region
-      if(!this.currentRegion) {
-        this.currentRegion = await this.computeRegion();
-      }
-      // Refresh All
-      const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
-      // Add ChargingStations
-      this.setState(() => ({
-        loading: false,
-        refreshing: false,
-        chargingStations: chargingStations ? chargingStations.result : [],
-        count: chargingStations ? chargingStations.count : 0,
-        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false
-      }));
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.chargingStations) ? { loading: true } : { refreshing: true }) : this.state;
+      this.setState(newState, async () => {
+        // Refresh region
+        if(!this.currentRegion) {
+          this.currentRegion = await this.computeRegion();
+        }
+        // Refresh All
+        const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
+        // Add ChargingStations
+        this.setState(() => ({
+          loading: false,
+          refreshing: false,
+          chargingStations: chargingStations ? chargingStations.result : [],
+          count: chargingStations ? chargingStations.count : 0,
+          isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false
+        }));
+      })
     }
   };
 
@@ -442,7 +442,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const { showMap, satelliteMap } = this.state;
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
-      <View style={style.fabContainer}>
+      <SafeAreaView style={fabStyles.fabContainer}>
         {showMap && (
           <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
             <Image
@@ -458,7 +458,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         >
           <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -499,6 +499,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     return (
       <View style={[style.filtersContainer, showMap && style.mapFiltersContainer]}>
         <ChargingStationsFilters
+          showRoamingFilter={!this.siteArea}
           onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
           ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
         />

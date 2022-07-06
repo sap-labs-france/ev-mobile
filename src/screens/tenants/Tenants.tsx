@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, RefreshControl, TouchableOpacity } from 'react-native';
+import { FlatList, RefreshControl, SafeAreaView, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 
@@ -117,9 +117,11 @@ export default class Tenants extends BaseScreen<Props, State> {
         {newTenant && this.renderNewTenantAddedDialog(style)}
         {tenantToBeEditedIndex !== null && this.renderEditTenantDialog(style)}
         <View style={style.container}>
-          <TouchableOpacity delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={[fabStyles.fab, fabStyles.placedFab]}>
-            <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
-          </TouchableOpacity>
+          <SafeAreaView style={fabStyles.fabContainer}>
+            <TouchableOpacity delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={fabStyles.fab}>
+              <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
+            </TouchableOpacity>
+          </SafeAreaView>
           {showAddTenantManuallyDialog && (
             <AddEditTenantDialog
               mode={TenantDialogMode.ADD}
@@ -136,6 +138,7 @@ export default class Tenants extends BaseScreen<Props, State> {
             title={I18n.t('general.tenants')}
             backAction={() => this.onBack()}
             sideBar={false}
+            containerStyle={style.headerContainer}
           />
           {loading ? <Spinner style={style.spinner} color={commonColors.disabledDark} /> : (
             <View style={style.listContainer}>

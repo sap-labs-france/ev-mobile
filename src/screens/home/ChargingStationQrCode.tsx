@@ -17,6 +17,7 @@ import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import Configuration from '../../config/Configuration';
+import computeStyleSheet from './ChargingStationQrCodeStyles';
 
 export interface Props extends BaseProps {
   currentTenantSubDomain: string;
@@ -118,8 +119,6 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         // User in wrong tenant!
         // Check if the tenant already exists
         if (tenant) {
-          console.log(tenant);
-          console.log(chargingStationQrCode?.tenantSubDomain);
           // Tenant exists: Propose the user to switch to the existing one and log off
           this.setState(
             {
@@ -175,8 +174,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         return;
       }
       // Ok: Navigate to connector
-      this.props.navigation.navigate('ChargingStationsNavigator', {
-        screen: 'ChargingStationConnectorDetailsTabs',
+      this.props.navigation.navigate('ChargingStationConnectorDetailsTabs', {
         key: `${Utils.randomNumber()}`,
         params: {
           params: {
@@ -195,12 +193,14 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
   public render() {
     const { activateQrCode } = this.state;
     const commonColor = Utils.getCurrentCommonColor();
+    const style = computeStyleSheet();
     return (
       <Container>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanChargingStationQrCodeTitle')}
           backArrow={true}
+          containerStyle={style.headerContainer}
         />
        {activateQrCode && (
           <QRCodeScanner

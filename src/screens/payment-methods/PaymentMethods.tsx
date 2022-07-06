@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -21,7 +21,6 @@ import DialogModal from '../../components/modal/DialogModal';
 import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import UserComponent from '../../components/user/UserComponent';
 
 export interface Props extends BaseProps {}
 
@@ -143,14 +142,17 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     return (
       <Container style={style.container}>
         {billingSettings?.stripe?.publicKey && (
-          <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })} style={[fabStyles.fab, fabStyles.placedFab]}>
-            <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
-          </TouchableOpacity>
+          <SafeAreaView style={fabStyles.fabContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })} style={fabStyles.fab}>
+              <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
+            </TouchableOpacity>
+          </SafeAreaView>
         )}
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
+          containerStyle={style.headerContainer}
         />
         {paymentMethodToBeDeleted && this.renderDeletePaymentMethodDialog(paymentMethodToBeDeleted)}
         {loading ? (

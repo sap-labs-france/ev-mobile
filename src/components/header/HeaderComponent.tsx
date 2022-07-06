@@ -1,7 +1,7 @@
 import { DrawerActions } from '@react-navigation/native';
 import { Icon } from 'native-base';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './HeaderComponentStyles';
@@ -15,6 +15,7 @@ export interface Props extends BaseProps {
   backArrow?: boolean;
   backAction?: () => void;
   sideBar?: boolean;
+  containerStyle?: ViewStyle;
 }
 
 interface State {
@@ -65,23 +66,23 @@ export default class HeaderComponent extends React.Component<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
-    const { title, subTitle, navigation, modalized, actions, backArrow, sideBar, backAction } = this.props;
+    const { title, subTitle, navigation, modalized, actions, backArrow, sideBar, backAction, containerStyle } = this.props;
     return (
-      <View style={[style.header, modalized && style.modalHeader]}>
+      <View style={[style.header, modalized && style.modalHeader, containerStyle]}>
         <View style={style.leftHeader}>
           {sideBar ? (
             <TouchableOpacity
-              style={style.leftIcon}
+              style={style.leftIconContainer}
               onPress={() => {
                 navigation.dispatch(DrawerActions.openDrawer());
                 return true;
               }}>
-              <Icon style={style.icon} type={'Feather'} name={'menu'} />
+              <Icon style={[style.icon, style.homeIcon]} type={'SimpleLineIcons'} name={'menu'} />
             </TouchableOpacity>
           ) : (
             backArrow && (
               <TouchableOpacity
-                style={style.leftIcon}
+                style={style.leftIconContainer}
                 onPress={backAction ?? (() => navigation.goBack())}>
                 <Icon style={style.icon} type={'Feather'} name={'chevron-left'} />
               </TouchableOpacity>

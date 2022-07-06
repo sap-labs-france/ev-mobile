@@ -13,23 +13,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row'
     },
     siteAreaContent: {
-      flexDirection: 'row',
       flex: 1,
       justifyContent: 'space-between',
-      padding: '5@s',
+      padding: '10@s',
       alignItems: 'center',
-    },
-    leftContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      flex: 1
-    },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-      width: '20@s'
     },
     statusIndicator: {
       height: '100%',
@@ -58,8 +45,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'flex-start',
       flexWrap: 'wrap',
       width: '100%',
-      paddingRight: '5@s',
-      paddingLeft: '5@s'
+      paddingVertical: '3@s'
     },
     address: {
       color: commonColor.headerTextColor,
@@ -73,28 +59,31 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     headerName: {
       marginLeft: '5@s',
       width: '90%',
-      fontSize: '20@s',
+      fontSize: '16@s',
       fontWeight: 'bold',
       color: commonColor.headerTextColor
+    },
+    leftHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1
     },
     connectorContent: {
       flexDirection: 'row',
       justifyContent: 'center',
-      paddingTop: '12@s',
-      paddingBottom: '12@s'
+      paddingTop: '12@s'
     },
     icon: {
       fontSize: '30@s',
       color: commonColor.headerTextColor
     },
     arrowIcon: {
-      fontSize: '30@s'
+      fontSize: '18@s',
+      color: commonColor.disabledDark,
+      marginLeft: '20@s'
     },
     iconLeft: {
       fontSize: '30@s'
-    },
-    iconRight: {
-      marginRight: '10@s'
     },
     iconHidden: {
       opacity: 0

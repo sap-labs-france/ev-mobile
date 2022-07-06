@@ -57,14 +57,6 @@ export default class Tags extends SelectableList<Tag> {
     };
   }
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    // When filters are enabled, first refresh is triggered via onFiltersChanged
-    if (!this.screenFilters) {
-      this.refresh(true);
-    }
-  }
-
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
@@ -121,11 +113,12 @@ export default class Tags extends SelectableList<Tag> {
     }
   };
 
-  public async refresh(showSpinner = false): Promise<void> {
+  public async refresh(showSpinner:boolean = false): Promise<void> {
     if (this.isMounted()) {
       const newState = showSpinner ? (Utils.isEmptyArray(this.state.tags) ? {loading: true} : {refreshing: true}) : this.state;
       this.setState(newState, async () => {
         const { skip, limit } = this.state;
+        const { isModal, onContentUpdated } = this.props;
         // Refresh All
         const tags = await this.getTags(this.searchText, 0, skip + limit);
         // Set
@@ -135,7 +128,7 @@ export default class Tags extends SelectableList<Tag> {
           tags: tags ? tags.result : [],
           projectFields: tags ? tags.projectFields : [],
           count: tags ? tags.count : 0
-        });
+        }, isModal ? () => onContentUpdated() : () => null);
       });
     }
   }
@@ -151,14 +144,17 @@ export default class Tags extends SelectableList<Tag> {
     const { navigation, isModal, selectionMode, disableInactive } = this.props;
     return (
       <Container style={style.container}>
-        <HeaderComponent
-          title={this.buildHeaderTitle()}
-          subTitle={this.buildHeaderSubtitle()}
-          modalized={isModal}
-          backArrow={!isModal}
-          navigation={this.props.navigation}
-          displayTenantLogo={false}
-        />
+        {!isModal && (
+          <HeaderComponent
+            title={this.buildHeaderTitle()}
+            subTitle={this.buildHeaderSubtitle()}
+            modalized={isModal}
+            backArrow={!isModal}
+            navigation={this.props.navigation}
+            displayTenantLogo={false}
+            containerStyle={style.headerContainer}
+          />
+        )}
         {this.renderFilters()}
         {loading ? (
           <Spinner style={style.spinner} color="grey" />

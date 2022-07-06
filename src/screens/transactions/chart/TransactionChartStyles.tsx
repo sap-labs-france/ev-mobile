@@ -11,7 +11,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor,
-      paddingBottom: '5@s'
+      paddingBottom: '10@s'
+    },
+    headerContainer: {
+      marginBottom: '10@s'
     },
     spinner: {
       flex: 1,

@@ -84,7 +84,8 @@
     "notApplicable": "N/A",
     "showMore": "Voir plus",
     "showLess": "Voir moins",
-    "newEntry": "Nouveau"
+    "newEntry": "Nouveau",
+    "userOrTenantUpdated": "Vous avez été déconnecté suite à une modification de votre profil ou des paramètres de votre organisation"
   },
   "sidebar": {
     "home": "Home",
@@ -117,7 +118,7 @@
     "invalidEmail": "L'Email est invalide",
     "invalidMobile": "Le mobile est invalide",
     "mandatoryPassword": "Le Mot de Passe est obligatoire",
-    "logOut": "Se déconnecter",
+    "logOut": "Déconnexion",
     "mustSelectTenant": "Selectionnez une Organisation",
     "wrongEmailOrPassword": "Mauvais email ou mot de passe",
     "authenticationFailed": "Authentification Echouée",

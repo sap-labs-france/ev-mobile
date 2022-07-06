@@ -13,21 +13,21 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     siteAreasContainer: {
-      flex: 1
-    },
-    content: {
       flex: 1,
       width: '100%'
     },
-    searchBar: {
-      marginVertical: '10@s'
+    content: {
+      flex: 1,
+      width: '100%',
+      alignItems: 'center'
     },
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
     map: {
-      flex: 1
+      width: '100%',
+      height: '100%'
     },
     noRecordFound: {
       flex: 1,
@@ -60,19 +60,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     filtersContainer: {
       flexDirection: 'row',
       zIndex: 1,
-      marginVertical: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginHorizontal: '7.5@s'
+      width: '95%',
+      marginVertical: '10@s'
     },
     mapFiltersContainer: {
-      position: 'absolute',
+      position: 'absolute'
     },
     mapSearchBarComponent: {
       backgroundColor: commonColor.containerBgColor,
       flex: 1,
-      marginRight: '10@s',
-      height: '50@s',
       elevation: 4,
       shadowOffset: {
         width: 0,
@@ -93,12 +91,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: commonColor.containerBgColor
-    },
+      backgroundColor: commonColor.containerBgColor,
+      marginLeft: '10@s'
+},
     listFilterButton: {
       borderRadius: '8@s',
-      width: '45@s',
-      height: '45@s',
+      height: '50@s',
+      width: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
       marginLeft: '10@s',

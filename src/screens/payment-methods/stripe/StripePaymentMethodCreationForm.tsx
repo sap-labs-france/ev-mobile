@@ -134,6 +134,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       <HeaderComponent
         title={I18n.t('paymentMethods.addPaymentMethod')}
         navigation={props.navigation}
+        containerStyle={style.headerContainer}
       />
       {isBillingSetUp === false && renderBillingErrorMessage()}
       <CardField

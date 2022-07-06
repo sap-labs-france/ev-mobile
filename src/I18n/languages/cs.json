@@ -84,7 +84,8 @@
     "notApplicable": "N/A",
     "showMore": "Show more",
     "showLess": "Show less",
-    "newEntry": "New entry"
+    "newEntry": "New entry",
+    "userOrTenantUpdated": "Byli jste odhlášeni, protože bylo aktualizováno nastavení vašeho profilu nebo vaší organizace"
   },
   "sidebar": {
     "home": "Domovská stránka",

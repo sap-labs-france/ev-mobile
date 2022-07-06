@@ -13,6 +13,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor,
       alignItems: 'center'
     },
+    headerContainer: {
+      marginBottom: '10@s'
+    },
     content: {
       flex: 1,
       width: '100%'
@@ -39,15 +42,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     filtersContainer: {
       flexDirection: 'row',
       zIndex: 1,
-      marginVertical: '10@s',
+      marginBottom: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '95%'
     },
     filterButton: {
       borderRadius: '8@s',
-      width: '45@s',
-      height: '45@s',
+      width: '50@s',
+      height: '50@s',
       alignItems: 'center',
       justifyContent: 'center',
       marginLeft: '10@s',
@@ -60,7 +63,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.listHeaderBgColor,
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'center'
     },
     carComponentContainer: {
       marginBottom: '11@s',
