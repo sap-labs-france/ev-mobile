@@ -1006,7 +1006,7 @@ export default class Utils {
   public static getURLParameters(url: string): Record<string, string> {
     const res = {} as Record<string, string>;
     if ( url ) {
-      const params = url.split('?')?.[1].split('&');
+      const params = url.split('?')?.[1]?.split('&');
       params?.forEach(param => {
         const paramParts = param.split('=');
         if ( paramParts.length === 2 ) {
