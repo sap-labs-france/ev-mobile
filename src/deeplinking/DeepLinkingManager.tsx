@@ -40,7 +40,7 @@ export default class DeepLinkingManager {
     try {
       const initialURL = await Linking.getInitialURL();
       if ( initialURL ) {
-        this.handleUrl({ url: initialURL });
+        await this.handleUrl({ url: initialURL });
       }
     } catch ( err ) {
       console.error('An error occurred', err);
@@ -51,7 +51,7 @@ export default class DeepLinkingManager {
     const linkingSubscription = Linking.addEventListener('url', this.handleUrl.bind(this));
     return () => {
       linkingSubscription?.remove();
-    }
+    };
   }
 
   public async handleUrl({ url }: { url: string }): Promise<void> {
@@ -69,13 +69,18 @@ export default class DeepLinkingManager {
     DeepLinking.addRoute('/define-password:hash', async (response) => {
       const subdomain = this.getTenant();
       const tenant = await this.centralServerProvider.getTenant(subdomain);
-      if (!tenant) {
-        Message.showError(I18n.t('authentication.unknownTenant'));
+      if (!subdomain) {
+        Message.showError(I18n.t('authentication.invalidLinkNoSubdomain'));
         return;
       }
-      const hash = response.hash.split('=')?.[1];
+      if (!tenant) {
+        Message.showError(I18n.t('authentication.unknownTenant', {tenantSubdomain: subdomain}));
+        return;
+      }
+      const params = Utils.getURLParameters(this.url) as {hash: string};
+      const hash = params.hash;
       if (!hash) {
-        Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
+        Message.showError(I18n.t('authentication.invalidLinkNoHash'));
         return;
       }
       // Disable
@@ -85,7 +90,7 @@ export default class DeepLinkingManager {
         key: `${Utils.randomNumber()}`,
         tenantSubDomain: subdomain,
         hash
-      })
+      });
     });
   }
 
@@ -99,26 +104,28 @@ export default class DeepLinkingManager {
     // Add Route
     DeepLinking.addRoute(
       '/verify-email:params',
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       async (response) => {
-        const params = Utils.getURLParameters(this.url) as {Email: string, VerificationToken: string, ResetToken: string};
+        const params = Utils.getURLParameters(this.url) as {Email: string; VerificationToken: string; ResetToken: string};
         const subdomain = this.getTenant();
         const tenant = await this.centralServerProvider.getTenant(subdomain);
         const email = params.Email;
-        const token = params.VerificationToken;
-        let resetToken = params.ResetToken;
+        const verificationToken = params.VerificationToken;
+        const resetToken = params.ResetToken;
         // Check params
         if (!email) {
-          Message.showError(I18n.t('authentication.mandatoryEmail'));
+          Message.showError(I18n.t('authentication.invalidLinkNoEmail'));
           return;
         }
-        // Get the Tenant
+        if (!subdomain) {
+          Message.showError(I18n.t('authentication.invalidLinkNoSubdomain'));
+          return;
+        }
         if (!tenant) {
-          Message.showError(I18n.t('authentication.unknownTenant'));
+          Message.showError(I18n.t('authentication.unknownTenant', {tenantSubdomain: subdomain}));
           return;
         }
-        if (!token) {
-          Message.showError(I18n.t('authentication.verifyAccountTokenNotValid'));
+        if (!verificationToken) {
+          Message.showError(I18n.t('authentication.invalidLinkNoToken'));
           return;
         }
         // Disable
@@ -133,9 +140,7 @@ export default class DeepLinkingManager {
         // Call the backend
         try {
           // Validate Account
-          //const result = await this.centralServerProvider.verifyEmail(subdomain, email, token);
-          resetToken = 'qrgqrgqsdqwed23fvwre';
-          const result = {status: Constants.REST_RESPONSE_SUCCESS}
+          const result = await this.centralServerProvider.verifyEmail(subdomain, email, verificationToken);
           if (result.status === Constants.REST_RESPONSE_SUCCESS) {
             Message.showSuccess(I18n.t('authentication.accountVerifiedSuccess'));
             // Check if user has to change his password
@@ -161,11 +166,11 @@ export default class DeepLinkingManager {
                 break;
               // VerificationToken no longer valid
               case HTTPError.INVALID_TOKEN_ERROR:
-                Message.showError(I18n.t('authentication.activationTokenNotValid'));
+                Message.showError(I18n.t('authentication.verifyAccountTokenNotValid'));
                 break;
               // Email does not exist
               case StatusCodes.NOT_FOUND:
-                Message.showError(I18n.t('authentication.activationEmailNotValid'));
+                Message.showError(I18n.t('authentication.activationEmailNotValid', {tenantName: tenant?.name}));
                 break;
               // Other common Error
               default:
