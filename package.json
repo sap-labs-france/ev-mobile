@@ -140,7 +140,7 @@
     "react-native-size-matters": "^0.4.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-status-bar-height": "^2.6.0",
-    "react-native-svg": "^12.1.1",
+    "react-native-svg": "^12.4.0",
     "react-native-vector-icons": "^7.1.0",
     "react-native-webview": "^11.13.0",
     "rn-secure-storage": "^2.0.7",
