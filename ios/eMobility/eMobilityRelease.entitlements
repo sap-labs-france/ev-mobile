@@ -7,8 +7,8 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:*.e-mobility-group.com</string>
-		<string>applinks:*.localhost:45000</string>
 		<string>applinks:*.qa-e-mobility-group.com</string>
+		<string>applinks:*.e-mobility-labs.org</string>
 	</array>
 </dict>
 </plist>

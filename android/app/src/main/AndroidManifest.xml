@@ -62,7 +62,9 @@
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" />
+            <data android:host="*.e-mobility-group.com" />
             <data android:host="*.qa-e-mobility-group.com" />
+            <data android:host="*.e-mobility-labs.org" />
             <data android:pathPrefix="/auth/verify-email" />
             <data android:pathPrefix="/auth/define-password" />
         </intent-filter>
