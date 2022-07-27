@@ -688,20 +688,25 @@ export default class Utils {
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
         case StatusCodes.MOVED_PERMANENTLY:
-          await this.redirect(error);
-          if (centralServerProvider.isUserConnected()) {
-            const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
-            Message.showWarning(I18n.t('general.userOrTenantUpdated'));
-            await centralServerProvider.logoff();
-            navigation.dispatch(
-              StackActions.replace('AuthNavigator', {
-                name: 'Login',
-                key: `${Utils.randomNumber()}`,
-                params: {
-                  tenantSubDomain
-                }
-              })
-            );
+          const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
+          if (newURLDomain) {
+            await this.redirectTo(newURLDomain);
+            if (centralServerProvider.isUserConnected()) {
+              const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
+              Message.showWarning(I18n.t('general.userOrTenantUpdated'));
+              await centralServerProvider.logoff();
+              navigation.dispatch(
+                StackActions.replace('AuthNavigator', {
+                  name: 'Login',
+                  key: `${Utils.randomNumber()}`,
+                  params: {
+                    tenantSubDomain
+                  }
+                })
+              );
+            }
+          } else {
+            Message.showError(I18n.t('general.tenantRedirectionInvalidDomain'));
           }
           break;
         // Other errors
@@ -721,20 +726,23 @@ export default class Utils {
     }
   }
 
-  public static async redirect(error: RequestError) {
-    console.log("Redirect");
+  public static async redirectTo(redirectDomain: string): Promise<void> {
+    console.log('Redirect');
     const centralServerProvider = await ProviderFactory.getProvider();
-    const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
     // Do not redirect if redirect domain is undefined, null or empty string
-    if (newURLDomain) {
-      let currentTenant = centralServerProvider.getUserTenant() || {} as TenantConnection;
+    if (redirectDomain) {
+      const currentTenant = centralServerProvider.getUserTenant() || {} as TenantConnection;
       const tenants = await SecuredStorage.getTenants();
       const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === currentTenant.subdomain);
       const endpoints = await this.getAllEndpoints();
-      let newEndpoint = endpoints.find(endpoint => (endpoint.endpoint === Configuration.URL_PREFIX + newURLDomain) || (endpoint.endpoint === Configuration.SERVER_URL_PREFIX + newURLDomain));
+      let newEndpoint = endpoints.find(
+        endpoint =>
+          (endpoint.endpoint === Configuration.URL_PREFIX + redirectDomain)
+          ||
+          (endpoint.endpoint === Configuration.SERVER_URL_PREFIX + redirectDomain));
       // If endpoint no yet created, create it
       if (!newEndpoint) {
-        newEndpoint = {name: newURLDomain, endpoint: Configuration.URL_PREFIX + newURLDomain};
+        newEndpoint = {name: redirectDomain, endpoint: Configuration.URL_PREFIX + redirectDomain};
         const userEndpoints = await SecuredStorage.getEndpoints();
         userEndpoints.push(newEndpoint);
         await SecuredStorage.saveEndpoints(userEndpoints);

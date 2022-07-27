@@ -85,7 +85,8 @@
     "showMore": "Show more",
     "showLess": "Show less",
     "newEntry": "New entry",
-    "userOrTenantUpdated": "Sie wurden ausgeloggt, weil entweder Ihre Einstellungen oder die Ihrer Organisation aktualisiert wurden"
+    "userOrTenantUpdated": "Sie wurden ausgeloggt, weil entweder Ihre Einstellungen oder die Ihrer Organisation aktualisiert wurden",
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
   },
   "sidebar": {
     "home": "Home",
