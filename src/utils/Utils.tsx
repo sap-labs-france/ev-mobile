@@ -722,6 +722,7 @@ export default class Utils {
   }
 
   public static async redirect(error: RequestError) {
+    console.log("Redirect");
     const centralServerProvider = await ProviderFactory.getProvider();
     const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
     // Do not redirect if redirect domain is undefined, null or empty string
@@ -730,7 +731,7 @@ export default class Utils {
       const tenants = await SecuredStorage.getTenants();
       const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === currentTenant.subdomain);
       const endpoints = await this.getAllEndpoints();
-      let newEndpoint = endpoints.find(endpoint => (endpoint.endpoint === newURLDomain) || (endpoint.endpoint === Configuration.SERVER_URL_PREFIX + newURLDomain));
+      let newEndpoint = endpoints.find(endpoint => (endpoint.endpoint === Configuration.URL_PREFIX + newURLDomain) || (endpoint.endpoint === Configuration.SERVER_URL_PREFIX + newURLDomain));
       // If endpoint no yet created, create it
       if (!newEndpoint) {
         newEndpoint = {name: newURLDomain, endpoint: Configuration.URL_PREFIX + newURLDomain};
