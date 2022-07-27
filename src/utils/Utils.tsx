@@ -722,16 +722,27 @@ export default class Utils {
   }
 
   public static async redirect(error: RequestError) {
+    console.log("Redirect");
     const centralServerProvider = await ProviderFactory.getProvider();
     const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
-    let currentTenant = centralServerProvider.getUserTenant() || {} as TenantConnection;
-    const tenants = await SecuredStorage.getTenants();
-    const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === currentTenant.subdomain);
-    const endpoints = Configuration.getEndpoints();
-    const newEndpoint = endpoints.find(endpoint => endpoint.endpoint === Configuration.SERVER_URL_PREFIX + newURLDomain);
-    currentTenant.endpoint = newEndpoint;
-    tenants.splice(currentTenantIndex, 1, currentTenant);
-    await SecuredStorage.saveTenants(tenants);
+    // Do not redirect if redirect domain is undefined, null or empty string
+    if (newURLDomain) {
+      let currentTenant = centralServerProvider.getUserTenant() || {} as TenantConnection;
+      const tenants = await SecuredStorage.getTenants();
+      const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === currentTenant.subdomain);
+      const endpoints = await this.getAllEndpoints();
+      let newEndpoint = endpoints.find(endpoint => (endpoint.endpoint === Configuration.URL_PREFIX + newURLDomain) || (endpoint.endpoint === Configuration.SERVER_URL_PREFIX + newURLDomain));
+      // If endpoint no yet created, create it
+      if (!newEndpoint) {
+        newEndpoint = {name: newURLDomain, endpoint: Configuration.URL_PREFIX + newURLDomain};
+        const userEndpoints = await SecuredStorage.getEndpoints();
+        userEndpoints.push(newEndpoint);
+        await SecuredStorage.saveEndpoints(userEndpoints);
+      }
+      currentTenant.endpoint = newEndpoint;
+      tenants.splice(currentTenantIndex, 1, currentTenant);
+      await SecuredStorage.saveTenants(tenants);
+    }
   }
 
   public static buildUserName(user: User): string {
@@ -1009,5 +1020,11 @@ export default class Utils {
     } catch ( error ) {
       return null;
     }
+  }
+
+  public static async getAllEndpoints() : Promise<EndpointCloud[]> {
+    const userEndpoints = await SecuredStorage.getEndpoints() || [];
+    const staticEndpoints = Configuration.getEndpoints() || [];
+    return [...userEndpoints, ...staticEndpoints];
   }
 }
