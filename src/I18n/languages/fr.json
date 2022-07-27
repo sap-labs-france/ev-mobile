@@ -85,7 +85,8 @@
     "showMore": "Voir plus",
     "showLess": "Voir moins",
     "newEntry": "Nouveau",
-    "userOrTenantUpdated": "Vous avez été déconnecté suite à une modification de votre profil ou des paramètres de votre organisation"
+    "userOrTenantUpdated": "Vous avez été déconnecté suite à une modification de votre profil ou des paramètres de votre organisation",
+    "tenantRedirectionInvalidDomain": "Le domaine de redirection de l'organisation est invalide"
   },
   "sidebar": {
     "home": "Home",

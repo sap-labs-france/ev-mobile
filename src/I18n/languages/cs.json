@@ -85,7 +85,8 @@
     "showMore": "Show more",
     "showLess": "Show less",
     "newEntry": "New entry",
-    "userOrTenantUpdated": "Byli jste odhlášeni, protože bylo aktualizováno nastavení vašeho profilu nebo vaší organizace"
+    "userOrTenantUpdated": "Byli jste odhlášeni, protože bylo aktualizováno nastavení vašeho profilu nebo vaší organizace",
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
   },
   "sidebar": {
     "home": "Domovská stránka",
