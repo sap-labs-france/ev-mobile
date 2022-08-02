@@ -136,7 +136,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       let chargingStations: DataResult<ChargingStation>;
       const { filters, showMap } = this.state;
       const currentLocation = await Utils.getUserCurrentLocation();
-      const projectFields = 'id|coordinates|inactive|connectors.connectorId|connectors.coordinates|connectors.status|siteArea.siteID'
+      const projectFields = 'id|coordinates|inactive|connectors.connectorId|connectors.coordinates|connectors.status|siteArea.siteID';
       try {
         const params = {
           Search: searchText,

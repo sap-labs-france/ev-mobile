@@ -977,7 +977,7 @@ export default class Utils {
   public static computeMaxBoundaryDistanceKm(region: Region) {
     if (region) {
       const height = region.latitudeDelta * 111;
-      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360
+      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360;
       return Math.sqrt(height**2 + width**2)/2 * 1000;
     }
     return null;
@@ -1030,7 +1030,7 @@ export default class Utils {
     }
   }
 
-  public static async getAllEndpoints() : Promise<EndpointCloud[]> {
+  public static async getAllEndpoints(): Promise<EndpointCloud[]> {
     const userEndpoints = await SecuredStorage.getEndpoints() || [];
     const staticEndpoints = Configuration.getEndpoints() || [];
     return [...userEndpoints, ...staticEndpoints];
