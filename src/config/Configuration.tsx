@@ -18,12 +18,12 @@ export default class Configuration {
     {
       id: '127.0.0.1:8080',
       name: 'localhost',
-      endpoint: 'http://localhost:8020'
+      endpoint: 'http://localhost:8002'
     },
     {
       id: '10.0.2.2:8080',
       name: 'android-local:8080',
-      endpoint: 'http://10.0.2.2:8080'
+      endpoint: 'http://10.0.2.2:8002'
     }
   ];
 
