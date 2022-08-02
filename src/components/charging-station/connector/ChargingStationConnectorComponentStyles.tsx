@@ -77,6 +77,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     iconContainer: {
       width: '30@s'
+    },
+    arrowIcon: {
+      fontSize: '25@s',
+      color: commonColor.disabledDark
     }
   });
   const portraitStyles = {};

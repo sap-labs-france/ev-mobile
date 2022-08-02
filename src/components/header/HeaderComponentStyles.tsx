@@ -11,7 +11,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     header: {
       width: '100%',
-      paddingHorizontal: '2.5@s',
+      paddingHorizontal: '10@s',
       paddingVertical: '4@s',
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -25,16 +25,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '30@s',
-      paddingTop: '2@s'
+      fontSize: '30@s'
     },
-    leftIcon: {
-      marginLeft: '2.5%',
-      marginRight: '13@s'
+    homeIcon: {
+      fontSize: '30@s'
+    },
+    leftIconContainer: {
+      marginRight: '15@s'
     },
     rightIcon: {
-      marginLeft: '13@s',
-      marginRight: '2.5%'
+      marginLeft: '13@s'
     },
     modalHeader: {
       paddingTop: '10@s'
@@ -58,18 +58,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     title: {
       fontSize: '17@s',
       color: commonColor.textColor,
-      marginRight: '5@s',
+      marginRight: '5@s'
     },
     subTitle: {
       fontSize: '17@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     actionsContainer: {
       flexDirection: 'row',
       marginLeft: '10@s'
-    },
-    action: {
-      marginHorizontal: '5@s'
     }
   });
   const portraitStyles = {};

@@ -13,21 +13,21 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     siteAreasContainer: {
-      flex: 1
-    },
-    content: {
       flex: 1,
       width: '100%'
     },
-    searchBar: {
-      marginVertical: '10@s'
+    content: {
+      flex: 1,
+      width: '100%',
+      alignItems: 'center'
     },
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
     map: {
-      flex: 1
+      width: '100%',
+      height: '100%'
     },
     noRecordFound: {
       flex: 1,
@@ -60,13 +60,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     filtersContainer: {
       flexDirection: 'row',
       zIndex: 1,
-      marginVertical: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginHorizontal: '7.5@s'
+      width: '95%',
+      marginVertical: '10@s'
     },
     mapFiltersContainer: {
-      position: 'absolute',
+      position: 'absolute'
     },
     mapSearchBarComponent: {
       backgroundColor: commonColor.containerBgColor,

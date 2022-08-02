@@ -84,7 +84,9 @@
     "notApplicable": "N/A",
     "showMore": "Show more",
     "showLess": "Show less",
-    "newEntry": "New entry"
+    "newEntry": "New entry",
+    "userOrTenantUpdated": "Sei stato disconnesso perchè le impostazioni del tuo profilo o della tua organizzazione sono state aggiornate",
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
   },
   "sidebar": {
     "home": "Home",

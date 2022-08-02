@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import moment from 'moment';
 import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, ScrollView } from 'react-native';
@@ -11,7 +10,6 @@ import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
-import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -241,6 +239,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           navigation={this.props.navigation}
           title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
           subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+          containerStyle={style.headerContainer}
         />
         {/* Site Image */}
         <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />

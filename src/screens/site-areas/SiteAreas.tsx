@@ -280,9 +280,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           {this.renderFilters()}
           {this.renderFabs()}
           {selectedSiteArea && this.buildModal(navigation, selectedSiteArea, modalStyle)}
-          {loading ? <Spinner style={style.spinner} color="grey" /> : (
+          {showMap ? this.renderMap() : (
             <View style={style.siteAreasContainer}>
-              {showMap ? this.renderMap() : (
+              {loading ? <Spinner style={style.spinner} color="grey" /> : (
                 <ItemsList<SiteArea>
                   skip={skip}
                   count={count}

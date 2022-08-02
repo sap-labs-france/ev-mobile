@@ -257,6 +257,15 @@ export default class Login extends BaseScreen<Props, State> {
             case HTTPError.USER_EULA_ERROR:
               Message.showError(I18n.t('authentication.eulaNotAccepted'));
               break;
+            case StatusCodes.MOVED_PERMANENTLY:
+              const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
+              if (newURLDomain) {
+                await Utils.redirectTo(newURLDomain);
+                this.login();
+              } else {
+                Message.showError(I18n.t('general.tenantRedirectionInvalidDomain'));
+              }
+              break;
             default:
               // Other common Error
               await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.loginUnexpectedError');

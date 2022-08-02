@@ -13,6 +13,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor,
       paddingBottom: '10@s'
     },
+    headerContainer: {
+      marginBottom: '10@s'
+    },
     spinner: {
       flex: 1,
       justifyContent: 'center',

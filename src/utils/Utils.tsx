@@ -1,4 +1,4 @@
-import { NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
@@ -10,7 +10,6 @@ import validate from 'validate.js';
 import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ThemeManager from '../custom-theme/ThemeManager';
-import I18nManager from '../I18n/I18nManager';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Address from '../types/Address';
 import { BillingPaymentMethod, BillingPaymentMethodStatus } from '../types/Billing';
@@ -19,7 +18,7 @@ import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorTy
 import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
 import { RequestError } from '../types/RequestError';
-import { EndpointCloud } from '../types/Tenant';
+import { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
@@ -40,6 +39,7 @@ import React from 'react';
 import { scale } from 'react-native-size-matters';
 import SecuredStorage from './SecuredStorage';
 import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
+import ProviderFactory from '../provider/ProviderFactory';
 
 export default class Utils {
   public static async getEndpointClouds(): Promise<EndpointCloud[]> {
@@ -133,20 +133,6 @@ export default class Utils {
       return new Date(value);
     }
     return value;
-  }
-
-  public static formatDistance(distanceMeters: number): string {
-    let distance = distanceMeters;
-    // Convert to Yard
-    if (I18nManager.isMetricsSystem()) {
-      distance *= 1.09361;
-    }
-    if (distance < 1000) {
-      return I18nManager.isMetricsSystem() ? Math.round(distance).toString() + ' m' : Math.round(distance).toString() + ' yd';
-    }
-    return I18nManager.isMetricsSystem()
-      ? I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km'
-      : I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
   }
 
   public static getValuesFromEnum(enumType: any): number[] {
@@ -701,6 +687,28 @@ export default class Utils {
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
+        case StatusCodes.MOVED_PERMANENTLY:
+          const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
+          if (newURLDomain) {
+            await this.redirectTo(newURLDomain);
+            if (centralServerProvider.isUserConnected()) {
+              const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
+              Message.showWarning(I18n.t('general.userOrTenantUpdated'));
+              await centralServerProvider.logoff();
+              navigation.dispatch(
+                StackActions.replace('AuthNavigator', {
+                  name: 'Login',
+                  key: `${Utils.randomNumber()}`,
+                  params: {
+                    tenantSubDomain
+                  }
+                })
+              );
+            }
+          } else {
+            Message.showError(I18n.t('general.tenantRedirectionInvalidDomain'));
+          }
+          break;
         // Other errors
         default:
           Message.showError(I18n.t(defaultErrorMessage ?? 'general.unexpectedErrorBackend'));
@@ -715,6 +723,33 @@ export default class Utils {
         centralServerProvider.sendErrorReport(null,  error.message, error.stack);
       }
       Message.showError(I18n.t('general.unexpectedError'));
+    }
+  }
+
+  public static async redirectTo(redirectDomain: string): Promise<void> {
+    console.log('Redirect');
+    const centralServerProvider = await ProviderFactory.getProvider();
+    // Do not redirect if redirect domain is undefined, null or empty string
+    if (redirectDomain) {
+      const currentTenant = centralServerProvider.getUserTenant() || {} as TenantConnection;
+      const tenants = await SecuredStorage.getTenants();
+      const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === currentTenant.subdomain);
+      const endpoints = await this.getAllEndpoints();
+      let newEndpoint = endpoints.find(
+        endpoint =>
+          (endpoint.endpoint === Configuration.URL_PREFIX + redirectDomain)
+          ||
+          (endpoint.endpoint === Configuration.SERVER_URL_PREFIX + redirectDomain));
+      // If endpoint no yet created, create it
+      if (!newEndpoint) {
+        newEndpoint = {name: redirectDomain, endpoint: Configuration.URL_PREFIX + redirectDomain};
+        const userEndpoints = await SecuredStorage.getEndpoints();
+        userEndpoints.push(newEndpoint);
+        await SecuredStorage.saveEndpoints(userEndpoints);
+      }
+      currentTenant.endpoint = newEndpoint;
+      tenants.splice(currentTenantIndex, 1, currentTenant);
+      await SecuredStorage.saveTenants(tenants);
     }
   }
 
@@ -993,5 +1028,11 @@ export default class Utils {
     } catch ( error ) {
       return null;
     }
+  }
+
+  public static async getAllEndpoints() : Promise<EndpointCloud[]> {
+    const userEndpoints = await SecuredStorage.getEndpoints() || [];
+    const staticEndpoints = Configuration.getEndpoints() || [];
+    return [...userEndpoints, ...staticEndpoints];
   }
 }

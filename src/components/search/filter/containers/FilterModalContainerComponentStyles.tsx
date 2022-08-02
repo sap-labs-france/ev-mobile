@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { ScaledSheet } from 'react-native-size-matters';
+import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../../utils/Utils';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -19,13 +19,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '100%',
       padding: '5@s',
       paddingHorizontal: '10@s',
-      paddingTop: getStatusBarHeight(),
+      paddingTop: getStatusBarHeight() + scale(10),
       alignItems: 'center',
       backgroundColor: commonColor.containerBgColor
     },
     closeIcon: {
       color: commonColor.textColor,
-      fontSize: '40@s'
+      fontSize: '37@s'
     },
     buttonsContainer: {
       flexDirection: 'row',
@@ -46,7 +46,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     title: {
       color: commonColor.textColor,
-      fontSize: '25@s'
+      fontSize: '22@s'
     }
   });
   const portraitStyles = {};

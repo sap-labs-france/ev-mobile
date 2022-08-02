@@ -55,17 +55,10 @@ export default class CarCatalogs extends SelectableList<Car> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-    Orientation.lockToPortrait();
-  }
-
   public componentWillUnmount() {
     super.componentWillUnmount();
     Orientation.unlockAllOrientations();
   }
-
 
   public async getCarCatalog(searchText: string, skip: number, limit: number): Promise<DataResult<CarCatalog>> {
     try {
@@ -109,9 +102,10 @@ export default class CarCatalogs extends SelectableList<Car> {
     }
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner:boolean = false): Promise<void> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      const { isModal, onContentUpdated } = this.props;
       this.setState({ refreshing: true });
       // Refresh All
       const cars = await this.getCarCatalog(this.searchText, 0, skip + limit);
@@ -122,7 +116,7 @@ export default class CarCatalogs extends SelectableList<Car> {
         refreshing: false,
         cars: carsResult,
         count: cars ? cars.count : 0
-      });
+      }, isModal ? () => onContentUpdated() : () => null);
     }
   }
 
@@ -138,15 +132,17 @@ export default class CarCatalogs extends SelectableList<Car> {
     const { navigation, selectionMode, isModal } = this.props;
     return (
       <Container style={transactionStyles.container}>
-        <HeaderComponent
-          title={this.buildHeaderTitle()}
-          subTitle={this.buildHeaderSubtitle()}
-          modalized={isModal}
-          backArrow={!isModal}
-          navigation={this.props.navigation}
-        />
-        <View style={transactionStyles.searchBar}>
-          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        {!isModal && (
+          <HeaderComponent
+            title={this.buildHeaderTitle()}
+            subTitle={this.buildHeaderSubtitle()}
+            modalized={isModal}
+            backArrow={!isModal}
+            navigation={this.props.navigation}
+          />
+        )}
+        <View style={carsStyles.filtersContainer}>
+          <SimpleSearchComponent containerStyle={carsStyles.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
         {loading ? (
           <Spinner style={transactionStyles.spinner} color="grey" />

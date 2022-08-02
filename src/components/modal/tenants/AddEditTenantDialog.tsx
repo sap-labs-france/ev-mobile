@@ -182,7 +182,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const modalCommonStyles = computeModalCommonStyle();
     const allEndpoints = [...this.staticEndpoints, ...userEndpoints];
-    allEndpoints.sort((endpoint1, endpoint2) => endpoint1.name.toUpperCase() < endpoint2.name.toUpperCase() ? -1 : 1 );
+    allEndpoints.sort((endpoint1, endpoint2) => endpoint1?.name?.toUpperCase() < endpoint2?.name?.toUpperCase() ? -1 : 1 );
     const data = [{}, ...allEndpoints];
     return (
       <View style={style.modalControlsContainer}>

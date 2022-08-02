@@ -12,9 +12,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    listContainer: {
-      height: '100%'
-    },
     mapSearchBarComponent: {
       backgroundColor: commonColor.containerBgColor,
       flex: 1,
@@ -51,14 +48,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.listHeaderBgColor
     },
     content: {
-      flex: 1
+      flex: 1,
+      alignItems: 'center'
     },
     spinner: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
     map: {
-      height: '100%'
+      height: '100%',
+      width: '100%'
     },
     filtersContainer: {
       flexDirection: 'row',
@@ -66,7 +65,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginVertical: '10@s',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginHorizontal: '7.5@s'
+      width: '95%'
     },
     mapFiltersContainer: {
       position: 'absolute',
@@ -131,7 +130,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     closeIcon: {
       padding: '8@s',
-      fontSize: '35@s',
+      fontSize: '37@s',
       color: commonColor.textColor
     },
     activityIndicator: {

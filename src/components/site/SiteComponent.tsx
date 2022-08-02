@@ -8,6 +8,7 @@ import Utils from '../../utils/Utils';
 import ConnectorStatusesContainerComponent from '../connector-status/ConnectorStatusesContainerComponent';
 import computeStyleSheet from './SiteComponentStyles';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
+import I18nManager from '../../I18n/I18nManager';
 
 export interface Props extends BaseProps {
   site: Site;
@@ -54,8 +55,8 @@ export default class SiteComponent extends React.Component<Props, State> {
               key: `${Utils.randomNumber()}`
             });
           }}>
-          <View style={style.leftContainer}>
-            <View style={style.titleContainer}>
+          <View style={style.titleContainer}>
+            <View style={style.leftHeader}>
               <TouchableOpacity disabled={!validGPSCoordinates} onPress={() => Utils.jumpToMapWithAddress(site.name, site.address)}>
                 {validGPSCoordinates ? (
                   <Icon style={[style.icon, style.iconLeft]} type="MaterialIcons" name="place" />
@@ -67,18 +68,16 @@ export default class SiteComponent extends React.Component<Props, State> {
                 {site.name}
               </Text>
             </View>
-            <View style={style.subTitleContainer}>
-              <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>
-                {Utils.formatAddress(site.address)} {Utils.formatAddress2(site.address)}
-              </Text>
-              {site.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(site.distanceMeters)}</Text>}
-            </View>
-            <View style={style.connectorContent}>
-              <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={site.connectorStats} />
-            </View>
+            <Icon style={style.arrowIcon} type="MaterialCommunityIcons" name="arrow-right-circle-outline" />
           </View>
-          <View style={style.rightContainer}>
-            <Icon style={[style.icon, style.arrowIcon]} type="MaterialIcons" name="navigate-next" />
+          <View style={style.subTitleContainer}>
+            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>
+              {Utils.formatAddress(site.address)} {Utils.formatAddress2(site.address)}
+            </Text>
+            {site.distanceMeters > 0 && <Text style={style.distance}>{I18nManager.formatDistance(site.distanceMeters)}</Text>}
+          </View>
+          <View style={style.connectorContent}>
+            <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={site.connectorStats} />
           </View>
         </TouchableOpacity>
       </View>
