@@ -358,13 +358,11 @@ export default class CentralServerProvider {
     await this.notificationManager.checkOnHoldNotification();
   }
 
-  public async getEndUserLicenseAgreement(tenantSubDomain: string, params: { Language: string }): Promise<Eula> {
+  public async getEndUserLicenseAgreement(params: { Language: string }): Promise<Eula> {
     this.debugMethod('getEndUserLicenseAgreement');
-    // Get the Tenant
-    const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.get<any>(
-      `${this.buildRestServerAuthURL(tenant)}/${RESTServerRoute.REST_END_USER_LICENSE_AGREEMENT}`,
+      `${Configuration.AWS_REST_ENDPOINT_PROD}/v1/auth/${RESTServerRoute.REST_END_USER_LICENSE_AGREEMENT}`,
       {
         headers: this.buildHeaders(),
         params
