@@ -10,8 +10,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     content: {
       flex: 1,
-      marginTop: '10@s',
       width: '100%'
+    },
+    headerContainer: {
+      marginBottom: '10@s'
     },
     container: {
       alignItems: 'center',

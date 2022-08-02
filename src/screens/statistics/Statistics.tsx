@@ -178,6 +178,7 @@ export default class Statistics extends BaseScreen<Props, State> {
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
           title={I18n.t('home.statistics')}
+          containerStyle={style.headerContainer}
         />
         <TransactionsHistoryFilters
           minTransactionDate={minTransactionDate}

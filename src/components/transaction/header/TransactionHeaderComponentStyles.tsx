@@ -35,7 +35,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     arrowIcon: {
       fontSize: '18@s',
       color: commonColor.disabledDark,
-      marginLeft: '5@s'
+      marginLeft: '20@s'
     }
   });
   const portraitStyles = {};

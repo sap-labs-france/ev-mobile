@@ -275,9 +275,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           {this.renderFilters()}
           {this.renderFabs()}
           {selectedSite && this.buildModal(navigation, selectedSite, modalStyle)}
-          {loading ? <Spinner style={style.spinner} color="grey" /> : (
+          {showMap ? this.renderMap() : (
             <View style={style.sitesContainer}>
-              {showMap ? this.renderMap() : (
+              {loading ? <Spinner style={style.spinner} color="grey" /> : (
                 <ItemsList<Site>
                   skip={skip}
                   count={count}

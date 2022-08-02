@@ -12,16 +12,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    modalTitle: {
-      textAlign: 'center',
-      color: commonColor.textColor,
-      paddingTop: '10@s',
-      fontSize: '15@s'
+    headerContainer: {
+      marginBottom: '10@s'
     },
     cardFieldContainer: {
       height: '50@s',
       width: '100%',
-      marginTop: '50@s',
       color: commonColor.textColor,
       alignSelf: 'center'
     },

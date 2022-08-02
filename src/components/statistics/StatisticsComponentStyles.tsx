@@ -11,7 +11,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       padding: '10@s',
       borderWidth: 0,
-      marginTop: '10@s',
+      marginBottom: '10@s',
       flexGrow: 1,
       flexBasis: 'auto',
       marginRight: '10@s',

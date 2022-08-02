@@ -12,6 +12,7 @@ import computeStyleSheet from './ChargingStationComponentStyles';
 import ChargingStationConnectorComponent from './connector/ChargingStationConnectorComponent';
 import DialogModal from '../modal/DialogModal';
 import computeModalCommonStyle from '../modal/ModalCommonStyle';
+import I18nManager from '../../I18n/I18nManager';
 
 export interface Props extends BaseProps {
   chargingStation: ChargingStation;
@@ -105,7 +106,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                 {Utils.formatAddress(chargingStation.siteArea?.address)}
               </Text>
             )}
-            {chargingStation.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>}
+            {chargingStation.distanceMeters > 0 && <Text style={style.distance}>{I18nManager.formatDistance(chargingStation.distanceMeters)}</Text>}
           </View>
           <ScrollView contentContainerStyle={style.connectorsContent} style={style.connectorsContainer}>
               {chargingStation.connectors.map(

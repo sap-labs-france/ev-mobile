@@ -84,7 +84,9 @@
     "notApplicable": "N/A",
     "showMore": "Show more",
     "showLess": "Show less",
-    "newEntry": "New entry"
+    "newEntry": "New entry",
+    "userOrTenantUpdated": "Você foi descontactado porque o seu perfil ou as configurações da sua organização foram atualizadas",
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
   },
   "sidebar": {
     "home": "Home",
