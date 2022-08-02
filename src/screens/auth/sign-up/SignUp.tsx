@@ -13,12 +13,15 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import { StatusCodes } from 'http-status-codes';
+import { TenantConnection } from '../../../types/Tenant';
 
 export interface Props extends BaseProps {}
 
 interface State {
   tenantSubDomain?: string;
   tenantName?: string;
+  tenantLogo?: string;
   name?: string;
   firstName?: string;
   email?: string;
@@ -111,6 +114,7 @@ export default class SignUp extends BaseScreen<Props, State> {
     this.state = {
       tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
       tenantName: '',
+      tenantLogo: null,
       name: '',
       firstName: '',
       email: Utils.getParamFromNavigation(this.props.route, 'email', '') as string,
@@ -134,11 +138,37 @@ export default class SignUp extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount() {
+  public async setTenantLogo(tenant: TenantConnection): Promise<void> {
+    try {
+      if (tenant) {
+        const tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+        this.setState({tenantLogo});
+      }
+    } catch (error) {
+      switch ( error?.request?.status ) {
+        case StatusCodes.NOT_FOUND:
+          return null;
+        default:
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            null,
+            null,
+            null,
+            async (redirectedTenant: TenantConnection) => this.setTenantLogo(redirectedTenant)
+          );
+          break;
+      }
+    }
+    return null;
+  }
+
+  public async componentDidMount(): Promise<void> {
     // Call parent
     await super.componentDidMount();
     // Init
     const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+    await this.setTenantLogo(tenant);
     this.setState({
       tenantName: tenant ? tenant.name : '',
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
@@ -148,11 +178,18 @@ export default class SignUp extends BaseScreen<Props, State> {
     this.centralServerProvider.setAutoLoginDisabled(true);
   }
 
+  public async componentDidFocus(): Promise<void> {
+    super.componentDidFocus();
+    const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain) as string;
+    const tenant = await this.centralServerProvider.getTenant(tenantSubDomain.toString());
+    await this.setTenantLogo(tenant);
+  }
+
   public onCaptchaCreated = (captcha: string) => {
-    this.setState({ captcha }, this.state.performSignUp ? () => this.signUp() : () => {});
+    this.setState({ captcha }, this.state.performSignUp ? async () => this.signUp() : () => {});
   };
 
-  public signUp = async () => {
+  public async signUp(): Promise<void> {
     // Check field
     const { tenantSubDomain, name, firstName, email, password, eula, captcha } = this.state
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
@@ -231,9 +268,8 @@ export default class SignUp extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, hidePassword, hideRepeatPassword } = this.state;
+    const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, hidePassword, hideRepeatPassword, tenantLogo } = this.state;
     // Get logo
-    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
