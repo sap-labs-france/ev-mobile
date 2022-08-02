@@ -16,6 +16,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import { Axios } from 'axios';
 
 export interface Props extends BaseProps {}
 
@@ -132,14 +133,13 @@ export default class Login extends BaseScreen<Props, State> {
         }
       }
     }
-    // Get logo
-    const tenantLogo = await this.getTenantLogo(tenant);
+    // Set logo
+    await this.setTenantLogo(tenant);
     // Set
     this.setState(
       {
         email,
         password,
-        tenantLogo,
         tenantName: tenant?.endpoint?.name ? tenant.name : I18n.t('authentication.tenant'),
         tenantSubDomain: tenant?.endpoint?.name ? tenant.subdomain : null,
         initialLoading: false
@@ -148,18 +148,32 @@ export default class Login extends BaseScreen<Props, State> {
     );
   }
 
-  public getTenantLogo = async (tenant: TenantConnection): Promise<string> => {
+  public async setTenantLogo (tenant: TenantConnection): Promise<void> {
     try {
       if (tenant) {
-        return await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+        const tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+        this.setState({tenantLogo});
       }
     } catch (error) {
-      return null;
+      switch ( error?.request?.status ) {
+        case StatusCodes.NOT_FOUND:
+          return null;
+        default:
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            null,
+            null,
+            null,
+            async (redirectedTenant: TenantConnection) => this.setTenantLogo(redirectedTenant)
+          );
+          break;
+      }
     }
     return null;
-  };
+  }
 
-  public async componentDidFocus() {
+  public async componentDidFocus(): Promise<void> {
     super.componentDidFocus();
     const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain);
     // Check if current Tenant selection is still valid (handle delete tenant use case)
@@ -177,10 +191,9 @@ export default class Login extends BaseScreen<Props, State> {
           password: null
         });
       } else {
-        // Get logo
-        const tenantLogo = await this.getTenantLogo(tenant);
+        // Set logo
+        await this.setTenantLogo(tenant);
         this.setState({
-          tenantLogo,
           tenantSubDomain,
           tenantName: tenant.name
         });
@@ -253,15 +266,6 @@ export default class Login extends BaseScreen<Props, State> {
             // Eula no accepted
             case HTTPError.USER_EULA_ERROR:
               Message.showError(I18n.t('authentication.eulaNotAccepted'));
-              break;
-            case StatusCodes.MOVED_PERMANENTLY:
-              const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
-              if (newURLDomain) {
-                await Utils.redirectTo(newURLDomain);
-                this.login();
-              } else {
-                Message.showError(I18n.t('general.tenantRedirectionInvalidDomain'));
-              }
               break;
             default:
               // Other common Error
