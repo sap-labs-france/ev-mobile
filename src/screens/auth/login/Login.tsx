@@ -5,7 +5,6 @@ import React from 'react';
 import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 
 import DialogModal from '../../../components/modal/DialogModal';
-import ExitAppDialog from '../../../components/modal/exit-app/ExitAppDialog';
 import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
@@ -37,7 +36,6 @@ interface State {
   errorEmail?: Record<string, unknown>[];
   errorNewTenantName?: Record<string, unknown>[];
   errorNewTenantSubDomain?: Record<string, unknown>[];
-  showExitAppDialog: boolean;
   showNoTenantFoundDialog: boolean;
 }
 
@@ -92,7 +90,6 @@ export default class Login extends BaseScreen<Props, State> {
       loading: false,
       initialLoading: true,
       hidePassword: true,
-      showExitAppDialog: false,
       showNoTenantFoundDialog: false
     };
   }
@@ -321,14 +318,13 @@ export default class Login extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { tenantLogo, eula, loading, initialLoading, hidePassword, showExitAppDialog, showNoTenantFoundDialog } = this.state;
+    const { tenantLogo, eula, loading, initialLoading, hidePassword, showNoTenantFoundDialog } = this.state;
     // Render
     return initialLoading ? (
       <Spinner style={formStyle.spinner} color="grey" />
     ) : (
       <View style={style.container}>
         {showNoTenantFoundDialog && this.renderNoTenantFoundDialog()}
-        {showExitAppDialog && this.renderExitAppDialog()}
         <ScrollView keyboardShouldPersistTaps={'always'} contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
@@ -445,10 +441,6 @@ export default class Login extends BaseScreen<Props, State> {
       key: `${Utils.randomNumber()}`,
       openQRCode
     });
-  }
-
-  private renderExitAppDialog() {
-    return <ExitAppDialog close={() => this.setState({ showExitAppDialog: false })} />;
   }
 
   private renderNoTenantFoundDialog() {
