@@ -149,25 +149,23 @@ export default class CentralServerProvider {
 
   public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
     this.debugMethod('getTenantLogoBySubdomain');
-    let tenantLogo = this.tenantLogosCache.get(tenant.subdomain);
-    if (!tenantLogo) {
-      // Call backend
-      const result = await this.axiosInstance.get<any>(
-        this.buildUtilRestEndpointUrl(RESTServerRoute.REST_TENANT_LOGO, null, tenant),
-        {
-          headers: this.buildHeaders(),
-          responseType: 'arraybuffer',
-          params: {
-            Subdomain: tenant.subdomain
-          }
+    let tenantLogo = null;
+    // Call backend
+    const result = await this.axiosInstance.get<any>(
+      this.buildUtilRestEndpointUrl(RESTServerRoute.REST_TENANT_LOGO, null, tenant),
+      {
+        headers: this.buildHeaders(),
+        responseType: 'arraybuffer',
+        params: {
+          Subdomain: tenant.subdomain
         }
-      );
-      if (result.data) {
-        const base64Image = Buffer.from(result.data).toString('base64');
-        if (base64Image) {
-          tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
-          this.tenantLogosCache.set(tenant.subdomain, tenantLogo);
-        }
+      }
+    );
+    if (result.data) {
+      const base64Image = Buffer.from(result.data).toString('base64');
+      if (base64Image) {
+        tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+        this.tenantLogosCache.set(`${tenant.subdomain}${tenant.endpoint?.endpoint}`, tenantLogo);
       }
     }
     this.tenantLogo = tenantLogo;
