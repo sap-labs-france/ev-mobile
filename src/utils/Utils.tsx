@@ -705,7 +705,11 @@ export default class Utils {
             const newURLDomain = errorDetailedMessage?.redirectDomain;
             const subdomain = errorDetailedMessage?.subdomain;
             const redirectTenant = await this.redirectTenant(newURLDomain, subdomain);
-            redirectCallback?.(redirectTenant);
+            try {
+              redirectCallback?.(redirectTenant);
+            } catch ( error ) {
+              Message.showWarning('This organisation has been moved to a new server, please try again');
+            }
             if (centralServerProvider.isUserConnected()) {
               const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
               Message.showWarning(I18n.t('general.userOrTenantUpdated'));
