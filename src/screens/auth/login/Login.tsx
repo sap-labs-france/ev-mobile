@@ -269,7 +269,7 @@ export default class Login extends BaseScreen<Props, State> {
               break;
             default:
               // Other common Error
-              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.loginUnexpectedError');
+              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.loginUnexpectedError', null, null, async () => this.login());
           }
         }
       }
@@ -317,7 +317,7 @@ export default class Login extends BaseScreen<Props, State> {
     }
   };
 
-  public render() {
+  public render(): React.ReactElement {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();

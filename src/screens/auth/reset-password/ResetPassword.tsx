@@ -169,18 +169,9 @@ export default class ResetPassword extends BaseScreen<Props, State> {
             case StatusCodes.NOT_FOUND:
               Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
               break;
-            case StatusCodes.MOVED_TEMPORARILY:
-              const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
-              try {
-                await Utils.redirectTenant(newURLDomain, tenantSubDomain);
-                this.resetPassword();
-              } catch ( redirectError ) {
-                Message.showError('Unexpected situation, tenant redirection failed');
-              }
-              break;
             default:
               // Other common Error
-              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError');
+              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError', null, null, async () => this.resetPassword());
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));

@@ -169,7 +169,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               break;
             default:
               // Other common Error
-              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError');
+              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError', null, null, async () => this.retrievePassword());
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));
