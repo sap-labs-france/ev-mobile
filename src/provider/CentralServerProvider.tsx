@@ -147,35 +147,34 @@ export default class CentralServerProvider {
     });
   }
 
-  public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
+  public async getTenantLogoBySubdomain(tenant: TenantConnection = {} as TenantConnection): Promise<string> {
     this.debugMethod('getTenantLogoBySubdomain');
-    let tenantLogo = this.tenantLogosCache.get(tenant.subdomain);
-    if (!tenantLogo) {
-      // Call backend
-      const result = await this.axiosInstance.get<any>(
-        this.buildUtilRestEndpointUrl(RESTServerRoute.REST_TENANT_LOGO, null, tenant),
-        {
-          headers: this.buildHeaders(),
-          responseType: 'arraybuffer',
-          params: {
-            Subdomain: tenant.subdomain
-          }
+    let tenantLogo = null;
+    // Call backend
+    const result = await this.axiosInstance.get<any>(
+      this.buildUtilRestEndpointUrl(RESTServerRoute.REST_TENANT_LOGO, null, tenant),
+      {
+        headers: this.buildHeaders(),
+        responseType: 'arraybuffer',
+        params: {
+          Subdomain: tenant.subdomain
         }
-      );
-      if (result.data) {
-        const base64Image = Buffer.from(result.data).toString('base64');
-        if (base64Image) {
-          tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
-          this.tenantLogosCache.set(tenant.subdomain, tenantLogo);
-        }
+      }
+    );
+    if (result.data) {
+      const base64Image = Buffer.from(result.data).toString('base64');
+      if (base64Image) {
+        tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+        this.tenantLogosCache.set(`${tenant.subdomain}${tenant.endpoint?.endpoint}`, tenantLogo);
       }
     }
     this.tenantLogo = tenantLogo;
     return tenantLogo;
   }
 
-  public getCurrentTenantLogo(): string {
-    return this.tenantLogo;
+  public async getCurrentTenantLogo(): Promise<string> {
+    const currentTenantLogo = await this.getTenantLogoBySubdomain(this.tenant);
+    return currentTenantLogo;
   }
 
   public async triggerAutoLogin(navigation: NavigationContainerRef<any>, fctRefresh: () => void): Promise<void> {
@@ -358,13 +357,11 @@ export default class CentralServerProvider {
     await this.notificationManager.checkOnHoldNotification();
   }
 
-  public async getEndUserLicenseAgreement(tenantSubDomain: string, params: { Language: string }): Promise<Eula> {
+  public async getEndUserLicenseAgreement(params: { Language: string }): Promise<Eula> {
     this.debugMethod('getEndUserLicenseAgreement');
-    // Get the Tenant
-    const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.get<any>(
-      `${this.buildRestServerAuthURL(tenant)}/${RESTServerRoute.REST_END_USER_LICENSE_AGREEMENT}`,
+      `${Configuration.AWS_REST_ENDPOINT_PROD}/v1/auth/${RESTServerRoute.REST_END_USER_LICENSE_AGREEMENT}`,
       {
         headers: this.buildHeaders(),
         params
