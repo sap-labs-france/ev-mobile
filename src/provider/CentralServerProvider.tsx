@@ -147,7 +147,7 @@ export default class CentralServerProvider {
     });
   }
 
-  public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
+  public async getTenantLogoBySubdomain(tenant: TenantConnection = {} as TenantConnection): Promise<string> {
     this.debugMethod('getTenantLogoBySubdomain');
     let tenantLogo = null;
     // Call backend
@@ -172,8 +172,9 @@ export default class CentralServerProvider {
     return tenantLogo;
   }
 
-  public getCurrentTenantLogo(): string {
-    return this.tenantLogo;
+  public async getCurrentTenantLogo(): Promise<string> {
+    const currentTenantLogo = await this.getTenantLogoBySubdomain(this.tenant);
+    return currentTenantLogo;
   }
 
   public async triggerAutoLogin(navigation: NavigationContainerRef<any>, fctRefresh: () => void): Promise<void> {
