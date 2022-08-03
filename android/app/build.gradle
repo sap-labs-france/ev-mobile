@@ -144,7 +144,7 @@ android {
         applicationId "com.emobility"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 277
+        versionCode 300
         versionName "2.6.10"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
