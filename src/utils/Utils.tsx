@@ -757,7 +757,7 @@ export default class Utils {
     if (redirectDomain) {
       const tenants = await SecuredStorage.getTenants();
       const redirectedTenant = tenantSubdomain ?
-        tenants.find(tenant => tenant.subdomain === tenantSubdomain)
+        tenants?.find(tenant => tenant.subdomain === tenantSubdomain)
         :
         (centralServerProvider.getUserTenant() || {} as TenantConnection);
       if (redirectedTenant) {
@@ -1068,7 +1068,7 @@ export default class Utils {
   }
 
   public static async getAllEndpoints(): Promise<EndpointCloud[]> {
-    const userEndpoints = await SecuredStorage.getEndpoints() || [];
+    const userEndpoints = (await SecuredStorage.getEndpoints()) || [];
     const staticEndpoints = Configuration.getEndpoints() || [];
     return [...userEndpoints, ...staticEndpoints];
   }

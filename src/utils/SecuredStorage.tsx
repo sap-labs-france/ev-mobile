@@ -154,7 +154,7 @@ export default class SecuredStorage {
   }
 
   public static async getTenants(): Promise<TenantConnection[]> {
-    const tenants = await SecuredStorage.getJson(SecuredStorageKey.TENANTS);
+    const tenants = (await SecuredStorage.getJson(SecuredStorageKey.TENANTS)) || [];
     return tenants as TenantConnection[];
   }
 
@@ -163,11 +163,11 @@ export default class SecuredStorage {
   }
 
   public static async getEndpoints(): Promise<EndpointCloud[]> {
-    const endpoints = await SecuredStorage.getJson(SecuredStorageKey.ENDPOINTS);
+    const endpoints = (await SecuredStorage.getJson(SecuredStorageKey.ENDPOINTS)) || [];
     return endpoints as EndpointCloud[];
   }
 
-  private static async getJson(key: string): Promise<any> {
+  private static async getJson(key: string): Promise<any | null> {
     try {
       const data = await RNSecureStorage.get(key);
       if (data) {
