@@ -708,7 +708,7 @@ export default class Utils {
             try {
               redirectCallback?.(redirectTenant);
             } catch ( error ) {
-              Message.showWarning('This organisation has been moved to a new server, please try again');
+              Message.showWarning('This organisation has just been moved to a new server, please try again');
             }
             if (centralServerProvider.isUserConnected()) {
               const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
@@ -725,7 +725,7 @@ export default class Utils {
               );
             }
           } catch ( redirectError ) {
-            Message.showError('Unexpected situation, tenant redirection failed ' + redirectError.message);
+            Message.showError('Unexpected situation, tenant redirection failed ' + redirectError?.message);
             console.log(redirectError);
           }
           break;
