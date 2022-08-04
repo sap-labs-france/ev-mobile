@@ -708,7 +708,7 @@ export default class Utils {
             try {
               redirectCallback?.(redirectTenant);
             } catch ( error ) {
-              Message.showWarning('This organisation has been moved to a new server, please try again');
+              Message.showWarning('This organisation has just been moved to a new server, please try again');
             }
             if (centralServerProvider.isUserConnected()) {
               const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
@@ -725,7 +725,7 @@ export default class Utils {
               );
             }
           } catch ( redirectError ) {
-            Message.showError('Unexpected situation, tenant redirection failed ' + redirectError.message);
+            Message.showError('Unexpected situation, tenant redirection failed ' + redirectError?.message);
             console.log(redirectError);
           }
           break;
@@ -757,7 +757,7 @@ export default class Utils {
     if (redirectDomain) {
       const tenants = await SecuredStorage.getTenants();
       const redirectedTenant = tenantSubdomain ?
-        tenants.find(tenant => tenant.subdomain === tenantSubdomain)
+        tenants?.find(tenant => tenant.subdomain === tenantSubdomain)
         :
         (centralServerProvider.getUserTenant() || {} as TenantConnection);
       if (redirectedTenant) {
@@ -1068,7 +1068,7 @@ export default class Utils {
   }
 
   public static async getAllEndpoints(): Promise<EndpointCloud[]> {
-    const userEndpoints = await SecuredStorage.getEndpoints() || [];
+    const userEndpoints = (await SecuredStorage.getEndpoints()) || [];
     const staticEndpoints = Configuration.getEndpoints() || [];
     return [...userEndpoints, ...staticEndpoints];
   }
