@@ -7,18 +7,19 @@ import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-nat
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
-import { HTTPError } from '../../../types/HTTPError';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import { TenantConnection } from '../../../types/Tenant';
 
 export interface Props extends BaseProps {}
 
 interface State {
   tenantSubDomain?: string;
   tenantName?: string;
+  tenantLogo?: string;
   hash?: string;
   password?: string;
   repeatPassword?: string;
@@ -63,9 +64,10 @@ export default class ResetPassword extends BaseScreen<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', '') as string,
-      hash: Utils.getParamFromNavigation(this.props.navigation, 'hash', null) as string,
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
+      hash: Utils.getParamFromNavigation(this.props.route, 'hash', null) as string,
       tenantName: '',
+      tenantLogo: null,
       password: '',
       repeatPassword: '',
       loading: false,
@@ -81,16 +83,49 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount() {
+  public async setTenantLogo(tenant: TenantConnection): Promise<void> {
+    try {
+      if (tenant) {
+        const tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+        this.setState({tenantLogo});
+      }
+    } catch (error) {
+      switch ( error?.request?.status ) {
+        case StatusCodes.NOT_FOUND:
+          return null;
+        default:
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            null,
+            null,
+            null,
+            async (redirectedTenant: TenantConnection) => this.setTenantLogo(redirectedTenant)
+          );
+          break;
+      }
+    }
+    return null;
+  }
+
+  public async componentDidMount(): Promise<void> {
     // Call parent
     await super.componentDidMount();
     // Init
     const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+    await this.setTenantLogo(tenant);
     this.setState({
       tenantName: tenant ? tenant.name : ''
     });
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
+  }
+
+  public async componentDidFocus(): Promise<void> {
+    super.componentDidFocus();
+    const tenantSubdomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain) as string;
+    const tenant = await this.centralServerProvider.getTenant(tenantSubdomain);
+    await this.setTenantLogo(tenant);
   }
 
   public resetPassword = async () => {
@@ -136,7 +171,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               break;
             default:
               // Other common Error
-              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError');
+              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError', null, null, async () => this.resetPassword());
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));
@@ -149,9 +184,8 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
+    const { tenantName, loading, hidePassword, hideRepeatPassword, tenantLogo } = this.state;
     // Get logo
-    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>

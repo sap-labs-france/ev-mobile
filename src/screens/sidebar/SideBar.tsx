@@ -27,6 +27,7 @@ interface State {
   updateDate?: string;
   showAppUpdateDialog?: boolean;
   appVersion?: CheckVersionResponse;
+  tenantLogo?: string;
 }
 
 export default class SideBar extends React.Component<Props, State> {
@@ -58,24 +59,21 @@ export default class SideBar extends React.Component<Props, State> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount() {
+  public async componentDidMount(): Promise<void> {
     this.centralServerProvider = await ProviderFactory.getProvider();
     this.securityProvider = this.centralServerProvider?.getSecurityProvider();
     await this.getUpdateDate();
+    const tenantLogo = await this.centralServerProvider.getCurrentTenantLogo();
+    await this.getUserInfo();
+    const appVersion = await Utils.checkForUpdate();
+    this.setState({ appVersion, tenantLogo });
     // Init User (delay it)
-    this.refresh();
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     this.componentFocusUnsubscribe?.();
     this.componentBlurUnsubscribe?.();
   }
-
-  public refresh = async () => {
-    await this.getUserInfo();
-    const appVersion = await Utils.checkForUpdate();
-    this.setState({ appVersion });
-  };
 
   public async getUpdateDate() {
     const lastUpdateTime = await DeviceInfo.getLastUpdateTime();
@@ -117,10 +115,9 @@ export default class SideBar extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { userToken, tenantName, isComponentOrganizationActive, showAppUpdateDialog, appVersion } = this.state;
+    const { userToken, tenantName, isComponentOrganizationActive, showAppUpdateDialog, appVersion, tenantLogo } = this.state;
     const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
     // Get logo
-    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <SafeAreaView style={style.sidebar}>
         <View style={style.header}>
