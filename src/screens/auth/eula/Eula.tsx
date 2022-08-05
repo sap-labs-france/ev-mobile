@@ -9,6 +9,8 @@ import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './EulaStyles';
+import { StatusCodes } from 'http-status-codes';
+import Message from '../../../utils/Message';
 
 export interface Props extends BaseProps {}
 
@@ -45,10 +47,8 @@ export default class Eula extends BaseScreen<Props, State> {
 
   public loadEndUserLicenseAgreement = async () => {
     const { i18nLanguage: i18nLanguage } = this.state;
-    // Get the first tenant for the EULA (same in all tenants)
-    const tenants = await this.centralServerProvider.getTenants();
     try {
-      const result: any = await this.centralServerProvider.getEndUserLicenseAgreement(tenants[0].subdomain, {
+      const result: any = await this.centralServerProvider.getEndUserLicenseAgreement({
         Language: i18nLanguage
       });
       this.setState({
@@ -56,8 +56,7 @@ export default class Eula extends BaseScreen<Props, State> {
         eulaTextHtml: result.text
       });
     } catch (error) {
-      // Other common Error
-      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'general.eulaUnexpectedError', this.props.navigation);
+      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'general.eulaUnexpectedError', this.props.navigation, null, async () => this.loadEndUserLicenseAgreement());
     }
   };
 
