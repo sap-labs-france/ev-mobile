@@ -173,8 +173,12 @@ export default class CentralServerProvider {
   }
 
   public async getCurrentTenantLogo(): Promise<string> {
-    const currentTenantLogo = await this.getTenantLogoBySubdomain(this.tenant);
-    return currentTenantLogo;
+    try {
+      const currentTenantLogo = await this.getTenantLogoBySubdomain(this.tenant);
+      return currentTenantLogo;
+    } catch ( error ) {
+      return null;
+    }
   }
 
   public async triggerAutoLogin(navigation: NavigationContainerRef<any>, fctRefresh: () => void): Promise<void> {

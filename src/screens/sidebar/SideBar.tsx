@@ -64,21 +64,16 @@ export default class SideBar extends React.Component<Props, State> {
     this.securityProvider = this.centralServerProvider?.getSecurityProvider();
     await this.getUpdateDate();
     const tenantLogo = await this.centralServerProvider.getCurrentTenantLogo();
-    this.setState({tenantLogo});
+    await this.getUserInfo();
+    const appVersion = await Utils.checkForUpdate();
+    this.setState({ appVersion, tenantLogo });
     // Init User (delay it)
-    this.refresh();
   }
 
   public componentWillUnmount(): void {
     this.componentFocusUnsubscribe?.();
     this.componentBlurUnsubscribe?.();
   }
-
-  public refresh = async () => {
-    await this.getUserInfo();
-    const appVersion = await Utils.checkForUpdate();
-    this.setState({ appVersion });
-  };
 
   public async getUpdateDate() {
     const lastUpdateTime = await DeviceInfo.getLastUpdateTime();
