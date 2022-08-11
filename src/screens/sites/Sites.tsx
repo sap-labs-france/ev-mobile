@@ -1,11 +1,9 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, Platform, SafeAreaView, TouchableOpacity } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ActivityIndicator, Image, ImageStyle, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
-import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -42,6 +40,7 @@ interface State {
   visible?: boolean;
   selectedSite?: Site;
   satelliteMap?: boolean;
+  loadingSiteDetails?: boolean;
 }
 
 export default class Sites extends BaseAutoRefreshScreen<Props, State> {
@@ -64,7 +63,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       visible: false,
       selectedSite: null,
       satelliteMap: false,
-      filters: {}
+      filters: {},
+      loadingSiteDetails: false
     };
   }
 
@@ -118,7 +118,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         this.refresh.bind(this)
       );
     }
-  return null;
+    return null;
   };
 
   public onBack () {
@@ -135,14 +135,14 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public async computeRegion(sites: Site[]): Promise<Region> {
     // If currentLocation available, use it
     const currentLocation = await Utils.getUserCurrentLocation();
-    if ( currentLocation ) {
+/*    if ( currentLocation ) {
       return {
         longitude: currentLocation.longitude,
         latitude: currentLocation.latitude,
         longitudeDelta: 0.01,
         latitudeDelta: 0.01
-      }
-    }
+      };
+    }*/
     // Else, use coordinates of the first site
     if (!Utils.isEmptyArray(sites)) {
       let gpsCoordinates: number[];
@@ -214,10 +214,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh(true);
   };
 
-  public onMapRegionChange = (region: Region) => {
-    this.currentRegion = region;
-  };
-
   public filterChanged(newFilters: SitesFiltersDef) {
     this.setState({ filters: newFilters }, async () => this.refresh(!Utils.isEmptyArray(this.state.sites)));
   }
@@ -230,25 +226,39 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public buildModal(navigation: any, siteSelected: Site, modalStyle: any) {
-    if (Platform.OS === 'ios') {
-      return (
-        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <Modalize alwaysOpen={175} modalStyle={modalStyle.modalContainer}>
-            <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
-          </Modalize>
-        </Modal>
-      );
-    } else {
-      return (
-        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <View style={modalStyle.modalContainer}>
-            <ScrollView>
-              <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
-            </ScrollView>
+    const style = computeStyleSheet();
+    return (
+      <Modal
+        useNativeDriverForBackdrop={true}
+        statusBarTranslucent={true}
+        animationInTiming={500}
+        animationOutTiming={500}
+        swipeDirection={['down']}
+        hideModalContentWhileAnimating={true}
+        onSwipeComplete={() => this.setState({ selectedSite: null })}
+        style={modalStyle.modalBottomHalf}
+        isVisible={true}
+        propagateSwipe={true}
+        onBackButtonPress={() => this.setState({ selectedSite: null })}
+      >
+        <SafeAreaView style={style.siteDetailsModalContainer}>
+          <View style={style.siteDetailsModalHeader}>
+            <TouchableOpacity onPress={() => this.setState({ selectedSite: null })}>
+              <Icon style={style.closeIcon} type="EvilIcons" name={'close'} />
+            </TouchableOpacity>
           </View>
-        </Modal>
-      );
-    }
+          {this.state.loadingSiteDetails ? (
+            <View style={style.siteDetailsModalSpinnerContainer}>
+              <ActivityIndicator size={style.siteDetailsModalSpinner.fontSize} color={style.siteDetailsModalSpinner.color} />
+            </View>
+          ) : (
+            <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
+              <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ selectedSite: null })} />
+            </View>
+          )}
+        </SafeAreaView>
+      </Modal>
+    );
   }
 
   public onMapRegionChangeComplete = (region: Region) => {
@@ -326,7 +336,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   private renderMap() {
     const style = computeStyleSheet();
-    const { sites, satelliteMap } = this.state
+    const { sites, satelliteMap } = this.state;
     const sitesWithGPSCoordinates = sites.filter((site) =>
       Utils.containsGPSCoordinates(site.address.coordinates)
     );

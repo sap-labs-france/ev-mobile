@@ -103,6 +103,33 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     siteComponentContainer: {
       marginBottom: '11@s',
       width: '95%'
+    },
+    siteDetailsModalContainer: {
+      width: '100%',
+      backgroundColor: commonColor.containerBgColor,
+      maxHeight: '60%',
+      minHeight: '70@s',
+      borderTopRightRadius: '20@s',
+      borderTopLeftRadius: '20@s'
+    },
+    siteDetailsModalHeader: {
+      height: '50@s',
+      flexDirection: 'row',
+      justifyContent: 'flex-end'
+    },
+    siteDetailsModalSpinnerContainer: {
+      height: '70@s',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    siteDetailsModalSpinner: {
+      color: commonColor.disabledDark,
+      fontSize: '30@s'
+    },
+    closeIcon: {
+      padding: '8@s',
+      fontSize: '37@s',
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
