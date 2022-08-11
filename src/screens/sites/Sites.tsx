@@ -37,7 +37,6 @@ interface State {
   filters?: SitesFiltersDef;
   count?: number;
   showMap?: boolean;
-  visible?: boolean;
   selectedSite?: Site;
   satelliteMap?: boolean;
   loadingSiteDetails?: boolean;
@@ -60,7 +59,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       skip: 0,
       count: 0,
       showMap: false,
-      visible: false,
       selectedSite: null,
       satelliteMap: false,
       filters: {},
@@ -220,7 +218,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public showMapSiteDetail = (site: Site) => {
     this.setState({
-      visible: true,
       selectedSite: site
     });
   };
