@@ -60,8 +60,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       showMap: false,
       selectedSite: null,
       satelliteMap: false,
-      filters: {},
-      loadingSiteDetails: false
+      filters: {}
     };
   }
 

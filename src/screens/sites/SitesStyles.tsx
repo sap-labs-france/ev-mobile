@@ -117,15 +117,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'flex-end'
     },
-    siteDetailsModalSpinnerContainer: {
-      height: '70@s',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    siteDetailsModalSpinner: {
-      color: commonColor.disabledDark,
-      fontSize: '30@s'
-    },
     closeIcon: {
       padding: '8@s',
       fontSize: '37@s',
