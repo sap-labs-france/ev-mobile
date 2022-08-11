@@ -39,7 +39,6 @@ interface State {
   showMap?: boolean;
   selectedSite?: Site;
   satelliteMap?: boolean;
-  loadingSiteDetails?: boolean;
 }
 
 export default class Sites extends BaseAutoRefreshScreen<Props, State> {
@@ -133,14 +132,14 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public async computeRegion(sites: Site[]): Promise<Region> {
     // If currentLocation available, use it
     const currentLocation = await Utils.getUserCurrentLocation();
-/*    if ( currentLocation ) {
+    if ( currentLocation ) {
       return {
         longitude: currentLocation.longitude,
         latitude: currentLocation.latitude,
         longitudeDelta: 0.01,
         latitudeDelta: 0.01
       };
-    }*/
+    }
     // Else, use coordinates of the first site
     if (!Utils.isEmptyArray(sites)) {
       let gpsCoordinates: number[];
@@ -244,15 +243,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
               <Icon style={style.closeIcon} type="EvilIcons" name={'close'} />
             </TouchableOpacity>
           </View>
-          {this.state.loadingSiteDetails ? (
-            <View style={style.siteDetailsModalSpinnerContainer}>
-              <ActivityIndicator size={style.siteDetailsModalSpinner.fontSize} color={style.siteDetailsModalSpinner.color} />
-            </View>
-          ) : (
-            <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
-              <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ selectedSite: null })} />
-            </View>
-          )}
+          <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
+            <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ selectedSite: null })} />
+          </View>
         </SafeAreaView>
       </Modal>
     );
