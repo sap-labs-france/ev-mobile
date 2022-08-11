@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, Image, ImageStyle, SafeAreaView, TouchableOpacity } from 'react-native';
+import { Image, ImageStyle, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 
@@ -243,7 +243,12 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             </TouchableOpacity>
           </View>
           <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
-            <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ selectedSite: null })} />
+            <SiteComponent
+              site={siteSelected}
+              navigation={navigation}
+              onNavigate={() => this.setState({ selectedSite: null })}
+              containerStyle={[{width: '95%'}]}
+            />
           </View>
         </SafeAreaView>
       </Modal>
