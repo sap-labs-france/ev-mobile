@@ -91,17 +91,17 @@
   "sidebar": {
     "home": "Home",
     "sites": "Sites",
-    "chargers": "Charging Stations",
-    "transactionsHistory": "Sessions History",
-    "transactionsInProgress": "Sessions In Progress",
+    "chargers": "Charging stations",
+    "transactionsHistory": "Sessions history",
+    "transactionsInProgress": "Sessions in progress",
     "statistics": "Statistics",
-    "reportError": "Report Error",
+    "reportError": "Report error",
     "users": "Users",
-    "badges": "RFID Cards",
+    "badges": "RFID cards",
     "cars": "Cars",
     "invoices": "Invoices",
-    "paymentMethods": "Payment Methods",
-    "qrCodeScanner": "QR-Code Scanner"
+    "paymentMethods": "Payment methods",
+    "qrCodeScanner": "QR-Code scanner"
   },
   "authentication": {
     "noTenantFoundTitle": "No organization found",
@@ -119,7 +119,7 @@
     "invalidEmail": "The email is invalid",
     "invalidMobile": "The mobile is invalid",
     "mandatoryPassword": "The Password is mandatory",
-    "logOut": "Log Out",
+    "logOut": "Log out",
     "mustSelectTenant": "Select an Organization",
     "wrongEmailOrPassword": "Wrong email or password",
     "authenticationFailed": "Authentication Failed",
@@ -529,7 +529,7 @@
     }
   },
   "appUpdate": {
-    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogTitle": "Update available",
     "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
     "noUpdateAvailable": "You have the latest version"
   },
