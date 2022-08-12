@@ -105,9 +105,9 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     const { maximumDate, minimumDate } = this.props;
     if (date) {
       if (date < minimumDate) {
-        return minimumDate
+        return minimumDate;
       } else if (date > maximumDate) {
-        return maximumDate
+        return maximumDate;
       }
     }
     return date;
