@@ -15,7 +15,7 @@ import I18nManager from '../../I18n/I18nManager';
 export interface Props extends BaseProps {
   siteArea: SiteArea;
   onNavigate?: () => void;
-  containerStyle?: ViewStyle[]
+  containerStyle?: ViewStyle[];
 }
 
 interface State {}
