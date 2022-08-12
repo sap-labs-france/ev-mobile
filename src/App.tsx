@@ -175,7 +175,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
       inactiveColor={commonColor.disabledDark}
       barStyle={barStyle}
       labeled
-      backBehavior="history"
+      backBehavior={'initialRoute'}
     >
       <ChargingStationDetailsTabs.Screen
         name="ChargingStationActions"
@@ -219,7 +219,8 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
       inactiveColor={commonColor.disabledDark}
       barStyle={barStyle}
       labeled
-      backBehavior="history"
+      backBehavior={'initialRoute'}
+
     >
       <ChargingStationConnectorDetailsTabs.Screen
         name="ChargingStationConnectorDetails"
@@ -254,7 +255,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
       inactiveColor={commonColor.disabledDark}
       barStyle={barStyle}
       labeled
-      backBehavior="history"
+      backBehavior={'initialRoute'}
     >
       <TransactionDetailsTabs.Screen
         name="TransactionDetails"
