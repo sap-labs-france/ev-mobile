@@ -400,7 +400,7 @@ PODS:
     - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
-  - react-native-webview (11.14.2):
+  - react-native-webview (11.23.0):
     - React-Core
   - React-perflogger (0.67.4)
   - React-RCTActionSheet (0.67.4):
@@ -520,7 +520,7 @@ PODS:
     - React-RCTImage
   - RNSecureStorage (1.0.82):
     - React
-  - RNSVG (12.3.0):
+  - RNSVG (12.4.4):
     - React-Core
   - RNVectorIcons (7.1.0):
     - React
@@ -830,7 +830,7 @@ SPEC CHECKSUMS:
   react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
-  react-native-webview: cc4ac8f021a832dce2979e1f48c5595341dd2fb5
+  react-native-webview: e771bc375f789ebfa02a26939a57dbc6fa897336
   React-perflogger: 0afaf2f01a47fd0fc368a93bfbb5bd3b26db6e7f
   React-RCTActionSheet: 59f35c4029e0b532fc42114241a06e170b7431a2
   React-RCTAnimation: aae4f4bed122e78bdab72f7118d291d70a932ce2
@@ -852,7 +852,7 @@ SPEC CHECKSUMS:
   RNReanimated: e28dfaa950064b674fde0a9b736e62b9dff500a7
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
   RNSecureStorage: 8b2b07278d80c48b3a881c56e604ab147372f243
-  RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
+  RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   Stripe: 22c1b8da5ee20a1aaf40fd198160efa72e71644a
   stripe-react-native: 980f3d19f52a7dc4b373c6c20d30ebd760bc39e5
