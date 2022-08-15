@@ -193,7 +193,7 @@
     "browseScan&Charge": "Scannen & Laden",
     "browseScan&ChargeNote": "Scanne den QR Code der Ladestation",
     "wrongOrganizationTitle": "Organisation wechseln",
-    "wrongOrganizationMessage": "Die Ladestation die Sie erreichen möchten befindet sich nicht in der Oragnisation '{{tenantName}}'?",
+    "wrongOrganizationMessage": "Die Ladestation, die Sie erreichen möchten befindet sich nicht in der Oragnisation '{{tenantName}}'?",
     "invalidQRCode": "Ungültiger QR Code",
     "unknownQRCode": "Unbekannter QR Code",
     "unknownEndpoint": "Unbekannte Cloud '{{endpoint}}'",
@@ -229,7 +229,7 @@
     "deletePaymentMethodSubtitle": "Möchten Sie wirklich die {{cardBrand}} Karte mit der Endung {{cardLast4}} entfernen",
     "addPaymentMethod": "Zahlungsmethode hinzufügen",
     "paymentMethodCreationRules": "Aus Sicherheitsgründen speichern und verarbeiten wir Ihre Bank- und Kartendaten nicht direkt. Die gesammelten Informationen werden über einen sicheren Kanal an unseren STRIPE-Partner gesendet, der die Abrechnungs- und Zahlungsinfrastruktur bereitstellt.",
-    "paymentMethodsCreationCheckboxText": "Ich habe die Endnutzer Vereinbarung gelessen und stimme zu, dass meine Bankdaten genutzt werden um künftige Ladevorgänge zu bezahlen."
+    "paymentMethodsCreationCheckboxText": "Ich habe die Endnutzer Vereinbarung gelesen und stimme zu, dass meine Bankdaten genutzt werden um künftige Ladevorgänge zu bezahlen."
   },
   "paymentMethodStatus": {
     "valid": "Gültig",
@@ -356,7 +356,7 @@
     "totalInactivityNote": "Gesamte Inkativitätsdauer",
     "totalPriceNote": "Gesamtkosten",
     "paymentMethods": "Zahlungsmethoden",
-    "paymentMethodsNote" : "Zahlungsarten durchsuchen und erstellen",
+    "paymentMethodsNote" : "Zahlungsmethoden durchsuchen und erstellen",
     "invoices": "Rechunngen",
     "invoicesNote": "Rechnungen durchsuchen und herunterladen"
   },
@@ -439,7 +439,7 @@
     "selectTag": "Badge auswählen",
     "selectTags": "Badges auswählen",
     "noTagMessageTitle": "Kein Badge",
-    "noTagMessageSubtitle": "Zum Laden wird eine Badge benötigt"
+    "noTagMessageSubtitle": "Zum Laden wird ein Badge benötigt"
   },
   "details": {
     "connector": "Anschluss",
@@ -479,7 +479,7 @@
     "cumulatedConsumptionLabel": "Abgegebene Energie (kW.h)",
     "connectorMax": "Max. Leistung Anschluss (kW)",
     "priceLabel": "Preis",
-    "noData": "Nicht Daten",
+    "noData": "Keine Daten",
     "noSessionInProgress": "Kein laufender Ladvorgang",
     "noConsumptionData": "Keine Verbrauchsdaten",
     "serialNumber": "Seriennummer",
@@ -541,5 +541,5 @@
     "siteAreasRoamingFilterLabel": "Roaming-Standortbereiche zeigen",
     "transactionsRoamingFilterLabel": "Roaming-Ladevorgänge zeigen",
     "usersRoamingFilterLabel": "Roaming-Nutzer zeigen"
-  }ö
+  }
 }
