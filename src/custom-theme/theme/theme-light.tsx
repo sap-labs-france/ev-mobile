@@ -24,7 +24,7 @@ export default {
   listItemSelected: '#BFBFBF',
   background: '#f2f2f2',
   borderColor: palette.dark,
-  textColor: palette.primaryDark,
+  textColor: '#272727',
   placeholderTextColor: palette.disabledDark,
   inverseTextColor: palette.light,
   subTextColor: palette.disabledDark,
