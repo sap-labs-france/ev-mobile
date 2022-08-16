@@ -77,6 +77,7 @@ export default class DialogModal extends React.Component<Props, State> {
     const iconStyle = style.icon;
     return (
       <Modal
+        statusBarTranslucent={true}
         animationIn={animationIn ?? 'fadeIn'}
         animationOut={animationOut ?? 'fadeOut'}
         animationInTiming={600}
