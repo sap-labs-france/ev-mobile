@@ -96,11 +96,11 @@
     "transactionsInProgress": "Laufende Ladevorgänge",
     "statistics": "Statistiken",
     "reportError": "Fehler Melden",
-    "users": "Users",
-    "cars": "Cars",
+    "users": "Benutzer",
+    "cars": "Fahrzeuge",
     "badges": "Ladekarten",
-    "invoices": "Invoices",
-    "paymentMethods": "Payment Methods",
+    "invoices": "Rechnungen",
+    "paymentMethods": "Zahlungsmethoden",
     "qrCodeScanner": "QR-Code Scanner"
   },
   "authentication": {
