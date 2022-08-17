@@ -10,6 +10,7 @@ import App from './src/App';
 import ThemeManager from './src/custom-theme/ThemeManager';
 import BaseProps from './src/types/BaseProps';
 import { ThemeType } from './src/types/Theme';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export interface Props extends BaseProps {}
 
@@ -60,11 +61,13 @@ export default class AppBootstrap extends React.Component<Props, State> {
       dark: themeManager.isThemeTypeIsDark()
     };
     return switchTheme ? (
-      <StyleProvider style={buildTheme(Appearance.getColorScheme() as ThemeType)}>
-        <PaperProvider theme={theme}>
-          <App />
-        </PaperProvider>
-      </StyleProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StyleProvider style={buildTheme(Appearance.getColorScheme() as ThemeType)}>
+          <PaperProvider theme={theme}>
+            <App />
+          </PaperProvider>
+        </StyleProvider>
+      </GestureHandlerRootView>
     ) : (
       <View />
     );
