@@ -1,4 +1,4 @@
-import { Spinner, Text, View } from 'native-base';
+import { Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import Modal from 'react-native-modal';
 import BaseProps from '../../types/BaseProps';
@@ -11,7 +11,7 @@ import ListItem from '../../types/ListItem';
 import { SafeAreaView, TouchableOpacity } from 'react-native';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import computeModalCommonStyle from './ModalCommonStyle';
-import { Button, Icon } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 
 export interface Props<T> extends BaseProps {
   defaultItems?: T[];

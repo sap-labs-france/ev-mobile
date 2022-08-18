@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
 import {
   Image,
@@ -33,7 +33,6 @@ import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
 import { SitesFiltersDef } from '../sites/SitesFilters';
 import SiteComponent from '../../components/site/SiteComponent';
-import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 

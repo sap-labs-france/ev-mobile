@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -13,7 +13,6 @@ import ChargingStationConnectorComponent from './connector/ChargingStationConnec
 import DialogModal from '../modal/DialogModal';
 import computeModalCommonStyle from '../modal/ModalCommonStyle';
 import I18nManager from '../../I18n/I18nManager';
-import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {
   chargingStation: ChargingStation;

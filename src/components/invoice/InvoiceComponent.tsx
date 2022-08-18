@@ -1,4 +1,5 @@
 import I18n from 'i18n-js';
+import { Icon } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -16,7 +17,6 @@ import computeStyleSheet from './InvoiceComponentStyles';
 import DialogModal from '../modal/DialogModal';
 import computeModalCommonStyle from '../modal/ModalCommonStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
-import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;

@@ -1,9 +1,13 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container } from 'native-base';
+import { Container, Icon, Spinner } from 'native-base';
 import React, { createRef } from 'react';
-import { ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
 
+import HeaderComponent from '../../components/header/HeaderComponent';
+import ItemsList from '../../components/list/ItemsList';
 import PaymentMethodComponent from '../../components/payment-method/PaymentMethodComponent';
+import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
 import { BillingPaymentMethod } from '../../types/Billing';
 import { DataResult } from '../../types/DataResult';
@@ -16,7 +20,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Message from '../../utils/Message';
 import { scale } from 'react-native-size-matters';
 import ItemsCompo from '../../components/list/testCompo/ItemsCompo';
-import { Icon } from 'react-native-elements';
+import SelectableList from '../base-screen/SelectableList';
 
 export interface Props extends BaseProps {}
 

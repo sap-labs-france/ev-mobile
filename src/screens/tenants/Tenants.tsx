@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Spinner, View } from 'native-base';
+import { Icon, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, RefreshControl, SafeAreaView, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
@@ -16,7 +16,6 @@ import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
 import TenantComponent from '../../components/tenant/TenantComponent';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
-import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 

@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
 import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 
@@ -19,7 +19,6 @@ import SelectableList, { SelectableProps, SelectableState } from '../base-screen
 import Orientation from 'react-native-orientation-locker';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import CarsFilters, { CarsFiltersDef } from './CarsFilters';
-import { Icon } from 'react-native-elements';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];

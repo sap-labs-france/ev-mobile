@@ -1,4 +1,4 @@
-import { Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, ViewStyle } from 'react-native';
 
@@ -10,7 +10,6 @@ import TransactionHeaderComponent from '../header/TransactionHeaderComponent';
 import computeStyleSheet from '../TransactionComponentCommonStyles';
 import computeListItemCommonStyle from '../../list/ListItemCommonStyle';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
-import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {
   transaction: Transaction;

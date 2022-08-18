@@ -1,11 +1,12 @@
 import React from 'react';
 import Modal from 'react-native-modal';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Icon } from 'native-base';
 import I18n from 'i18n-js';
 import computeStyleSheet from './DialogModalStyle';
 import computeModalCommonStyles from '../modal/ModalCommonStyle';
 import { Animation } from 'react-native-animatable';
-import { Button, Icon } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { RootSiblingParent } from 'react-native-root-siblings';
 
 

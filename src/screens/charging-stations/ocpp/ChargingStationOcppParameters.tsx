@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Button, Container, Spinner, Text, View } from 'native-base';
+import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, FlatList, RefreshControl, ScrollView } from 'react-native';
 
@@ -13,7 +13,6 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationOcppParametersStyles';
-import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 

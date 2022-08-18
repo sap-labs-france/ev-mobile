@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Button, Form, Item, Spinner } from 'native-base';
+import { Button, Form, Icon, Item, Spinner } from 'native-base';
 import React from 'react';
 import { Keyboard, ScrollView, Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -12,7 +12,6 @@ import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './ReportErrorStyles';
-import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 

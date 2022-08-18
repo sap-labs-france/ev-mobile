@@ -1,4 +1,4 @@
-import { Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 
 import I18nManager from '../../../I18n/I18nManager';
@@ -6,7 +6,6 @@ import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './TransactionHeaderComponentStyles';
-import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {
   transaction: Transaction;

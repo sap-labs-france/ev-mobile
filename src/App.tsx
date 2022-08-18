@@ -4,6 +4,7 @@ import { InitialState, NavigationContainer, NavigationState } from '@react-navig
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import I18n from 'i18n-js';
+import { Icon } from 'native-base';
 import React from 'react';
 import { StatusBar, Text } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
@@ -52,7 +53,6 @@ import ChargingStationQrCode from './screens/home/ChargingStationQrCode';
 import ThemeManager from './custom-theme/ThemeManager';
 import TenantQrCode from './screens/tenants/TenantQrCode';
 import computeStyleSheet from './AppStyles';
-import { Icon } from 'react-native-elements';
 
 // Init i18n
 I18nManager.initialize();

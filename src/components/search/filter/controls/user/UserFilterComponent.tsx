@@ -1,4 +1,4 @@
-import { Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 
 import FilterControlComponent, {
@@ -15,7 +15,7 @@ import Users from '../../../../../screens/users/list/Users';
 import { TouchableOpacity } from 'react-native';
 import I18n from 'i18n-js';
 import Utils from '../../../../../utils/Utils';
-import { Icon, withBadge } from 'react-native-elements';
+import { withBadge } from 'react-native-elements';
 import ListItem from '../../../../../types/ListItem';
 import { scale } from 'react-native-size-matters';
 
