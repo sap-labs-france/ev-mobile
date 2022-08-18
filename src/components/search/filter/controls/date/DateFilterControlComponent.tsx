@@ -6,15 +6,17 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Constants from '../../../../../utils/Constants';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from './DateFilterControlComponentStyles';
+import I18nManager from '../../../../../I18n/I18nManager';
 
 export interface Props extends FilterControlComponentProps<Date> {
   minimumDate: Date;
   maximumDate: Date;
-  defaultValue : Date;
+  defaultValue: Date;
 }
 
 interface State extends FilterControlComponentState<Date> {
   openDatePicker: boolean;
+  value: Date;
 }
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
@@ -26,7 +28,10 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public constructor(props: Props) {
     super(props);
-    this.state.openDatePicker = false;
+    this.state = {
+      openDatePicker: false,
+      value: null
+    }
   }
 
 
@@ -69,8 +74,8 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
         {value ? (
           <View>
             <TouchableOpacity style={internalStyle.inputContainer} onPress={() => this.setState({openDatePicker: true})}>
-              <Text numberOfLines={1} style={internalStyle.dateText}>{value.toDateString()}</Text>
-              <Icon style={internalStyle.dateIcon} type={'Foundation'} name={'calendar'} />
+              <Text numberOfLines={1} style={internalStyle.dateText}>{I18nManager.formatDateTime(value, {dateStyle: 'medium'})}</Text>
+              <Icon style={internalStyle.dateIcon} as={'Foundation'} name={'calendar'} />
             </TouchableOpacity>
             <DateTimePickerModal
               isVisible={this.state.openDatePicker}
