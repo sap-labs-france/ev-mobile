@@ -1,4 +1,3 @@
-import { Icon } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, Text, View, ViewStyle } from 'react-native';
 
@@ -9,6 +8,7 @@ import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import I18n from 'i18n-js';
+import { Icon } from 'react-native-elements';
 
 interface State {
   noImage?: boolean;

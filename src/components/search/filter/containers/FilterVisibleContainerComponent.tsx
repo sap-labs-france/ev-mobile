@@ -1,4 +1,4 @@
-import { Icon, View } from 'native-base';
+import { View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -6,6 +6,7 @@ import FilterContainerComponent, { FilterContainerComponentProps, FilterContaine
 import computeStyleSheet from './FilterContainerComponentStyles';
 import { Text } from 'react-native';
 import I18n from 'i18n-js';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends FilterContainerComponentProps {
   expanded?: boolean;

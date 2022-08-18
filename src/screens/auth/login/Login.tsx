@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
+import { Button, Checkbox, FormControl, VStack, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 
@@ -16,7 +16,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
-import { Axios } from 'axios';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -333,13 +333,13 @@ export default class Login extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
             <TouchableOpacity style={[style.linksButton]} onPress={() => this.newUser()}>
-              <Text style={style.linksTextButton} uppercase={false}>
+              <Text style={style.linksTextButton}>
                 {I18n.t('authentication.newUser')}
               </Text>
             </TouchableOpacity>
-            <Form style={formStyle.form}>
-              <Button block style={formStyle.button} onPress={() => this.goToTenants()}>
-                <Text style={formStyle.buttonText} uppercase={false}>
+            <FormControl style={formStyle.form}>
+              <Button style={formStyle.button} onPress={() => this.goToTenants()}>
+                <Text style={formStyle.buttonText} >
                   {this.state?.tenantName}
                 </Text>
               </Button>
@@ -349,8 +349,8 @@ export default class Login extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="email" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+              <VStack style={formStyle.inputGroup}>
+                <Icon name="email" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType="next"
                   placeholder={I18n.t('authentication.email')}
@@ -366,15 +366,15 @@ export default class Login extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ email: text })}
                   value={this.state.email}
                 />
-              </Item>
+              </VStack>
               {this.state.errorEmail &&
                 this.state.errorEmail.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+              <VStack style={formStyle.inputGroup}>
+                <Icon name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType="go"
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
@@ -391,13 +391,12 @@ export default class Login extends BaseScreen<Props, State> {
                   value={this.state.password}
                 />
                 <Icon
-                  active
                   name={hidePassword ? 'eye' : 'eye-off'}
                   type="Ionicons"
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
                   style={formStyle.inputIcon}
                 />
-              </Item>
+              </VStack>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
@@ -410,7 +409,7 @@ export default class Login extends BaseScreen<Props, State> {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.setState({ eula: !eula })} style={formStyle.formCheckboxContainer}>
-                <CheckBox disabled={true} style={formStyle.checkbox} checked={eula} />
+                <Checkbox style={formStyle.checkbox} checked={eula} />
                 <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
@@ -427,13 +426,13 @@ export default class Login extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={formStyle.spinner} color="grey" />
               ) : (
-                <Button primary block style={formStyle.button} onPress={async () => this.login()}>
-                  <Text style={formStyle.buttonText} uppercase={false}>
+                <Button block style={formStyle.button} onPress={async () => this.login()}>
+                  <Text style={formStyle.buttonText}>
                     {I18n.t('authentication.login')}
                   </Text>
                 </Button>
               )}
-            </Form>
+            </FormControl>
           </KeyboardAvoidingView>
         </ScrollView>
       </View>

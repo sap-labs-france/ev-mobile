@@ -1,10 +1,10 @@
 import React from 'react';
 import { Linking } from 'react-native';
 import I18n from 'i18n-js';
-import { Icon } from 'native-base';
 import DialogModal, { DialogCommonProps } from '../DialogModal';
 import { CheckVersionResponse } from 'react-native-check-version';
 import computeStyleSheet from '../ModalCommonStyle';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends DialogCommonProps {
   appVersion?: CheckVersionResponse;

@@ -13,7 +13,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     sidebar: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor,
-      paddingTop: '10@s',
       paddingTop: getStatusBarHeight() + scale(10),
       alignItems: 'center'
     },
@@ -96,7 +95,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     links: {
       borderBottomWidth: 0,
       paddingTop: '13@s',
-      paddingBottom: '13@s'
+      paddingBottom: '13@s',
+      flexDirection: 'row'
     },
     focused: {
       opacity: 0.7,
@@ -105,7 +105,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     linkIcon: {
       fontSize: '22@s',
-      color: commonColor.textColor
+      color: 'red'
     },
     linkText: {
       color: commonColor.textColor,

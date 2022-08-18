@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, Text, View } from 'native-base';
+import { Container, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, ScrollView } from 'react-native';
 
@@ -15,6 +15,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 

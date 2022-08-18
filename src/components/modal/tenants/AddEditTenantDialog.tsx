@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Icon, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 
@@ -9,7 +9,7 @@ import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import DialogModal, { DialogCommonProps } from '../DialogModal';
-import { Button, Input } from 'react-native-elements';
+import { Button, Icon, Input } from 'react-native-elements';
 import computeStyleSheet from './AddTenantManuallyDialogStyle';
 import computeModalCommonStyle from '../ModalCommonStyle';
 import Message from '../../../utils/Message';

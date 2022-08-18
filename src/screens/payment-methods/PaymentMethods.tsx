@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -21,6 +21,7 @@ import DialogModal from '../../components/modal/DialogModal';
 import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 

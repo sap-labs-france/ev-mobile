@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, Text, View } from 'native-base';
+import { Container, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -47,6 +47,7 @@ import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 import { scale } from 'react-native-size-matters'
 import computeActivityIndicatorCommonStyles from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import { Icon } from 'react-native-elements';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 

@@ -1,7 +1,7 @@
 import { CommonActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
+import { Button, Footer, Form, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 
@@ -15,6 +15,7 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import { TenantConnection } from '../../../types/Tenant';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 

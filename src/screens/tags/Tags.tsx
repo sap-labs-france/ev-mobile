@@ -1,5 +1,5 @@
 import i18n, { default as I18n } from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
@@ -15,6 +15,7 @@ import Utils from '../../utils/Utils';
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import computeStyleSheet from './TagsStyles';
 import TagsFilters, { TagsFiltersDef } from './TagsFilters';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];

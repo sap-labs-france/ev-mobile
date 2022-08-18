@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -18,6 +18,7 @@ import computeActivityIndicatorCommonStyles from '../../components/activity-indi
 import { ActivityIndicator } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 

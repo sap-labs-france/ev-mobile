@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, View } from 'native-base';
+import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -17,6 +17,7 @@ import Utils from '../../../utils/Utils';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from './TransactionsHistoryFilters';
 import { TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 

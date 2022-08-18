@@ -1,6 +1,6 @@
 import { CommonActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
+import { Button, CheckBox, Footer, Form, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 
@@ -15,6 +15,7 @@ import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import { StatusCodes } from 'http-status-codes';
 import { TenantConnection } from '../../../types/Tenant';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -396,7 +397,6 @@ export default class SignUp extends BaseScreen<Props, State> {
                   secureTextEntry={hideRepeatPassword}
                 />
                 <Icon
-                  active
                   name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
                   style={formStyle.inputIcon}

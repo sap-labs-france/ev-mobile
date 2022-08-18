@@ -6,8 +6,7 @@ import computeStyleSheet from'./FilterModalContainerComponentStyles';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import I18n from 'i18n-js';
-import { Icon } from 'native-base';
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 
 export interface Props extends FilterContainerComponentProps {}
 

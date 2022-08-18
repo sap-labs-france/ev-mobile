@@ -1,11 +1,11 @@
 import { DrawerActions } from '@react-navigation/native';
-import { Icon } from 'native-base';
 import React from 'react';
 import { Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './HeaderComponentStyles';
 import ScreenFilters from '../search/filter/screen/ScreenFilters';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {
   title: string;

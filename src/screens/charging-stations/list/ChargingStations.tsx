@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, View } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, BackHandler, Image, ImageStyle, SafeAreaView, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, BackHandler, Image, ImageStyle, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import computeConnectorStatusStyles from '../../../components/connector-status/ConnectorStatusComponentStyles';
@@ -30,6 +30,7 @@ import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
 import computeActivityIndicatorCommonStyle from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import { scale } from 'react-native-size-matters';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -349,7 +350,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const modalStyle = computeModalStyle();
     const { loading, chargingStations, isAdmin, skip, count, showMap, visible, chargingStationSelected, refreshing } = this.state;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
@@ -398,7 +399,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             </View>
           )}
         </View>
-      </Container>
+      </View>
     );
   }
 

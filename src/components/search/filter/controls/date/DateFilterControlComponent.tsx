@@ -1,4 +1,4 @@
-import { Icon, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -7,6 +7,7 @@ import Constants from '../../../../../utils/Constants';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from './DateFilterControlComponentStyles';
 import I18nManager from '../../../../../I18n/I18nManager';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends FilterControlComponentProps<Date> {
   minimumDate: Date;

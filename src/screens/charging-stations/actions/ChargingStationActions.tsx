@@ -1,7 +1,8 @@
 import I18n from 'i18n-js';
-import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
+import { Button, Container, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, ScrollView } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';

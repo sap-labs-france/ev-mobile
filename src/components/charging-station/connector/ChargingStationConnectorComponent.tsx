@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Icon, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -11,6 +11,7 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';
 import computeStyleSheet from './ChargingStationConnectorComponentStyles';
+import { Icon } from 'react-native-elements';
 
 export interface Props extends BaseProps {
   chargingStation: ChargingStation;
