@@ -1,7 +1,7 @@
 import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Icon, ListItem, View } from 'native-base';
+import { Icon, HStack, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, SafeAreaView, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { CheckVersionResponse } from 'react-native-check-version';
@@ -142,82 +142,82 @@ export default class SideBar extends React.Component<Props, State> {
         <View style={style.border} />
         <ScrollView style={style.drawerContent}>
           <View style={style.linkContainer}>
-            <ListItem style={style.links} button iconLeft onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
+            <HStack style={style.links} button iconLeft onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="qr-code-scanner" />
               <Text style={style.linkText}>{I18n.t('sidebar.qrCodeScanner')}</Text>
-            </ListItem>
+            </HStack>
             {isComponentOrganizationActive && (
-              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
+              <HStack style={style.links} button iconLeft onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
                 <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
-              </ListItem>
+              </HStack>
             )}
-            <ListItem style={[style.links]} button iconLeft onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
+            <HStack style={[style.links]} button iconLeft onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
               <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
-            </ListItem>
-            <ListItem
+            </HStack>
+            <HStack
               style={style.links}
               button
               iconLeft
               onPress={() => this.navigateTo('TransactionHistoryNavigator', 'TransactionsHistory')}>
               <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
               <Text style={style.linkText}>{I18n.t('sidebar.transactionsHistory')}</Text>
-            </ListItem>
-            <ListItem
+            </HStack>
+            <HStack
               style={style.links}
               button
               iconLeft
               onPress={() => this.navigateTo('TransactionInProgressNavigator', 'TransactionsInProgress')}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="play-arrow" />
               <Text style={style.linkText}>{I18n.t('sidebar.transactionsInProgress')}</Text>
-            </ListItem>
-            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
+            </HStack>
+            <HStack style={style.links} button iconLeft onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="assessment" />
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
-            </ListItem>
+            </HStack>
             {this.securityProvider?.canListUsers() && (
-              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
+              <HStack style={style.links} button iconLeft onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="people" />
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
-              </ListItem>
+              </HStack>
             )}
             {this.securityProvider?.canListTags() && (
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
+              <HStack style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="credit-card" />
                 <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
-              </ListItem>
+              </HStack>
             )}
             {this.securityProvider?.canListCars() && this.securityProvider?.isComponentCarActive() && (
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
+              <HStack style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="directions-car" />
                 <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
-              </ListItem>
+              </HStack>
             )}
             {this.securityProvider?.canListPaymentMethods() && this.securityProvider?.isComponentBillingActive() && (
-              <ListItem
+              <HStack
                 style={style.links}
                 button={true}
                 iconLeft={true}
                 onPress={() => this.navigateTo('PaymentMethodsNavigator', 'PaymentMethods')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="payments" />
                 <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
-              </ListItem>
+              </HStack>
             )}
             {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
+              <HStack style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="receipt" />
                 <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
-              </ListItem>
+              </HStack>
             )}
-            <ListItem
+            <HStack
               style={style.links}
               button={true}
               iconLeft={true}
               onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
               <Icon style={[style.linkIcon, { color: commonColor.dangerLight }]} type="MaterialIcons" name="error-outline" />
               <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
-            </ListItem>
+            </HStack>
           </View>
         </ScrollView>
         <View style={style.bottomContainer}>

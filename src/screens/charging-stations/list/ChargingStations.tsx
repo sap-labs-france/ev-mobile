@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, View } from 'native-base';
+import { Icon, Spinner, View } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, BackHandler, Image, ImageStyle, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Marker, Region } from 'react-native-maps';
@@ -349,7 +349,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const modalStyle = computeModalStyle();
     const { loading, chargingStations, isAdmin, skip, count, showMap, visible, chargingStationSelected, refreshing } = this.state;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
@@ -398,7 +398,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             </View>
           )}
         </View>
-      </Container>
+      </View>
     );
   }
 

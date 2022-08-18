@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
+import { Button, Checkbox, FormControl, Icon, VStack, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 
@@ -16,7 +16,6 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
-import { Axios } from 'axios';
 
 export interface Props extends BaseProps {}
 
@@ -337,7 +336,7 @@ export default class Login extends BaseScreen<Props, State> {
                 {I18n.t('authentication.newUser')}
               </Text>
             </TouchableOpacity>
-            <Form style={formStyle.form}>
+            <FormControl style={formStyle.form}>
               <Button block style={formStyle.button} onPress={() => this.goToTenants()}>
                 <Text style={formStyle.buttonText} uppercase={false}>
                   {this.state?.tenantName}
@@ -349,7 +348,7 @@ export default class Login extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel style={formStyle.inputGroup}>
+              <VStack inlineLabel style={formStyle.inputGroup}>
                 <Icon active name="email" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType="next"
@@ -366,14 +365,14 @@ export default class Login extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ email: text })}
                   value={this.state.email}
                 />
-              </Item>
+              </VStack>
               {this.state.errorEmail &&
                 this.state.errorEmail.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel style={formStyle.inputGroup}>
+              <VStack inlineLabel style={formStyle.inputGroup}>
                 <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType="go"
@@ -397,7 +396,7 @@ export default class Login extends BaseScreen<Props, State> {
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
                   style={formStyle.inputIcon}
                 />
-              </Item>
+              </VStack>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
@@ -410,7 +409,7 @@ export default class Login extends BaseScreen<Props, State> {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.setState({ eula: !eula })} style={formStyle.formCheckboxContainer}>
-                <CheckBox disabled={true} style={formStyle.checkbox} checked={eula} />
+                <Checkbox disabled={true} style={formStyle.checkbox} checked={eula} />
                 <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
@@ -433,7 +432,7 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 </Button>
               )}
-            </Form>
+            </FormControl>
           </KeyboardAvoidingView>
         </ScrollView>
       </View>
