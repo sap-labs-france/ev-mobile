@@ -1,7 +1,7 @@
 import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Icon, HStack, View } from 'native-base';
+import { Icon, View, IIconProps, Pressable } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, SafeAreaView, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { CheckVersionResponse } from 'react-native-check-version';
@@ -17,6 +17,9 @@ import computeStyleSheet from './SideBarStyles';
 import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -112,11 +115,13 @@ export default class SideBar extends React.Component<Props, State> {
     this.props.navigation.navigate(container, { screen, params, key: Utils.randomNumber().toString() });
   };
 
+
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const { userToken, tenantName, isComponentOrganizationActive, showAppUpdateDialog, appVersion, tenantLogo } = this.state;
     const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
+    const SidebarIcon = (props: IIconProps) =>  <Icon color={commonColor.textColor} size={scale(22)} {...props} />;
     // Get logo
     return (
       <SafeAreaView style={style.sidebar}>
@@ -125,99 +130,91 @@ export default class SideBar extends React.Component<Props, State> {
           <Text numberOfLines={1} style={style.tenantName}>
             {tenantName}
           </Text>
-          <TouchableOpacity
+          <Pressable
             disabled={!appVersion?.needsUpdate}
             onPress={() => this.setState({ showAppUpdateDialog: true })}
             style={style.versionContainer}>
             <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
             {appVersion?.needsUpdate && (
               <View style={style.newVersionContainer}>
-                <Icon style={style.newVersionIcon} type={'MaterialIcons'} name={'update'} />
+                <SidebarIcon style={style.newVersionIcon} as={MaterialIcons} name={'update'} />
                 <Text style={style.newVersionText}>{I18n.t('appUpdate.appUpdateDialogTitle')}</Text>
               </View>
             )}
-          </TouchableOpacity>
+          </Pressable>
           {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
         </View>
         <View style={style.border} />
         <ScrollView style={style.drawerContent}>
           <View style={style.linkContainer}>
-            <HStack style={style.links} button iconLeft onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="qr-code-scanner" />
+            <TouchableOpacity style={style.links} onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
+              <SidebarIcon as={MaterialIcons} name="qr-code-scanner" />
               <Text style={style.linkText}>{I18n.t('sidebar.qrCodeScanner')}</Text>
-            </HStack>
+            </TouchableOpacity>
             {isComponentOrganizationActive && (
-              <HStack style={style.links} button iconLeft onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
-                <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
+              <TouchableOpacity style={style.links} onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
+                <SidebarIcon as={MaterialIcons} name="store-mall-directory" />
                 <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
-              </HStack>
+              </TouchableOpacity>
             )}
-            <HStack style={[style.links]} button iconLeft onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
+            <TouchableOpacity style={[style.links]} onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
+              <SidebarIcon as={MaterialIcons} name="ev-station" />
               <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
-            </HStack>
-            <HStack
+            </TouchableOpacity>
+            <TouchableOpacity
               style={style.links}
-              button
-              iconLeft
               onPress={() => this.navigateTo('TransactionHistoryNavigator', 'TransactionsHistory')}>
-              <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
+              <SidebarIcon as={MaterialCommunityIcons} name="history" />
               <Text style={style.linkText}>{I18n.t('sidebar.transactionsHistory')}</Text>
-            </HStack>
-            <HStack
+            </TouchableOpacity>
+            <TouchableOpacity
               style={style.links}
-              button
-              iconLeft
               onPress={() => this.navigateTo('TransactionInProgressNavigator', 'TransactionsInProgress')}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="play-arrow" />
+              <SidebarIcon as={MaterialIcons} name="play-arrow" />
               <Text style={style.linkText}>{I18n.t('sidebar.transactionsInProgress')}</Text>
-            </HStack>
-            <HStack style={style.links} button iconLeft onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="assessment" />
+            </TouchableOpacity>
+            <TouchableOpacity style={style.links} onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
+              <SidebarIcon as={MaterialIcons} name="assessment" />
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
-            </HStack>
+            </TouchableOpacity>
             {this.securityProvider?.canListUsers() && (
-              <HStack style={style.links} button iconLeft onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
-                <Icon style={style.linkIcon} type="MaterialIcons" name="people" />
+              <TouchableOpacity style={style.links} onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
+                <SidebarIcon as={MaterialIcons} name="people" />
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
-              </HStack>
+              </TouchableOpacity>
             )}
             {this.securityProvider?.canListTags() && (
-              <HStack style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
-                <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="credit-card" />
+              <TouchableOpacity style={style.links} onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
+                <SidebarIcon as={MaterialCommunityIcons} name="credit-card" />
                 <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
-              </HStack>
+              </TouchableOpacity>
             )}
             {this.securityProvider?.canListCars() && this.securityProvider?.isComponentCarActive() && (
-              <HStack style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
-                <Icon style={style.linkIcon} type="MaterialIcons" name="directions-car" />
+              <TouchableOpacity style={style.links} onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
+                <SidebarIcon as={MaterialIcons} name="directions-car" />
                 <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
-              </HStack>
+              </TouchableOpacity>
             )}
             {this.securityProvider?.canListPaymentMethods() && this.securityProvider?.isComponentBillingActive() && (
-              <HStack
+              <TouchableOpacity
                 style={style.links}
-                button={true}
-                iconLeft={true}
                 onPress={() => this.navigateTo('PaymentMethodsNavigator', 'PaymentMethods')}>
-                <Icon style={style.linkIcon} type="MaterialIcons" name="payments" />
+                <SidebarIcon as={MaterialIcons} name="payments" />
                 <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
-              </HStack>
+              </TouchableOpacity>
             )}
             {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
-              <HStack style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
-                <Icon style={style.linkIcon} type="MaterialIcons" name="receipt" />
+              <TouchableOpacity style={style.links} onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
+                <SidebarIcon as={MaterialIcons} name="receipt" />
                 <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
-              </HStack>
+              </TouchableOpacity>
             )}
-            <HStack
+            <TouchableOpacity
               style={style.links}
-              button={true}
-              iconLeft={true}
               onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-              <Icon style={[style.linkIcon, { color: commonColor.dangerLight }]} type="MaterialIcons" name="error-outline" />
+              <SidebarIcon color={commonColor.dangerLight} as={MaterialIcons} name="error-outline" />
               <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
-            </HStack>
+            </TouchableOpacity>
           </View>
         </ScrollView>
         <View style={style.bottomContainer}>
