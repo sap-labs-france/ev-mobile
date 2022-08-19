@@ -148,7 +148,7 @@
     "acceptEula": "J'accepte les ",
     "eula": "Conditions d'utilisation",
     "login": "S'identifier",
-    "registerSuccess": "Compte créé avec succès ! Vérifiez vos emails",
+    "registerSuccess": "Compte créé avec succès, pour l'activer vérifiez votre mail",
     "resetPasswordSuccess": "Mot de passe mis à jour avec succès !",
     "resetPasswordHashNotValid": "La requete n'est plus valide, refaites une demande de mot de passe",
     "resetPasswordUnexpectedError": "Impossible de réinitialiser le mot de passe",
