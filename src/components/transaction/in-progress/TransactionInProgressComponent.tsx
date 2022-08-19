@@ -1,6 +1,6 @@
-import { Icon, Text, View } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, ViewStyle } from 'react-native';
+import { TouchableOpacity, ViewStyle, Text, View } from 'react-native';
 
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
@@ -10,6 +10,9 @@ import TransactionHeaderComponent from '../header/TransactionHeaderComponent';
 import computeStyleSheet from '../TransactionComponentCommonStyles';
 import computeListItemCommonStyle from '../../list/ListItemCommonStyle';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
   transaction: Transaction;
@@ -45,7 +48,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
     const { transaction, isAdmin, isSiteAdmin, isPricingActive, containerStyle } = this.props;
     const instantPower = I18nManager.formatNumber(transaction.currentInstantWatts / 1000, {maximumFractionDigits: 1});
     const totalConsumption = I18nManager.formatNumber(transaction.currentTotalConsumptionWh / 1000, {maximumFractionDigits: 1});
-    const price = transaction.currentCumulatedPrice ? I18nManager.formatCurrency(transaction.currentCumulatedPrice, transaction.priceUnit) : 0  //Utils.roundTo(transaction.currentCumulatedPrice, 2) : 0;
+    const price = transaction.currentCumulatedPrice ? I18nManager.formatCurrency(transaction.currentCumulatedPrice, transaction.priceUnit) : 0;
     const duration = I18nManager.formatDuration(transaction.currentTotalDurationSecs, {style: DurationUnitFormat.styles.TIMER});
     const inactivity = I18nManager.formatDuration(transaction.currentTotalInactivitySecs, {style: DurationUnitFormat.styles.TIMER});
     const inactivityStyle = Utils.computeInactivityStyle(transaction.currentInactivityStatus);
@@ -69,30 +72,30 @@ export default class TransactionInProgressComponent extends React.Component<Prop
           <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
           <View style={[style.transactionDetailsContainer]}>
             <View style={style.transactionDetailContainer}>
-              <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
+              <Icon size={scale(25)} as={FontAwesome} name="bolt" style={[style.icon, style.info]} />
               <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{instantPower} kW</Text>
             </View>
             <View style={style.transactionDetailContainer}>
-              <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
+              <Icon size={scale(25)} as={MaterialIcons} name="ev-station" style={[style.icon, style.info]} />
               <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{totalConsumption} kW.h</Text>
             </View>
             <View style={style.transactionDetailContainer}>
-              <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
+              <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={[style.icon, style.info]} />
               <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{batteryLevel}</Text>
             </View>
           </View>
           <View style={[style.transactionDetailsContainer, style.transactionDetailsContainer2]}>
             <View style={style.transactionDetailContainer}>
-              <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+              <Icon size={scale(25)} as={MaterialIcons} name="timer" style={[style.icon, style.info]} />
               <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{duration}</Text>
             </View>
             <View style={style.transactionDetailContainer}>
-              <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+              <Icon size={scale(25)} as={MaterialIcons} name="timer-off" style={[style.icon, inactivityStyle]} />
               <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
             </View>
             {isPricingActive && (
               <View style={style.transactionDetailContainer}>
-                <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+                <Icon size={scale(25)} as={FontAwesome} name="money" style={[style.icon, style.info]} />
                 <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{price}</Text>
               </View>
             )}
