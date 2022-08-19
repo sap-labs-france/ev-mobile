@@ -1,5 +1,4 @@
 import i18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -16,6 +15,8 @@ import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './InvoicesStyles';
 import InvoicesFilters, { InvoicesFiltersDef } from './InvoicesFilters';
+import { Spinner } from 'native-base';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -135,7 +136,7 @@ export default class Invoices extends BaseScreen<Props, State> {
     const { navigation } = this.props;
     const style = computeStyleSheet();
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           title={i18n.t('sidebar.invoices')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
@@ -147,7 +148,7 @@ export default class Invoices extends BaseScreen<Props, State> {
           onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}
           ref={(invoicesFilters: InvoicesFilters) => this.setScreenFilters(invoicesFilters, true)}
         />
-          {loading ? <Spinner style={style.spinner} color="grey" /> : (
+          {loading ? <Spinner size={scale(20)} style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<BillingInvoice>
               data={invoices}
@@ -163,7 +164,7 @@ export default class Invoices extends BaseScreen<Props, State> {
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   }
 }
