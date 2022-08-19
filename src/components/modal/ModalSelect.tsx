@@ -205,7 +205,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           </TouchableOpacity>
           {clearable && (
             <TouchableOpacity style={style.clearContainer} onPress={() => this.resetInput(true)}>
-              <Icon style={style.clearIcon} as={EvilIcons} name={'close'} />
+              <Icon size={scale(25)} style={style.clearIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           )}
         </View>
