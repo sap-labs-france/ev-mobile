@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, Checkbox, FormControl, Icon, VStack, Spinner, Text, View } from 'native-base';
+import { Button, Checkbox, FormControl, Icon, Stack, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 
@@ -16,6 +16,9 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -332,24 +335,24 @@ export default class Login extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
             <TouchableOpacity style={[style.linksButton]} onPress={() => this.newUser()}>
-              <Text style={style.linksTextButton} uppercase={false}>
+              <Text style={style.linksTextButton}>
                 {I18n.t('authentication.newUser')}
               </Text>
             </TouchableOpacity>
             <FormControl style={formStyle.form}>
-              <Button block style={formStyle.button} onPress={() => this.goToTenants()}>
-                <Text style={formStyle.buttonText} uppercase={false}>
+              <TouchableOpacity style={formStyle.button} onPress={() => this.goToTenants()}>
+                <Text style={formStyle.buttonText} >
                   {this.state?.tenantName}
                 </Text>
-              </Button>
+              </TouchableOpacity>
               {this.state.errorTenantSubDomain &&
                 this.state.errorTenantSubDomain.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <VStack inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="email" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+              <Stack style={formStyle.inputGroup}>
+                <Icon size={scale(20)} name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType="next"
                   placeholder={I18n.t('authentication.email')}
@@ -365,15 +368,15 @@ export default class Login extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ email: text })}
                   value={this.state.email}
                 />
-              </VStack>
+              </Stack>
               {this.state.errorEmail &&
                 this.state.errorEmail.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <VStack inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+              <Stack style={formStyle.inputGroup}>
+                <Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType="go"
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
@@ -390,13 +393,13 @@ export default class Login extends BaseScreen<Props, State> {
                   value={this.state.password}
                 />
                 <Icon
-                  active
                   name={hidePassword ? 'eye' : 'eye-off'}
-                  type="Ionicons"
+                  size={scale(20)}
+                  as={Ionicons}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
                   style={formStyle.inputIcon}
                 />
-              </VStack>
+              </Stack>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
@@ -404,12 +407,12 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <TouchableOpacity style={[style.linksButton]} onPress={() => this.forgotPassword()}>
-                <Text style={[style.linksTextButton, style.linksTextButton]} uppercase={false}>
+                <Text style={[style.linksTextButton, style.linksTextButton]}>
                   {I18n.t('authentication.forgotYourPassword')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.setState({ eula: !eula })} style={formStyle.formCheckboxContainer}>
-                <Checkbox disabled={true} style={formStyle.checkbox} checked={eula} />
+                <Checkbox _icon={{color: commonColor.textColor}} accessibilityLabel={'accept EULA'} onChange={() => this.setState({ eula: !eula })} style={formStyle.checkbox} value={'checkbox'} isChecked={eula} />
                 <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
@@ -426,8 +429,8 @@ export default class Login extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={formStyle.spinner} color="grey" />
               ) : (
-                <Button primary block style={formStyle.button} onPress={async () => this.login()}>
-                  <Text style={formStyle.buttonText} uppercase={false}>
+                <Button style={formStyle.button} onPress={async () => this.login()}>
+                  <Text style={formStyle.buttonText}>
                     {I18n.t('authentication.login')}
                   </Text>
                 </Button>
