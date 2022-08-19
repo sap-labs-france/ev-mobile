@@ -16,6 +16,7 @@ import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import { TenantConnection } from '../../../types/Tenant';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -193,7 +194,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
             <FormControl style={formStyle.form}>
               <Stack style={formStyle.inputGroup}>
-                <Icon name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
+                <Icon size={scale(20)} name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType={'next'}
                   selectionColor={commonColor.textColor}
