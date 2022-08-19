@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Container, Spinner, Text, View } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
-import { FlatList, RefreshControl, ScrollView } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, Text, View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
@@ -157,7 +157,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     const style = computeStyleSheet();
     const { loading, chargingStation } = this.state;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
@@ -194,7 +194,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
             ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargerParameters')} />}
           />
         )}
-      </Container>
+      </View>
     );
   }
 
