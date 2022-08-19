@@ -322,7 +322,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <SafeAreaView style={style.chargingStationDetailsModalContainer}>
           <View style={style.chargingStationDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ visible: false })}>
-              <Icon style={style.closeIcon} as={EvilIcons} name={'close'} />
+              <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           </View>
           {this.state.loadingChargingStationDetails ? (

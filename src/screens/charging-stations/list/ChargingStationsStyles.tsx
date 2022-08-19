@@ -125,8 +125,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '30@s'
     },
     closeIcon: {
-      padding: '8@s',
-      fontSize: '37@s',
       color: commonColor.textColor
     },
     activityIndicator: {
