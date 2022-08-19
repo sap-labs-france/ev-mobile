@@ -33,7 +33,6 @@ import { scale } from 'react-native-size-matters';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 
 export interface Props extends BaseProps {}
@@ -431,7 +430,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               title={chargingStation.id}
               onPress={() => this.showMapChargingStationDetail(chargingStation.id)}
             >
-              <Icon as={FontAwesome5} name={'charging-station'} size={scale(30)} style={this.buildMarkerStyle(chargingStation?.connectors, chargingStation?.inactive)} />
+              <Icon as={MaterialCommunityIcons} name={'ev-station'} size={scale(40)} style={this.buildMarkerStyle(chargingStation?.connectors, chargingStation?.inactive)} />
             </Marker>
           )}
           initialRegion={this.currentRegion}
