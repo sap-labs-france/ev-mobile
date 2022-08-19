@@ -1,9 +1,9 @@
 import { CommonActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
+import { Button, FormControl, Icon, Stack, Spinner } from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput, Text, View } from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
@@ -13,6 +13,8 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import { TenantConnection } from '../../../types/Tenant';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -191,9 +193,9 @@ export default class ResetPassword extends BaseScreen<Props, State> {
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
-            <Form style={formStyle.form}>
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+            <FormControl style={formStyle.form}>
+              <Stack style={formStyle.inputGroup}>
+                <Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
@@ -209,20 +211,21 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   secureTextEntry={hidePassword}
                 />
                 <Icon
-                  active
                   name={hidePassword ? 'eye' : 'eye-off'}
+                  size={scale(20)}
+                  as={MaterialCommunityIcons}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
                   style={formStyle.inputIcon}
                 />
-              </Item>
+              </Stack>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+              <Stack style={formStyle.inputGroup}>
+                <Icon name="lock" size={scale(20)} as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -239,12 +242,13 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   secureTextEntry={hideRepeatPassword}
                 />
                 <Icon
-                  active
+                  as={MaterialCommunityIcons}
+                  size={scale(20)}
                   name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
                   style={formStyle.inputIcon}
                 />
-              </Item>
+              </Stack>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
@@ -254,28 +258,25 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={formStyle.spinner} color="grey" />
               ) : (
-                <Button primary block style={formStyle.button} onPress={async () => this.resetPassword()}>
-                  <Text style={formStyle.buttonText} uppercase={false}>
+                <Button style={formStyle.button} onPress={async () => this.resetPassword()}>
+                  <Text style={formStyle.buttonText} >
                     {I18n.t('authentication.resetPassword')}
                   </Text>
                 </Button>
               )}
-            </Form>
+            </FormControl>
           </KeyboardAvoidingView>
         </ScrollView>
-        <Footer style={style.footer}>
-          <Left>
-            <Button
-              small
-              transparent
-              style={[style.linksButton, style.linksButtonLeft]}
-              onPress={() => this.props.navigation.navigate('Login')}>
-              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>
-                {I18n.t('authentication.backLogin')}
-              </Text>
-            </Button>
-          </Left>
-        </Footer>
+        <View style={style.footer}>
+          <Button
+            bgColor={'transparent'}
+            style={[style.linksButton, style.linksButtonLeft]}
+            onPress={() => this.props.navigation.navigate('Login')}>
+            <Text style={[style.linksTextButton, style.linksTextButtonLeft]}>
+              {I18n.t('authentication.backLogin')}
+            </Text>
+          </Button>
+        </View>
       </View>
     );
   }
