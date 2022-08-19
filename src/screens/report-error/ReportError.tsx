@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Button, Form, Icon, Item, Spinner } from 'native-base';
+import { Button, FormControl, Icon, Stack, Spinner } from 'native-base';
 import React from 'react';
 import { Keyboard, ScrollView, Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -12,6 +12,8 @@ import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './ReportErrorStyles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -184,70 +186,65 @@ export default class ReportError extends BaseScreen<Props, State> {
         />
         <View style={style.container}>
           <View style={style.iconContainer}>
-            <Icon style={style.reportErrorIcon} type="MaterialIcons" name="error-outline" />
+            <Icon size={scale(100)} style={style.reportErrorIcon} as={MaterialIcons} name="error-outline" />
           </View>
-          <Form style={style.formContainer}>
-            <Item style={style.input} regular>
+          <FormControl style={style.formContainer}>
+            <Stack style={style.input}>
               <TextInput
                 style={style.inputText}
                 placeholder={I18n.t('general.mobile')}
-                placeholderTextColor={commonColor.inputColorPlaceholder}
+                placeholderTextColor={commonColor.disabledDark}
                 selectionColor={commonColor.textColor}
                 onChangeText={(text) => this.changeMobileText(text)}
-                onSubmitEditing={!this.state.subject ? () => this.subjectInput.focus() : () => this.descriptionInput.focus()}
-                autoFocus={!this.state.mobile ? true : false}
                 autoCapitalize="none"
                 blurOnSubmit={false}
                 autoCorrect={false}
                 value={this.state.mobile}
               />
-            </Item>
+            </Stack>
             {this.state.errorMobile &&
               this.state.errorMobile.map((errorMessage, index) => (
                 <Text style={style.errorMobileText} key={index}>
                   {errorMessage}
                 </Text>
               ))}
-            <Item style={style.input} regular>
+            <Stack style={style.input}>
               <TextInput
                 ref={(ref: TextInput) => (this.subjectInput = ref)}
                 style={style.inputText}
                 placeholder={I18n.t('general.errorTitle')}
-                placeholderTextColor={commonColor.inputColorPlaceholder}
+                placeholderTextColor={commonColor.disabledDark}
                 selectionColor={commonColor.textColor}
                 onChangeText={(text) => this.setState({ subject: text })}
-                onSubmitEditing={() => this.descriptionInput.focus()}
-                autoFocus={this.state.mobile && !this.state.subject ? true : false}
                 autoCorrect={false}
                 blurOnSubmit={false}
                 autoCapitalize="none"
                 value={this.state.subject}
               />
-            </Item>
+            </Stack>
             {this.state.errorSubject &&
               this.state.errorSubject.map((errorMessage, index) => (
                 <Text style={style.errorSubjectText} key={index}>
                   {errorMessage}
                 </Text>
               ))}
-            <Item style={style.descriptionInput} regular>
+            <Stack style={style.descriptionInput}>
               <ScrollView>
                 <TextInput
                   ref={(ref: TextInput) => (this.descriptionInput = ref)}
                   style={style.descriptionText}
                   placeholder={I18n.t('general.errorDescription')}
                   onSubmitEditing={() => Keyboard.dismiss()}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.disabledDark}
                   selectionColor={commonColor.textColor}
                   onChangeText={(text) => this.setState({ description: text })}
-                  autoFocus={this.state.mobile && this.state.subject ? true : false}
                   multiline
                   autoCorrect={false}
                   blurOnSubmit={false}
                   autoCapitalize="none"
                 />
               </ScrollView>
-            </Item>
+            </Stack>
             {this.state.errorDescription &&
               this.state.errorDescription.map((errorMessage, index) => (
                 <Text style={style.errorDescriptionText} key={index}>
@@ -259,7 +256,7 @@ export default class ReportError extends BaseScreen<Props, State> {
                 <Text style={style.sendTextButton}>{I18n.t('general.send')}</Text>
               </Button>
             </View>
-          </Form>
+          </FormControl>
         </View>
       </Animatable.View>
     );
