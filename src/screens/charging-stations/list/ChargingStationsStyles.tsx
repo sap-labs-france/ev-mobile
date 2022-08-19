@@ -87,10 +87,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontSize: '14@s'
     },
-    icon: {
-      color: commonColor.light,
-      fontSize: '20@s'
-    },
     chargingStationMarker: {
       fontSize: '30@s',
     },

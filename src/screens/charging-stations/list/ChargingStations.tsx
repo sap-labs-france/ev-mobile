@@ -30,6 +30,11 @@ import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
 import computeActivityIndicatorCommonStyle from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import { scale } from 'react-native-size-matters';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 
 export interface Props extends BaseProps {}
 
@@ -318,7 +323,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <SafeAreaView style={style.chargingStationDetailsModalContainer}>
           <View style={style.chargingStationDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ visible: false })}>
-              <Icon style={style.closeIcon} type="EvilIcons" name={'close'} />
+              <Icon style={style.closeIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           </View>
           {this.state.loadingChargingStationDetails ? (
@@ -348,6 +353,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const { navigation } = this.props;
     const modalStyle = computeModalStyle();
     const { loading, chargingStations, isAdmin, skip, count, showMap, visible, chargingStationSelected, refreshing } = this.state;
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={style.container}>
         <HeaderComponent
@@ -360,7 +366,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               onPress: () => navigation.navigate('QRCodeScanner'),
               renderAction: () => (
                 <View style={style.qrcodeButton}>
-                  <Icon type={'MaterialIcons'} name={'qr-code-scanner'} style={style.icon} />
+                  <Icon as={MaterialIcons} name={'qr-code-scanner'} color={commonColors.light} size={scale(20)} />
                 </View>
               )
             }
@@ -425,7 +431,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               title={chargingStation.id}
               onPress={() => this.showMapChargingStationDetail(chargingStation.id)}
             >
-              <Icon type={'FontAwesome5'} name={'charging-station'} style={[style.chargingStationMarker, this.buildMarkerStyle(chargingStation?.connectors, chargingStation?.inactive)]} />
+              <Icon as={FontAwesome5} name={'charging-station'} size={scale(30)} style={this.buildMarkerStyle(chargingStation?.connectors, chargingStation?.inactive)} />
             </Marker>
           )}
           initialRegion={this.currentRegion}
@@ -455,7 +461,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           style={[fabStyles.fab, style.fab]}
           onPress={() => this.setState({ showMap: !showMap, chargingStations: [], count: 0}, () => this.refresh(true)) }
         >
-          <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
+          <Icon size={scale(18)} style={fabStyles.fabIcon} as={MaterialCommunityIcons} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -505,7 +511,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-            <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>
