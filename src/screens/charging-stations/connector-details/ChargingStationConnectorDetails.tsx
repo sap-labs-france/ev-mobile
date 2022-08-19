@@ -47,6 +47,7 @@ import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 import { scale } from 'react-native-size-matters'
 import computeActivityIndicatorCommonStyles from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -1235,7 +1236,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         title={I18n.t('details.startTransaction')}
         withCloseButton={true}
         close={() => this.setState({ showStartTransactionDialog: false })}
-        renderIcon={(style) => <Icon style={style} type={'MaterialIcons'} name={'play-circle-outline'} />}
+        renderIcon={(style) => <Icon style={style} size={scale(style.fontSize)} as={MaterialIcons} name={'play-circle-outline'} />}
         description={I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStationID })}
         buttons={[
           {

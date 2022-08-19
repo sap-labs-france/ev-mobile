@@ -14,6 +14,9 @@ import computeStyleSheet from './AddTenantManuallyDialogStyle';
 import computeModalCommonStyle from '../ModalCommonStyle';
 import Message from '../../../utils/Message';
 import { TouchableOpacity } from 'react-native';
+import { scale } from 'react-native-size-matters';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export interface Props extends BaseProps, DialogCommonProps {
   tenants: TenantConnection[];
@@ -120,9 +123,9 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
       <DialogModal
         renderIcon={(iconStyle) =>
           mode === TenantDialogMode.ADD ? (
-            <Icon style={iconStyle} type={'MaterialIcons'} name={'add-business'} />
+            <Icon style={iconStyle} size={scale(iconStyle.fontSize)} as={MaterialIcons} name={'add-business'} />
           ) : (
-            <Icon style={iconStyle} type={'MaterialCommunityIcons'} name={'home-edit'} />
+            <Icon style={iconStyle} size={scale(iconStyle.fontSize)} as={MaterialCommunityIcons} name={'home-edit'} />
           )
         }
         animationIn={'fadeInLeft'}
