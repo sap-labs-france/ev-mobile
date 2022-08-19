@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -131,7 +131,7 @@ export default class CarCatalogs extends SelectableList<Car> {
     const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
     return (
-      <Container style={transactionStyles.container}>
+      <View style={transactionStyles.container}>
         {!isModal && (
           <HeaderComponent
             title={this.buildHeaderTitle()}
@@ -171,7 +171,7 @@ export default class CarCatalogs extends SelectableList<Car> {
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   }
 }
