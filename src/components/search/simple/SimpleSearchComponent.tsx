@@ -6,6 +6,8 @@ import { TextInput, TouchableOpacity, View } from 'react-native';
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './SimpleSearchComponentStyles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
   onChange: (search: string) => void;
@@ -48,7 +50,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
     const { containerStyle } = this.props;
     return (
       <View style={[style.container, containerStyle]}>
-        <Icon type="MaterialIcons" name="search" style={style.icon} />
+        <Icon marginX={scale(5)} size={scale((22))} as={MaterialIcons} name="search" style={style.icon} />
         <TextInput
           ref={(ref) => {
             this.textInput = ref;
