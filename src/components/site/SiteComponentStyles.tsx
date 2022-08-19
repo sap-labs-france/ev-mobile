@@ -76,13 +76,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     icon: {
       color: commonColor.headerTextColor
     },
-    iconLeft: {
-      fontSize: '30@s'
-    },
     arrowIcon: {
       fontSize: '18@s',
-      color: commonColor.disabledDark,
-      marginLeft: '20@s'
+      color: commonColor.disabledDark
     }
   });
   const portraitStyles = {};
