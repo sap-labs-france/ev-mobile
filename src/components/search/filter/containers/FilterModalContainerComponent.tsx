@@ -8,6 +8,8 @@ import Modal from 'react-native-modal';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
 import { Button } from 'react-native-elements';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends FilterContainerComponentProps {}
 
@@ -88,7 +90,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
             <View style={style.header}>
               <Text style={style.title}>{I18n.t('general.filters')}</Text>
               <TouchableOpacity onPress={() => this.setState({visible: false})}>
-                <Icon name={'close'} type={'EvilIcons'} style={style.closeIcon}/>
+                <Icon size={scale(37)}  name={'close'} as={EvilIcons} style={style.closeIcon}/>
               </TouchableOpacity>
             </View>
             {this.props.children}

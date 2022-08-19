@@ -40,7 +40,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     buttonIcon: {
       color: commonColor.textColor,
-      fontSize: '25@s',
       alignSelf: 'center'
     },
     button: {
@@ -57,10 +56,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '5@s'
     },
     userFilterPlaceholderIcon: {
-      fontSize: '35@s',
-      color: commonColor.textColor,
-      marginLeft: '5@s',
-      marginRight: '8@s'
+      color: commonColor.textColor
     },
     userFilterPlaceholderText: {
       color: commonColor.textColor,
