@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Text, View } from 'native-base';
 import React from 'react';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, Text, View } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import { ChargePointStatus, Connector } from '../../types/ChargingStation';

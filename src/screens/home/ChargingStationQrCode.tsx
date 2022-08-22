@@ -1,9 +1,8 @@
 import { StackActions } from '@react-navigation/native';
 import base64 from 'base-64';
 import I18n from 'i18n-js';
-import { Container } from 'native-base';
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
@@ -193,26 +192,25 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
   public render() {
     const { activateQrCode } = this.state;
     const commonColor = Utils.getCurrentCommonColor();
-    const style = computeStyleSheet();
     return (
-      <Container>
+      <View>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanChargingStationQrCodeTitle')}
           backArrow={true}
-          containerStyle={style.headerContainer}
         />
        {activateQrCode && (
           <QRCodeScanner
             cameraProps={{ captureAudio: false }}
             markerStyle={{borderColor: commonColor.primaryLight}}
             showMarker
+            containerStyle={{height: '100%', alignItems: 'center', justifyContent: 'center'}}
             reactivate
             reactivateTimeout={1000}
             onRead={async (qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}
           />
         )}
-      </Container>
+      </View>
     );
   }
 

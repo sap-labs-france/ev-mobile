@@ -17,6 +17,7 @@ import computeStyleSheet from './InvoiceComponentStyles';
 import DialogModal from '../modal/DialogModal';
 import computeModalCommonStyle from '../modal/ModalCommonStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
+import Feather from 'react-native-vector-icons/Feather';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;
@@ -105,7 +106,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                 {downloading ? (
                   <ActivityIndicator size={scale(26)} color={commonColor.textColor} />
                 ) : (
-                  <Icon style={style.downloadIcon} type={'Feather'} name={'download'} />
+                  <Icon size={scale(26)} style={style.downloadIcon} as={Feather} name={'download'} />
                 )}
               </TouchableOpacity>
             )}

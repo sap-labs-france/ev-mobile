@@ -1,20 +1,25 @@
-import { Icon, Text, View } from 'native-base';
+import { Icon  } from 'native-base';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import Constants from '../../../../../utils/Constants';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from './DateFilterControlComponentStyles';
+import I18nManager from '../../../../../I18n/I18nManager';
+import { scale } from 'react-native-size-matters';
+import Foundation from 'react-native-vector-icons/Foundation';
+import I18n from 'i18n-js';
 
 export interface Props extends FilterControlComponentProps<Date> {
   minimumDate: Date;
   maximumDate: Date;
-  defaultValue : Date;
+  defaultValue: Date;
 }
 
 interface State extends FilterControlComponentState<Date> {
   openDatePicker: boolean;
+  value: Date;
 }
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
@@ -26,7 +31,10 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public constructor(props: Props) {
     super(props);
-    this.state.openDatePicker = false;
+    this.state = {
+      openDatePicker: false,
+      value: null
+    }
   }
 
 
@@ -69,10 +77,12 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
         {value ? (
           <View>
             <TouchableOpacity style={internalStyle.inputContainer} onPress={() => this.setState({openDatePicker: true})}>
-              <Text numberOfLines={1} style={internalStyle.dateText}>{value.toDateString()}</Text>
-              <Icon style={internalStyle.dateIcon} type={'Foundation'} name={'calendar'} />
+              <Text numberOfLines={1} style={internalStyle.dateText}>{I18nManager.formatDateTime(value, {dateStyle: 'medium'})}</Text>
+              <Icon padding={0} size={scale(28)} style={internalStyle.dateIcon} as={Foundation} name={'calendar'} />
             </TouchableOpacity>
             <DateTimePickerModal
+              confirmTextIOS={I18n.t('general.ok')}
+              cancelTextIOS={I18n.t('general.cancel')}
               isVisible={this.state.openDatePicker}
               date={value}
               mode={'date'}

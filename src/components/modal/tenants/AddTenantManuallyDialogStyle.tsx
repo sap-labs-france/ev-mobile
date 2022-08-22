@@ -63,7 +63,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.brandPrimaryLight
     },
     newEntryIcon: {
-      fontSize: '25@s',
       marginRight: '5@s',
       flex: 0
     },
@@ -71,7 +70,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     selectDropdownRowIcon: {
-      fontSize: '30@s',
       color: commonColor.textColor,
       marginLeft: '10@s'
     },

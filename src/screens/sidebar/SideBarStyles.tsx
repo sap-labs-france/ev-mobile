@@ -96,16 +96,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     links: {
       borderBottomWidth: 0,
       paddingTop: '13@s',
-      paddingBottom: '13@s'
+      paddingBottom: '13@s',
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingLeft: '12@s',
     },
     focused: {
       opacity: 0.7,
       borderTopEndRadius: '8@s',
       borderBottomEndRadius: '8@s'
-    },
-    linkIcon: {
-      fontSize: '22@s',
-      color: commonColor.textColor
     },
     linkText: {
       color: commonColor.textColor,

@@ -33,7 +33,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '13@s'
     },
     arrowIcon: {
-      fontSize: '18@s',
       color: commonColor.disabledDark,
       marginLeft: '20@s'
     }

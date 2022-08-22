@@ -1,6 +1,6 @@
-import { Icon, Text, View } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, ViewStyle } from 'react-native';
+import { TouchableOpacity, ViewStyle, Text, View } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import Site from '../../types/Site';
@@ -9,6 +9,9 @@ import ConnectorStatusesContainerComponent from '../connector-status/ConnectorSt
 import computeStyleSheet from './SiteComponentStyles';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import I18nManager from '../../I18n/I18nManager';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
   site: Site;
@@ -59,16 +62,16 @@ export default class SiteComponent extends React.Component<Props, State> {
             <View style={style.leftHeader}>
               <TouchableOpacity disabled={!validGPSCoordinates} onPress={() => Utils.jumpToMapWithAddress(site.name, site.address)}>
                 {validGPSCoordinates ? (
-                  <Icon style={[style.icon, style.iconLeft]} type="MaterialIcons" name="place" />
+                  <Icon size={scale(30)} style={style.icon} as={MaterialIcons} name="place" />
                 ) : (
-                  <Icon style={[style.icon, style.iconLeft]} type="MaterialCommunityIcons" name="map-marker-off" />
+                  <Icon size={scale(30)} style={style.icon} as={MaterialCommunityIcons} name="map-marker-off" />
                 )}
               </TouchableOpacity>
               <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>
                 {site.name}
               </Text>
             </View>
-            <Icon style={style.arrowIcon} type="MaterialCommunityIcons" name="arrow-right-circle-outline" />
+            <Icon size={scale(20)} style={style.arrowIcon} as={MaterialCommunityIcons} name="arrow-right-circle-outline" />
           </View>
           <View style={style.subTitleContainer}>
             <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>

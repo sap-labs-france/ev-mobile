@@ -1,11 +1,16 @@
 import { DrawerActions } from '@react-navigation/native';
-import { Icon } from 'native-base';
+import { Icon, IIconProps } from 'native-base';
 import React from 'react';
 import { Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './HeaderComponentStyles';
 import ScreenFilters from '../search/filter/screen/ScreenFilters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Feather from 'react-native-vector-icons/Feather';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import { scale } from 'react-native-size-matters';
+import Utils from '../../utils/Utils';
 
 export interface Props extends BaseProps {
   title: string;
@@ -67,6 +72,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { title, subTitle, navigation, modalized, actions, backArrow, sideBar, backAction, containerStyle } = this.props;
+    const commonColors = Utils.getCurrentCommonColor();
+    const HeaderIcon = (props: IIconProps) => <Icon {...props} size={scale(30)} color={commonColors.textColor}/>;
     return (
       <View style={[style.header, modalized && style.modalHeader, containerStyle]}>
         <View style={style.leftHeader}>
@@ -77,14 +84,14 @@ export default class HeaderComponent extends React.Component<Props, State> {
                 navigation.dispatch(DrawerActions.openDrawer());
                 return true;
               }}>
-              <Icon style={[style.icon, style.homeIcon]} type={'SimpleLineIcons'} name={'menu'} />
+              <HeaderIcon as={SimpleLineIcons} name={'menu'} />
             </TouchableOpacity>
           ) : (
             backArrow && (
               <TouchableOpacity
                 style={style.leftIconContainer}
                 onPress={backAction ?? (() => navigation.goBack())}>
-                <Icon style={style.icon} type={'Feather'} name={'chevron-left'} />
+                <HeaderIcon as={Feather} name={'chevron-left'} />
               </TouchableOpacity>
             )
           )}
@@ -109,9 +116,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
               onPress={() => {
                 this.modalFilters?.openModal();
               }}>
-              <Icon
-                style={style.icon}
-                type={'MaterialCommunityIcons'}
+              <HeaderIcon
+                as={MaterialCommunityIcons}
                 name={this.modalFilters?.areModalFiltersActive() ? 'filter' : 'filter-outline'}
               />
             </TouchableOpacity>

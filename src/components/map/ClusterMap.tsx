@@ -8,7 +8,7 @@ import SiteArea from '../../types/SiteArea';
 import Utils from '../../utils/Utils';
 import ThemeManager from '../../custom-theme/ThemeManager';
 import computeStyleSheet from './ClusterMapStyle';
-import { View } from 'native-base';
+import { View } from 'react-native';
 
 interface State {}
 
@@ -64,7 +64,7 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
           </MapView>
         )}
       </View>
-    )
+    );
   }
 
   private computeRadius(latitudeDelta: number): number {

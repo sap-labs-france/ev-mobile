@@ -8,6 +8,8 @@ import computeModalCommonStyles from '../modal/ModalCommonStyle';
 import { Animation } from 'react-native-animatable';
 import { Button } from 'react-native-elements';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import { scale } from 'react-native-size-matters';
 
 
 export interface DialogModalButton {
@@ -90,7 +92,7 @@ export default class DialogModal extends React.Component<Props, State> {
           <View style={style.modalContainer}>
             {withCloseButton && (
               <TouchableOpacity onPress={() => close?.()} style={style.closeButtonContainer}>
-                <Icon style={style.closeButton} name={'close'} type={'EvilIcons'} />
+                <Icon size={scale(35)} style={style.closeButton} name={'close'} as={EvilIcons} />
               </TouchableOpacity>
             )}
             {renderIcon?.(iconStyle)}
