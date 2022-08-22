@@ -20,7 +20,6 @@ import ListItem from '../../../../../types/ListItem';
 import { scale } from 'react-native-size-matters';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export interface Props extends FilterControlComponentProps<string> {}
 
@@ -90,7 +89,7 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
     const style = computeStyleSheet();
     return (
       <View style={[listItemCommonStyles.container, style.userFilterPlaceholder]}>
-        <Icon marginX={scale(7)} size={scale(35)} style={style.userFilterPlaceholderIcon} as={FontAwesome5} name={'user-friends'} />
+        <Icon marginX={scale(7)} size={scale(40)} style={style.userFilterPlaceholderIcon} as={Ionicons} name={'people'} />
         <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.userFilterPlaceholderText} >{I18n.t('users.selectOneOrSeveralUsers')}</Text>
       </View>
     )
@@ -103,8 +102,8 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
         <UserComponent user={users[0]} navigation={null} />
       );
     }
-    const Badged = withBadge(this.renderMultiSelectBadge(users), {badgeStyle: style.badge, right: scale(3), top: -scale(4)})(UserComponent)
-    return (<Badged user={users[0]} navigation={null} />)
+    const Badged = withBadge(this.renderMultiSelectBadge(users), {badgeStyle: style.badge, right: scale(3), top: -scale(4)})(UserComponent);
+    return (<Badged user={users[0]} navigation={null} />);
   }
 
   private renderMultiSelectBadge(items: ListItem[] = []) {
