@@ -126,17 +126,19 @@ export default class AddCar extends BaseScreen<Props, State> {
           <Input
             label={`${I18n.t('cars.converter')}*`}
             labelStyle={[style.inputLabel, !selectedCarCatalog && style.disabledInputLabel]}
+            inputStyle={{color: commonColors.textColor, width: '100%'}}
             inputContainerStyle={[style.inputContainer, !selectedCarCatalog && style.inputContainerDisabled]}
             InputComponent={() => (
               <SelectDropdown
                 disabled={!selectedCarCatalog}
                 defaultValue={selectedConverter}
+                statusBarTranslucent={true}
                 defaultButtonText={I18n.t('cars.converter')}
                 data={selectedCarCatalogConverters}
                 buttonTextAfterSelection={(carConverter: CarConverter) => Utils.buildCarCatalogConverterName(carConverter)}
                 rowTextForSelection={(carConverter: CarConverter) => Utils.buildCarCatalogConverterName(carConverter)}
-                buttonStyle={[style.selectField, !selectedCarCatalog && style.selectFieldDisabled]}
-                buttonTextStyle={[style.selectFieldText, !selectedConverter && style.selectFieldTextPlaceholder]}
+                buttonStyle={{...style.selectField, ...(!selectedCarCatalog ? style.selectFieldDisabled : {})}}
+                buttonTextStyle={{...style.selectFieldText, ...(!selectedConverter ? style.selectFieldTextPlaceholder : {})}}
                 dropdownStyle={style.selectDropdown}
                 rowStyle={style.selectDropdownRow}
                 rowTextStyle={style.selectDropdownRowText}
@@ -312,15 +314,16 @@ export default class AddCar extends BaseScreen<Props, State> {
     return selectedCarCatalogConverters;
   }
 
-  private renderCarCatalogPlaceholder(style: any) {
+  private  renderCarCatalogPlaceholder(style: any) {
     return (
       <SelectDropdown
         disabled={true}
         data={[]}
+        statusBarTranslucent={true}
         defaultButtonText={I18n.t('cars.model')}
         defaultValue={null}
         buttonStyle={style.selectField}
-        buttonTextStyle={[style.selectFieldText, !this.state.selectedCarCatalog && style.selectFieldTextPlaceholder]}
+        buttonTextStyle={{...style.selectFieldText, ...(!this.state.selectedCarCatalog ? style.selectFieldTextPlaceholder : {})}}
         renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
       />
     );
@@ -331,6 +334,7 @@ export default class AddCar extends BaseScreen<Props, State> {
       <SelectDropdown
         disabled={true}
         data={[]}
+        statusBarTranslucent={true}
         defaultValue={null}
         renderCustomizedButtonChild={() => <CarCatalogComponent containerStyle={[style.itemComponentContainer]} carCatalog={carCatalog} navigation={null} />}
         buttonStyle={style.selectField}

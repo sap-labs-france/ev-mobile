@@ -303,17 +303,16 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const style = computeStyleSheet();
     return (
       <Modal
-        useNativeDriver={true}
-        animationIn={'slideInUp'}
-        animationInTiming={800}
-        animationOut={'slideOutDown'}
-        animationOutTiming={1000}
+        useNativeDriverForBackdrop={true}
+        statusBarTranslucent={true}
+        animationInTiming={500}
+        animationOutTiming={500}
+        swipeDirection={['down']}
         hideModalContentWhileAnimating={true}
         onSwipeComplete={() => this.setState({ visible: false })}
         style={modalStyle.modalBottomHalf}
         isVisible={true}
         propagateSwipe={true}
-        onBackdropPress={() => this.setState({ visible: false })}
         onBackButtonPress={() => this.setState({ visible: false })}
       >
         <SafeAreaView style={style.chargingStationDetailsModalContainer}>

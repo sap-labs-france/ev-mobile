@@ -24,7 +24,7 @@ import ptJsonLanguage from './languages/pt.json';
 import DurationUnitFormat, { DurationUnitFormatOptions } from 'intl-unofficial-duration-unit-format';
 
 export interface FormatNumberOptions extends Intl.NumberFormatOptions {
-  [option: string] : any;
+  [option: string]: any;
   compactThreshold?: number;
   compactStyle?: NumberFormatCompactStyleEnum;
 }

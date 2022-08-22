@@ -1,7 +1,7 @@
 import { CommonActions, NavigationContainerRef } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Linking } from 'react-native';
+import { EmitterSubscription, Linking } from 'react-native';
 import DeepLinking from 'react-native-deep-linking';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
@@ -14,6 +14,7 @@ export default class DeepLinkingManager {
   private static instance: DeepLinkingManager;
   private navigator: NavigationContainerRef;
   private centralServerProvider: CentralServerProvider;
+  private linkingSubscription: EmitterSubscription;
 
   // eslint-disable-next-line no-useless-constructor
   private constructor() {}
@@ -48,11 +49,11 @@ export default class DeepLinkingManager {
   }
 
   public startListening() {
-    Linking.addEventListener('url', this.handleUrl);
+    this.linkingSubscription = Linking.addEventListener('url', this.handleUrl);
   }
 
   public stopListening() {
-    Linking.removeEventListener('url', this.handleUrl);
+    this.linkingSubscription?.remove();
   }
 
   public handleUrl = ({ url }: { url: string }) => {

@@ -84,7 +84,6 @@ export enum ServerAction {
   CAR_CREATE = 'CarCreate',
   CAR_UPDATE = 'CarUpdate',
   CAR_DELETE = 'CarDelete',
-  CARS = 'Cars',
   CAR = 'Car',
   SYNCHRONIZE_CAR_CATALOGS = 'SynchronizeCarCatalogs',
 
