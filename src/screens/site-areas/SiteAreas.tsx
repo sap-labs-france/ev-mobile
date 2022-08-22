@@ -4,15 +4,12 @@ import React from 'react';
 import {
   Image,
   ImageStyle,
-  Platform,
   SafeAreaView,
-  ScrollView,
   TouchableOpacity
 } from 'react-native';
 import ClusterMap from '../../components/map/ClusterMap';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
-import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -35,6 +32,7 @@ import satelliteLayout from '../../../assets/map/satellite.png';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
 import { SitesFiltersDef } from '../sites/SitesFilters';
+import SiteComponent from '../../components/site/SiteComponent';
 
 export interface Props extends BaseProps {}
 
@@ -70,7 +68,6 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       skip: 0,
       count: 0,
       showMap: false,
-      visible: false,
       selectedSiteArea: null,
       satelliteMap: false
     };
@@ -149,14 +146,14 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public async computeRegion(siteAreas: SiteArea[]): Promise<Region> {
     // If currentLocation available, use it
     const currentLocation = await Utils.getUserCurrentLocation();
-    if ( currentLocation ) {
+/*    if ( currentLocation ) {
       return {
         longitude: currentLocation.longitude,
         latitude: currentLocation.latitude,
         longitudeDelta: 0.01,
         latitudeDelta: 0.01
       }
-    }
+    }*/
     // Else, use coordinates of the first site area
     if (!Utils.isEmptyArray(siteAreas)) {
       let gpsCoordinates: number[];
@@ -237,13 +234,45 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public showMapSiteAreaDetail = (siteArea: SiteArea) => {
     this.setState({
-      visible: true,
       selectedSiteArea: siteArea
     });
   };
 
   public buildModal(navigation: any, siteAreaSelected: SiteArea, modalStyle: any) {
-    if (Platform.OS === 'ios') {
+    const style = computeStyleSheet();
+    return (
+      <Modal
+        useNativeDriverForBackdrop={true}
+        statusBarTranslucent={true}
+        animationInTiming={500}
+        animationOutTiming={500}
+        swipeDirection={['down']}
+        hideModalContentWhileAnimating={true}
+        onSwipeComplete={() => this.setState({ selectedSiteArea: null })}
+        style={modalStyle.modalBottomHalf}
+        isVisible={true}
+        propagateSwipe={true}
+        onBackButtonPress={() => this.setState({ selectedSiteArea: null })}
+      >
+        <SafeAreaView style={style.siteAreaDetailsModalContainer}>
+          <View style={style.siteAreaDetailsModalHeader}>
+            <TouchableOpacity onPress={() => this.setState({ selectedSiteArea: null })}>
+              <Icon style={style.closeIcon} type="EvilIcons" name={'close'} />
+            </TouchableOpacity>
+          </View>
+          <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
+            <SiteAreaComponent
+              siteArea={siteAreaSelected}
+              navigation={navigation}
+              onNavigate={() => this.setState({ selectedSiteArea: null })}
+              containerStyle={[{width: '95%'}]}
+            />
+          </View>
+        </SafeAreaView>
+      </Modal>
+    );
+
+/*    if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <Modalize alwaysOpen={175} modalStyle={modalStyle.modalContainer}>
@@ -261,7 +290,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           </View>
         </Modal>
       );
-    }
+    }*/
   }
 
   public render() {
@@ -370,9 +399,13 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.filterChanged(newFilters)}
           ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
         />
-        <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        <SimpleSearchComponent
+          containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent}
+          onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {this.screenFilters?.canFilter() && (
-          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
+          <TouchableOpacity
+            onPress={() => this.screenFilters?.openModal()}
+            style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
             <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
@@ -381,11 +414,11 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   }
 
   private onMapRegionChangeComplete = (region: Region) => {
-      if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
-        region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
-        this.currentRegion = region;
-        this.refresh();
-      }
+    if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+      region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+      this.currentRegion = region;
+      this.refresh();
     }
+  };
 
 }

@@ -100,7 +100,7 @@
     "badges": "Badges",
     "cars": "Cars",
     "invoices": "Invoices",
-    "paymentMethods": "Payment Methods",
+    "paymentMethods": "Payment methods",
     "qrCodeScanner": "QR-Code Scanner"
   },
   "authentication": {
@@ -529,7 +529,7 @@
     }
   },
   "appUpdate": {
-    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogTitle": "Update available",
     "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
     "noUpdateAvailable": "You have the latest version"
   },

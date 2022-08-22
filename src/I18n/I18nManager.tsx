@@ -24,7 +24,7 @@ import itJsonLanguage from './languages/it.json';
 import ptJsonLanguage from './languages/pt.json';
 
 export interface FormatNumberOptions extends Intl.NumberFormatOptions {
-  [option: string] : any;
+  [option: string]: any;
   compactThreshold?: number;
   compactStyle?: NumberFormatCompactStyleEnum;
 }

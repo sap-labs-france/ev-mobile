@@ -39,14 +39,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       marginHorizontal: '10@s'
     },
-    selectField: {
-      width: '100%',
-      height: 'auto',
-      minHeight: '40@s',
-      marginHorizontal: 0,
-      paddingHorizontal: 0,
-      backgroundColor: commonColor.containerBgColor
-    },
     inputContainer: {
       borderBottomColor: commonColor.textColor,
       borderBottomWidth: 0.7,
@@ -56,6 +48,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     inputContainerDisabled: {
       borderBottomWidth: 1,
       borderBottomColor: commonColor.disabledDark
+    },
+    selectField: {
+      width: '100%',
+      height: 'auto',
+      minHeight: '40@s',
+      marginHorizontal: 0,
+      paddingHorizontal: 0,
+      backgroundColor: commonColor.containerBgColor,
     },
     selectFieldDisabled: {
       opacity: 0.4
