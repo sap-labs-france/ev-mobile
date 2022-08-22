@@ -8,6 +8,7 @@ import Utils from '../../../utils/Utils';
 import computeStyleSheet from './SimpleSearchComponentStyles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export interface Props extends BaseProps {
   onChange: (search: string) => void;
@@ -63,7 +64,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
         <TouchableOpacity onPress={() => this.clearSearch()}>
-          <Icon type="MaterialCommunityIcons" name="close-circle" style={[style.icon, style.clearIcon]} />
+          <Icon marginX={scale(5)} size={scale(20)} as={MaterialCommunityIcons} name="close-circle" style={[style.icon, style.clearIcon]} />
         </TouchableOpacity>
       </View>
     );

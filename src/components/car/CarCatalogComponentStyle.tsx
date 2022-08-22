@@ -48,9 +48,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       alignItems: 'center'
     },
-    carImagePlaceholder: {
-      fontSize: '75@s'
-    },
     carInfos: {
       flexDirection: 'column',
       justifyContent: 'flex-end',

@@ -11,6 +11,7 @@ import I18n from 'i18n-js';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface State {
   noImage?: boolean;
@@ -53,7 +54,7 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
           <Image onError={() => this.setState({ noImage: true })} resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={image} />
         ) : (
           <View style={style.noImageContainer}>
-            <Icon style={style.carImagePlaceholder} type={'Ionicons'} name={'car-sport'} />
+            <Icon size={scale(75)} style={style.carImagePlaceholder} as={Ionicons} name={'car-sport'} />
           </View>
         )}
         <View style={style.rightContainer}>

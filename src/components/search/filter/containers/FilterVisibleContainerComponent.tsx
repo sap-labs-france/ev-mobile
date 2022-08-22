@@ -6,6 +6,7 @@ import FilterContainerComponent, { FilterContainerComponentProps, FilterContaine
 import computeStyleSheet from './FilterContainerComponentStyles';
 import { Text } from 'react-native';
 import I18n from 'i18n-js';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export interface Props extends FilterContainerComponentProps {
   expanded?: boolean;
@@ -51,12 +52,12 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
             {expanded ? (
               <View style={style.filterButtonContainer}>
                 <Text style={style.filterButtonText}>{I18n.t('general.showLess')}</Text>
-                <Icon style={style.filterButtonIcon} type={'MaterialIcons'} name={'keyboard-arrow-up'} />
+                <Icon style={style.filterButtonIcon} as={MaterialIcons} name={'keyboard-arrow-up'} />
               </View>
             ) : (
               <View style={style.filterButtonContainer}>
                 <Text style={style.filterButtonText}>{I18n.t('general.showMore')}</Text>
-                <Icon style={style.filterButtonIcon} type={'MaterialIcons'} name={'keyboard-arrow-down'} />
+                <Icon style={style.filterButtonIcon} as={MaterialIcons} name={'keyboard-arrow-down'} />
               </View>
             )}
           </TouchableOpacity>
