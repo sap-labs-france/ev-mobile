@@ -1,6 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { Text } from 'native-base';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './TenantComponentStyle';

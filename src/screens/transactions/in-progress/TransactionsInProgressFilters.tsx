@@ -1,4 +1,3 @@
-import { View } from 'native-base';
 import React from 'react';
 
 import ScreenFilters, { ScreenFiltersProps, ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
@@ -13,6 +12,7 @@ import { GlobalFilters } from '../../../types/Filter';
 import I18n from 'i18n-js';
 import computeStyleSheet from './TransactionsInProgressFiltersStyles';
 import SecuredStorage from '../../../utils/SecuredStorage';
+import { View } from 'react-native';
 
 export interface TransactionsInProgressFiltersDef {
   users?: User[];

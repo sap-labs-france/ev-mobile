@@ -1,9 +1,9 @@
 import { CommonActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, FormControl, Icon, Stack, Spinner, Text, View } from 'native-base';
+import { Button, FormControl, Icon, Stack, Spinner } from 'native-base';
 import React from 'react';
-import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, TextInput, View, Text } from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';

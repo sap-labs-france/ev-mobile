@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Spinner, View } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -15,6 +15,7 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsInProgressFilters, { TransactionsInProgressFiltersDef } from './TransactionsInProgressFilters';
+import { View } from 'react-native';
 
 export interface Props extends BaseProps {}
 

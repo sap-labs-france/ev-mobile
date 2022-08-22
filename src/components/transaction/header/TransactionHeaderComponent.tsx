@@ -1,5 +1,6 @@
-import { Icon, Text, View } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
+import { Text, View } from 'react-native';
 
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';

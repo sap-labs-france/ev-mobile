@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, Checkbox, FormControl, Icon, Stack, Spinner, Text, View } from 'native-base';
+import { Button, Checkbox, FormControl, Icon, Stack, Spinner } from 'native-base';
 import React from 'react';
-import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity, Text, View } from 'react-native';
 
 import DialogModal from '../../../components/modal/DialogModal';
 import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';

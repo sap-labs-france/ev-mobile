@@ -12,8 +12,6 @@ import Message from '../../utils/Message';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
-import computeStyleSheet from './TenantsStyle';
-import { Container } from 'native-base';
 import { View } from 'react-native';
 
 export interface Props extends BaseProps {}

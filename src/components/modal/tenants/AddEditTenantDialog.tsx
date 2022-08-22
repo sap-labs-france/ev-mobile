@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Icon, Text, View } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 
@@ -13,7 +13,7 @@ import { Button, Input } from 'react-native-elements';
 import computeStyleSheet from './AddTenantManuallyDialogStyle';
 import computeModalCommonStyle from '../ModalCommonStyle';
 import Message from '../../../utils/Message';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

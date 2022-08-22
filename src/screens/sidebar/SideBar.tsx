@@ -1,9 +1,9 @@
 import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Icon, View, IIconProps, Pressable } from 'native-base';
+import { Icon, IIconProps, Pressable } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, SafeAreaView, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { Image, ImageStyle, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { CheckVersionResponse } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
