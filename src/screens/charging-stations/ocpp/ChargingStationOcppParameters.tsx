@@ -174,7 +174,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           </HStack>
         </Button>
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <FlatList
             data={chargingStationConfigurationKeyValues}

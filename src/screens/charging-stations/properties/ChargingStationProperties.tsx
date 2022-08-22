@@ -12,6 +12,7 @@ import { KeyValue, PropertyDisplay } from '../../../types/Global';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationPropertiesStyles';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -165,7 +166,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           containerStyle={style.headerContainer}
         />
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <FlatList
             data={this.displayedProperties}

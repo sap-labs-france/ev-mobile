@@ -235,7 +235,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       ? chargingStation.inactive || spinnerResetHard || spinnerResetSoft || spinnerClearCache || connectorsInactive
       : false;
     return loading ? (
-      <Spinner style={style.spinner} color="grey" />
+      <Spinner size={scale(30)} style={style.spinner} color="grey" />
     ) : (
       <View style={style.container}>
         <HeaderComponent

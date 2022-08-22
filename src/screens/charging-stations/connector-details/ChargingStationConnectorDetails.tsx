@@ -903,7 +903,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           subTitle={connector && connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
         />
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) :
           <View style={style.container}>
             {/* Site Image */}

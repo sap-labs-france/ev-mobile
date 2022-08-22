@@ -176,7 +176,7 @@ export default class ReportError extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const { loading } = this.state;
     return loading ? (
-      <Spinner style={style.spinner} />
+      <Spinner size={scale(30)} style={style.spinner} />
     ) : (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <HeaderComponent
