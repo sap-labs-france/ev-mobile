@@ -189,7 +189,7 @@ export default class Statistics extends BaseScreen<Props, State> {
           ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, true)}
         />
         <View style={style.content}>
-          {loading ? <Spinner style={style.spinner} color={commonColors.disabledDark} /> : (
+          {loading ? <Spinner size={scale(30)} style={style.spinner} color={commonColors.disabledDark} /> : (
             <View style={style.boxContainer}>
               {refreshing && <ActivityIndicator
                 size={scale(18)}

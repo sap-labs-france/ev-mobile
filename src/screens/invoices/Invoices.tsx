@@ -148,7 +148,7 @@ export default class Invoices extends BaseScreen<Props, State> {
           onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}
           ref={(invoicesFilters: InvoicesFilters) => this.setScreenFilters(invoicesFilters, true)}
         />
-          {loading ? <Spinner size={scale(20)} style={style.spinner} color="grey" /> : (
+          {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<BillingInvoice>
               data={invoices}

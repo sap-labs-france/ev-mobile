@@ -379,7 +379,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           {visible && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
           {showMap ? this.renderMap() : (
             <View style={style.chargingStationsContainer}>
-              {loading ? <Spinner style={style.spinner} color="grey" /> : (
+              {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
                 <ItemsList<ChargingStation>
                   skip={skip}
                   count={count}

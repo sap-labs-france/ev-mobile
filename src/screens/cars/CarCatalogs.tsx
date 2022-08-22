@@ -17,6 +17,7 @@ import computeCarsStyles from './CarsStyles';
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
 import CarCatalogComponent from '../../components/car/CarCatalogComponent';
+import { scale } from 'react-native-size-matters';
 
 interface State extends SelectableState<Car> {
   cars?: CarCatalog[];
@@ -145,7 +146,7 @@ export default class CarCatalogs extends SelectableList<Car> {
           <SimpleSearchComponent containerStyle={carsStyles.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
         {loading ? (
-          <Spinner style={transactionStyles.spinner} color="grey" />
+          <Spinner size={scale(30)} style={transactionStyles.spinner} color="grey" />
         ) : (
           <View style={carsStyles.content}>
             <ItemsList<CarCatalog>

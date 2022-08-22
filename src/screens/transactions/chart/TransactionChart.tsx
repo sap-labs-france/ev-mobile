@@ -387,7 +387,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           subTitle={chargingStation ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
           containerStyle={style.headerContainer}
         />
-        {loading ? <Spinner style={style.spinner} color="grey" /> : (
+        {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={{flex: 1}}>
             {showTransactionDetails && transaction && (
               <TransactionHeaderComponent

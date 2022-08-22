@@ -173,7 +173,7 @@ export default class Cars extends SelectableList<Car> {
           />
         )}
         {this.renderFilters()}
-        {loading ? <Spinner style={transactionStyles.spinner} color="grey" /> : (
+        {loading ? <Spinner size={scale(30)} style={transactionStyles.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<Car>
               data={cars}

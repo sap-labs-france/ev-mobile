@@ -177,7 +177,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           containerStyle={style.headerContainer}
         />
         {this.renderFilters()}
-        {loading ? <Spinner style={style.spinner} color="grey" /> : (
+        {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<Transaction>
               skip={skip}

@@ -157,7 +157,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
         />
         {paymentMethodToBeDeleted && this.renderDeletePaymentMethodDialog(paymentMethodToBeDeleted)}
         {loading ? (
-          <Spinner size={scale(20)} style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
             <ItemsList<BillingPaymentMethod>
