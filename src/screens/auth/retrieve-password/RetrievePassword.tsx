@@ -3,18 +3,18 @@ import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
+import { TenantConnection } from '../../../types/Tenant';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
-import { TenantConnection } from '../../../types/Tenant';
 
 export interface Props extends BaseProps {}
 
@@ -234,11 +234,11 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
         </ScrollView>
         <Footer style={style.footer}>
           <Left>
-            <Button small transparent style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
-              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>
+            <TouchableOpacity style={[style.linksFooterButton]} onPress={() => this.props.navigation.goBack()}>
+              <Text style={[style.linksTextButton]} uppercase={false}>
                 {I18n.t('authentication.backLogin')}
               </Text>
-            </Button>
+            </TouchableOpacity>
           </Left>
         </Footer>
       </View>
