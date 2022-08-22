@@ -1,6 +1,5 @@
 import base64 from 'base-64';
 import I18n from 'i18n-js';
-import { Container } from 'native-base';
 import React from 'react';
 import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -14,6 +13,8 @@ import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './TenantsStyle';
+import { Container } from 'native-base';
+import { View } from 'react-native';
 
 export interface Props extends BaseProps {}
 
@@ -95,22 +96,23 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
   }
 
   public render() {
-    const style = computeStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     return (
-      <Container>
+      <View>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanTenantQrCodeTitle')}
-          containerStyle={style.headerContainer}
         />
         <QRCodeScanner
           cameraProps={{ captureAudio: false }}
+          markerStyle={{borderColor: commonColor.primaryLight}}
           showMarker
           reactivate
+          containerStyle={{height: '100%', alignItems: 'center', justifyContent: 'center'}}
           reactivateTimeout={1000}
           onRead={async (qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}
         />
-      </Container>
+      </View>
     );
   }
 }
