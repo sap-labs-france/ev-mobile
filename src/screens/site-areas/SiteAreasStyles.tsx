@@ -109,6 +109,24 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     siteAreaComponentContainer: {
       marginBottom: '11@s',
       width: '95%'
+    },
+    siteAreaDetailsModalContainer: {
+      width: '100%',
+      backgroundColor: commonColor.containerBgColor,
+      maxHeight: '60%',
+      minHeight: '70@s',
+      borderTopRightRadius: '20@s',
+      borderTopLeftRadius: '20@s'
+    },
+    siteAreaDetailsModalHeader: {
+      height: '50@s',
+      flexDirection: 'row',
+      justifyContent: 'flex-end'
+    },
+    closeIcon: {
+      padding: '8@s',
+      fontSize: '37@s',
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

@@ -91,16 +91,16 @@
   "sidebar": {
     "home": "Home",
     "sites": "Siti",
-    "chargers": "Stazioni Di Ricarica",
-    "transactionsHistory": "Storico Sessioni",
-    "transactionsInProgress": "Sessioni In Corso",
+    "chargers": "Stazioni di ricarica",
+    "transactionsHistory": "Storico sessioni",
+    "transactionsInProgress": "Sessioni in corso",
     "statistics": "Statistiche",
     "reportError": "Segnala errore",
-    "users": "Users",
-    "badges": "Badges",
-    "cars": "Cars",
-    "invoices": "Invoices",
-    "paymentMethods": "Payment Methods",
+    "users": "Utenti",
+    "badges": "Carte RFID",
+    "cars": "Veicoli",
+    "invoices": "Fatture",
+    "paymentMethods": "Pagamento",
     "qrCodeScanner": "QR-Code Scanner"
   },
 	"authentication": {
@@ -529,7 +529,7 @@
     }
   },
   "appUpdate": {
-    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogTitle": "Update available",
     "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
     "noUpdateAvailable": "You have the latest version"
   },

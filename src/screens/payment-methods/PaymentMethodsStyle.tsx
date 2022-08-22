@@ -8,17 +8,17 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: commonColor.containerBgColor,
+      alignItems: 'center'
+    },
     content: {
       flex: 1,
       width: '100%'
     },
     headerContainer: {
       marginBottom: '10@s'
-    },
-    container: {
-      alignItems: 'center',
-      width: '100%',
-      flex: 1
     },
     fab: {
       position: 'absolute',

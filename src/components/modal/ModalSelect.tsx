@@ -82,18 +82,21 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
         {this.renderButton(style)}
         <Modal
           propagateSwipe={true}
-          useNativeDriver={true}
+          useNativeDriverForBackdrop={true}
           supportedOrientations={['portrait', 'landscape']}
           style={style.modal}
           isVisible={isVisible}
-          swipeDirection={'down'}
-          animationInTiming={800}
+          swipeDirection={['down']}
+          statusBarTranslucent={true}
+          animationInTiming={500}
+          animationOutTiming={500}
           onSwipeComplete={() => this.setState({ isVisible: false })}
-          // Modal component registers the given method for hardwareBackPress event and unregisters it when the modal inner content unmounts.
+          // Modal component registers the given method for hardwareBackPress event and unregisters it when the modal
+          // inner content unmounts.
           // Inner component list also unsubscribe on unmount, allowing the last subscriber to choose back implementation.
           // Here the last subscriber is the parent component
           onBackButtonPress={() => this.setState({ isVisible: false })}
-          onBackdropPress={() => this.setState({ isVisible: false })}
+         // onBackdropPress={() => this.setState({ isVisible: false })}
           hideModalContentWhileAnimating={true}>
           <SafeAreaView style={style.modalContainer}>
             <View style={style.modalHeader}>
@@ -211,8 +214,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           {renderItemPlaceholder?.()}
         </TouchableOpacity>
       );
-    }
-    else {
+    } else {
       return <View style={style.itemContainer}>{renderNoItem?.()}</View>;
     }
   }

@@ -756,7 +756,7 @@ export default class CentralServerProvider {
     this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get<any>(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CARS}`,
+      this.buildRestEndpointUrl(RESTServerRoute.REST_CARS),
       {
         headers: this.buildSecuredHeaders(),
         params
