@@ -1,15 +1,26 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, BackHandler, Image, ImageStyle, SafeAreaView, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, BackHandler, Image, ImageStyle, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
+import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
-import computeConnectorStatusStyles from '../../../components/connector-status/ConnectorStatusComponentStyles';
+import { scale } from 'react-native-size-matters';
 
+import statusMarkerFaulted from '../../../../assets/icon/charging_station_faulted.png';
+import satelliteLayout from '../../../../assets/map/satellite.png';
+import standardDarkLayout from '../../../../assets/map/standard-dark.png';
+import standardLightLayout from '../../../../assets/map/standard-light.png';
+import computeActivityIndicatorCommonStyle from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
+import computeConnectorStatusStyles from '../../../components/connector-status/ConnectorStatusComponentStyles';
+import computeFabStyles from '../../../components/fab/FabComponentStyles';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
+import ClusterMap from '../../../components/map/ClusterMap';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
+import Configuration from '../../../config/Configuration';
+import ThemeManager from '../../../custom-theme/ThemeManager';
 import I18nManager from '../../../I18n/I18nManager';
 import computeModalStyle from '../../../ModalStyles';
 import BaseProps from '../../../types/BaseProps';
@@ -21,15 +32,6 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
-import statusMarkerFaulted from '../../../../assets/icon/charging_station_faulted.png';
-import ClusterMap from '../../../components/map/ClusterMap';
-import computeFabStyles from '../../../components/fab/FabComponentStyles';
-import ThemeManager from '../../../custom-theme/ThemeManager';
-import standardDarkLayout from '../../../../assets/map/standard-dark.png';
-import standardLightLayout from '../../../../assets/map/standard-light.png';
-import satelliteLayout from '../../../../assets/map/satellite.png';
-import computeActivityIndicatorCommonStyle from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
-import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -39,6 +41,7 @@ interface State {
   loading?: boolean;
   // Indicate loading of new content updating the one already displayed
   refreshing?: boolean;
+  mapRegionRefreshing?: boolean;
   isAdmin?: boolean;
   skip?: number;
   count?: number;
@@ -137,6 +140,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       const { filters, showMap } = this.state;
       const currentLocation = await Utils.getUserCurrentLocation();
       const projectFields = 'id|coordinates|inactive|connectors.connectorId|connectors.coordinates|connectors.status|siteArea.siteID';
+      console.log(this.currentRegion);
       try {
         const params = {
           Search: searchText,
@@ -178,7 +182,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next charging stations
-      const chargingStations = await this.getChargingStations(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const chargingStations = await this.getChargingStations(
+        this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add charging stations
       this.setState((prevState) => ({
         chargingStations: chargingStations ? [...prevState.chargingStations, ...chargingStations.result] : prevState.chargingStations,
@@ -201,7 +206,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     return true;
   };
 
-  public async computeRegion(): Promise<Region> {
+  public async getInitialRegion(): Promise<Region> {
     // If Site Area, use its coordinates
     if (this.siteArea) {
       return {
@@ -209,20 +214,20 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         latitude: this.siteArea.address.coordinates[1],
         longitudeDelta: 0.01,
         latitudeDelta: 0.01
-      }
+      };
     }
     // Else, if currentLocation available, use it
     const currentLocation = await Utils.getUserCurrentLocation();
     if ( currentLocation ) {
-        return {
-          longitude: currentLocation.longitude,
-          latitude: currentLocation.latitude,
-          longitudeDelta: 0.01,
-          latitudeDelta: 0.01
-        }
+      return {
+        longitude: currentLocation.longitude,
+        latitude: currentLocation.latitude,
+        longitudeDelta: 0.01,
+        latitudeDelta: 0.01
+      };
     }
     // Else, use coordinates of the first charging station
-    const firstChargingStationResponse = await this.getChargingStations('', 0, 1);
+    const firstChargingStationResponse = await this.getChargingStations('', null, 0, 1);
     const firstChargingStation = firstChargingStationResponse.result?.[0];
     if ( firstChargingStation?.coordinates ) {
       const gpsCoordinates = firstChargingStation.coordinates;
@@ -241,18 +246,22 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     if (this.isMounted()) {
       const { skip, showMap } = this.state;
       const limit = showMap ? this.mapLimit : this.listLimit;
-      const newState = showSpinner ? (Utils.isEmptyArray(this.state.chargingStations) ? { loading: true } : { refreshing: true }) : this.state;
+      const newState = showSpinner ?
+        (Utils.isEmptyArray(this.state.chargingStations) ? { loading: true } : { refreshing: true }) :
+        this.state;
       this.setState(newState, async () => {
         // Refresh region
         if(!this.currentRegion) {
-          this.currentRegion = await this.computeRegion();
+          this.currentRegion = await this.getInitialRegion();
         }
         // Refresh All
-        const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
+        const chargingStations = await this.getChargingStations(
+          this.searchText, 0, skip + limit);
         // Add ChargingStations
         this.setState(() => ({
           loading: false,
           refreshing: false,
+          mapRegionRefreshing: false,
           chargingStations: chargingStations ? chargingStations.result : [],
           count: chargingStations ? chargingStations.count : 0,
           isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false
@@ -280,7 +289,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
       region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
       this.currentRegion = region;
-      this.refresh();
+      void this.refresh();
     }
   }
 
@@ -347,7 +356,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const modalStyle = computeModalStyle();
-    const { loading, chargingStations, isAdmin, skip, count, showMap, visible, chargingStationSelected, refreshing } = this.state;
+    const { isAdmin, count, showMap, visible, chargingStationSelected } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -372,39 +381,44 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           {this.renderFilters()}
           {this.renderFabs()}
           {visible && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
-          {showMap ? this.renderMap() : (
-            <View style={style.chargingStationsContainer}>
-              {loading ? <Spinner style={style.spinner} color="grey" /> : (
-                <ItemsList<ChargingStation>
-                  skip={skip}
-                  count={count}
-                  onEndReached={this.onEndScroll}
-                  renderItem={(chargingStation: ChargingStation) => (
-                    <ChargingStationComponent
-                      chargingStation={chargingStation}
-                      isAdmin={isAdmin}
-                      navigation={navigation}
-                      isSiteAdmin={this.securityProvider?.isSiteAdmin(chargingStation.siteArea ? chargingStation.siteArea.siteID : '')}
-                    />
-                  )}
-                  data={chargingStations}
-                  manualRefresh={this.manualRefresh.bind(this)}
-                  refreshing={refreshing}
-                  emptyTitle={I18n.t('chargers.noChargers')}
-                  navigation={navigation}
-                  limit={this.listLimit}
-                />
-              )}
-            </View>
-          )}
+          {showMap ? this.renderMap(style) : this.renderChargingStations(style)}
         </View>
       </Container>
     );
   }
 
-  private renderMap() {
-    const style = computeStyleSheet();
-    const { chargingStations, satelliteMap, loading, refreshing } = this.state
+  private renderChargingStations(style: StyleSheet.NamedStyles<any>): React.ReactNode {
+    const { navigation } = this.props;
+    const { loading, chargingStations, isAdmin, skip, count, refreshing } = this.state;
+    return (
+      <View style={style.chargingStationsContainer}>
+        {loading ? <Spinner style={style.spinner} color="grey" /> : (
+          <ItemsList<ChargingStation>
+            skip={skip}
+            count={count}
+            onEndReached={this.onEndScroll}
+            renderItem={(chargingStation: ChargingStation) => (
+              <ChargingStationComponent
+                chargingStation={chargingStation}
+                isAdmin={isAdmin}
+                navigation={navigation}
+                isSiteAdmin={this.securityProvider?.isSiteAdmin(chargingStation.siteArea ? chargingStation.siteArea.siteID : '')}
+              />
+            )}
+            data={chargingStations}
+            manualRefresh={this.manualRefresh.bind(this)}
+            refreshing={refreshing}
+            emptyTitle={I18n.t('chargers.noChargers')}
+            navigation={navigation}
+            limit={this.listLimit}
+          />
+        )}
+      </View>
+    );
+  }
+
+  private renderMap(style: StyleSheet.NamedStyles<any>) {
+    const { chargingStations, satelliteMap, loading, refreshing, mapRegionRefreshing } = this.state;
     const activityIndicatorCommonStyle = computeActivityIndicatorCommonStyle();
     const commonColors = Utils.getCurrentCommonColor();
     const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
@@ -412,11 +426,13 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     );
     return (
       <View style={style.map}>
-        {(loading || refreshing) && <ActivityIndicator size={scale(18)} color={commonColors.textColor} style={[activityIndicatorCommonStyle.activityIndicator, style.activityIndicator]} animating={true} />}
-        <ClusterMap<ChargingStation>
+        {(loading || refreshing) &&
+          <ActivityIndicator size={scale(18)} color={commonColors.textColor}
+            style={[activityIndicatorCommonStyle.activityIndicator, style.activityIndicator]} animating={true} />}
+        {!mapRegionRefreshing && (<ClusterMap<ChargingStation>
           items={chargingStationsWithGPSCoordinates}
           satelliteMap={satelliteMap}
-          renderMarker={(chargingStation, index) => (
+          renderMarker={(chargingStation) => (
             <Marker
               key={chargingStation.id}
               identifier={chargingStation.id}
@@ -430,9 +446,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           )}
           initialRegion={this.currentRegion}
           onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
-        />
+        />)}
       </View>
-    )
+    );
   }
 
   private renderFabs() {
@@ -502,7 +518,34 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
           ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
         />
-        <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        {showMap ?
+          <GooglePlacesAutocomplete
+            placeholder='Search Places'
+            onFail={(error) => console.error(error)}
+            onPress={(data: GooglePlaceData, details: GooglePlaceDetail) => {
+              // 'details' is provided when fetchDetails = true
+              console.log(details);
+              this.currentRegion = {
+                longitude: details.geometry.location.lng,
+                latitude: details.geometry.location.lat,
+                latitudeDelta: Math.abs(details.geometry.viewport.northeast.lat - details.geometry.viewport.southwest.lat),
+                longitudeDelta: Math.abs(details.geometry.viewport.northeast.lng - details.geometry.viewport.southwest.lng)
+              };
+              // Refresh by hiding the Map
+              this.setState({ mapRegionRefreshing: true }, () => void this.refresh());
+            }}
+            fetchDetails={true}
+            query={{
+              key: Configuration.PLACES_API_KEY,
+              language: I18nManager.language,
+            }}
+          />
+          :
+          <SimpleSearchComponent
+            containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent}
+            onChange={async (searchText) => this.search(searchText)}
+            navigation={this.props.navigation} />
+        }
         {this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
             <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />

@@ -4,6 +4,7 @@ import React from 'react';
 import { Image, ImageStyle } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
+import Configuration from '../../config/Configuration';
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './AuthStyles';
 
@@ -31,12 +32,12 @@ export default class AuthHeader extends React.Component<Props, State>{
     return (
       <View style={style.header}>
         {tenantLogo ?
-            <Image style={style.logo as ImageStyle} source={{ uri: tenantLogo }} />
+          <Image style={style.logo as ImageStyle} source={{ uri: tenantLogo }} />
           :
-            <View style={style.logo}/>
+          <View style={style.logo}/>
         }
         <View>
-          <Text style={style.appText}>Charge Angels</Text>
+          <Text style={style.appText}>{Configuration.APPLICATION_NAME}</Text>
           <Text style={style.appVersionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
         </View>
         {tenantName ? (

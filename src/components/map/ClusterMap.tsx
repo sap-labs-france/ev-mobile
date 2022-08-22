@@ -1,14 +1,15 @@
+import { View } from 'native-base';
 import React from 'react';
 import MapView from 'react-native-map-clustering';
-import ClusterComponent from './cluster/ClusterComponent';
 import { Region } from 'react-native-maps';
+
+import ThemeManager from '../../custom-theme/ThemeManager';
 import ChargingStation from '../../types/ChargingStation';
 import Site from '../../types/Site';
 import SiteArea from '../../types/SiteArea';
 import Utils from '../../utils/Utils';
-import ThemeManager from '../../custom-theme/ThemeManager';
+import ClusterComponent from './cluster/ClusterComponent';
 import computeStyleSheet from './ClusterMapStyle';
-import { View } from 'native-base';
 
 interface State {}
 

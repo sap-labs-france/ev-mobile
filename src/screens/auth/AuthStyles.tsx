@@ -1,10 +1,10 @@
 import deepmerge from 'deepmerge';
 import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { scale, ScaledSheet } from 'react-native-size-matters';
+import { ScaledSheet, scale } from 'react-native-size-matters';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import Utils from '../../utils/Utils';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -28,7 +28,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       flexDirection: 'column',
       justifyContent: 'space-evenly',
-      alignItems: 'center'
+      alignItems: 'center',
+      margin: '10@s'
     },
     logo: {
       width: '90%',
@@ -73,6 +74,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'center',
       marginBottom: '15@s'
     },
+    linksFooterButton: {
+      width: '90%',
+      alignItems: 'center',
+      alignSelf: 'center',
+      marginTop: '5@s',
+    },
     linksTextButton: {
       fontSize: '13@s',
       fontWeight: 'bold',
@@ -94,7 +101,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     footer: {
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.buttonBg
     },
     qrCodeContainer: {
       marginBottom: '15@s',

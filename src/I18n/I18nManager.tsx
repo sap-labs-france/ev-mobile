@@ -8,6 +8,7 @@ import 'moment/locale/cs';
 import 'moment/locale/pt-br';
 
 import i18n from 'i18n-js';
+import DurationUnitFormat, { DurationUnitFormatOptions } from 'intl-unofficial-duration-unit-format';
 import moment from 'moment';
 import { I18nManager as I18nReactNativeManager } from 'react-native';
 import { findBestAvailableLanguage, usesMetricSystem } from 'react-native-localize';
@@ -21,7 +22,6 @@ import esJsonLanguage from './languages/es.json';
 import frJsonLanguage from './languages/fr.json';
 import itJsonLanguage from './languages/it.json';
 import ptJsonLanguage from './languages/pt.json';
-import DurationUnitFormat, { DurationUnitFormatOptions } from 'intl-unofficial-duration-unit-format';
 
 export interface FormatNumberOptions extends Intl.NumberFormatOptions {
   [option: string]: any;
@@ -72,6 +72,7 @@ export enum NumberFormatStyleEnum {
 
 export default class I18nManager {
   public static currency: string;
+  public static language: string;
 
   public static initialize(): void {
     // Translation files
@@ -101,6 +102,7 @@ export default class I18nManager {
     I18nReactNativeManager.forceRTL(isRTL);
     // Default
     i18n.locale = languageTag;
+    I18nManager.language = languageTag;
     moment.locale(languageTag);
   }
 
@@ -112,6 +114,7 @@ export default class I18nManager {
     }
     // Keep the currency
     I18nManager.currency = currency;
+    I18nManager.language = language;
   }
 
   public static formatNumber(value: number, options: Intl.NumberFormatOptions = {}): string {
@@ -123,7 +126,6 @@ export default class I18nManager {
 
   public static formatNumberWithCompacts(value: number, options: FormatNumberOptions = {}, locale: string = i18n.locale): FormatNumberResult {
     options = {... options };
-
     // Check currency options
     if (!options.currency) {
       delete options.currency
@@ -134,7 +136,6 @@ export default class I18nManager {
         delete options.style
       }
     }
-
     // Check unit options
     if (!options.unit) {
       delete options.unit;
@@ -144,19 +145,15 @@ export default class I18nManager {
         delete options.style;
       }
     }
-
     const isUnit = options.unit;
     const isPercent = options.style === NumberFormatStyleEnum.PERCENT;
     const isCurrency = options.currency;
     const shouldCompact = !options.compactThreshold || (options.compactThreshold && value > options.compactThreshold);
-
     if (!shouldCompact && options.notation === NumberFormatNotationEnum.COMPACT) {
       delete options.notation;
     }
-
     // Delete all unset options
     Object.keys(options).forEach((option) => options[option] ?? delete options[option]);
-
     // Format the given value with the given options
     try {
       const parts = Intl.NumberFormat(locale, options).formatToParts(value);
@@ -199,6 +196,20 @@ export default class I18nManager {
     return usesMetricSystem();
   }
 
+  public static formatDistance(distanceMeters: number, useMetricSystem?: boolean): string {
+    const isMetricSystem = useMetricSystem ?? I18nManager.isMetricsSystem();
+    if(isMetricSystem) {
+      return (
+        distanceMeters < 1000 ? `${I18nManager.formatNumber(distanceMeters, {maximumFractionDigits: 0})} m` : `${I18nManager.formatNumber(distanceMeters / 1000, {maximumFractionDigits: 1})} km`
+      );
+    } else {
+      const distanceYard = distanceMeters * 1.09361;
+      return (
+        distanceYard < 1760 ? `${I18nManager.formatNumber(distanceYard, {maximumFractionDigits: 0})} yd` : `${I18nManager.formatNumber(distanceYard / 1760, {maximumFractionDigits: 1})} mi`
+      );
+    }
+  }
+
   public static formatDateTime(value: Date, options?: Intl.DateTimeFormatOptions ): string {
     if (I18nManager.isValidDate(value)) {
       return Intl.DateTimeFormat(i18n.locale, options).format(new Date(value));
@@ -221,7 +232,7 @@ export default class I18nManager {
     return !isNaN(new Date(date).getTime());
   }
 
- static concatenateNumberFormatParts(parts: Intl.NumberFormatPart[] = []): string {
+  private static concatenateNumberFormatParts(parts: Intl.NumberFormatPart[] = []): string {
     return parts
       .filter((p) => !(p.type.toUpperCase() in NumberFormatSymbolsEnum))
       .map((p) => p.value)
@@ -229,11 +240,11 @@ export default class I18nManager {
       .trim();
   }
 
-  static getNumberFormatPartValue(parts: Intl.NumberFormatPart[], type: string) {
+  private static getNumberFormatPartValue(parts: Intl.NumberFormatPart[], type: string) {
     return parts.find((p) => p.type === type)?.value;
   }
 
-  static computeMetricCompact(value: number): MetricCompactEnum {
+  private static computeMetricCompact(value: number): MetricCompactEnum {
     if (value < 1000) {
       return null;
     }
@@ -247,19 +258,5 @@ export default class I18nManager {
       return MetricCompactEnum.GIGA;
     }
     return MetricCompactEnum.TERA;
-  }
-
-  public static formatDistance(distanceMeters: number, useMetricSystem?: boolean): string {
-    const isMetricSystem = useMetricSystem ?? I18nManager.isMetricsSystem();
-    if(isMetricSystem) {
-      return (
-        distanceMeters < 1000 ? `${I18nManager.formatNumber(distanceMeters, {maximumFractionDigits: 0})} m` : `${I18nManager.formatNumber(distanceMeters / 1000, {maximumFractionDigits: 1})} km`
-      );
-    } else {
-      const distanceYard = distanceMeters * 1.09361;
-      return (
-        distanceYard < 1760 ? `${I18nManager.formatNumber(distanceYard, {maximumFractionDigits: 0})} yd` : `${I18nManager.formatNumber(distanceYard / 1760, {maximumFractionDigits: 1})} mi`
-      );
-    }
   }
 }
