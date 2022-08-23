@@ -19,7 +19,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     sidebar: {
       backgroundColor: commonColor.listItemBackground,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      height: '100%'
     },
     header: {
       alignItems: 'center',
@@ -34,7 +35,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     sidebarSection: {
       borderColor,
       borderBottomWidth: 0.8,
-      paddingVertical: '2@s'
+      paddingVertical: '2@s',
+      width: '100%'
     },
     tenantContainer: {
       flexDirection: 'row',
@@ -44,16 +46,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     safeArea:{
       width: '100%'
     },
-    background: {
-      flex: 1
+    scrollviewInnerContainer: {
+      width: '100%'
     },
-    drawerContent: {
+    scrollview: {
       width: '100%',
+      height: 'auto',
       backgroundColor: commonColor.containerBgColor
-    },
-    linkContainer: {
-      marginBottom: '10@s',
-      flex: 1
     },
     logo: {
       resizeMode: 'contain',

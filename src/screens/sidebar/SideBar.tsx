@@ -142,6 +142,8 @@ export default class SideBar extends React.Component<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { userToken, tenantName, isComponentOrganizationActive, showAppUpdateDialog, appVersion, tenantLogo } = this.state;
     const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
+    const showEntitiesSection = this.securityProvider?.canListUsers() || this.securityProvider?.canListCars() || this.securityProvider?.canListTags();
+    const showBillingSection = this.securityProvider?.isComponentBillingActive() && (this.securityProvider?.canListInvoices() || this.securityProvider?.canListPaymentMethods());
     // Get logo
     return (
       <View style={style.container}>
@@ -149,7 +151,7 @@ export default class SideBar extends React.Component<Props, State> {
           <View style={style.header}>
             <View style={style.tenantContainer}>
               {tenantLogo && <Image source={{ uri: tenantLogo }} style={style.logo as ImageStyle} />}
-              <Text numberOfLines={3} style={style.tenantName}>
+              <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.tenantName}>
                 {tenantName}
               </Text>
             </View>
@@ -165,86 +167,86 @@ export default class SideBar extends React.Component<Props, State> {
             </View>
             {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
           </View>
-          <View style={{width: '100%'}}>
-            <ScrollView style={style.drawerContent}>
-              <View style={style.linkContainer}>
-                <View style={style.sidebarSection}>
-                  <SidebarEntry onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
-                    <SidebarIcon as={MaterialIcons} name="qr-code-scanner" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.qrCodeScanner')}</Text>
-                  </SidebarEntry>
-                </View>
-                <View style={style.sidebarSection}>
-                  {isComponentOrganizationActive && (
-                    <SidebarEntry onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
-                      <SidebarIcon as={MaterialIcons} name="store-mall-directory" />
-                      <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
-                    </SidebarEntry>
-                  )}
-                  <SidebarEntry onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
-                    <SidebarIcon as={MaterialIcons} name="ev-station" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
-                  </SidebarEntry>
-                </View>
-                <View style={style.sidebarSection}>
-                  <SidebarEntry
-                    onPress={() => this.navigateTo('TransactionHistoryNavigator', 'TransactionsHistory')}>
-                    <SidebarIcon as={MaterialCommunityIcons} name="history" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.transactionsHistory')}</Text>
-                  </SidebarEntry>
-                  <SidebarEntry
-                    onPress={() => this.navigateTo('TransactionInProgressNavigator', 'TransactionsInProgress')}>
-                    <SidebarIcon as={MaterialIcons} name="play-arrow" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.transactionsInProgress')}</Text>
-                  </SidebarEntry>
-                  <SidebarEntry onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
-                    <SidebarIcon as={MaterialIcons} name="assessment" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
-                  </SidebarEntry>
-                </View>
-                <View style={style.sidebarSection}>
-                  {this.securityProvider?.canListUsers() && (
-                    <SidebarEntry onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
-                      <SidebarIcon as={MaterialIcons} name="people" />
-                      <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
-                    </SidebarEntry>
-                  )}
-                  {this.securityProvider?.canListTags() && (
-                    <SidebarEntry onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
-                      <SidebarIcon as={MaterialCommunityIcons} name="credit-card" />
-                      <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
-                    </SidebarEntry>
-                  )}
-                  {this.securityProvider?.canListCars() && this.securityProvider?.isComponentCarActive() && (
-                    <SidebarEntry onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
-                      <SidebarIcon as={MaterialIcons} name="directions-car" />
-                      <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
-                    </SidebarEntry>
-                  )}
-                </View>
-                <View style={style.sidebarSection}>
-                  {this.securityProvider?.canListPaymentMethods() && this.securityProvider?.isComponentBillingActive() && (
-                    <SidebarEntry
-                      onPress={() => this.navigateTo('PaymentMethodsNavigator', 'PaymentMethods')}>
-                      <SidebarIcon as={MaterialIcons} name="payments" />
-                      <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
-                    </SidebarEntry>
-                  )}
-                  {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
-                    <SidebarEntry onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
-                      <SidebarIcon as={MaterialIcons} name="receipt" />
-                      <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
-                    </SidebarEntry>
-                  )}
-                </View>
-                <SidebarEntry
-                  onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-                  <SidebarIcon color={commonColor.dangerLight} as={MaterialIcons} name="error-outline" />
-                  <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
+          <ScrollView contentContainerStyle={style.scrollviewInnerContainer} style={style.scrollview}>
+            <View style={style.sidebarSection}>
+              <SidebarEntry onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
+                <SidebarIcon as={MaterialIcons} name="qr-code-scanner" />
+                <Text style={style.linkText}>{I18n.t('sidebar.qrCodeScanner')}</Text>
+              </SidebarEntry>
+            </View>
+            <View style={style.sidebarSection}>
+              {isComponentOrganizationActive && (
+                <SidebarEntry onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
+                  <SidebarIcon as={MaterialIcons} name="store-mall-directory" />
+                  <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
                 </SidebarEntry>
+              )}
+              <SidebarEntry onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
+                <SidebarIcon as={MaterialIcons} name="ev-station" />
+                <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
+              </SidebarEntry>
+            </View>
+            <View style={style.sidebarSection}>
+              <SidebarEntry
+                onPress={() => this.navigateTo('TransactionHistoryNavigator', 'TransactionsHistory')}>
+                <SidebarIcon as={MaterialCommunityIcons} name="history" />
+                <Text style={style.linkText}>{I18n.t('sidebar.transactionsHistory')}</Text>
+              </SidebarEntry>
+              <SidebarEntry
+                onPress={() => this.navigateTo('TransactionInProgressNavigator', 'TransactionsInProgress')}>
+                <SidebarIcon as={MaterialIcons} name="play-arrow" />
+                <Text style={style.linkText}>{I18n.t('sidebar.transactionsInProgress')}</Text>
+              </SidebarEntry>
+              <SidebarEntry onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
+                <SidebarIcon as={MaterialIcons} name="assessment" />
+                <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
+              </SidebarEntry>
+            </View>
+            {showEntitiesSection && (
+              <View style={style.sidebarSection}>
+                {this.securityProvider?.canListUsers() && (
+                  <SidebarEntry onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
+                    <SidebarIcon as={MaterialIcons} name="people" />
+                    <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
+                  </SidebarEntry>
+                )}
+                {this.securityProvider?.canListTags() && (
+                  <SidebarEntry onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
+                    <SidebarIcon as={MaterialCommunityIcons} name="credit-card" />
+                    <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
+                  </SidebarEntry>
+                )}
+                {this.securityProvider?.canListCars() && this.securityProvider?.isComponentCarActive() && (
+                  <SidebarEntry onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
+                    <SidebarIcon as={MaterialIcons} name="directions-car" />
+                    <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
+                  </SidebarEntry>
+                )}
               </View>
-            </ScrollView>
-          </View>
+            )}
+            {showBillingSection && (
+              <View style={style.sidebarSection}>
+                {this.securityProvider?.canListPaymentMethods() && this.securityProvider?.isComponentBillingActive() && (
+                  <SidebarEntry
+                    onPress={() => this.navigateTo('PaymentMethodsNavigator', 'PaymentMethods')}>
+                    <SidebarIcon as={MaterialIcons} name="payments" />
+                    <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
+                  </SidebarEntry>
+                )}
+                {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
+                  <SidebarEntry onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
+                    <SidebarIcon as={MaterialIcons} name="receipt" />
+                    <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
+                  </SidebarEntry>
+                )}
+              </View>
+            )}
+            <SidebarEntry
+              onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
+              <SidebarIcon color={commonColor.dangerLight} as={MaterialIcons} name="error-outline" />
+              <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
+            </SidebarEntry>
+          </ScrollView>
           <View style={style.bottomContainer}>
             <View style={style.avatarContainer}>
               <UserAvatar user={user} navigation={this.props.navigation} />

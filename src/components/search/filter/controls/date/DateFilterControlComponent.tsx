@@ -19,7 +19,6 @@ export interface Props extends FilterControlComponentProps<Date> {
 
 interface State extends FilterControlComponentState<Date> {
   openDatePicker: boolean;
-  value: Date;
 }
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
@@ -31,12 +30,8 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public constructor(props: Props) {
     super(props);
-    this.state = {
-      openDatePicker: false,
-      value: null
-    }
+    this.state.openDatePicker = false;
   }
-
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
     const { initialValue } = this.props;
@@ -47,7 +42,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   }
 
   public async componentDidMount() {
-    let { value } = this.state;
+    const { value } = this.state;
     const correctedDate = this.fitDateWithinMinAndMax(value);
     if (correctedDate?.getTime() !== value?.getTime()) {
       this.setState({value: correctedDate});
@@ -108,7 +103,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     const { onFilterChanged } = this.props;
     // Workaround to fix the bug from react-native-modal-datetime-picker
     newValue = this.fitDateWithinMinAndMax(newValue);
-    this.setState({ openDatePicker: false, value: newValue }, () => onFilterChanged?.(this.getID(), newValue))
+    this.setState({ openDatePicker: false, value: newValue }, () => onFilterChanged?.(this.getID(), newValue));
   }
 
   private fitDateWithinMinAndMax(date: Date): Date {
