@@ -43,7 +43,7 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
       role: userInfo.role as UserRole,
       email: userInfo.email,
       id: userInfo.id
-    } as User
+    } as User;
   }
 
 
@@ -54,7 +54,6 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
 
   public render = () => {
     const style = computeStyleSheet();
-    //const defaultItems = Utils.isEmptyArray(this.state.selectedUsers) ?
     return (
       <View style={style.container}>
         <View style={style.modalContainer}>

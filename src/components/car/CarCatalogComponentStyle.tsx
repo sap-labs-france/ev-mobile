@@ -82,8 +82,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     icon: {
-      color: commonColor.textColor,
-      size: scale(20)
+      color: commonColor.textColor
     },
     currentTypeIcon: {
       fontSize: '10@s'
