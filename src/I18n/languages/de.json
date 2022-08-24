@@ -541,5 +541,10 @@
     "siteAreasRoamingFilterLabel": "Roaming-Standortbereiche zeigen",
     "transactionsRoamingFilterLabel": "Roaming-Ladevorgänge zeigen",
     "usersRoamingFilterLabel": "Roaming-Nutzer zeigen"
+  },
+  "settingsDistanceUnit": {
+    "kilometers": "Kilometer",
+    "miles": "Meilen",
+    "automatic": "Automatik"
   }
 }

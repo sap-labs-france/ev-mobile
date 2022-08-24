@@ -541,5 +541,10 @@
     "siteAreasRoamingFilterLabel": "Afficher les zones en itinérance",
     "transactionsRoamingFilterLabel": "Afficher les sessions en itinérance",
     "usersRoamingFilterLabel": "Afficher les utilisateurs en itinérance"
+  },
+  "settingsDistanceUnit": {
+    "kilometers": "Kilomètres",
+    "miles": "Miles",
+    "automatic": "Automatique"
   }
 }

@@ -541,5 +541,10 @@
     "siteAreasRoamingFilterLabel": "Show roaming site areas",
     "transactionsRoamingFilterLabel": "Show roaming sessions",
     "usersRoamingFilterLabel": "Show roaming users"
+  },
+  "settingsDistanceUnit": {
+    "kilometers": "Kilometers",
+    "miles": "Miles",
+    "automatic": "Automatic"
   }
 }
