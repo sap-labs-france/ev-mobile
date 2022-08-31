@@ -56,6 +56,7 @@ import computeStyleSheet from './AppStyles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Settings from './screens/settings/Settings';
 
 // Init i18n
 I18nManager.initialize();
@@ -74,6 +75,7 @@ const TagsStack = createStackNavigator();
 const CarsStack = createStackNavigator();
 const InvoicesStack = createStackNavigator();
 const PaymentMethodsStack = createStackNavigator();
+const SettingsStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -455,6 +457,18 @@ function createPaymentMethodsNavigator(props: BaseProps) {
   );
 }
 
+function createSettingsNavigator(props: BaseProps) {
+  return (
+    <SettingsStack.Navigator initialRouteName="Settings" screenOptions={{ headerShown: false }}>
+      <SettingsStack.Screen
+        name="Settings"
+        component={Settings}
+        initialParams={props?.route?.params?.params}
+      />
+    </SettingsStack.Navigator>
+  );
+}
+
 function createAppDrawerNavigator(props: BaseProps) {
   return (
     <AppDrawer.Navigator
@@ -466,7 +480,7 @@ function createAppDrawerNavigator(props: BaseProps) {
         swipeEdgeWidth: scale(50),
         unmountOnBlur: false,
         drawerStyle: {
-            width: '83%'
+          width: '83%'
         }
       })}
       backBehavior={'history'}
@@ -484,6 +498,7 @@ function createAppDrawerNavigator(props: BaseProps) {
       <AppDrawer.Screen name="CarsNavigator" children={createCarsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="InvoicesNavigator" children={createInvoicesNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="PaymentMethodsNavigator" children={createPaymentMethodsNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="SettingsNavigator" children={createSettingsNavigator} initialParams={props?.route?.params?.params}/>
     </AppDrawer.Navigator>
   );
 }

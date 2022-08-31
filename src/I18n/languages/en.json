@@ -101,7 +101,8 @@
     "cars": "Cars",
     "invoices": "Invoices",
     "paymentMethods": "Payment methods",
-    "qrCodeScanner": "QR-Code scanner"
+    "qrCodeScanner": "QR-Code scanner",
+    "settings": "Settings"
   },
   "authentication": {
     "noTenantFoundTitle": "No organization found",
@@ -541,5 +542,11 @@
     "siteAreasRoamingFilterLabel": "Show roaming site areas",
     "transactionsRoamingFilterLabel": "Show roaming sessions",
     "usersRoamingFilterLabel": "Show roaming users"
+  },
+  "settingsDistanceUnit": {
+    "distanceUnit": "Distance unit",
+    "kilometers": "Kilometers",
+    "miles": "Miles",
+    "automatic": "Automatic"
   }
 }

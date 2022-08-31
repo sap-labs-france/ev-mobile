@@ -101,7 +101,8 @@
     "cars": "Veicoli",
     "invoices": "Fatture",
     "paymentMethods": "Pagamento",
-    "qrCodeScanner": "QR-Code Scanner"
+    "qrCodeScanner": "QR-Code Scanner",
+    "settings": "Impostazioni"
   },
 	"authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -541,5 +542,11 @@
     "siteAreasRoamingFilterLabel": "Show roaming site areas",
     "transactionsRoamingFilterLabel": "Show roaming sessions",
     "usersRoamingFilterLabel": "Show roaming users"
+  },
+  "settingsDistanceUnit": {
+    "distanceUnit": "Distance unit",
+    "kilometers": "Kilometers",
+    "miles": "Miles",
+    "automatic": "Automatic"
   }
 }
