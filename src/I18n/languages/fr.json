@@ -101,7 +101,8 @@
     "cars": "Voitures",
     "invoices": "Factures",
     "paymentMethods": "Moyens de paiement",
-    "qrCodeScanner": "Scanneur QR-Code"
+    "qrCodeScanner": "Scanneur QR-Code",
+    "settings": "Paramètres"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -543,6 +544,7 @@
     "usersRoamingFilterLabel": "Afficher les utilisateurs en itinérance"
   },
   "settingsDistanceUnit": {
+    "distanceUnit": "Unité de distance",
     "kilometers": "Kilomètres",
     "miles": "Miles",
     "automatic": "Automatique"

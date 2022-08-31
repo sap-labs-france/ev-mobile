@@ -119,7 +119,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     bottomContainer: {
       paddingHorizontal: '10@s',
       flexDirection: 'row',
-      marginTop: '10@s',
       paddingVertical: '15@s',
       backgroundColor: commonColor.listItemBackground
     },

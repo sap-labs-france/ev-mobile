@@ -3,7 +3,6 @@ import { Text, View } from 'react-native';
 import computeStyleSheet from './SettingsStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseScreen from '../base-screen/BaseScreen';
-import Utils from '../../utils/Utils';
 import BaseProps from '../../types/BaseProps';
 import { DistanceUnit } from '../../types/Settings';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -41,10 +40,10 @@ export default class Settings extends BaseScreen<Props, State> {
     const { distanceUnit } = this.state;
     return (
       <View style={style.container}>
-        <HeaderComponent containerStyle={style.headerContainer} navigation={this.props.navigation} title={'Settings'} backArrow={true} />
+        <HeaderComponent containerStyle={style.headerContainer} navigation={this.props.navigation} title={I18n.t('sidebar.settings')} backArrow={true} />
         <View style={style.content}>
           <View style={style.settingSection}>
-            <Text style={style.settingLabel}>Distance unit </Text>
+            <Text style={style.settingLabel}>{I18n.t('settingsDistanceUnit.distanceUnit')}</Text>
             <SelectDropdown
               statusBarTranslucent={true}
               data={Object.values(DistanceUnit)}

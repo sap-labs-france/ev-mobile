@@ -168,6 +168,10 @@ export default class SecuredStorage {
     return endpoints as EndpointCloud[];
   }
 
+  /**
+   * Overrides only the given settings values
+   * @param settings
+   */
   public static async saveSettingsValues(settings: Settings): Promise<void> {
     const savedSettings = await SecuredStorage.getSettings();
     const newSettings = {...(savedSettings || {}), ...(settings || {})};
