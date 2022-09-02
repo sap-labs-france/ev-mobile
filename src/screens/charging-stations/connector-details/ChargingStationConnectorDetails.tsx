@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Icon, Spinner } from 'native-base';
+import { Icon, Slider, Spinner } from 'native-base';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -52,6 +52,11 @@ import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import i18n from 'i18n-js';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+import RNLocation from 'react-native-location';
+import { uses24HourClock } from 'react-native-localize';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -89,12 +94,14 @@ export interface State {
   selectedCar?: Car;
   selectedTag?: Tag;
   tagCarLoading?: boolean;
-  settingsErrors?: SettingsErrors,
+  settingsErrors?: SettingsErrors;
   transactionPending?: boolean;
   didPreparing?: boolean;
   showAdviceMessage?: boolean;
   transactionPendingTimesUp?: boolean;
   showChargingSettings?: boolean;
+  showTimePicker?: boolean;
+  departureTime?: Date;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -136,7 +143,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       showAdviceMessage: false,
       didPreparing: false,
       transactionPendingTimesUp: false,
-      showChargingSettings: undefined
+      showChargingSettings: undefined,
+      showTimePicker: false,
+      departureTime: new Date()
     };
   }
 
@@ -417,7 +426,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         ...durationInfos,
         loading: false
       });
-    })
+    });
   };
 
   public getStartStopTransactionButtonStatus(
@@ -934,22 +943,26 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]}
                   animating={true}
                 /> }
+                {this.renderDepartureTime()}
+                {this.renderDepartureSoC()}
+{/*
                 {this.renderAccordion(style)}
-                {showChargingSettings && (
+*/}
+                {/*{showChargingSettings && (
                   <ScrollView
                     persistentScrollbar={true}
                     style={style.scrollviewContainer}
                     contentContainerStyle={style.chargingSettingsContainer}
                     keyboardShouldPersistTaps={'always'}
                   >
-                    {/* User */}
+                     User
                     {this.renderUserSelection(style)}
-                    {/* Badge */}
+                     Badge
                     {this.renderTagSelection(style)}
-                    {/* Car */}
+                     Car
                     {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
                   </ScrollView>
-                )}
+                )}*/}
               </View>
             ) : (
               <ScrollView
@@ -977,6 +990,48 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         }
       </View>
     );
+  }
+
+  private renderDepartureTime() {
+    const commonColors = Utils.getCurrentCommonColor();
+    //TODO handle 12-24 hours formats
+    const maximumDate = new Date();
+    maximumDate.setTime(maximumDate.getTime() + 20 * 60 * 60 * 1000);
+    return (
+        <View>
+          <Text style={{color: commonColors.textColor}}>Departure time </Text>
+          <TouchableOpacity style={{width: '50%', borderWidth: 0.8, borderColor: commonColors.textColor, borderRadius: scale(8), padding: scale(3), flexDirection: 'row'}} onPress={() => this.setState({showTimePicker: true})}>
+            <Text style={{fontSize: scale(13), color: commonColors.textColor}}>{I18nManager.formatDateTime(this.state.departureTime, {dateStyle: 'short', timeStyle: 'short'})}</Text>
+          </TouchableOpacity>
+          <DateTimePicker
+              mode={'datetime'}
+              locale={'en'}
+              cancelTextIOS={I18n.t('general.cancel')}
+              confirmTextIOS={I18n.t('general.confirm')}
+              maximumDate={maximumDate}
+              minimumDate={new Date()}
+              isVisible={this.state.showTimePicker}
+            //  is24Hour={false}
+              buttonTextColorIOS={commonColors.textColor}
+              value={this.state.departureTime}
+              onConfirm={(newDepartureTime) => this.setState({showTimePicker: false, departureTime: newDepartureTime})}
+              onCancel={() => this.setState({showTimePicker: false})} />
+        </View>
+    );
+  }
+
+  private renderDepartureSoC() {
+    return (
+        <View>
+          <Text>Departure SoC</Text>
+          <Slider w={"3/4"} marginLeft={77} step={1} maxWidth={300} maxValue={100} minValue={0}  >
+            <Slider.Track>
+              <Slider.FilledTrack />
+            </Slider.Track>
+            <Slider.Thumb />
+          </Slider>
+        </View>
+    )
   }
 
   private renderAccordion(style: any) {

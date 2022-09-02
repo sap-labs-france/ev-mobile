@@ -223,7 +223,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     messageText: {
       textAlign: 'left',
-      fontSize: '13@s'
+      fontSize: '13@s',
+      color: commonColor.textColor
     },
     errorMessage: {
       color: commonColor.dangerLight,
