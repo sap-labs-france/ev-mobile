@@ -122,7 +122,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     connectorInfoSettingsContainer: {
-      flex: 1
+      flex: 1,
+      alignItems: 'center'
     },
     scrollViewContainer: {
       width: '100%',

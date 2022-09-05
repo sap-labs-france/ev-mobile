@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Icon, Slider, Spinner } from 'native-base';
+import { Icon, Spinner, Input } from 'native-base';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -11,7 +11,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
-  View
+  View, Platform
 } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
@@ -46,28 +46,31 @@ import Cars from '../../cars/Cars';
 import Tags from '../../tags/Tags';
 import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
-import { scale } from 'react-native-size-matters'
+import { scale } from 'react-native-size-matters';
 import computeActivityIndicatorCommonStyles from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+//import Slider from '@react-native-community/slider';
 import i18n from 'i18n-js';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import RNLocation from 'react-native-location';
 import { uses24HourClock } from 'react-native-localize';
+import {Slider} from 'react-native-elements';
+import { PLATFORM } from '../../../theme/variables/commonColor';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
 export interface Props extends BaseProps {}
 
 export type SettingsErrors = {
-  noBadgeError?: boolean,
-  inactiveBadgeError?: boolean,
-  billingError?: boolean,
-  inactiveUserError?: boolean
-}
+  noBadgeError?: boolean;
+  inactiveBadgeError?: boolean;
+  billingError?: boolean;
+  inactiveUserError?: boolean;
+};
 
 export interface State {
   loading?: boolean;
@@ -102,6 +105,8 @@ export interface State {
   showChargingSettings?: boolean;
   showTimePicker?: boolean;
   departureTime?: Date;
+  departureSoC?: number;
+  currentSoC?: number;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -145,7 +150,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       transactionPendingTimesUp: false,
       showChargingSettings: undefined,
       showTimePicker: false,
-      departureTime: new Date()
+      departureTime: new Date(),
+      departureSoC: 85,
+      currentSoC: null
     };
   }
 
@@ -944,6 +951,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   animating={true}
                 /> }
                 {this.renderDepartureTime()}
+                {this.renderCurrentSoC()}
                 {this.renderDepartureSoC()}
 {/*
                 {this.renderAccordion(style)}
@@ -994,14 +1002,15 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderDepartureTime() {
     const commonColors = Utils.getCurrentCommonColor();
+    const durationFormatOptions = {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'};
     //TODO handle 12-24 hours formats
     const maximumDate = new Date();
     maximumDate.setTime(maximumDate.getTime() + 20 * 60 * 60 * 1000);
     return (
-        <View>
-          <Text style={{color: commonColors.textColor}}>Departure time </Text>
-          <TouchableOpacity style={{width: '50%', borderWidth: 0.8, borderColor: commonColors.textColor, borderRadius: scale(8), padding: scale(3), flexDirection: 'row'}} onPress={() => this.setState({showTimePicker: true})}>
-            <Text style={{fontSize: scale(13), color: commonColors.textColor}}>{I18nManager.formatDateTime(this.state.departureTime, {dateStyle: 'short', timeStyle: 'short'})}</Text>
+        <View style={{width: '90%', marginVertical: scale(13), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Text style={{color: commonColors.textColor, fontSize: scale(13)}}>Departure time </Text>
+          <TouchableOpacity style={{borderWidth: 0.6, borderColor: 'lightgrey', borderRadius: scale(8), padding: scale(8), flexDirection: 'row'}} onPress={() => this.setState({showTimePicker: true})}>
+            <Text style={{fontSize: scale(13), color: commonColors.textColor}}>{I18nManager.formatDateTime(this.state.departureTime, {dateStyle: 'short', timeStyle: 'short'})} ({I18nManager.formatDuration(Math.abs((this.state.departureTime.getTime() - (new Date()).getTime())/36000), durationFormatOptions)})</Text>
           </TouchableOpacity>
           <DateTimePicker
               mode={'datetime'}
@@ -1020,18 +1029,82 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  private renderDepartureSoC() {
+  private renderCurrentSoC() {
+    const { currentSoC, connector, selectedCar } = this.state;
+    const commonColors = Utils.getCurrentCommonColor();
+    const style = computeStyleSheet();
+    const isSoCAvailable = connector.currentStateOfCharge >= 0 || selectedCar?.carConnectorData.carConnectorID;
     return (
-        <View>
-          <Text>Departure SoC</Text>
-          <Slider w={"3/4"} marginLeft={77} step={1} maxWidth={300} maxValue={100} minValue={0}  >
-            <Slider.Track>
-              <Slider.FilledTrack />
-            </Slider.Track>
-            <Slider.Thumb />
-          </Slider>
+        <View style={{width: '100%', alignItems: 'center', marginBottom: scale(13)}}>
+          <View style={{width: '90%'}}>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}>
+              <Text style={{color: commonColors.textColor, fontSize: scale(13)}}>Current SoC</Text>
+              <Input
+                  borderRadius={scale(8)}
+                  borderWidth={0.6}
+                  variant={'outline'}
+                  isDisabled={isSoCAvailable}
+                  width={'18%'}
+                  style={style.sliderTextInput}
+                  padding={Platform.OS === PLATFORM.IOS ? scale(10) : scale(6)}
+                  borderBottomWidth={1}
+                  color={commonColors.textColor}
+                  fontSize={scale(12)}
+                  InputRightElement={<Text style={{paddingRight: scale(3), color: commonColors.textColor}}>%</Text>}
+                  //rightIcon={<Text>%</Text>}
+                  placeholder={'0'} keyboardType={'number-pad'} onChangeText={(newCurrentSoC) => this.setState({currentSoC: this.computeNumericSoC(newCurrentSoC)})} value={currentSoC ? currentSoC.toString(10) : null} />
+            </View>
+            <Slider
+                disabled={isSoCAvailable}
+                thumbTintColor={isSoCAvailable ? commonColors.disabled : commonColors.disabledDark}
+                minimumTrackTintColor={commonColors.disabledDark}
+                maximumTrackTintColor={commonColors.disabled}
+                allowTouchTrack={!isSoCAvailable}
+                minimumValue={0}
+                step={1}
+                maximumValue={100}
+                onValueChange={(newCurrentSoC) => this.setState({currentSoC: newCurrentSoC})}
+                value={currentSoC}
+                style={{width: '100%', height: 40}}/>
+          </View>
         </View>
-    )
+    );
+  }
+
+  private renderDepartureSoC() {
+    const { departureSoC } = this.state;
+    const commonColors = Utils.getCurrentCommonColor();
+    return (
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={{width: '90%'}}>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}>
+              <Text style={{color: commonColors.textColor}}>Departure SoC</Text>
+              <Input
+                  //selectionColor={'lightgrey'}
+                  borderRadius={scale(8)}
+                  borderWidth={0.6}
+                  variant={'outline'}
+                  padding={Platform.OS === PLATFORM.IOS ? scale(10) : scale(6)}
+                  width={'18%'}
+                  borderBottomWidth={1}
+                  color={commonColors.textColor}
+                  fontSize={scale(12)}
+                  InputRightElement={<Text  style={{paddingRight: scale(3), color: commonColors.textColor}}>%</Text>}
+                 //rightIcon={<Text>%</Text>}
+                  placeholder={'0'} keyboardType={'number-pad'} onChangeText={(newDepartureSoC) => this.setState({departureSoC: this.computeNumericSoC(newDepartureSoC)})} value={departureSoC ? departureSoC.toString(10) : null} />
+            </View>
+            <Slider thumbTintColor={commonColors.disabledDark} minimumTrackTintColor={commonColors.disabledDark} maximumTrackTintColor={commonColors.disabled} allowTouchTrack={true} minimumValue={0}  step={1} maximumValue={100} onValueChange={(newDepartureSoC) => this.setState({departureSoC: newDepartureSoC})} value={departureSoC} style={{width: '100%', height: 40}}/>
+          </View>
+        </View>
+    );
+  }
+
+  private computeNumericSoC(SoC: string): number {
+    let SoCNumeric = parseInt(SoC, 10);
+    if (SoCNumeric > 100) {
+      SoCNumeric = 100;
+    }
+    return SoCNumeric >= 0 ? SoCNumeric : null;
   }
 
   private renderAccordion(style: any) {
