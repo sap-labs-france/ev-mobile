@@ -1,17 +1,19 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Icon, Spinner, Input } from 'native-base';
+import i18n from 'i18n-js';
+import { Icon, IInputProps, Input, Spinner } from 'native-base';
 import React from 'react';
 import {
   ActivityIndicator,
   Alert,
   ImageBackground,
   ImageStyle,
+  Platform,
   RefreshControl,
   ScrollView,
-  TouchableOpacity,
   Text,
-  View, Platform
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
@@ -19,8 +21,7 @@ import noSite from '../../../../assets/no-site.png';
 import CarComponent from '../../../components/car/CarComponent';
 import ChargingStationConnectorComponent
   from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
-import ConnectorStatusComponent
-  from '../../../components/connector-status/ConnectorStatusComponent';
+import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
 import computeListItemCommonStyle from '../../../components/list/ListItemCommonStyle';
@@ -33,7 +34,12 @@ import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import Car from '../../../types/Car';
-import ChargingStation, { ChargePointStatus, Connector, OCPPGeneralResponse } from '../../../types/ChargingStation';
+import ChargingStation, {
+  ChargePointStatus,
+  Connector,
+  CurrentType,
+  OCPPGeneralResponse
+} from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Tag from '../../../types/Tag';
 import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
@@ -53,13 +59,45 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-//import Slider from '@react-native-community/slider';
-import i18n from 'i18n-js';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
-import RNLocation from 'react-native-location';
-import { uses24HourClock } from 'react-native-localize';
-import {Slider} from 'react-native-elements';
+import { Slider, SliderProps } from 'react-native-elements';
 import { PLATFORM } from '../../../theme/variables/commonColor';
+
+function SocInput(props: IInputProps) {
+  const commonColors = Utils.getCurrentCommonColor();
+  const style = computeStyleSheet();
+  return (
+    <Input
+      borderRadius={scale(8)}
+      borderWidth={0.6}
+      variant={'outline'}
+      color={commonColors.textColor}
+      width={'18%'}
+      fontSize={scale(12)}
+      padding={Platform.OS === PLATFORM.IOS ? scale(10) : scale(6)}
+      InputRightElement={<Text style={style.percentSign}>%</Text>}
+      keyboardType={'number-pad'}
+      {...props}
+    />
+  );
+}
+
+function SocSlider(props: SliderProps) {
+  const commonColors = Utils.getCurrentCommonColor();
+  const style = computeStyleSheet();
+  return (
+    <Slider
+      thumbTintColor={props.disabled ? commonColors.disabled : commonColors.disabledDark}
+      minimumTrackTintColor={commonColors.disabledDark}
+      maximumTrackTintColor={commonColors.disabled}
+      allowTouchTrack={!props.disabled}
+      minimumValue={0}
+      step={1}
+      maximumValue={100}
+      style={style.slider}
+      {...props}
+    />
+  );
+}
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -950,27 +988,25 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]}
                   animating={true}
                 /> }
-                {this.renderDepartureTime()}
-                {this.renderCurrentSoC()}
-                {this.renderDepartureSoC()}
 {/*
                 {this.renderAccordion(style)}
 */}
-                {/*{showChargingSettings && (
-                  <ScrollView
-                    persistentScrollbar={true}
-                    style={style.scrollviewContainer}
-                    contentContainerStyle={style.chargingSettingsContainer}
-                    keyboardShouldPersistTaps={'always'}
-                  >
-                     User
-                    {this.renderUserSelection(style)}
-                     Badge
-                    {this.renderTagSelection(style)}
-                     Car
-                    {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
-                  </ScrollView>
-                )}*/}
+
+                <ScrollView
+                  persistentScrollbar={true}
+                  style={style.scrollviewContainer}
+                  contentContainerStyle={style.chargingSettingsContainer}
+                  keyboardShouldPersistTaps={'always'}
+                >
+               {this.renderDepartureTime()}
+                  {this.renderCurrentSoC()}
+                  {this.renderDepartureSoC()}
+                  {this.renderUserSelection(style)}
+                  {this.renderTagSelection(style)}
+
+                  {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
+
+                </ScrollView>
               </View>
             ) : (
               <ScrollView
@@ -1000,102 +1036,87 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
+  //TODO BUG local not working on Android
   private renderDepartureTime() {
     const commonColors = Utils.getCurrentCommonColor();
+    const style = computeStyleSheet();
+    const { departureTime, showTimePicker } = this.state;
     const durationFormatOptions = {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'};
-    //TODO handle 12-24 hours formats
-    const maximumDate = new Date();
-    maximumDate.setTime(maximumDate.getTime() + 20 * 60 * 60 * 1000);
+    const minimumDate = new Date();
+    const maximumDate = new Date(new Date().getTime() + 20 * 60 * 60 * 1000);
+    const departureTimeFormatted = I18nManager.formatDateTime(departureTime, {dateStyle: 'short', timeStyle: 'short'});
+    const durationSeconds = Math.abs((departureTime.getTime() - new Date().getTime())/1000);
+    const durationFormatted = I18nManager.formatDuration(durationSeconds, durationFormatOptions);
+    const locale = this.centralServerProvider.getUserInfo()?.locale;
+    const is24Hour = I18nManager.isLocale24Hour(locale);
     return (
-        <View style={{width: '90%', marginVertical: scale(13), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text style={{color: commonColors.textColor, fontSize: scale(13)}}>Departure time </Text>
-          <TouchableOpacity style={{borderWidth: 0.6, borderColor: 'lightgrey', borderRadius: scale(8), padding: scale(8), flexDirection: 'row'}} onPress={() => this.setState({showTimePicker: true})}>
-            <Text style={{fontSize: scale(13), color: commonColors.textColor}}>{I18nManager.formatDateTime(this.state.departureTime, {dateStyle: 'short', timeStyle: 'short'})} ({I18nManager.formatDuration(Math.abs((this.state.departureTime.getTime() - (new Date()).getTime())/36000), durationFormatOptions)})</Text>
-          </TouchableOpacity>
-          <DateTimePicker
-              mode={'datetime'}
-              locale={'en'}
-              cancelTextIOS={I18n.t('general.cancel')}
-              confirmTextIOS={I18n.t('general.confirm')}
-              maximumDate={maximumDate}
-              minimumDate={new Date()}
-              isVisible={this.state.showTimePicker}
-            //  is24Hour={false}
-              buttonTextColorIOS={commonColors.textColor}
-              value={this.state.departureTime}
-              onConfirm={(newDepartureTime) => this.setState({showTimePicker: false, departureTime: newDepartureTime})}
-              onCancel={() => this.setState({showTimePicker: false})} />
-        </View>
+      <View style={style.departureTimeContainer}>
+        <Text style={style.settingLabel}>{I18n.t('transactions.departureTime')}</Text>
+        <TouchableOpacity style={style.departureTimeInput} onPress={() => this.setState({showTimePicker: true})}>
+          <Text style={style.departureTimeText}>{departureTimeFormatted} ({durationFormatted})</Text>
+        </TouchableOpacity>
+        <DateTimePicker
+          isVisible={showTimePicker}
+          mode={'datetime'}
+          locale={i18n.locale}
+          is24Hour={is24Hour}
+          cancelTextIOS={I18n.t('general.cancel')}
+          confirmTextIOS={I18n.t('general.confirm')}
+          buttonTextColorIOS={commonColors.textColor}
+          minimumDate={minimumDate}
+          maximumDate={maximumDate}
+          value={departureTime}
+          onConfirm={(newDepartureTime) => this.setState({showTimePicker: false, departureTime: newDepartureTime})}
+          onCancel={() => this.setState({showTimePicker: false})} />
+      </View>
     );
   }
 
+  //TODO either ensure that currentSOC is ignored server-side when soc available or set currentSoC to null on CarSelection if the latter has soc available
   private renderCurrentSoC() {
-    const { currentSoC, connector, selectedCar } = this.state;
-    const commonColors = Utils.getCurrentCommonColor();
+    const { currentSoC, connector, selectedCar, chargingStation } = this.state;
     const style = computeStyleSheet();
-    const isSoCAvailable = connector.currentStateOfCharge >= 0 || selectedCar?.carConnectorData.carConnectorID;
+    const connectorCurrentType = Utils.getConnectorCurrentType(chargingStation, connector?.connectorId);
+    const isSoCAvailable = connectorCurrentType === CurrentType.DC || !Utils.isNullOrUndefined(selectedCar?.carConnectorData?.carConnectorID);
     return (
-        <View style={{width: '100%', alignItems: 'center', marginBottom: scale(13)}}>
-          <View style={{width: '90%'}}>
-            <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}>
-              <Text style={{color: commonColors.textColor, fontSize: scale(13)}}>Current SoC</Text>
-              <Input
-                  borderRadius={scale(8)}
-                  borderWidth={0.6}
-                  variant={'outline'}
-                  isDisabled={isSoCAvailable}
-                  width={'18%'}
-                  style={style.sliderTextInput}
-                  padding={Platform.OS === PLATFORM.IOS ? scale(10) : scale(6)}
-                  borderBottomWidth={1}
-                  color={commonColors.textColor}
-                  fontSize={scale(12)}
-                  InputRightElement={<Text style={{paddingRight: scale(3), color: commonColors.textColor}}>%</Text>}
-                  //rightIcon={<Text>%</Text>}
-                  placeholder={'0'} keyboardType={'number-pad'} onChangeText={(newCurrentSoC) => this.setState({currentSoC: this.computeNumericSoC(newCurrentSoC)})} value={currentSoC ? currentSoC.toString(10) : null} />
-            </View>
-            <Slider
-                disabled={isSoCAvailable}
-                thumbTintColor={isSoCAvailable ? commonColors.disabled : commonColors.disabledDark}
-                minimumTrackTintColor={commonColors.disabledDark}
-                maximumTrackTintColor={commonColors.disabled}
-                allowTouchTrack={!isSoCAvailable}
-                minimumValue={0}
-                step={1}
-                maximumValue={100}
-                onValueChange={(newCurrentSoC) => this.setState({currentSoC: newCurrentSoC})}
-                value={currentSoC}
-                style={{width: '100%', height: 40}}/>
-          </View>
+      <View style={[style.socContainer, style.currentSoCContainer]}>
+        <View style={style.socInputLabelContainer}>
+          <Text style={style.settingLabel}>{I18n.t('transactions.currentStateOfCharge')}</Text>
+          <SocInput
+            isDisabled={isSoCAvailable}
+            placeholder={'0'}
+            onChangeText={(newCurrentSoC) => this.setState({currentSoC: this.computeNumericSoC(newCurrentSoC)})}
+            value={currentSoC ? currentSoC.toString(10) : null}
+          />
         </View>
+        <SocSlider
+          disabled={!!isSoCAvailable}
+          onValueChange={(newCurrentSoC) => this.setState({currentSoC: newCurrentSoC})}
+          value={currentSoC}
+        />
+      </View>
     );
   }
 
   private renderDepartureSoC() {
     const { departureSoC } = this.state;
-    const commonColors = Utils.getCurrentCommonColor();
+    const style = computeStyleSheet();
     return (
-        <View style={{width: '100%', alignItems: 'center'}}>
-          <View style={{width: '90%'}}>
-            <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}>
-              <Text style={{color: commonColors.textColor}}>Departure SoC</Text>
-              <Input
-                  //selectionColor={'lightgrey'}
-                  borderRadius={scale(8)}
-                  borderWidth={0.6}
-                  variant={'outline'}
-                  padding={Platform.OS === PLATFORM.IOS ? scale(10) : scale(6)}
-                  width={'18%'}
-                  borderBottomWidth={1}
-                  color={commonColors.textColor}
-                  fontSize={scale(12)}
-                  InputRightElement={<Text  style={{paddingRight: scale(3), color: commonColors.textColor}}>%</Text>}
-                 //rightIcon={<Text>%</Text>}
-                  placeholder={'0'} keyboardType={'number-pad'} onChangeText={(newDepartureSoC) => this.setState({departureSoC: this.computeNumericSoC(newDepartureSoC)})} value={departureSoC ? departureSoC.toString(10) : null} />
-            </View>
-            <Slider thumbTintColor={commonColors.disabledDark} minimumTrackTintColor={commonColors.disabledDark} maximumTrackTintColor={commonColors.disabled} allowTouchTrack={true} minimumValue={0}  step={1} maximumValue={100} onValueChange={(newDepartureSoC) => this.setState({departureSoC: newDepartureSoC})} value={departureSoC} style={{width: '100%', height: 40}}/>
-          </View>
+      <View style={style.socContainer}>
+        <View style={style.socInputLabelContainer}>
+          <Text style={style.settingLabel}>{I18n.t('transactions.departureStateOfCharge')}</Text>
+          <SocInput
+            placeholder={'0'}
+            keyboardType={'number-pad'}
+            onChangeText={(newDepartureSoC) => this.setState({departureSoC: this.computeNumericSoC(newDepartureSoC)})}
+            value={departureSoC ? departureSoC.toString(10) : null}
+          />
         </View>
+        <SocSlider
+          onValueChange={(newDepartureSoC) => this.setState({departureSoC: newDepartureSoC})}
+          value={departureSoC}
+        />
+      </View>
     );
   }
 

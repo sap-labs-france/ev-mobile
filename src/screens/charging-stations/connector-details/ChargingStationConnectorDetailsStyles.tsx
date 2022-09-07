@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { ScaledSheet } from 'react-native-size-matters';
+import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
@@ -123,19 +123,55 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     connectorInfoSettingsContainer: {
       flex: 1,
-      alignItems: 'center'
+      width: '100%'
     },
     scrollViewContainer: {
-      width: '100%',
-      height: 'auto'
+      width: '100%'
     },
     chargingSettingsContainer: {
-      marginHorizontal: '2.5%',
-      justifyContent: 'center',
       alignItems: 'center',
+      marginHorizontal: '10@s',
       height: 'auto',
       paddingTop: '10@s',
       paddingBottom: '20@s'
+    },
+    settingLabel: {
+      fontSize: '13@s',
+      color: commonColor.textColor
+    },
+    departureTimeContainer: {
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: '13@s'
+    },
+    departureTimeInput: {
+      borderWidth: 0.6,
+      borderColor: 'lightgrey',
+      borderRadius: '8@s',
+      padding: '8@s',
+      flexDirection: 'row'
+    },
+    departureTimeText: {
+      fontSize: '13@s',
+      color: commonColor.textColor
+    },
+    currentSoCContainer: {
+      marginBottom: '13@s',
+    },
+    socInputLabelContainer: {
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between'
+    },
+    socContainer: {
+      width: '100%',
+      alignItems: 'center'
+    },
+    slider: {
+      width: '100%'
     },
     rowContainer: {
       flexDirection: 'row',
@@ -365,6 +401,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '10@s',
       backgroundColor: commonColor.containerBgColor,
       zIndex: 2
+    },
+    percentSign: {
+      paddingRight: scale(3),
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
