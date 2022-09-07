@@ -329,7 +329,10 @@
     "selectChargeCard": "Select Charge Card",
     "chargingSettings": "Charging Settings",
     "adviceMessage": "Ensure that the cable is connected",
-    "sessionAlreadyInProgressError": "A session is already in progress on this connector"
+    "sessionAlreadyInProgressError": "A session is already in progress on this connector",
+    "departureTime": "Departure time",
+    "departureStateOfCharge": "Departure state of charge",
+    "currentStateOfCharge": "Current state of charge"
   },
   "home": {
     "browseSites": "Sites",

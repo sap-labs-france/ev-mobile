@@ -329,7 +329,10 @@
     "selectChargeCard": "Ladekarte auswählen",
     "chargingSettings": "Lade-Einstellungen",
     "adviceMessage": "Stellen Sie sicher, dass das Kabel verbunden ist",
-    "sessionAlreadyInProgressError": "An diesem Anschluss findet bereits ein Ladevorgang statt"
+    "sessionAlreadyInProgressError": "An diesem Anschluss findet bereits ein Ladevorgang statt",
+    "departureTime": "Departure time",
+    "departureStateOfCharge": "Departure state of charge",
+    "currentStateOfCharge": "Current state of charge"
   },
   "home": {
     "browseSites": "Standorte",
