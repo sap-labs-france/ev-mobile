@@ -1140,7 +1140,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             markerOffsetY={scale(2)}
             onValuesChange={([newCurrentSoC, newDepartureSoC]) => this.setState({currentSoC: newCurrentSoC, departureSoC: newDepartureSoC}) }
             sliderLength={Dimensions.get('window').width - scale(40)}
-            thirdStyle={{ backgroundColor: commonColors.disabled }}
+            thirdStyle={{ backgroundColor: commonColors.disabledDark, opacity: 0.2 }}
             trackStyle={{width: '100%', height: scale(7), borderRadius: scale(8)}}
             step={1}
             //showSteps={true}
@@ -1148,7 +1148,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             showStepMarkers={true}
             showStepLabels={true}
             minMarkerOverlapStepDistance={1}
-            selectedStyle={{borderWidth: 0.8, borderColor: commonColors.disabledDark}}
+            selectedStyle={{backgroundColor: 'rgba(10, 110, 209, 1)', borderStyle: 'dashed', borderWidth: 0.6, borderColor: commonColors.disabledDark}}
             unselectedStyle={{backgroundColor: commonColors.primary}}
             stepsAs={[90, 100]}
             enabledOne={true}
