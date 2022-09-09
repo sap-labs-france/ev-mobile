@@ -137,25 +137,29 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     settingLabel: {
       fontSize: '13@s',
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      marginRight: '10@s'
     },
     departureTimeContainer: {
       width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginBottom: '13@s'
+      marginBottom: '20@s'
     },
     departureTimeInput: {
-      borderWidth: 0.6,
-      borderColor: 'lightgrey',
+      backgroundColor: commonColor.listItemBackground,
       borderRadius: '8@s',
-      padding: '8@s',
-      flexDirection: 'row'
+      padding: '11@s',
+      flexDirection: 'row',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'space-between'
     },
     departureTimeText: {
       fontSize: '13@s',
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      marginRight: '5@s'
     },
     currentSoCContainer: {
       marginBottom: '13@s',
@@ -163,7 +167,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     socInputLabelContainer: {
       width: '100%',
       flexDirection: 'row',
-      alignItems: 'flex-end',
+      alignItems: 'center',
       justifyContent: 'space-between'
     },
     socContainer: {
@@ -404,7 +408,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     percentSign: {
       paddingRight: scale(3),
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      fontSize: '14@s'
     }
   });
   const portraitStyles = {};

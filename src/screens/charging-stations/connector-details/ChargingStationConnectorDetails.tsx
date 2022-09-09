@@ -1,14 +1,14 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import i18n from 'i18n-js';
-import { Icon, IInputProps, Input, Spinner } from 'native-base';
+import { HStack, Icon, IInputProps, Input, Spinner } from 'native-base';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import React from 'react';
 import {
   ActivityIndicator,
-  Alert,
+  Alert, Dimensions,
   ImageBackground,
   ImageStyle,
-  Platform,
   RefreshControl,
   ScrollView,
   Text,
@@ -60,7 +60,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Slider, SliderProps } from 'react-native-elements';
-import { PLATFORM } from '../../../theme/variables/commonColor';
 
 function SocInput(props: IInputProps) {
   const commonColors = Utils.getCurrentCommonColor();
@@ -68,13 +67,14 @@ function SocInput(props: IInputProps) {
   return (
     <Input
       borderRadius={scale(8)}
-      borderWidth={0.6}
+      borderWidth={0}
       variant={'outline'}
       color={commonColors.textColor}
-      width={'18%'}
-      fontSize={scale(12)}
-      padding={Platform.OS === PLATFORM.IOS ? scale(10) : scale(6)}
-      InputRightElement={<Text style={style.percentSign}>%</Text>}
+      backgroundColor={commonColors.listItemBackground}
+     // width={'45%'}
+      numberOfLines={2}
+      fontSize={scale(14)}
+      fontWeight={'bold'}
       keyboardType={'number-pad'}
       {...props}
     />
@@ -90,7 +90,6 @@ function SocSlider(props: SliderProps) {
       minimumTrackTintColor={commonColors.disabledDark}
       maximumTrackTintColor={commonColors.disabled}
       allowTouchTrack={!props.disabled}
-      minimumValue={0}
       step={1}
       maximumValue={100}
       style={style.slider}
@@ -999,7 +998,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   keyboardShouldPersistTaps={'always'}
                 >
                {this.renderDepartureTime()}
+{/*
                   {this.renderCurrentSoC()}
+*/}
                   {this.renderDepartureSoC()}
                   {this.renderUserSelection(style)}
                   {this.renderTagSelection(style)}
@@ -1053,7 +1054,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <View style={style.departureTimeContainer}>
         <Text style={style.settingLabel}>{I18n.t('transactions.departureTime')}</Text>
         <TouchableOpacity style={style.departureTimeInput} onPress={() => this.setState({showTimePicker: true})}>
-          <Text style={style.departureTimeText}>{departureTimeFormatted} ({durationFormatted})</Text>
+          <Text ellipsizeMode={'tail'} style={style.departureTimeText}>{departureTimeFormatted}  ({durationFormatted})</Text>
+          <Icon color={commonColors.textColor} size={scale(18)} as={MaterialIcons} name={'arrow-drop-down'} />
         </TouchableOpacity>
         <DateTimePicker
           isVisible={showTimePicker}
@@ -1074,10 +1076,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   //TODO either ensure that currentSOC is ignored server-side when soc available or set currentSoC to null on CarSelection if the latter has soc available
   private renderCurrentSoC() {
-    const { currentSoC, connector, selectedCar, chargingStation } = this.state;
+    const { currentSoC, connector, selectedCar, chargingStation, departureSoC } = this.state;
     const style = computeStyleSheet();
     const connectorCurrentType = Utils.getConnectorCurrentType(chargingStation, connector?.connectorId);
-    const isSoCAvailable = connectorCurrentType === CurrentType.DC || !Utils.isNullOrUndefined(selectedCar?.carConnectorData?.carConnectorID);
+    const isSoCAvailable = false //connectorCurrentType === CurrentType.DC || !Utils.isNullOrUndefined(selectedCar?.carConnectorData?.carConnectorID);
     return (
       <View style={[style.socContainer, style.currentSoCContainer]}>
         <View style={style.socInputLabelContainer}>
@@ -1091,30 +1093,69 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         </View>
         <SocSlider
           disabled={!!isSoCAvailable}
-          onValueChange={(newCurrentSoC) => this.setState({currentSoC: newCurrentSoC})}
+          onValueChange={(newCurrentSoC) => this.setState({currentSoC: newCurrentSoC, departureSoC: Math.max(departureSoC, newCurrentSoC)})}
           value={currentSoC}
         />
       </View>
     );
   }
 
+  //TODO find a way to prevent departure SOC manual input from being smaller than current SoC
   private renderDepartureSoC() {
-    const { departureSoC } = this.state;
+    const { departureSoC, currentSoC } = this.state;
     const style = computeStyleSheet();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={style.socContainer}>
         <View style={style.socInputLabelContainer}>
-          <Text style={style.settingLabel}>{I18n.t('transactions.departureStateOfCharge')}</Text>
-          <SocInput
-            placeholder={'0'}
-            keyboardType={'number-pad'}
-            onChangeText={(newDepartureSoC) => this.setState({departureSoC: this.computeNumericSoC(newDepartureSoC)})}
-            value={departureSoC ? departureSoC.toString(10) : null}
-          />
+          <Text style={style.settingLabel}>State of charge</Text>
+          <HStack alignItems={'center'} flex={1} justifyContent={'space-between'}>
+            <View style={{width: '48%', flexDirection: 'row', paddingHorizontal: scale(10),  backgroundColor: commonColors.listItemBackground, alignItems: 'center', borderRadius: scale(8)}}>
+              <Text style={{fontSize: scale(11)}}>Current: </Text>
+              <SocInput
+                  flex={1}
+                  placeholder={'0'}
+                  keyboardType={'number-pad'}
+                  onChangeText={(newCurrentSoC) => this.setState({currentSoC: Math.min(this.computeNumericSoC(newCurrentSoC), departureSoC-1)})}
+                  value={currentSoC ? currentSoC.toString(10) : null}
+              />
+              <Text style={{fontSize: scale(11)}}>%</Text>
+            </View>
+            <View style={{width: '48%', flexDirection: 'row', paddingHorizontal: scale(10),  backgroundColor: commonColors.listItemBackground, alignItems: 'center', borderRadius: scale(8)}}>
+              <Text style={{fontSize: scale(11)}}>Target: </Text>
+              <SocInput
+                  flex={1}
+                  placeholder={'0'}
+                  keyboardType={'number-pad'}
+                  onChangeText={(newDepartureSoC) => this.setState({departureSoC: Math.max(this.computeNumericSoC(newDepartureSoC), currentSoC+1)})}
+                  value={departureSoC ? departureSoC.toString(10) : null}
+              />
+              <Text style={{fontSize: scale(11)}}>%</Text>
+            </View>
+          </HStack>
         </View>
-        <SocSlider
-          onValueChange={(newDepartureSoC) => this.setState({departureSoC: newDepartureSoC})}
-          value={departureSoC}
+        <MultiSlider
+            customMarker={() =>
+                <View style={{width: scale(25), height: scale(25), borderRadius: scale(25), backgroundColor: commonColors.disabledDark, elevation: 6, borderColor: commonColors.disabled, borderWidth: 1}}/>}
+            markerOffsetY={scale(2)}
+            onValuesChange={([newCurrentSoC, newDepartureSoC]) => this.setState({currentSoC: newCurrentSoC, departureSoC: newDepartureSoC}) }
+            sliderLength={Dimensions.get('window').width - scale(40)}
+            thirdStyle={{ backgroundColor: commonColors.disabled }}
+            trackStyle={{width: '100%', height: scale(7), borderRadius: scale(8)}}
+            step={1}
+            //showSteps={true}
+            marker
+            showStepMarkers={true}
+            showStepLabels={true}
+            minMarkerOverlapStepDistance={1}
+            selectedStyle={{borderWidth: 0.8, borderColor: commonColors.disabledDark}}
+            unselectedStyle={{backgroundColor: commonColors.primary}}
+            stepsAs={[90, 100]}
+            enabledOne={true}
+            min={0}
+            max={100}
+            values={[currentSoC, departureSoC]}
+            enabledTwo={true}
         />
       </View>
     );
