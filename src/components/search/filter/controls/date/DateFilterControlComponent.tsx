@@ -1,16 +1,20 @@
-import { Icon, Text, View } from 'native-base';
+import { Icon  } from 'native-base';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import Constants from '../../../../../utils/Constants';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from './DateFilterControlComponentStyles';
+import I18nManager from '../../../../../I18n/I18nManager';
+import { scale } from 'react-native-size-matters';
+import Foundation from 'react-native-vector-icons/Foundation';
+import I18n from 'i18n-js';
 
 export interface Props extends FilterControlComponentProps<Date> {
   minimumDate: Date;
   maximumDate: Date;
-  defaultValue : Date;
+  defaultValue: Date;
 }
 
 interface State extends FilterControlComponentState<Date> {
@@ -29,7 +33,6 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     this.state.openDatePicker = false;
   }
 
-
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
     const { initialValue } = this.props;
     // If filter is not aware of initialValue change, put new initialValue to state
@@ -39,7 +42,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   }
 
   public async componentDidMount() {
-    let { value } = this.state;
+    const { value } = this.state;
     const correctedDate = this.fitDateWithinMinAndMax(value);
     if (correctedDate?.getTime() !== value?.getTime()) {
       this.setState({value: correctedDate});
@@ -69,10 +72,12 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
         {value ? (
           <View>
             <TouchableOpacity style={internalStyle.inputContainer} onPress={() => this.setState({openDatePicker: true})}>
-              <Text numberOfLines={1} style={internalStyle.dateText}>{value.toDateString()}</Text>
-              <Icon style={internalStyle.dateIcon} type={'Foundation'} name={'calendar'} />
+              <Text numberOfLines={1} style={internalStyle.dateText}>{I18nManager.formatDateTime(value, {dateStyle: 'medium'})}</Text>
+              <Icon padding={0} size={scale(28)} style={internalStyle.dateIcon} as={Foundation} name={'calendar'} />
             </TouchableOpacity>
             <DateTimePickerModal
+              confirmTextIOS={I18n.t('general.ok')}
+              cancelTextIOS={I18n.t('general.cancel')}
               isVisible={this.state.openDatePicker}
               date={value}
               mode={'date'}
@@ -98,7 +103,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     const { onFilterChanged } = this.props;
     // Workaround to fix the bug from react-native-modal-datetime-picker
     newValue = this.fitDateWithinMinAndMax(newValue);
-    this.setState({ openDatePicker: false, value: newValue }, () => onFilterChanged?.(this.getID(), newValue))
+    this.setState({ openDatePicker: false, value: newValue }, () => onFilterChanged?.(this.getID(), newValue));
   }
 
   private fitDateWithinMinAndMax(date: Date): Date {

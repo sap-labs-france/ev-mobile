@@ -18,7 +18,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between'
     },
     icon: {
-      fontSize: '52@s',
+      fontSize: 52,
       marginRight: '10@s',
       color: commonColor.light
     },

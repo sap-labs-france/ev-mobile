@@ -23,18 +23,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor,
       elevation: 0
     },
-    icon: {
-      color: commonColor.textColor,
-      fontSize: '30@s'
-    },
-    homeIcon: {
-      fontSize: '30@s'
-    },
     leftIconContainer: {
       marginRight: '15@s'
-    },
-    rightIcon: {
-      marginLeft: '13@s'
     },
     modalHeader: {
       paddingTop: '10@s'

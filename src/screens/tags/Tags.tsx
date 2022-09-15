@@ -1,5 +1,5 @@
 import i18n, { default as I18n } from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
@@ -15,6 +15,8 @@ import Utils from '../../utils/Utils';
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import computeStyleSheet from './TagsStyles';
 import TagsFilters, { TagsFiltersDef } from './TagsFilters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];
@@ -143,7 +145,7 @@ export default class Tags extends SelectableList<Tag> {
     const { tags, count, skip, limit, refreshing, loading, projectFields } = this.state;
     const { navigation, isModal, selectionMode, disableInactive } = this.props;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         {!isModal && (
           <HeaderComponent
             title={this.buildHeaderTitle()}
@@ -157,7 +159,7 @@ export default class Tags extends SelectableList<Tag> {
         )}
         {this.renderFilters()}
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
             <ItemsList<Tag>
@@ -186,7 +188,7 @@ export default class Tags extends SelectableList<Tag> {
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   };
 
@@ -209,7 +211,7 @@ export default class Tags extends SelectableList<Tag> {
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {!isModal && this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
-            <Icon style={style.filterButtonIcon} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon style={style.filterButtonIcon} size={scale(25)} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

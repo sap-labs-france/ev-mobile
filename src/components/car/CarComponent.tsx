@@ -9,6 +9,10 @@ import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import I18n from 'i18n-js';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 interface State {
   noImage?: boolean;
@@ -69,7 +73,7 @@ export default class CarComponent extends React.Component<Props, State> {
             <Image onError={() => this.setState({ noImage: true })} resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={image} />
           ) : (
             <View style={style.noImageContainer}>
-              <Icon style={style.carImagePlaceholder} type={'Ionicons'} name={'car-sport'} />
+              <Icon style={style.carImagePlaceholder} as={Ionicons} name={'car-sport'} />
             </View>
           )}
 
@@ -85,7 +89,7 @@ export default class CarComponent extends React.Component<Props, State> {
             <View style={style.powerDetailsContainer}>
               <View style={[style.columnContainer, style.columnContainerBorderRight]}>
                 <View style={style.iconContainer}>
-                  <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
+                  <Icon size={scale(20)} as={MaterialIcons} name="battery-full" style={style.icon} />
                 </View>
                 <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
                   {car?.carCatalog?.batteryCapacityFull} kW.h
@@ -93,8 +97,8 @@ export default class CarComponent extends React.Component<Props, State> {
               </View>
               <View style={[style.columnContainer, style.columnContainerBorderRight]}>
                 <View style={style.iconContainer}>
-                  <Icon style={style.icon} type="MaterialIcons" name="bolt" />
-                  <Icon style={[style.icon, style.currentTypeIcon]} type="MaterialIcons" name="power-input" />
+                  <Icon size={scale(20)} style={style.icon} as={MaterialIcons} name="bolt" />
+                  <Icon style={[style.icon, style.currentTypeIcon]} as={MaterialIcons} name="power-input" />
                 </View>
                 <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
                   {Utils.buildCarFastChargePower(car?.carCatalog?.fastChargePowerMax)}
@@ -103,8 +107,8 @@ export default class CarComponent extends React.Component<Props, State> {
               </View>
               <View style={style.columnContainer}>
                 <View style={style.iconContainer}>
-                  <Icon style={style.icon} type="MaterialIcons" name="bolt" />
-                  <Icon style={[style.icon, style.currentTypeIcon]} type="MaterialCommunityIcons" name="sine-wave" />
+                  <Icon size={scale(20)} style={style.icon} as={MaterialIcons} name="bolt" />
+                  <Icon style={[style.icon, style.currentTypeIcon]} as={MaterialCommunityIcons} name="sine-wave" />
                 </View>
                 <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
                   {car?.converter?.powerWatts} kW ({car?.converter?.numberOfPhases})

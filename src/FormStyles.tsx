@@ -33,6 +33,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     button: {
       width: '90%',
       alignSelf: 'center',
+      justifyContent: 'center',
       height: '40@s',
       marginBottom: '10@s',
       backgroundColor: commonColor.buttonBg
@@ -62,8 +63,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       alignSelf: 'center',
       textAlign: 'center',
-      width: '25@s',
-      fontSize: '20@s'
+      width: '25@s'
     },
     inputField: {
       flex: 1,
@@ -85,12 +85,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: '10@s'
     },
     checkbox: {
-      marginRight: '25@s',
       borderColor: commonColor.textColor,
       backgroundColor: commonColor.containerBgColor,
-      height: '22@s',
-      width: '22@s',
-      alignItems: 'center'
+      height: '21@s',
+      width: '21@s',
+      alignItems: 'center',
+      marginRight: '10@s'
     },
     checkboxText: {
       fontSize: '13@s',

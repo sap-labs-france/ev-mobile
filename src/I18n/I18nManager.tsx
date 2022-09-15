@@ -13,6 +13,7 @@ import moment from 'moment';
 import { I18nManager as I18nReactNativeManager } from 'react-native';
 import { findBestAvailableLanguage, usesMetricSystem } from 'react-native-localize';
 
+import { DistanceUnit } from '../types/Settings';
 import Constants from '../utils/Constants';
 import Utils from '../utils/Utils';
 import csJsonLanguage from './languages/cs.json';
@@ -72,6 +73,7 @@ export enum NumberFormatStyleEnum {
 
 export default class I18nManager {
   public static currency: string;
+  public static distanceUnit: string;
   public static language: string;
 
   public static initialize(): void {
@@ -117,25 +119,31 @@ export default class I18nManager {
     I18nManager.language = language;
   }
 
+  public static switchDistanceUnit(distanceUnit: DistanceUnit): void {
+    I18nManager.distanceUnit = distanceUnit;
+  }
+
   public static formatNumber(value: number, options: Intl.NumberFormatOptions = {}): string {
     if (!isNaN(value)) {
-     return Intl.NumberFormat(i18n.locale, options).format(value);
+      return Intl.NumberFormat(i18n.locale, options).format(value);
     }
     return '-';
   }
 
   public static formatNumberWithCompacts(value: number, options: FormatNumberOptions = {}, locale: string = i18n.locale): FormatNumberResult {
-    options = {... options };
+    options = { ...options };
+
     // Check currency options
     if (!options.currency) {
-      delete options.currency
-      delete options.currencySign
-      delete options.currencyDisplay
+      delete options.currency;
+      delete options.currencySign;
+      delete options.currencyDisplay;
       // Intl doc: If the style is "currency", currency option must be provided
       if (options.style === NumberFormatStyleEnum.CURRENCY) {
-        delete options.style
+        delete options.style;
       }
     }
+
     // Check unit options
     if (!options.unit) {
       delete options.unit;
@@ -145,15 +153,19 @@ export default class I18nManager {
         delete options.style;
       }
     }
+
     const isUnit = options.unit;
     const isPercent = options.style === NumberFormatStyleEnum.PERCENT;
     const isCurrency = options.currency;
     const shouldCompact = !options.compactThreshold || (options.compactThreshold && value > options.compactThreshold);
+
     if (!shouldCompact && options.notation === NumberFormatNotationEnum.COMPACT) {
       delete options.notation;
     }
+
     // Delete all unset options
     Object.keys(options).forEach((option) => options[option] ?? delete options[option]);
+
     // Format the given value with the given options
     try {
       const parts = Intl.NumberFormat(locale, options).formatToParts(value);
@@ -193,20 +205,14 @@ export default class I18nManager {
   }
 
   public static isMetricsSystem(): boolean {
-    return usesMetricSystem();
-  }
-
-  public static formatDistance(distanceMeters: number, useMetricSystem?: boolean): string {
-    const isMetricSystem = useMetricSystem ?? I18nManager.isMetricsSystem();
-    if(isMetricSystem) {
-      return (
-        distanceMeters < 1000 ? `${I18nManager.formatNumber(distanceMeters, {maximumFractionDigits: 0})} m` : `${I18nManager.formatNumber(distanceMeters / 1000, {maximumFractionDigits: 1})} km`
-      );
-    } else {
-      const distanceYard = distanceMeters * 1.09361;
-      return (
-        distanceYard < 1760 ? `${I18nManager.formatNumber(distanceYard, {maximumFractionDigits: 0})} yd` : `${I18nManager.formatNumber(distanceYard / 1760, {maximumFractionDigits: 1})} mi`
-      );
+    const distanceUnit = I18nManager.distanceUnit;
+    switch ( distanceUnit ) {
+      case DistanceUnit.KILOMETERS:
+        return true;
+      case DistanceUnit.MILES:
+        return false;
+      default:
+        return usesMetricSystem();
     }
   }
 
@@ -225,14 +231,10 @@ export default class I18nManager {
       options.format =  `${durationSecs < 36000 ? '0' : ''}{hour}:{minutes}`;
     }
     const formatter =  new DurationUnitFormat(i18n.locale, options);
-    return formatter.format(durationSecs)
+    return formatter.format(durationSecs);
   }
 
-  private static isValidDate(date: Date): boolean {
-    return !isNaN(new Date(date).getTime());
-  }
-
-  private static concatenateNumberFormatParts(parts: Intl.NumberFormatPart[] = []): string {
+  public static concatenateNumberFormatParts(parts: Intl.NumberFormatPart[] = []): string {
     return parts
       .filter((p) => !(p.type.toUpperCase() in NumberFormatSymbolsEnum))
       .map((p) => p.value)
@@ -240,11 +242,11 @@ export default class I18nManager {
       .trim();
   }
 
-  private static getNumberFormatPartValue(parts: Intl.NumberFormatPart[], type: string) {
+  public static getNumberFormatPartValue(parts: Intl.NumberFormatPart[], type: string) {
     return parts.find((p) => p.type === type)?.value;
   }
 
-  private static computeMetricCompact(value: number): MetricCompactEnum {
+  public static computeMetricCompact(value: number): MetricCompactEnum {
     if (value < 1000) {
       return null;
     }
@@ -258,5 +260,27 @@ export default class I18nManager {
       return MetricCompactEnum.GIGA;
     }
     return MetricCompactEnum.TERA;
+  }
+
+  public static formatDistance(distanceMeters: number, useMetricSystem?: boolean): string {
+    const isMetricSystem = useMetricSystem ?? I18nManager.isMetricsSystem();
+    if(isMetricSystem) {
+      return (
+        distanceMeters < 1000 ?
+          `${I18nManager.formatNumber(distanceMeters, {maximumFractionDigits: 0})} m` :
+          `${I18nManager.formatNumber(distanceMeters / 1000, {maximumFractionDigits: 1})} km`
+      );
+    } else {
+      const distanceYard = distanceMeters * 1.09361;
+      return (
+        distanceYard < 1760 ?
+          `${I18nManager.formatNumber(distanceYard, {maximumFractionDigits: 0})} yd` :
+          `${I18nManager.formatNumber(distanceYard / 1760, {maximumFractionDigits: 1})} mi`
+      );
+    }
+  }
+
+  private static isValidDate(date: Date): boolean {
+    return !isNaN(new Date(date).getTime());
   }
 }

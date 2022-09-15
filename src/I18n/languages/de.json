@@ -101,7 +101,8 @@
     "badges": "Ladekarten",
     "invoices": "Rechnungen",
     "paymentMethods": "Zahlungsmethoden",
-    "qrCodeScanner": "QR-Code Scanner"
+    "qrCodeScanner": "QR-Code Scanner",
+    "settings": "Einstellungen"
   },
   "authentication": {
     "noTenantFoundTitle" : "Keine Organisation gefunden",
@@ -541,5 +542,11 @@
     "siteAreasRoamingFilterLabel": "Roaming-Standortbereiche zeigen",
     "transactionsRoamingFilterLabel": "Roaming-Ladevorgänge zeigen",
     "usersRoamingFilterLabel": "Roaming-Nutzer zeigen"
+  },
+  "settingsDistanceUnit": {
+    "distanceUnit": "Distance unit",
+    "kilometers": "Kilometer",
+    "miles": "Meilen",
+    "automatic": "Automatik"
   }
 }

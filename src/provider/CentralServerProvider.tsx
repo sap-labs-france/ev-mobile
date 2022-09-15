@@ -112,6 +112,8 @@ export default class CentralServerProvider {
     }
     // Adjust the language according the device default
     I18nManager.switchLanguage(this.getUserLanguage(), this.currency);
+    const userSettings = await SecuredStorage.getSettings();
+    I18nManager.switchDistanceUnit(userSettings?.distanceUnit);
   }
 
   public getCaptchaBaseUrl(): string {

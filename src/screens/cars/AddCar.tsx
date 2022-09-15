@@ -24,6 +24,8 @@ import I18n from 'i18n-js';
 import { RadioButton } from 'react-native-paper';
 import Constants from '../../utils/Constants';
 import { RestResponse } from '../../types/ActionResponse';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
 
 interface State {
   selectedCarCatalog: CarCatalog;
@@ -142,7 +144,7 @@ export default class AddCar extends BaseScreen<Props, State> {
                 dropdownStyle={style.selectDropdown}
                 rowStyle={style.selectDropdownRow}
                 rowTextStyle={style.selectDropdownRowText}
-                renderDropdownIcon={() => <Icon style={style.dropdownIcon} type={'MaterialIcons'} name={'arrow-drop-down'} />}
+                renderDropdownIcon={() => <Icon size={scale(25)} style={style.dropdownIcon} as={MaterialIcons} name={'arrow-drop-down'} />}
                 onSelect={(carConverter: CarConverter) => this.setState({ selectedConverter: carConverter })}
               />
             )}
@@ -324,7 +326,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         defaultValue={null}
         buttonStyle={style.selectField}
         buttonTextStyle={{...style.selectFieldText, ...(!this.state.selectedCarCatalog ? style.selectFieldTextPlaceholder : {})}}
-        renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
+        renderDropdownIcon={() => <Icon style={style.dropdownIcon} size={scale(25)} as={MaterialIcons} name={'arrow-drop-down'} />}
       />
     );
   }
@@ -339,7 +341,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         renderCustomizedButtonChild={() => <CarCatalogComponent containerStyle={[style.itemComponentContainer]} carCatalog={carCatalog} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
-        renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
+        renderDropdownIcon={() => <Icon style={style.dropdownIcon} size={scale(25)} as={MaterialIcons} name={'arrow-drop-down'} />}
       />
     );
   }
@@ -353,7 +355,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         renderCustomizedButtonChild={() => <UserComponent containerStyle={[style.itemComponentContainer]} user={user} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
-        renderDropdownIcon={() => <Icon type={'MaterialIcons'} name={'arrow-drop-down'} />}
+        renderDropdownIcon={() => <Icon size={scale(25)} as={MaterialIcons} style={style.dropdownIcon} name={'arrow-drop-down'} />}
       />
     );
   }

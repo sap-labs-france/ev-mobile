@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -17,6 +17,7 @@ import computeCarsStyles from './CarsStyles';
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
 import CarCatalogComponent from '../../components/car/CarCatalogComponent';
+import { scale } from 'react-native-size-matters';
 
 interface State extends SelectableState<Car> {
   cars?: CarCatalog[];
@@ -131,7 +132,7 @@ export default class CarCatalogs extends SelectableList<Car> {
     const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, selectionMode, isModal } = this.props;
     return (
-      <Container style={transactionStyles.container}>
+      <View style={transactionStyles.container}>
         {!isModal && (
           <HeaderComponent
             title={this.buildHeaderTitle()}
@@ -145,7 +146,7 @@ export default class CarCatalogs extends SelectableList<Car> {
           <SimpleSearchComponent containerStyle={carsStyles.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
         {loading ? (
-          <Spinner style={transactionStyles.spinner} color="grey" />
+          <Spinner size={scale(30)} style={transactionStyles.spinner} color="grey" />
         ) : (
           <View style={carsStyles.content}>
             <ItemsList<CarCatalog>
@@ -171,7 +172,7 @@ export default class CarCatalogs extends SelectableList<Car> {
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   }
 }

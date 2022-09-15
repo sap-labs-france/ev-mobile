@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Text, View } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle } from 'react-native';
+import { Image, ImageStyle, Text, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import Configuration from '../../config/Configuration';

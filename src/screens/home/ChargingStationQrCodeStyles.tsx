@@ -5,9 +5,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
-    headerContainer: {
-      marginBottom: '10@s'
-    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

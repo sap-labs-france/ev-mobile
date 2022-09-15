@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, Text, View } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, ScrollView } from 'react-native';
+import { Image, ImageStyle, ScrollView, Text, View } from 'react-native';
 
 import noSite from '../../../../assets/no-site.png';
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -15,6 +15,9 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -167,7 +170,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+        <Icon size={scale(25)} as={FontAwesome} name="money" style={[style.icon, style.info]} />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
           {transaction?.stop ? I18nManager.formatCurrency(transaction.stop.price, transaction.stop.priceUnit) : '-'}
         </Text>
@@ -179,7 +182,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { elapsedTimeFormatted } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="timer" style={[style.icon, style.info]} />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
       </View>
     );
@@ -191,7 +194,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const inactivityStyle = Utils.computeInactivityStyle(transaction?.stop ? transaction.stop.inactivityStatus : null);
     return (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="timer-off" style={[style.icon, inactivityStyle]} />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
       </View>
     );
@@ -201,7 +204,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
+        <Icon size={scale(25)} style={[style.icon, style.info]} as={MaterialIcons} name="ev-station" />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
           {transaction?.stop ? `${I18nManager.formatNumber(transaction.stop.totalConsumptionWh / 1000, {maximumFractionDigits: 2})} kW.h` : '-'}
         </Text>
@@ -213,14 +216,14 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return transaction && transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={[style.icon, style.info]} />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
           {transaction.stateOfCharge}% {'>'} {transaction.stop.stateOfCharge}%
         </Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.disabled]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -232,9 +235,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { loading, siteImage, isPricingActive } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(transaction ? transaction.connectorId : null);
     return loading ? (
-      <Spinner style={style.spinner} color="grey" />
+      <Spinner size={scale(30)} style={style.spinner} color="grey" />
     ) : (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
@@ -268,7 +271,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
             {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
           </View>
         </ScrollView>
-      </Container>
+      </View>
     );
   }
 }

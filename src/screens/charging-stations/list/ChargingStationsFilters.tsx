@@ -1,5 +1,4 @@
 import I18n from 'i18n-js';
-import { View } from 'native-base';
 import React from 'react';
 
 import ConnectorTypeFilterControlComponent from '../../../components/search/filter/controls/connector-type/ConnectorTypeFilterControlComponent';
@@ -12,6 +11,7 @@ import FilterModalContainerComponent
   from '../../../components/search/filter/containers/FilterModalContainerComponent';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import computeChargingStationsFiltersStyles from './ChargingStationsFiltersStyles';
+import { View } from 'react-native';
 
 export interface ChargingStationsFiltersDef {
   connectorStatus?: string;
@@ -39,7 +39,6 @@ export default class ChargingStationsFilters extends ScreenFilters<ChargingStati
 
   public render = () => {
     const { filters } = this.state;
-    const controlStyle = computeControlStyleSheet();
     const filtersStyles = computeChargingStationsFiltersStyles();
     return (
       <View>

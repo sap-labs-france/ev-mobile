@@ -1,5 +1,5 @@
-import { View } from 'native-base';
 import React from 'react';
+import { View } from 'react-native';
 import MapView from 'react-native-map-clustering';
 import { Region } from 'react-native-maps';
 
@@ -65,7 +65,7 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
           </MapView>
         )}
       </View>
-    )
+    );
   }
 
   private computeRadius(latitudeDelta: number): number {

@@ -124,7 +124,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '20@s',
       width: 'auto'
     },
     currentTypeIcon: {

@@ -16,7 +16,7 @@ export interface Props extends BaseProps {
   tag: Tag;
   selected?: boolean;
   canReadUser?: boolean;
-  containerStyle?: ViewStyle[]
+  containerStyle?: ViewStyle[];
 }
 
 export default class TagComponent extends React.Component<Props, State> {

@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
 import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 
@@ -19,6 +19,8 @@ import SelectableList, { SelectableProps, SelectableState } from '../base-screen
 import Orientation from 'react-native-orientation-locker';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import CarsFilters, { CarsFiltersDef } from './CarsFilters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];
@@ -151,12 +153,12 @@ export default class Cars extends SelectableList<Car> {
     const { navigation, selectionMode, isModal } = this.props;
     const fabStyles = computeFabStyles();
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         {!isModal && (
           <SafeAreaView style={fabStyles.fabContainer}>
             <TouchableOpacity
               onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={fabStyles.fab}>
-              <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={'plus'} />
+              <Icon style={fabStyles.fabIcon} size={scale((18))} as={MaterialCommunityIcons} name={'plus'} />
             </TouchableOpacity>
           </SafeAreaView>
         )}
@@ -171,7 +173,7 @@ export default class Cars extends SelectableList<Car> {
           />
         )}
         {this.renderFilters()}
-        {loading ? <Spinner style={transactionStyles.spinner} color="grey" /> : (
+        {loading ? <Spinner size={scale(30)} style={transactionStyles.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<Car>
               data={cars}
@@ -197,7 +199,7 @@ export default class Cars extends SelectableList<Car> {
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   }
 
@@ -220,7 +222,7 @@ export default class Cars extends SelectableList<Car> {
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {!isModal && this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
-            <Icon style={style.filterButtonIcon} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon size={scale(25)} style={style.filterButtonIcon} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

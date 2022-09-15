@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Container, Spinner, Text, View } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
-import { FlatList, RefreshControl, ScrollView } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, Text, View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
@@ -12,6 +12,7 @@ import { KeyValue, PropertyDisplay } from '../../../types/Global';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationPropertiesStyles';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -157,7 +158,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     const style = computeStyleSheet();
     const { loading, chargingStation } = this.state;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
@@ -165,7 +166,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           containerStyle={style.headerContainer}
         />
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <FlatList
             data={this.displayedProperties}
@@ -194,7 +195,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
             ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargerParameters')} />}
           />
         )}
-      </Container>
+      </View>
     );
   }
 

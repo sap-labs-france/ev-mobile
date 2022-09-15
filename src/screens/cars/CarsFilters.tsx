@@ -1,13 +1,13 @@
-import { View } from 'native-base';
 import React from 'react';
 import ScreenFilters from '../../components/search/filter/screen/ScreenFilters';
 import FilterModalContainerComponent
   from '../../components/search/filter/containers/FilterModalContainerComponent';
 import UserFilterComponent from '../../components/search/filter/controls/user/UserFilterComponent';
 import User from '../../types/User';
+import { View } from 'react-native';
 
 export interface CarsFiltersDef {
-  users: User[]
+  users: User[];
 }
 
 export default class CarsFilters extends ScreenFilters<CarsFiltersDef> {

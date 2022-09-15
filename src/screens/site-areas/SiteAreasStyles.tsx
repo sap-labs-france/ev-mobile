@@ -54,9 +54,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderColor: commonColor.listItemBackground,
       borderWidth: 2
     },
-    siteAreaMarker: {
-      fontSize: '40@s'
-    },
     filtersContainer: {
       flexDirection: 'row',
       zIndex: 1,
@@ -124,8 +121,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-end'
     },
     closeIcon: {
-      padding: '8@s',
-      fontSize: '37@s',
       color: commonColor.textColor
     }
   });

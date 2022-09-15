@@ -1,9 +1,11 @@
 import { CommonActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
+import { Button, FormControl, Icon, Spinner, Stack } from 'native-base';
 import React from 'react';
-import { KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, Text, TextInput, View } from 'react-native';
+import { scale } from 'react-native-size-matters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
@@ -176,6 +178,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
         }
       }
     }
+    this.setState({ loading: false});
   };
 
   public render() {
@@ -189,9 +192,9 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
-            <Form style={formStyle.form}>
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="email" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+            <FormControl style={formStyle.form}>
+              <Stack style={formStyle.inputGroup}>
+                <Icon size={scale(20)} name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType={'next'}
                   selectionColor={commonColor.textColor}
@@ -205,7 +208,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ email: text })}
                   value={this.state.email}
                 />
-              </Item>
+              </Stack>
               {this.state.errorEmail &&
                 this.state.errorEmail.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
@@ -215,13 +218,13 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={formStyle.spinner} color="grey" />
               ) : (
-                <Button primary block style={formStyle.button} onPress={this.onRetrievePassword.bind(this)}>
-                  <Text style={formStyle.buttonText} uppercase={false}>
+                <Button style={formStyle.button} onPress={this.onRetrievePassword.bind(this)}>
+                  <Text style={formStyle.buttonText} >
                     {I18n.t('authentication.retrievePassword')}
                   </Text>
                 </Button>
               )}
-            </Form>
+            </FormControl>
           </KeyboardAvoidingView>
           {captchaSiteKey && captchaBaseUrl && !captcha && (
             <ReactNativeRecaptchaV3
@@ -232,15 +235,13 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
             />
           )}
         </ScrollView>
-        <Footer style={style.footer}>
-          <Left>
-            <TouchableOpacity style={[style.linksFooterButton]} onPress={() => this.props.navigation.goBack()}>
-              <Text style={[style.linksTextButton]} uppercase={false}>
-                {I18n.t('authentication.backLogin')}
-              </Text>
-            </TouchableOpacity>
-          </Left>
-        </Footer>
+        <View style={style.footer}>
+          <Button bgColor={'transparent'} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
+            <Text style={[style.linksTextButton, style.linksTextButtonLeft]}>
+              {I18n.t('authentication.backLogin')}
+            </Text>
+          </Button>
+        </View>
       </View>
     );
   }

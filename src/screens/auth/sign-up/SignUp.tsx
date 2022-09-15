@@ -1,9 +1,13 @@
 import { CommonActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
+import { Button, Checkbox, FormControl, IIconProps, Icon, Spinner, Stack } from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, ScrollView, Text, TextInput, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { scale } from 'react-native-size-matters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
@@ -196,7 +200,6 @@ export default class SignUp extends BaseScreen<Props, State> {
     // Force captcha regeneration for next signUp click
     if (formIsValid && captcha && eula) {
       try {
-        // Loading
         // Register
         await this.centralServerProvider.register(
           tenantSubDomain,
@@ -269,15 +272,16 @@ export default class SignUp extends BaseScreen<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, hidePassword, hideRepeatPassword, tenantLogo } = this.state;
+    const InputIcon = (props: IIconProps) => <Icon size={scale(20)} {...props} />;
     // Get logo
     return (
       <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
-            <Form style={formStyle.form}>
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="person" style={formStyle.inputIcon} />
+            <FormControl style={formStyle.form}>
+              <Stack style={formStyle.inputGroup}>
+                <InputIcon as={MaterialIcons} name="person" style={formStyle.inputIcon} />
                 <TextInput
                   onSubmitEditing={() => this.firstNameInput.focus()}
                   selectionColor={commonColor.textColor}
@@ -291,15 +295,15 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ name: text })}
                   secureTextEntry={false}
                 />
-              </Item>
+              </Stack>
               {this.state.errorName &&
                 this.state.errorName.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="person" style={formStyle.inputIcon} />
+              <Stack style={formStyle.inputGroup}>
+                <InputIcon as={MaterialIcons} name="person" style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.firstNameInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -314,7 +318,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ firstName: text })}
                   secureTextEntry={false}
                 />
-              </Item>
+              </Stack>
               {this.state.errorFirstName &&
                 this.state.errorFirstName.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
@@ -322,8 +326,8 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
 
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="email" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+              <Stack style={formStyle.inputGroup}>
+                <InputIcon  name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -340,7 +344,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   secureTextEntry={false}
                   value={this.state.email}
                 />
-              </Item>
+              </Stack>
               {this.state.errorEmail &&
                 this.state.errorEmail.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
@@ -348,8 +352,8 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
 
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+              <Stack style={formStyle.inputGroup}>
+                <InputIcon name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -365,21 +369,21 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ password: text })}
                   secureTextEntry={hidePassword}
                 />
-                <Icon
-                  active
+                <InputIcon
                   name={hidePassword ? 'eye' : 'eye-off'}
+                  as={MaterialCommunityIcons}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
                   style={formStyle.inputIcon}
                 />
-              </Item>
+              </Stack>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+              <Stack style={formStyle.inputGroup}>
+                <InputIcon name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -395,28 +399,28 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ repeatPassword: text })}
                   secureTextEntry={hideRepeatPassword}
                 />
-                <Icon
-                  active
+                <InputIcon
                   name={hideRepeatPassword ? 'eye' : 'eye-off'}
+                  as={MaterialCommunityIcons}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
                   style={formStyle.inputIcon}
                 />
-              </Item>
+              </Stack>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <View style={formStyle.formCheckboxContainer}>
-                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula})} />
+              <TouchableOpacity onPress={() => this.setState({ eula: !eula})} style={formStyle.formCheckboxContainer}>
+                <Checkbox _icon={{color: commonColor.textColor}} value={'checkbox'} style={formStyle.checkbox} isChecked={eula} onChange={() => this.setState({ eula: !eula})} />
                 <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
                     {I18n.t('authentication.eula')}
                   </Text>
                 </Text>
-              </View>
+              </TouchableOpacity>
               {this.state.errorEula &&
                 this.state.errorEula.map((errorMessage, index) => (
                   <Text style={[formStyle.formErrorText, style.formErrorTextEula]} key={index}>
@@ -432,7 +436,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 </Button>
               )}
-            </Form>
+            </FormControl>
           </KeyboardAvoidingView>
           {!captcha && captchaSiteKey && captchaBaseUrl && (
             <ReactNativeRecaptchaV3
@@ -443,15 +447,13 @@ export default class SignUp extends BaseScreen<Props, State> {
             />
           )}
         </ScrollView>
-        <Footer style={style.footer}>
-          <Left>
-            <TouchableOpacity style={[style.linksFooterButton]} onPress={() => this.onBack()}>
-              <Text style={[style.linksTextButton]} uppercase={false}>
-                {I18n.t('authentication.backLogin')}
-              </Text>
-            </TouchableOpacity>
-          </Left>
-        </Footer>
+        <View style={style.footer}>
+          <Button bgColor={'transparent'} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.onBack()}>
+            <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>
+              {I18n.t('authentication.backLogin')}
+            </Text>
+          </Button>
+        </View>
       </View>
     );
   }

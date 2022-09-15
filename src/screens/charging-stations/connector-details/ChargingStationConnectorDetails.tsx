@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, Text, View } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -9,7 +9,9 @@ import {
   ImageStyle,
   RefreshControl,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Text,
+  View
 } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
@@ -47,6 +49,9 @@ import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 import { scale } from 'react-native-size-matters'
 import computeActivityIndicatorCommonStyles from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -693,12 +698,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
     return connector && connector.currentTransactionID && transaction ? (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+        <Icon size={scale(25)} as={FontAwesome} name="money" style={[style.icon, style.info]} />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>{price}</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="money" style={[style.icon, style.disabled]} />
+        <Icon size={scale(25)} as={FontAwesome} name="money" style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -708,14 +713,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { connector } = this.state;
     return connector && connector.currentTransactionID && !isNaN(connector.currentInstantWatts) ? (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
+        <Icon size={scale(25)} as={FontAwesome} name="bolt" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
           {connector.currentInstantWatts > 0 ? I18nManager.formatNumber(connector.currentInstantWatts / 1000, {maximumFractionDigits: 2} ) : 0} kW
         </Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="bolt" style={[style.icon, style.disabled]} />
+        <Icon size={scale(25)} as={FontAwesome} name="bolt" style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -725,12 +730,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { elapsedTimeFormatted, connector } = this.state;
     return connector && connector.currentTransactionID ? (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="timer" style={[style.icon, style.info]} />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer" style={[style.icon, style.disabled]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="timer" style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -741,12 +746,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const inactivityStyle = connector ? Utils.computeInactivityStyle(connector.currentInactivityStatus) : '';
     return connector && connector.currentTransactionID ? (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="timer-off" style={[style.icon, inactivityStyle]} />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer-off" style={[style.icon, style.disabled]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="timer-off" style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -756,14 +761,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { connector } = this.state;
     return connector && connector.currentTransactionID && !isNaN(connector.currentTotalConsumptionWh) ? (
       <View style={style.columnContainer}>
-        <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
+        <Icon size={scale(25)} style={[style.icon, style.info]} as={MaterialIcons} name="ev-station" />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
           {connector ? I18nManager.formatNumber(connector.currentTotalConsumptionWh/ 1000, {maximumFractionDigits: 2}) : ''} kW.h
         </Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon style={[style.icon, style.disabled]} type="MaterialIcons" name="ev-station" />
+        <Icon size={scale(25)} style={[style.icon, style.disabled]} as={MaterialIcons} name="ev-station" />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -773,7 +778,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { transaction, connector } = this.state;
     return connector && connector.currentStateOfCharge && !isNaN(connector.currentStateOfCharge) ? (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={[style.icon, style.info]} />
         {transaction ?
           (
             <Text style={[style.label, style.labelValue, style.info]}><Text style={[style.label, style.batteryStartValue, style.info]}>{`${transaction.stateOfCharge}%`}</Text>
@@ -785,7 +790,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.disabled]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -797,7 +802,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return (
         <TouchableOpacity style={style.lastTransactionContainer} onPress={async () => this.showLastTransaction()}>
           <View style={style.buttonLastTransaction}>
-            <Icon style={style.lastTransactionIcon} type="MaterialCommunityIcons" name="history" />
+            <Icon size={scale(25)} style={style.lastTransactionIcon} as={MaterialCommunityIcons} name="history" />
           </View>
         </TouchableOpacity>
       );
@@ -811,7 +816,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return (
         <TouchableOpacity style={[style.reportErrorContainer]} onPress={async () => this.showReportError()}>
           <View style={style.reportErrorButton}>
-            <Icon style={style.reportErrorIcon} type="MaterialIcons" name="error-outline" />
+            <Icon size={scale(25)} style={style.reportErrorIcon} as={MaterialIcons} name="error-outline" />
           </View>
         </TouchableOpacity>
       );
@@ -835,7 +840,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 ? [style.transactionIcon, style.startTransactionIcon, style.transactionDisabledIcon]
                 : [style.transactionIcon, style.startTransactionIcon]
             }
-            type="MaterialIcons"
+            as={MaterialIcons}
+            size={scale(75)}
             name="play-arrow"
           />
         </View>
@@ -859,7 +865,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 ? [style.transactionIcon, style.stopTransactionIcon, style.transactionDisabledIcon]
                 : [style.transactionIcon, style.stopTransactionIcon]
             }
-            type="MaterialIcons"
+            as={MaterialIcons}
+            size={scale(75)}
             name="stop"
           />
         </View>
@@ -887,7 +894,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const activityIndicatorCommonStyles = computeActivityIndicatorCommonStyles();
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector?.connectorId);
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         {showStartTransactionDialog && this.renderStartTransactionDialog()}
         {showStopTransactionDialog && this.renderStopTransactionDialog()}
         <HeaderComponent
@@ -896,7 +903,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           subTitle={connector && connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
         />
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) :
           <View style={style.container}>
             {/* Site Image */}
@@ -968,7 +975,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             )}
           </View>
         }
-      </Container>
+      </View>
     );
   }
 
@@ -983,9 +990,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           )}
         </Text>
         {showChargingSettings ? (
-          <Icon style={style.accordionIcon} type={'MaterialIcons'} name={'arrow-drop-up'} />
+          <Icon size={scale(25)} margin={scale(5)} style={style.accordionIcon} as={MaterialIcons} name={'arrow-drop-up'} />
         ) : (
-          <Icon style={style.accordionIcon} type={'MaterialIcons'} name={'arrow-drop-down'} />
+          <Icon size={scale(25)} margin={scale(5)} style={style.accordionIcon} as={MaterialIcons} name={'arrow-drop-down'} />
         )}
       </TouchableOpacity>
     );
@@ -1022,7 +1029,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private renderAdviceMessage(style: any) {
     return (
       <View style={[style.messageContainer, style.adviceMessageContainer]}>
-        <Icon style={style.adviceMessageIcon} type={'MaterialCommunityIcons'} name={'power-plug'} />
+        <Icon size={scale(25)} style={style.adviceMessageIcon} as={MaterialCommunityIcons} name={'power-plug'} />
         <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.adviceText}>
           {I18n.t('transactions.adviceMessage')}
         </Text>
@@ -1040,7 +1047,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       case StartTransactionErrorCode.BILLING_NO_PAYMENT_METHOD:
         return (
           <View style={[listItemCommonStyle.container, style.noItemContainer, style.noTagContainer]}>
-            <Icon style={style.noPaymentMethodIcon} type={'MaterialCommunityIcons'} name={'credit-card-off'} />
+            <Icon size={scale(50)} style={style.noPaymentMethodIcon} as={MaterialCommunityIcons} name={'credit-card-off'} />
             <View style={style.column}>
               <Text ellipsizeMode={'tail'} numberOfLines={2} style={style.errorMessage}>
                 {I18n.t('transactions.noPaymentMethodError')}
@@ -1118,7 +1125,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const style = computeStyleSheet();
     return (
       <View style={[listItemCommonStyle.container, style.noItemContainer, style.noCarContainer]}>
-        <Icon style={style.noCarIcon} type={'MaterialCommunityIcons'} name={'car'} />
+        <Icon style={style.noCarIcon} as={MaterialCommunityIcons} name={'car'} />
         <View style={style.column}>
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
         </View>
@@ -1133,7 +1140,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { navigation } = this.props;
     return (
       <View style={[listItemCommonStyle.container, style.noItemContainer, style.noCarContainer]}>
-        <Icon style={style.noCarIcon} type={'MaterialCommunityIcons'} name={'car'} />
+        <Icon size={scale(50)} style={style.noCarIcon} as={MaterialCommunityIcons} name={'car'} />
         <View style={style.column}>
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
           {(this.currentUser?.id === selectedUser?.id || this.securityProvider.canListUsers()) && (
@@ -1179,7 +1186,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const style = computeStyleSheet();
     return (
       <View style={[listItemCommonStyle.container, style.noItemContainer, style.noTagContainer]}>
-        <Icon type={'MaterialCommunityIcons'} name={'credit-card-off'} style={style.noTagIcon} />
+        <Icon size={scale(50)} as={MaterialCommunityIcons} name={'credit-card-off'} style={style.noTagIcon} />
         <View style={style.column}>
           <Text style={style.errorMessage}>{I18n.t('tags.noTagMessageTitle')}</Text>
           <Text style={style.errorMessage}>{I18n.t('tags.noTagMessageSubtitle')}</Text>
@@ -1235,7 +1242,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         title={I18n.t('details.startTransaction')}
         withCloseButton={true}
         close={() => this.setState({ showStartTransactionDialog: false })}
-        renderIcon={(style) => <Icon style={style} type={'MaterialIcons'} name={'play-circle-outline'} />}
+        renderIcon={(style) => <Icon style={style} size={scale(style.fontSize)} as={MaterialIcons} name={'play-circle-outline'} />}
         description={I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStationID })}
         buttons={[
           {
