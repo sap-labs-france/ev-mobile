@@ -53,6 +53,10 @@ import ChargingStationQrCode from './screens/home/ChargingStationQrCode';
 import ThemeManager from './custom-theme/ThemeManager';
 import TenantQrCode from './screens/tenants/TenantQrCode';
 import computeStyleSheet from './AppStyles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Settings from './screens/settings/Settings';
 
 // Init i18n
 I18nManager.initialize();
@@ -71,6 +75,7 @@ const TagsStack = createStackNavigator();
 const CarsStack = createStackNavigator();
 const InvoicesStack = createStackNavigator();
 const PaymentMethodsStack = createStackNavigator();
+const SettingsStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -97,7 +102,7 @@ type TabBarIconType =
 
 const createTabBarIcon = (
   props: { focused: boolean; tintColor?: string; horizontal?: boolean },
-  type: TabBarIconType,
+  type: any,
   name: string
 ): React.ReactNode => {
   const commonColor = Utils.getCurrentCommonColor();
@@ -105,9 +110,9 @@ const createTabBarIcon = (
     <Icon
       style={{
         color: props.focused ? commonColor.textColor : commonColor.disabledDark,
-        fontSize: scale(21)
       }}
-      type={type}
+      size={scale(21)}
+      as={type}
       name={name}
     />
   );
@@ -183,7 +188,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.actions')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'MaterialIcons', 'build')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'build')
         }}
       />
       <ChargingStationDetailsTabs.Screen
@@ -192,7 +197,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.ocpp')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'MaterialIcons', 'format-list-bulleted')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'format-list-bulleted')
         }}
       />
       <ChargingStationDetailsTabs.Screen
@@ -201,7 +206,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.properties')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'MaterialIcons', 'info')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'info')
         }}
       />
     </ChargingStationDetailsTabs.Navigator>
@@ -228,7 +233,7 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('sites.chargePoint')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'FontAwesome', 'bolt')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, FontAwesome, 'bolt')
         }}
       />
       <ChargingStationConnectorDetailsTabs.Screen
@@ -237,7 +242,7 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('details.graph')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'MaterialCommunityIcons', 'chart-areaspline-variant')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialCommunityIcons, 'chart-areaspline-variant')
         }}
       />
     </ChargingStationConnectorDetailsTabs.Navigator>
@@ -263,7 +268,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('transactions.transaction')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'FontAwesome', 'bolt')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, FontAwesome, 'bolt')
         }}
       />
       <TransactionDetailsTabs.Screen
@@ -272,7 +277,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
         initialParams={props?.route?.params?.params}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('details.graph')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'MaterialCommunityIcons', 'chart-areaspline-variant')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialCommunityIcons, 'chart-areaspline-variant')
         }}
       />
     </TransactionDetailsTabs.Navigator>
@@ -452,6 +457,18 @@ function createPaymentMethodsNavigator(props: BaseProps) {
   );
 }
 
+function createSettingsNavigator(props: BaseProps) {
+  return (
+    <SettingsStack.Navigator initialRouteName="Settings" screenOptions={{ headerShown: false }}>
+      <SettingsStack.Screen
+        name="Settings"
+        component={Settings}
+        initialParams={props?.route?.params?.params}
+      />
+    </SettingsStack.Navigator>
+  );
+}
+
 function createAppDrawerNavigator(props: BaseProps) {
   return (
     <AppDrawer.Navigator
@@ -461,7 +478,10 @@ function createAppDrawerNavigator(props: BaseProps) {
         drawerType: 'front',
         swipeEnabled: false,
         swipeEdgeWidth: scale(50),
-        unmountOnBlur: false
+        unmountOnBlur: false,
+        drawerStyle: {
+          width: '83%'
+        }
       })}
       backBehavior={'history'}
       drawerPosition="left"
@@ -478,6 +498,7 @@ function createAppDrawerNavigator(props: BaseProps) {
       <AppDrawer.Screen name="CarsNavigator" children={createCarsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="InvoicesNavigator" children={createInvoicesNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="PaymentMethodsNavigator" children={createPaymentMethodsNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="SettingsNavigator" children={createSettingsNavigator} initialParams={props?.route?.params?.params}/>
     </AppDrawer.Navigator>
   );
 }

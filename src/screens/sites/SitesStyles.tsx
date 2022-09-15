@@ -44,9 +44,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderColor: commonColor.listItemBackground,
       borderWidth: 2
     },
-    siteMarker: {
-      fontSize: '40@s',
-    },
     sitesContainer: {
       flex: 1,
       width: '100%'
@@ -118,7 +115,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-end'
     },
     closeIcon: {
-      padding: '8@s',
       fontSize: '37@s',
       color: commonColor.textColor
     }

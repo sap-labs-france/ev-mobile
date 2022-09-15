@@ -78,7 +78,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '30@s',
       justifyContent: 'flex-end'
     },
     arrowIcon: {

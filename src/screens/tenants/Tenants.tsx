@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Icon, Spinner, View } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { FlatList, RefreshControl, SafeAreaView, TouchableOpacity } from 'react-native';
+import { FlatList, RefreshControl, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 
@@ -16,6 +16,9 @@ import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
 import TenantComponent from '../../components/tenant/TenantComponent';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -119,7 +122,7 @@ export default class Tenants extends BaseScreen<Props, State> {
         <View style={style.container}>
           <SafeAreaView style={fabStyles.fabContainer}>
             <TouchableOpacity delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={fabStyles.fab}>
-              <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
+              <Icon size={scale(18)} as={MaterialCommunityIcons} name={'plus'} style={fabStyles.fabIcon} />
             </TouchableOpacity>
           </SafeAreaView>
           {showAddTenantManuallyDialog && (
@@ -172,10 +175,10 @@ export default class Tenants extends BaseScreen<Props, State> {
           onPress={() => {
             this.deleteTenant(index, tenant.subdomain);
           }}>
-          <Icon style={style.actionIcon} name="trash" />
+          <Icon size={scale(20)} as={MaterialCommunityIcons} style={style.actionIcon} name="trash-can" />
         </TouchableOpacity>
         <TouchableOpacity style={style.editIconButton} onPress={() => this.setState({ tenantToBeEditedIndex: index })}>
-          <Icon style={style.actionIcon} name="edit" type={'MaterialIcons'} />
+          <Icon size={scale(20)} style={style.actionIcon} name="edit" as={MaterialIcons} />
         </TouchableOpacity>
       </View>
     );
@@ -186,7 +189,7 @@ export default class Tenants extends BaseScreen<Props, State> {
       <DialogModal
         animationIn={'fadeInLeft'}
         title={I18n.t('authentication.addTenantTitle')}
-        renderIcon={(iconStyle) => <Icon style={iconStyle} type={'MaterialIcons'} name={'add-business'} />}
+        renderIcon={(iconStyle) => <Icon size={scale(iconStyle.fontSize)} style={iconStyle} as={MaterialIcons} name={'add-business'} />}
         description={I18n.t('authentication.addTenantText')}
         close={() => this.setState({ showAddTenantDialog: false })}
         withCancel={true}

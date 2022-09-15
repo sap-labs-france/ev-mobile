@@ -45,7 +45,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       opacity: 1
     },
     eulaContainer: {
-      marginTop: '10@s'
+      marginTop: '10@s',
+      marginHorizontal: '10@s'
     },
     checkboxContainer: {
       flexDirection: 'row',

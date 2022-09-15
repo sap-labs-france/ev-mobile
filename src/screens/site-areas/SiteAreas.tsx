@@ -1,11 +1,12 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, View } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
 import {
   Image,
   ImageStyle,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  View
 } from 'react-native';
 import ClusterMap from '../../components/map/ClusterMap';
 import { Marker, Region } from 'react-native-maps';
@@ -32,7 +33,10 @@ import satelliteLayout from '../../../assets/map/satellite.png';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
 import { SitesFiltersDef } from '../sites/SitesFilters';
-import SiteComponent from '../../components/site/SiteComponent';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -257,7 +261,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         <SafeAreaView style={style.siteAreaDetailsModalContainer}>
           <View style={style.siteAreaDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ selectedSiteArea: null })}>
-              <Icon style={style.closeIcon} type="EvilIcons" name={'close'} />
+              <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           </View>
           <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
@@ -299,7 +303,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const { navigation } = this.props;
     const { loading, skip, count, showMap, selectedSiteArea, siteAreas, refreshing } = this.state;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           navigation={navigation}
           title={this.site?.name}
@@ -311,7 +315,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           {selectedSiteArea && this.buildModal(navigation, selectedSiteArea, modalStyle)}
           {showMap ? this.renderMap() : (
             <View style={style.siteAreasContainer}>
-              {loading ? <Spinner style={style.spinner} color="grey" /> : (
+              {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
                 <ItemsList<SiteArea>
                   skip={skip}
                   count={count}
@@ -328,7 +332,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             </View>
           )}
         </View>
-      </Container>
+      </View>
     );
   }
 
@@ -352,7 +356,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           style={[fabStyles.fab, style.fab]}
           onPress={() => this.setState({ showMap: !showMap, siteAreas: []}, () => this.refresh(true)) }
         >
-          <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
+          <Icon style={fabStyles.fabIcon} size={scale(18)} as={MaterialCommunityIcons} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -360,7 +364,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   private renderMap() {
     const style = computeStyleSheet();
-    const { siteAreas, satelliteMap } = this.state
+    const { siteAreas, satelliteMap } = this.state;
     const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) =>
       Utils.containsGPSCoordinates(siteArea.address.coordinates)
     );
@@ -377,7 +381,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
               title={siteArea.name}
               onPress={() => this.showMapSiteAreaDetail(siteArea)}
             >
-              <Icon type={'MaterialIcons'} name={'location-pin'} style={[style.siteAreaMarker, Utils.computeSiteMarkerStyle(siteArea?.connectorStats)]} />
+              <Icon size={scale(40)} as={MaterialIcons} name={'location-pin'} style={Utils.computeSiteMarkerStyle(siteArea?.connectorStats)} />
             </Marker>
           )}
           initialRegion={this.currentRegion}
@@ -406,7 +410,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           <TouchableOpacity
             onPress={() => this.screenFilters?.openModal()}
             style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-            <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon color={commonColors.textColor} size={scale(25)} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

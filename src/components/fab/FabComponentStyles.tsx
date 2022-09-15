@@ -27,7 +27,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       shadowRadius: 3.62
     },
     fabIcon: {
-      fontSize: '18@s',
       color: commonColor.light
     },
     fabContainer: {

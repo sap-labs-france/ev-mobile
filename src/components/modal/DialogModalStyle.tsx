@@ -29,7 +29,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     closeButton: {
       alignSelf: 'flex-end',
-      fontSize: '35@s'
+      color: commonColor.textColor
     },
     title: {
       marginTop: '10@s',
@@ -85,7 +85,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     icon: {
-      fontSize: '60@s',
+      fontSize: 60,
+      color: commonColor.textColor,
       alignSelf: 'center'
     }
   });

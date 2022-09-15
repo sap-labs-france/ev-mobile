@@ -9,6 +9,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
+      width: '100%',
+      backgroundColor: commonColor.containerBgColor
+    },
+    HTMLViewContainer: {
       paddingLeft: 10,
       paddingRight: 10,
       paddingBottom: 10,

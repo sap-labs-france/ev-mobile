@@ -40,10 +40,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     actionButtonIcon: {
-      fontSize: '20@s'
+      color: commonColor.light
     },
     actionButtonText: {
-      fontSize: '18@s'
+      fontSize: '18@s',
+      color: commonColor.light
     },
     resetButton: {
       backgroundColor: commonColor.danger

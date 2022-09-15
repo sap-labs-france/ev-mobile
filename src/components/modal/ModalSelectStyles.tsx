@@ -26,7 +26,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingHorizontal: '5@s'
     },
     closeIcon: {
-      fontSize: '37@s',
       marginLeft: '10@s',
       color: commonColor.textColor
     },
@@ -60,10 +59,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     modalTitle: {
       fontSize: '17@s',
       flexShrink: 1,
-      marginRight: '5@s'
+      marginRight: '5@s',
+      color: commonColor.textColor
     },
     modalSubtitle: {
       fontSize: '17@s',
+      color: commonColor.textColor
     },
     modalTitleContainer: {
       flexDirection: 'row',

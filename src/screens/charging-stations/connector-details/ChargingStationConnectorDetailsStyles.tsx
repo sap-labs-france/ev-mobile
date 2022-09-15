@@ -96,7 +96,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '75@s'
     },
     lastTransactionIcon: {
-      fontSize: '25@s',
       color: commonColor.textColor
     },
     reportErrorIcon: {
@@ -196,7 +195,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     icon: {
-      fontSize: '25@s',
       color: commonColor.textColor
     },
     downArrow: {

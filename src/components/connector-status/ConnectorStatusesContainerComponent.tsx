@@ -1,4 +1,3 @@
-import { View } from 'native-base';
 import React from 'react';
 
 import BaseProps from '../../types/BaseProps';
@@ -6,6 +5,7 @@ import { ChargePointStatus } from '../../types/ChargingStation';
 import ConnectorStats from '../../types/ConnectorStats';
 import ConnectorStatusComponent from './ConnectorStatusComponent';
 import computeStyleSheet from './ConnectorStatusesContainerComponentStyles';
+import { View } from 'react-native';
 
 export interface Props extends BaseProps {
   connectorStats: ConnectorStats;

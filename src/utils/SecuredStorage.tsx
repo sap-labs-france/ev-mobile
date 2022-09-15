@@ -6,6 +6,7 @@ import Tenant, { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
 import UserToken from '../types/UserToken';
 import Utils from './Utils';
+import { Settings } from '../types/Settings';
 
 // Generate a new Id for persisting the navigation each time the app is launched for the first time
 let navigationID: string = new Date().getTime().toString();
@@ -165,6 +166,21 @@ export default class SecuredStorage {
   public static async getEndpoints(): Promise<EndpointCloud[]> {
     const endpoints = (await SecuredStorage.getJson(SecuredStorageKey.ENDPOINTS)) || [];
     return endpoints as EndpointCloud[];
+  }
+
+  /**
+   * Overrides only the given settings values
+   * @param settings
+   */
+  public static async saveSettingsValues(settings: Settings): Promise<void> {
+    const savedSettings = await SecuredStorage.getSettings();
+    const newSettings = {...(savedSettings || {}), ...(settings || {})};
+    await RNSecureStorage.set(SecuredStorageKey.SETTINGS, JSON.stringify(newSettings), { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+  }
+
+  public static async getSettings(): Promise<Settings> {
+    const settings = (await SecuredStorage.getJson(SecuredStorageKey.SETTINGS)) || {};
+    return settings as Settings;
   }
 
   private static async getJson(key: string): Promise<any | null> {

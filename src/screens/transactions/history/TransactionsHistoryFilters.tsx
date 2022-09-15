@@ -1,5 +1,4 @@
 import I18n from 'i18n-js';
-import { View } from 'native-base';
 import React from 'react';
 
 import computeStyleSheet from './TransactionHistoryFiltersStyles';
@@ -15,6 +14,7 @@ import UserFilterComponent
 import User from '../../../types/User';
 import SwitchFilterComponent
   from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
+import { View } from 'react-native';
 
 export interface Props extends ScreenFiltersProps<TransactionsHistoryFiltersDef>{
   maxTransactionDate?: Date;

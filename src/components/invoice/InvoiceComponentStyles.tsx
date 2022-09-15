@@ -98,8 +98,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '30@s'
     },
     downloadIcon: {
-      color: commonColor.textColor,
-      fontSize: '26@s'
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

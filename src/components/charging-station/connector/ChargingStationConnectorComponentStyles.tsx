@@ -79,7 +79,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '30@s'
     },
     arrowIcon: {
-      fontSize: '25@s',
       color: commonColor.disabledDark
     }
   });
