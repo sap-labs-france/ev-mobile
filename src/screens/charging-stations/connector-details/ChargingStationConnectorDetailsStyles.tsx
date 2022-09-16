@@ -4,6 +4,7 @@ import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
+import { PLATFORM } from '../../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -164,7 +165,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     currentSoCContainer: {
       marginBottom: '13@s',
     },
-    socInputLabelContainer: {
+    socInputsContainer: {
       width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
@@ -410,7 +411,74 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingRight: scale(3),
       color: commonColor.textColor,
       fontSize: '14@s'
+    },
+    socInput: {
+      color: commonColor.textColor,
+      fontWeight: 'bold',
+      textAlign: 'right',
+      flex: 1,
+      paddingHorizontal: scale(5),
+      fontSize: scale(14),
+      backgroundColor: commonColor.listItemBackground
+    },
+    currentSocInputContainer: {
+      marginRight: '8@s'
+    },
+    socInputContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      paddingHorizontal: scale(10),
+      backgroundColor: commonColor.listItemBackground,
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      borderRadius: scale(8),
+      paddingVertical: Platform.OS === PLATFORM.IOS ? '13@s' : '3@s'
+    },
+    socInputContainerError: {
+      borderColor: commonColor.danger,
+      borderWidth: 0.7
+    },
+    socInputText: {
+      fontSize: '11@s',
+      color: commonColor.textColor
+    },
+    sliderMarker: {
+      width: scale(25),
+      height: scale(25),
+      borderRadius: scale(25),
+      backgroundColor: commonColor.disabled,
+
+      elevation: 6,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 3,
+      },
+      shadowOpacity: 0.27,
+      shadowRadius: 4.65
+
+    //  borderColor: commonColor.disabledDark,
+     // borderWidth: 1
+    },
+    sliderTrack: {
+      width: '100%',
+      height: scale(7),
+      borderRadius: scale(8)
+    },
+    sliderLeftTrack: {
+      backgroundColor: commonColor.primary
+    },
+    sliderMiddleTrack: {
+      backgroundColor: commonColor.primary,
+      borderStyle: 'dashed',
+      borderWidth: 1,
+      borderColor: commonColor.disabled
+    },
+    sliderRightTrack: {
+      backgroundColor: commonColor.disabledDark,
+      opacity: 0.2
     }
+
   });
   const portraitStyles = {};
   const landscapeStyles = {
