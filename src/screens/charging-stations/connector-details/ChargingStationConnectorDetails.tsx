@@ -463,53 +463,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     });
   };
 
-  public getStartStopTransactionButtonStatus(
-    connector: Connector,
-    userDefaultTagCar: UserDefaultTagCar
-  ): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
-    const { startTransactionNbTrial } = this.state;
-    // Check if error codes
-    if (userDefaultTagCar && !Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
-      return {
-        buttonDisabled: true
-      };
-    }
-    if (!userDefaultTagCar?.tag) {
-      return {
-        buttonDisabled: true
-      };
-    }
-    // Check if the Start/Stop Button should stay disabled
-    if (
-      (connector?.status === ChargePointStatus.AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
-      (connector?.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0)
-    ) {
-      // Button are set to available after the nbr of trials
-      return {
-        buttonDisabled: false
-      };
-      // Still trials? (only for Start Transaction)
-    } else if (startTransactionNbTrial > 0) {
-      // Trial - 1
-      return {
-        startTransactionNbTrial: startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0
-      };
-      // Transaction ongoing
-    } else if (connector && connector.currentTransactionID !== 0) {
-      // Transaction has started, enable the buttons again
-      return {
-        startTransactionNbTrial: 0,
-        buttonDisabled: false
-      };
-      // Transaction is stopped (currentTransactionID == 0)
-    } else if (connector && connector?.status === ChargePointStatus.FINISHING) {
-      // Disable the button until the user unplug the cable
-      return {
-        buttonDisabled: true
-      };
-    }
-    return {};
-  }
 
   public canStopTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
