@@ -986,9 +986,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   keyboardShouldPersistTaps={'always'}
                 >
                {this.renderDepartureTime()}
-{/*
-                  {this.renderCurrentSoC()}
-*/}
                   {this.renderDepartureSoC()}
                   {this.renderUserSelection(style)}
                   {this.renderTagSelection(style)}
@@ -1062,31 +1059,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  //TODO either ensure that currentSOC is ignored server-side when soc available or set currentSoC to null on CarSelection if the latter has soc available
-  private renderCurrentSoC() {
-    const { currentSoC, connector, selectedCar, chargingStation, departureSoC } = this.state;
-    const style = computeStyleSheet();
-    const connectorCurrentType = Utils.getConnectorCurrentType(chargingStation, connector?.connectorId);
-    const isSoCAvailable = false //connectorCurrentType === CurrentType.DC || !Utils.isNullOrUndefined(selectedCar?.carConnectorData?.carConnectorID);
-    return (
-      <View style={[style.socContainer, style.currentSoCContainer]}>
-        <View style={style.socInputLabelContainer}>
-          <Text style={style.settingLabel}>{I18n.t('transactions.currentStateOfCharge')}</Text>
-          <SocInput
-            isDisabled={isSoCAvailable}
-            placeholder={'0'}
-            onChangeText={(newCurrentSoC) => this.setState({currentSoC: this.computeNumericSoC(newCurrentSoC)})}
-            value={currentSoC ? currentSoC.toString(10) : null}
-          />
-        </View>
-        <SocSlider
-          disabled={!!isSoCAvailable}
-          onValueChange={(newCurrentSoC) => this.setState({currentSoC: newCurrentSoC, departureSoC: Math.max(departureSoC, newCurrentSoC)})}
-          value={currentSoC}
-        />
-      </View>
-    );
-  }
 
   //TODO find a way to prevent departure SOC manual input from being smaller than current SoC
   private renderDepartureSoC() {
