@@ -332,7 +332,8 @@
     "sessionAlreadyInProgressError": "A session is already in progress on this connector",
     "departureTime": "Departure time",
     "departureStateOfCharge": "Departure state of charge",
-    "currentStateOfCharge": "Current state of charge"
+    "currentStateOfCharge": "Current state of charge",
+    "stateOfCharge": "State of charge"
   },
   "home": {
     "browseSites": "Siti",

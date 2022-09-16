@@ -332,7 +332,8 @@
     "sessionAlreadyInProgressError": "Une sessions est déjà en cours sur ce connecteur",
     "departureTime": "Heure de départ",
     "departureStateOfCharge": "Niveau de batterie souhaité",
-    "currentStateOfCharge": "Niveau de batterie actuel"
+    "currentStateOfCharge": "Niveau de batterie actuel",
+    "stateOfCharge": "Niveau de batterie"
   },
   "home": {
     "browseSites": "Sites",
