@@ -137,7 +137,6 @@ export interface State {
   settingsErrors?: SettingsErrors;
   transactionPending?: boolean;
   didPreparing?: boolean;
-  showAdviceMessage?: boolean;
   transactionPendingTimesUp?: boolean;
   showChargingSettings?: boolean;
   showTimePicker?: boolean;
@@ -182,7 +181,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       tagCarLoading: false,
       settingsErrors: {},
       transactionPending: false,
-      showAdviceMessage: false,
       didPreparing: false,
       transactionPendingTimesUp: false,
       showChargingSettings: undefined,
@@ -365,8 +363,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       let transaction = null;
       const settingsErrors: SettingsErrors = {};
       let showStartTransactionDialog: boolean;
-      let showAdviceMessage = false;
-      let buttonDisabled = false;
       const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
       const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
       const startTransactionFromQRCode = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
@@ -441,17 +437,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         showStartTransactionDialog = true;
       }
 
-      // Show a message to advice to check that the cable is connected to both car and CS
-      if (!buttonDisabled && (connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING)) {
-        showAdviceMessage = true;
-      }
 
       // await this.loadSelectedUserDefaultTagAndCar(this.state.selectedUser);
 
       this.setState({
         showStartTransactionDialog: this.state.showStartTransactionDialog ?? showStartTransactionDialog,
-        showAdviceMessage,
-        buttonDisabled,
         chargingStation,
         connector,
         transaction,
@@ -940,7 +930,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive,
       showStartTransactionDialog,
       showStopTransactionDialog,
-      showAdviceMessage,
       refreshing
     } = this.state;
     const commonColors = Utils.getCurrentCommonColor();
@@ -975,7 +964,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 {/* Report Error */}
                 {this.renderReportErrorButton(style)}
               </View>
-              {showAdviceMessage && this.renderAdviceMessage(style)}
             </ImageBackground>
             {/* Details */}
             {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
@@ -1214,17 +1202,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       );
       return null;
     }
-  }
-
-  private renderAdviceMessage(style: any) {
-    return (
-      <View style={[style.messageContainer, style.adviceMessageContainer]}>
-        <Icon size={scale(25)} style={style.adviceMessageIcon} as={MaterialCommunityIcons} name={'power-plug'} />
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.adviceText}>
-          {I18n.t('transactions.adviceMessage')}
-        </Text>
-      </View>
-    );
   }
 
   private renderBillingErrorMessages(style: any) {
