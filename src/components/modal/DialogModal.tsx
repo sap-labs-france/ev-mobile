@@ -57,21 +57,8 @@ export default class DialogModal extends React.Component<Props, State> {
   }
 
   public render() {
-    const {
-      title,
-      withCancel,
-      buttons,
-      description,
-      renderIcon,
-      withCloseButton,
-      close,
-      renderControls,
-      animationIn,
-      animationOut,
-      onBackButtonPressed,
-      cancelButtonText,
-      onBackDropPress
-    } = this.props;
+    const { title, withCancel, buttons, description, renderIcon, withCloseButton, close, renderControls, animationIn,
+      animationOut, onBackButtonPressed, cancelButtonText, onBackDropPress } = this.props;
     const style = computeStyleSheet();
     const modalCommonStyles = computeModalCommonStyles();
     const buttonsContainerStyle = this.computeButtonsContainerStyle(style);
@@ -128,7 +115,7 @@ export default class DialogModal extends React.Component<Props, State> {
     );
   }
 
-  private computeButtonsContainerStyle(style: any) {
+  private computeButtonsContainerStyle(style: any): any {
     const { buttons, withCancel } = this.props;
     const horizontalLayoutCount = withCancel ? 1 : 2;
     if (buttons?.filter((b) => b).length === horizontalLayoutCount) {
@@ -138,7 +125,7 @@ export default class DialogModal extends React.Component<Props, State> {
     }
   }
 
-  private computeButtonContainerCommonStyle(style: any) {
+  private computeButtonContainerCommonStyle(style: any): any {
     const { buttons, withCancel } = this.props;
     const horizontalLayoutCount = withCancel ? 1 : 2;
     if (buttons?.filter((b) => b).length === horizontalLayoutCount) {

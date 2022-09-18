@@ -118,18 +118,14 @@ function getBarStyle(): any {
   };
 }
 
-const createTabBarIcon = (
-  props: { focused: boolean; tintColor?: string; horizontal?: boolean },
-  type: any,
-  name: string
-): React.ReactNode => {
+const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean },
+    type: any, name: string): React.ReactNode => {
   const commonColor = Utils.getCurrentCommonColor();
   return (
     <Icon
       style={{
         color: props.focused ? commonColor.textColor : commonColor.disabledDark,
       }}
-      size={scale(21)}
       as={type}
       name={name}
     />
@@ -208,7 +204,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
         component={ChargingStationActions}
         initialParams={props?.route?.params?.params}
         options={{
-          tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.actions')}</Text>,
+          tabBarLabel: I18n.t('chargers.actions'),
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'build')
         }}
       />
@@ -217,7 +213,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
         component={ChargingStationOcppParameters}
         initialParams={props?.route?.params?.params}
         options={{
-          tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.ocpp')}</Text>,
+          tabBarLabel: I18n.t('chargers.ocpp'),
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'format-list-bulleted')
         }}
       />
@@ -226,7 +222,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
         component={ChargingStationProperties}
         initialParams={props?.route?.params?.params}
         options={{
-          tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.properties')}</Text>,
+          tabBarLabel: I18n.t('chargers.properties'),
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'info')
         }}
       />
@@ -252,7 +248,7 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
         component={ChargingStationConnectorDetails}
         initialParams={props?.route?.params?.params}
         options={{
-          tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('sites.chargePoint')}</Text>,
+          tabBarLabel: I18n.t('sites.chargePoint'),
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, FontAwesome, 'bolt')
         }}
       />
@@ -261,7 +257,7 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
         component={TransactionChart}
         initialParams={props?.route?.params?.params}
         options={{
-          tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('details.graph')}</Text>,
+          tabBarLabel: I18n.t('details.graph'),
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialCommunityIcons, 'chart-areaspline-variant')
         }}
       />
@@ -286,7 +282,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
         component={TransactionDetails}
         initialParams={props?.route?.params?.params}
         options={{
-          tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('transactions.transaction')}</Text>,
+          tabBarLabel: I18n.t('transactions.transaction'),
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, FontAwesome, 'bolt')
         }}
       />
@@ -295,7 +291,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
         component={TransactionChart}
         initialParams={props?.route?.params?.params}
         options={{
-          tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('details.graph')}</Text>,
+          tabBarLabel: I18n.t('details.graph'),
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialCommunityIcons, 'chart-areaspline-variant')
         }}
       />

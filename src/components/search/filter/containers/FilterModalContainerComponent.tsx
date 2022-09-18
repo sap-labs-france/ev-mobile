@@ -97,12 +97,20 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
             <View style={style.buttonsContainer}>
               <Button
                 loading={applyLoading}
-                containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
-                onPress={() => this.applyFiltersAndNotify()} title={I18n.t('general.apply')}/>
+                containerStyle={style.buttonContainer}
+                buttonStyle={modalCommonStyle.primaryButton}
+                title={I18n.t('general.apply')}
+                titleStyle={[modalCommonStyle.buttonText]}
+                onPress={() => void this.applyFiltersAndNotify()}
+              />
               <Button
                 loading={clearLoading}
-                containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
-                onPress={() => this.clearFilters()} title={I18n.t('general.clear')}/>
+                containerStyle={style.buttonContainer}
+                buttonStyle={modalCommonStyle.dangerButton}
+                title={I18n.t('general.clear')}
+                titleStyle={[modalCommonStyle.buttonText, modalCommonStyle.dangerButtonText]}
+                onPress={() => this.clearFilters()}
+              />
             </View>
           </View>
         </Modal>

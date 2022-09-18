@@ -118,6 +118,7 @@ FilterContainerComponentState
     for (const filterControlComponent of this.filterControlComponents) {
       filterControlComponent.clearValue();
     }
+    void this.applyFiltersAndNotify();
   }
 
   public async clearFiltersAndNotify() {

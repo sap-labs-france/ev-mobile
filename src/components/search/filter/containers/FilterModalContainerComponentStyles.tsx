@@ -27,14 +27,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     buttonsContainer: {
-      flexDirection: 'row',
+      flexDirection: 'column',
       width: '100%',
       justifyContent: 'space-between',
       marginTop: '20@s'
     },
     buttonContainer: {
-      width: '48%',
-      borderRadius: '8@s'
+      width: '100%',
+      paddingBottom: '10@s',
     },
     header: {
       flexDirection: 'row',

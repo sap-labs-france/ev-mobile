@@ -8,6 +8,12 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
+    buttonText: {
+      textAlign: 'center',
+      fontSize: '20@s',
+      color: commonColor.containerBgColor,
+      flex: 1,
+    },
     primaryButton: {
       backgroundColor: commonColor.primary,
       borderColor: commonColor.primary,
@@ -17,10 +23,25 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     outlinedButton: {
       backgroundColor: commonColor.listBackgroundHeader,
+      borderWidth: 1,
       borderColor: commonColor.textColor
     },
     outlinedButtonText: {
       color: commonColor.textColor,
+    },
+    warningButton: {
+      backgroundColor: commonColor.warning,
+      borderColor: commonColor.warning,
+    },
+    warningButtonText: {
+      color: commonColor.light,
+    },
+    dangerButton: {
+      backgroundColor: commonColor.danger,
+      borderColor: commonColor.danger,
+    },
+    dangerButtonText: {
+      color: commonColor.light,
     }
   });
   const portraitStyles = {};
