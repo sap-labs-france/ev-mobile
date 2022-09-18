@@ -44,8 +44,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     scrollViewValue: {
-      marginTop: '5@s',
-      marginBottom: '5@s'
+      marginTop: '10@s',
+      marginBottom: '10@s'
     },
     value: {
       fontSize: '12@s',

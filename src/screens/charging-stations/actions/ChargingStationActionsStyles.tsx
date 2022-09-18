@@ -40,7 +40,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     actionButtonIcon: {
-      color: commonColor.light
+      color: commonColor.light,
+      marginRight: '5@s',
     },
     actionButtonText: {
       fontSize: '18@s',

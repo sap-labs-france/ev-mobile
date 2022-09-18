@@ -28,12 +28,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    actionButton: {},
+    actionButton: {
+      height: '45@s',
+      justifyContent: 'center'
+    },
     actionButtonIcon: {
-      color: commonColor.light
+      color: commonColor.light,
+      marginRight: '5@s',
     },
     actionButtonText: {
-      fontSize: '15@s'
+      fontSize: '18@s',
+      color: commonColor.light
     },
     descriptionContainer: {
       width: '100%',
@@ -51,8 +56,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     scrollViewValue: {
-      marginTop: '5@s',
-      marginBottom: '5@s'
+      marginTop: '10@s',
+      marginBottom: '10@s'
     },
     value: {
       fontSize: '12@s',

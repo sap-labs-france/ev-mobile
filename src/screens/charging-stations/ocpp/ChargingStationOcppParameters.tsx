@@ -2,6 +2,8 @@ import I18n from 'i18n-js';
 import { Button, HStack, Icon, Spinner } from 'native-base';
 import React from 'react';
 import { Alert, FlatList, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { scale } from 'react-native-size-matters';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
@@ -13,8 +15,6 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationOcppParametersStyles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -167,7 +167,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           style={style.actionButton}
           onPress={() => this.requestChargingStationOcppParametersConfirm()}>
           <HStack alignItems={'center'}>
-            <Icon size={scale(20)}  style={style.actionButtonIcon} as={MaterialIcons} name="get-app" />
+            <Icon size={scale(20)} style={style.actionButtonIcon} as={MaterialIcons} name="refresh" />
             <Text style={style.actionButtonText}>
               {I18n.t('chargers.requestConfiguration')}
             </Text>
