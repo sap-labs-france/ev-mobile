@@ -100,6 +100,26 @@ type TabBarIconType =
   | 'SimpleLineIcons'
   | 'Zocial';
 
+function getCardStyle(): any {
+  const insets = useSafeAreaInsets();
+  return {
+    paddingBottom: insets.bottom,
+  };
+}
+
+function getBarStyle(): any {
+  const commonColor = Utils.getCurrentCommonColor();
+  const insets = useSafeAreaInsets();
+  return {
+    backgroundColor: commonColor.containerBgColor,
+    borderTopWidth: 0.5,
+    borderTopColor: commonColor.disabledDark,
+    paddingBottom: insets.bottom,
+    paddingTop: 0,
+    marginTop: 0
+  };
+}
+
 const createTabBarIcon = (
   props: { focused: boolean; tintColor?: string; horizontal?: boolean },
   type: any,
@@ -128,7 +148,13 @@ const persistNavigationState = async (navigationState: NavigationState) => {
 
 function createAuthNavigator(props: BaseProps) {
   return (
-    <AuthStack.Navigator initialRouteName={'Login'} screenOptions={{ headerShown: false }}>
+    <AuthStack.Navigator
+      initialRouteName={'Login'}
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <AuthStack.Screen name="Login" component={Login} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="Tenants" component={Tenants} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="TenantQrCode" component={TenantQrCode} initialParams={props?.route?.params?.params} />
@@ -142,7 +168,13 @@ function createAuthNavigator(props: BaseProps) {
 
 function createStatsNavigator(props: BaseProps) {
   return (
-    <StatsStack.Navigator initialRouteName="Statistics" screenOptions={{ headerShown: false }}>
+    <StatsStack.Navigator
+      initialRouteName="Statistics"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <StatsStack.Screen name="Statistics" component={Statistics} initialParams={props?.route?.params?.params} />
     </StatsStack.Navigator>
   );
@@ -150,35 +182,26 @@ function createStatsNavigator(props: BaseProps) {
 
 function createReportErrorNavigator(props: BaseProps) {
   return (
-    <ReportErrorStack.Navigator initialRouteName="ReportError" screenOptions={{ headerShown: false }}>
+    <ReportErrorStack.Navigator
+      initialRouteName="ReportError"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}>
       <ReportErrorStack.Screen name="ReportError" component={ReportError} initialParams={props?.route?.params?.params} />
     </ReportErrorStack.Navigator>
   );
 }
 
-function getTabStyle(): any {
-  const commonColor = Utils.getCurrentCommonColor();
-  const insets = useSafeAreaInsets();
-  return {
-    backgroundColor: commonColor.containerBgColor,
-    borderTopWidth: 0.5,
-    borderTopColor: commonColor.disabledDark,
-    paddingBottom: insets.bottom,
-    paddingTop: 0,
-    marginTop: 0
-  };
-}
-
 function createChargingStationDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
-  const barStyle = getTabStyle();
   const style = computeStyleSheet();
   return (
     <ChargingStationDetailsTabs.Navigator
       initialRouteName="ChargingStationActions"
       activeColor={commonColor.textColor}
       inactiveColor={commonColor.disabledDark}
-      barStyle={barStyle}
+      barStyle={getBarStyle()}
       labeled
       backBehavior={'initialRoute'}
     >
@@ -215,14 +238,13 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
 
 function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
-  const barStyle = getTabStyle();
   const style = computeStyleSheet();
   return (
     <ChargingStationConnectorDetailsTabs.Navigator
       initialRouteName="ChargingStationConnectorDetails"
       activeColor={commonColor.textColor}
       inactiveColor={commonColor.disabledDark}
-      barStyle={barStyle}
+      barStyle={getBarStyle()}
       labeled
       backBehavior={'initialRoute'}
 
@@ -251,14 +273,13 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
 
 function createTransactionDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
-  const barStyle = getTabStyle();
   const style = computeStyleSheet();
   return (
     <TransactionDetailsTabs.Navigator
       initialRouteName="TransactionDetails"
       activeColor={commonColor.textColor}
       inactiveColor={commonColor.disabledDark}
-      barStyle={barStyle}
+      barStyle={getBarStyle()}
       labeled
       backBehavior={'initialRoute'}
     >
@@ -286,7 +307,13 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
 
 function createSitesNavigator(props: BaseProps) {
   return (
-    <SitesStack.Navigator initialRouteName="Sites" screenOptions={{ headerShown: false }}>
+    <SitesStack.Navigator
+      initialRouteName="Sites"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <SitesStack.Screen
         name="Sites"
         component={Sites}
@@ -336,7 +363,14 @@ function createSitesNavigator(props: BaseProps) {
 
 function createChargingStationsNavigator(props: BaseProps) {
   return (
-    <ChargingStationsStack.Navigator initialRouteName="ChargingStations" screenOptions={{ headerShown: false, gestureEnabled: false }}>
+    <ChargingStationsStack.Navigator
+      initialRouteName="ChargingStations"
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <ChargingStationsStack.Screen
         name="ChargingStations"
         component={ChargingStations}
@@ -375,7 +409,13 @@ function createChargingStationsNavigator(props: BaseProps) {
 
 function createTransactionHistoryNavigator(props: BaseProps) {
   return (
-    <TransactionHistoryStack.Navigator initialRouteName="TransactionsHistory" screenOptions={{ headerShown: false }}>
+    <TransactionHistoryStack.Navigator
+      initialRouteName="TransactionsHistory"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <TransactionHistoryStack.Screen
         name="TransactionsHistory"
         component={TransactionsHistory}
@@ -392,7 +432,13 @@ function createTransactionHistoryNavigator(props: BaseProps) {
 
 function createTransactionInProgressNavigator(props: BaseProps) {
   return (
-    <TransactionInProgressStack.Navigator initialRouteName="TransactionsInProgress" screenOptions={{ headerShown: false }}>
+    <TransactionInProgressStack.Navigator
+      initialRouteName="TransactionsInProgress"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <TransactionInProgressStack.Screen
         name="TransactionsInProgress"
         component={TransactionsInProgress}
@@ -409,7 +455,13 @@ function createTransactionInProgressNavigator(props: BaseProps) {
 
 function createUsersNavigator(props: BaseProps) {
   return (
-    <UsersStack.Navigator initialRouteName="Users" screenOptions={{ headerShown: false }}>
+    <UsersStack.Navigator
+      initialRouteName="Users"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <UsersStack.Screen name="Users" component={Users} initialParams={props?.route?.params?.params} />
     </UsersStack.Navigator>
   );
@@ -417,7 +469,12 @@ function createUsersNavigator(props: BaseProps) {
 
 function createTagsNavigator(props: BaseProps) {
   return (
-    <TagsStack.Navigator initialRouteName="Tags" screenOptions={{ headerShown: false }}>
+    <TagsStack.Navigator initialRouteName="Tags"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <TagsStack.Screen name="Tags" component={Tags} initialParams={props?.route?.params?.params} />
     </TagsStack.Navigator>
   );
@@ -425,7 +482,13 @@ function createTagsNavigator(props: BaseProps) {
 
 function createCarsNavigator(props: BaseProps) {
   return (
-    <CarsStack.Navigator initialRouteName="Cars" screenOptions={{ headerShown: false }}>
+    <CarsStack.Navigator
+      initialRouteName="Cars"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <CarsStack.Screen name="Cars" component={Cars} initialParams={props?.route?.params?.params} />
       <CarsStack.Screen name={'AddCar'} component={AddCar} initialParams={props?.route?.params?.params} />
     </CarsStack.Navigator>
@@ -434,7 +497,13 @@ function createCarsNavigator(props: BaseProps) {
 
 function createInvoicesNavigator(props: BaseProps) {
   return (
-    <InvoicesStack.Navigator initialRouteName="Invoices" screenOptions={{ headerShown: false }}>
+    <InvoicesStack.Navigator
+      initialRouteName="Invoices"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <InvoicesStack.Screen name="Invoices" component={Invoices} initialParams={props?.route?.params?.params} />
     </InvoicesStack.Navigator>
   );
@@ -442,7 +511,13 @@ function createInvoicesNavigator(props: BaseProps) {
 
 function createPaymentMethodsNavigator(props: BaseProps) {
   return (
-    <PaymentMethodsStack.Navigator initialRouteName="PaymentMethods" screenOptions={{ headerShown: false }}>
+    <PaymentMethodsStack.Navigator
+      initialRouteName="PaymentMethods"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <PaymentMethodsStack.Screen
         name="PaymentMethods"
         component={PaymentMethods}
@@ -459,7 +534,13 @@ function createPaymentMethodsNavigator(props: BaseProps) {
 
 function createSettingsNavigator(props: BaseProps) {
   return (
-    <SettingsStack.Navigator initialRouteName="Settings" screenOptions={{ headerShown: false }}>
+    <SettingsStack.Navigator
+      initialRouteName="Settings"
+      screenOptions={{
+        headerShown: false,
+        cardStyle: getCardStyle()
+      }}
+    >
       <SettingsStack.Screen
         name="Settings"
         component={Settings}

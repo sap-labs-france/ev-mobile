@@ -32,14 +32,16 @@ export default class AuthHeader extends React.Component<Props, State>{
       <View style={style.header}>
         {!Platform.isPad && (tenantLogo ? <Image style={style.logo as ImageStyle} source={{ uri: tenantLogo }} /> : <View style={style.logo}/>)}
         <View>
-          <Text style={style.appText}>{Configuration.APPLICATION_NAME}</Text>
+          {!tenantLogo && <Text style={style.appText}>{Configuration.APPLICATION_NAME}</Text>}
           <Text style={style.appVersionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
         </View>
-        {!Platform.isPad && tenantName &&
+        {!Platform.isPad && tenantName ?
           <View>
             <Text style={style.appTenant}>{I18n.t('authentication.tenantTitle')}</Text>
             <Text style={style.appTenantName}>{tenantName}</Text>
           </View>
+          :
+          null
         }
       </View>
     );

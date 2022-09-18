@@ -1,35 +1,25 @@
 import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { HStack, Icon, IIconProps } from 'native-base';
+import { HStack, IIconProps, Icon } from 'native-base';
 import React from 'react';
-import {
-  Image,
-  ImageStyle,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  TouchableHighlight,
-  TouchableHighlightProps
-} from 'react-native';
+import { Image, ImageStyle, SafeAreaView, ScrollView, Text, TouchableHighlight, TouchableHighlightProps, TouchableOpacity, View } from 'react-native';
 import { CheckVersionResponse } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
+import { scale } from 'react-native-size-matters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import AppUpdateDialog from '../../components/modal/app-update/AppUpdateDialog';
 import UserAvatar from '../../components/user/avatar/UserAvatar';
+import CentralServerProvider from '../../provider/CentralServerProvider';
+import ProviderFactory from '../../provider/ProviderFactory';
+import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
 import UserToken from '../../types/UserToken';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './SideBarStyles';
-import CentralServerProvider from '../../provider/CentralServerProvider';
-import ProviderFactory from '../../provider/ProviderFactory';
-import SecurityProvider from '../../provider/SecurityProvider';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -77,10 +67,7 @@ export default class SideBar extends React.Component<Props, State> {
     };
   }
 
-  public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
-    callback?: () => void
-  ) => {
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>)  => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   };
 
@@ -149,8 +136,8 @@ export default class SideBar extends React.Component<Props, State> {
       <View style={style.container}>
         <SafeAreaView style={style.sidebar}>
           <View style={style.header}>
+            {tenantLogo && <Image source={{ uri: tenantLogo }} style={style.logo as ImageStyle} />}
             <View style={style.tenantContainer}>
-              {tenantLogo && <Image source={{ uri: tenantLogo }} style={style.logo as ImageStyle} />}
               <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.tenantName}>
                 {tenantName}
               </Text>

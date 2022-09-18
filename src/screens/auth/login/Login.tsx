@@ -162,13 +162,8 @@ export default class Login extends BaseScreen<Props, State> {
           return null;
         default:
           await Utils.handleHttpUnexpectedError(
-            this.centralServerProvider,
-            error,
-            null,
-            null,
-            null,
-            async (redirectedTenant: TenantConnection) => this.setTenantLogo(redirectedTenant)
-          );
+            this.centralServerProvider, error, null, null, null,
+            async (redirectedTenant: TenantConnection) => this.setTenantLogo(redirectedTenant));
           break;
       }
     }
@@ -335,11 +330,14 @@ export default class Login extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
             <TouchableOpacity style={[style.linksButton]} onPress={() => this.newUser()}>
-              <Text style={style.linksTextButton}>
+              <Text style={style.linksTextButton} uppercase={false}>
                 {I18n.t('authentication.newUser')}
               </Text>
+              <Text style={style.linksTextButton} uppercase={false}>
+                {I18n.t('authentication.newUserCreateAccount')}
+              </Text>
             </TouchableOpacity>
-            <FormControl style={formStyle.form}>
+            <FormControl style={[formStyle.form, style.formLogin]}>
               <TouchableOpacity style={formStyle.button} onPress={() => this.goToTenants()}>
                 <Text style={formStyle.buttonText} >
                   {this.state?.tenantName}

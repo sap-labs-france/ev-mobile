@@ -1,12 +1,12 @@
+import Color from 'color';
 import deepmerge from 'deepmerge';
 import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { scale, ScaledSheet } from 'react-native-size-matters';
+import { ScaledSheet, scale } from 'react-native-size-matters';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { PLATFORM } from '../../theme/variables/commonColor';
 import Utils from '../../utils/Utils';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-import Color from 'color';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -39,7 +39,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     tenantContainer: {
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'flex-start'
     },
@@ -54,28 +54,28 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: 'auto',
       backgroundColor: commonColor.containerBgColor
     },
-    logo: {
-      resizeMode: 'contain',
-      width: '30%',
-      height: '60@s',
-      marginLeft: '8@s'
-    },
     tenantName: {
       color: commonColor.textColor,
-      fontSize: '13@s',
-      marginLeft: '10@s',
-      flex: 1
+      fontSize: '15@s',
+    },
+    logo: {
+      width: '90%',
+      height: '60@s',
+      resizeMode: 'contain',
+      margin: '5@s',
     },
     versionContainer: {
-      justifyContent: 'flex-end',
+      justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
       flexDirection: 'row',
       marginTop: '5@s'
     },
     newVersionContainer: {
-      paddingLeft: '5@s',
-      paddingRight: '5@s',
+      paddingTop: '5@s',
+      paddingBottom: '5@s',
+      paddingLeft: '15@s',
+      paddingRight: '15@s',
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: commonColor.primary,
@@ -83,17 +83,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '3@s',
     },
     newVersionText: {
-      fontSize: '9@s',
+      fontSize: '12@s',
       color: commonColor.light
     },
     newVersionIcon: {
-      fontSize: '10@s',
+      fontSize: '12@s',
       paddingRight: '5@s',
       color: commonColor.light
     },
     versionText: {
       color: commonColor.textColor,
-      fontSize: '10@s',
+      fontSize: '12@s',
       textAlign: 'right',
       paddingHorizontal: '5@s'
     },

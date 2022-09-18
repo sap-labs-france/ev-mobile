@@ -16,7 +16,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       flex: 1,
       backgroundColor: commonColor.containerBgColor,
-      paddingTop: getStatusBarHeight() + scale(10)
+      paddingTop: getStatusBarHeight() + scale(10),
     },
     keyboardContainer: {
       flex: 1
@@ -48,7 +48,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     appTenant: {
       color: commonColor.textColor,
-      marginTop: '20@s',
       fontSize: '15@s',
       alignSelf: 'center'
     },
@@ -59,6 +58,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '15@s',
       fontWeight: 'bold',
       alignSelf: 'center'
+    },
+    formLogin: {
+      marginTop: '15@s'
     },
     formErrorTextEula: {
       alignSelf: 'center',
@@ -71,14 +73,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       textDecorationLine: 'underline'
     },
     linksButton: {
+      width: '90%',
+      alignItems: 'center',
       alignSelf: 'center',
-      marginBottom: '15@s'
+      backgroundColor: commonColor.buttonBg,
+      padding: '10@s',
     },
     linksFooterButton: {
       width: '90%',
       alignItems: 'center',
       alignSelf: 'center',
       marginTop: '5@s',
+    },
+    linkNewUserButton: {
     },
     linksTextButton: {
       fontSize: '13@s',

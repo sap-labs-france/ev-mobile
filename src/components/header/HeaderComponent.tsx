@@ -1,16 +1,16 @@
 import { DrawerActions } from '@react-navigation/native';
-import { Icon, IIconProps } from 'native-base';
+import { IIconProps, Icon } from 'native-base';
 import React from 'react';
 import { Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { scale } from 'react-native-size-matters';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import BaseProps from '../../types/BaseProps';
-import computeStyleSheet from './HeaderComponentStyles';
-import ScreenFilters from '../search/filter/screen/ScreenFilters';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { scale } from 'react-native-size-matters';
 import Utils from '../../utils/Utils';
+import ScreenFilters from '../search/filter/screen/ScreenFilters';
+import computeStyleSheet from './HeaderComponentStyles';
 
 export interface Props extends BaseProps {
   title: string;
@@ -73,7 +73,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const { title, subTitle, navigation, modalized, actions, backArrow, sideBar, backAction, containerStyle } = this.props;
     const commonColors = Utils.getCurrentCommonColor();
-    const HeaderIcon = (props: IIconProps) => <Icon {...props} size={scale(30)} color={commonColors.textColor}/>;
+    const HeaderIcon = (props: IIconProps) => <Icon {...props} size={scale(25)} color={commonColors.textColor}/>;
     return (
       <View style={[style.header, modalized && style.modalHeader, containerStyle]}>
         <View style={style.leftHeader}>
