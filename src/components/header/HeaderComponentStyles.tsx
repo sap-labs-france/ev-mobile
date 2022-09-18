@@ -51,7 +51,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginRight: '5@s'
     },
     subTitle: {
-      fontSize: '17@s',
+      fontSize: '15@s',
       color: commonColor.textColor
     },
     actionsContainer: {

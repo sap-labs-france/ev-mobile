@@ -1,10 +1,10 @@
 import deepmerge from 'deepmerge';
 import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { scale, ScaledSheet } from 'react-native-size-matters';
+import { ScaledSheet, scale } from 'react-native-size-matters';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import Utils from '../../../../utils/Utils';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -45,6 +45,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     title: {
       color: commonColor.textColor,
+      paddingLeft: '5@s',
       fontSize: '22@s'
     }
   });

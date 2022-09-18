@@ -4,11 +4,21 @@ import React from 'react';
 import { Image, ImageStyle, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
+import { scale } from 'react-native-size-matters';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import satelliteLayout from '../../../assets/map/satellite.png';
+import standardDarkLayout from '../../../assets/map/standard-dark.png';
+import standardLightLayout from '../../../assets/map/standard-light.png';
+import computeFabStyles from '../../components/fab/FabComponentStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
+import ClusterMap from '../../components/map/ClusterMap';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
+import ThemeManager from '../../custom-theme/ThemeManager';
 import I18nManager from '../../I18n/I18nManager';
 import computeModalStyle from '../../ModalStyles';
 import BaseProps from '../../types/BaseProps';
@@ -17,19 +27,9 @@ import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import { ChargingStationsFiltersDef } from '../charging-stations/list/ChargingStationsFilters';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
-import ClusterMap from '../../components/map/ClusterMap';
-import standardDarkLayout from '../../../assets/map/standard-dark.png';
-import standardLightLayout from '../../../assets/map/standard-light.png';
-import satelliteLayout from '../../../assets/map/satellite.png';
-import computeFabStyles from '../../components/fab/FabComponentStyles';
-import ThemeManager from '../../custom-theme/ThemeManager';
-import { ChargingStationsFiltersDef } from '../charging-stations/list/ChargingStationsFilters';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { scale } from 'react-native-size-matters';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export interface Props extends BaseProps {}
 
@@ -243,7 +243,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <SafeAreaView style={style.siteDetailsModalContainer}>
           <View style={style.siteDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ selectedSite: null })}>
-              <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
+              <Icon size={scale(30)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           </View>
           <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>

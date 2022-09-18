@@ -1,15 +1,15 @@
-import React from 'react';
-
-import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
-import computeModalCommonStyle from '../../../modal/ModalCommonStyle';
-import computeStyleSheet from'./FilterModalContainerComponentStyles';
-import { Text, TouchableOpacity, View } from 'react-native';
-import Modal from 'react-native-modal';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Modal from 'react-native-modal';
 import { scale } from 'react-native-size-matters';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+
+import computeModalCommonStyle from '../../../modal/ModalCommonStyle';
+import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
+import computeStyleSheet from'./FilterModalContainerComponentStyles';
 
 export interface Props extends FilterContainerComponentProps {}
 
@@ -90,7 +90,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
             <View style={style.header}>
               <Text style={style.title}>{I18n.t('general.filters')}</Text>
               <TouchableOpacity onPress={() => this.setState({visible: false})}>
-                <Icon size={scale(37)}  name={'close'} as={EvilIcons} style={style.closeIcon}/>
+                <Icon size={scale(30)}  name={'close'} as={EvilIcons} style={style.closeIcon}/>
               </TouchableOpacity>
             </View>
             {this.props.children}

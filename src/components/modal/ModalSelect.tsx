@@ -1,19 +1,20 @@
-import { Icon, Spinner} from 'native-base';
+import I18n from 'i18n-js';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { Button } from 'react-native-elements';
 import Modal from 'react-native-modal';
+import { scale } from 'react-native-size-matters';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+
+import SelectableList from '../../screens/base-screen/SelectableList';
 import BaseProps from '../../types/BaseProps';
+import ListItem from '../../types/ListItem';
 import Utils from '../../utils/Utils';
 import { ItemSelectionMode } from '../list/ItemsList';
-import computeStyleSheet from './ModalSelectStyles';
-import I18n from 'i18n-js';
-import SelectableList from '../../screens/base-screen/SelectableList';
-import ListItem from '../../types/ListItem';
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import computeModalCommonStyle from './ModalCommonStyle';
-import { Button } from 'react-native-elements';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { scale } from 'react-native-size-matters';
+import computeStyleSheet from './ModalSelectStyles';
 
 export interface Props<T> extends BaseProps {
   defaultItems?: T[];
@@ -58,10 +59,6 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
       selectedItems: [],
       noneSelected: false
     };
-  }
-
-  private clearSelection(): void {
-    this.itemsListRef?.clearSelectedItems();
   }
 
   public resetInput(noneSelected: boolean = false, items: T[] = []): void {
@@ -167,21 +164,10 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
   }
 
   private renderButton(style: any) {
-    const {
-      defaultItemLoading,
-      renderNoItem,
-      renderItem,
-      renderItemPlaceholder,
-      openable,
-      disabled,
-      clearable,
-      defaultItems,
-      selectionMode,
-      renderItems
-    } = this.props;
+    const { defaultItemLoading, renderNoItem, renderItem, renderItemPlaceholder, openable,
+      disabled, clearable, defaultItems, selectionMode, renderItems } = this.props;
     const { selectedItems, noneSelected } = this.state;
     const listItemCommonStyle = computeListItemCommonStyle();
-
     const commonColors = Utils.getCurrentCommonColor();
     if (defaultItemLoading) {
       return (
@@ -205,7 +191,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           </TouchableOpacity>
           {clearable && (
             <TouchableOpacity style={style.clearContainer} onPress={() => this.resetInput(true)}>
-              <Icon size={scale(25)} style={style.clearIcon} as={EvilIcons} name={'close'} />
+              <Icon size={scale(20)} style={style.clearIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           )}
         </View>
@@ -219,5 +205,9 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     } else {
       return <View style={style.itemContainer}>{renderNoItem?.()}</View>;
     }
+  }
+
+  private clearSelection(): void {
+    this.itemsListRef?.clearSelectedItems();
   }
 }

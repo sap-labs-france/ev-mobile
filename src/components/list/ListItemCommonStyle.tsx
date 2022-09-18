@@ -13,6 +13,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: '8@s',
+      borderColor: commonColor.textColor,
       borderWidth: 0,
       backgroundColor: commonColor.listItemBackground
     },

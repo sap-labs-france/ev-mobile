@@ -27,7 +27,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       height: '135@s',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      borderTopWidth: 0.5,
+      borderTopColor: commonColor.disabledDark,
+      backgroundColor: commonColor.headerBgColor,
     },
     imageInnerContainer: {
       flexDirection: 'row',
@@ -122,11 +125,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     connectorInfoSettingsContainer: {
-      flex: 1
+      flex: 1,
+      borderTopWidth: 0.5,
+      borderTopColor: commonColor.disabledDark,
+      backgroundColor: commonColor.headerBgColor,
     },
     scrollViewContainer: {
       width: '100%',
-      height: 'auto'
+      height: 'auto',
+      backgroundColor: commonColor.containerBgColor,
     },
     chargingSettingsContainer: {
       marginHorizontal: '2.5%',
@@ -234,6 +241,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginHorizontal: '10@s',
       fontSize: '50@s'
     },
+    itemContainer: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      backgroundColor: commonColor.containerBgColor,
+      width: '100%'
+    },
     noItemContainer: {
       minHeight: '90@s',
       padding: '10@s',
@@ -250,14 +264,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '50@s',
       marginHorizontal: '10@s'
     },
-    noTagContainer: {
+    noItemDangerContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       borderColor: commonColor.dangerLight,
-      borderTopWidth: 0.8,
-      borderLeftWidth: 0.8,
-      borderRightWidth: 0.8,
-      borderBottomWidth: 0.8
+      borderWidth: 0.8,
     },
     noTagIcon: {
       color: commonColor.dangerLight,

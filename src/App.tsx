@@ -109,12 +109,10 @@ function getCardStyle(): any {
 
 function getBarStyle(): any {
   const commonColor = Utils.getCurrentCommonColor();
-  const insets = useSafeAreaInsets();
   return {
     backgroundColor: commonColor.containerBgColor,
     borderTopWidth: 0.5,
     borderTopColor: commonColor.disabledDark,
-    paddingBottom: insets.bottom,
     paddingTop: 0,
     marginTop: 0
   };

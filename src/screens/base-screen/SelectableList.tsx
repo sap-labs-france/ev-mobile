@@ -1,10 +1,11 @@
+import { default as I18n } from 'i18n-js';
 import React from 'react';
-import BaseProps from '../../types/BaseProps';
+
 import ItemsList, { ItemSelectionMode } from '../../components/list/ItemsList';
+import I18nManager from '../../I18n/I18nManager';
+import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import BaseScreen from './BaseScreen';
-import { default as I18n } from 'i18n-js';
-import I18nManager from '../../I18n/I18nManager';
 
 export interface SelectableProps<T> extends BaseProps {
   selectionMode?: ItemSelectionMode;
@@ -49,17 +50,8 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
     return this.state.selectedItems;
   }
 
-  protected onItemsSelected(selectedItems: T[]): void {
-    this.setState({ selectedItems }, () => this.props.onItemsSelected?.(selectedItems));
-  }
-
   public buildHeaderTitle(): string {
     return this.multiItemsTitle;
-  }
-
-  protected buildHeaderSubtitle(): string {
-    const { count } = this.state;
-    return count > 0 && `(${I18nManager.formatNumber(count)})`;
   }
 
   public buildModalHeaderTitle(): string {
@@ -82,6 +74,15 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
       default:
         return '';
     }
+  }
+
+  protected onItemsSelected(selectedItems: T[]): void {
+    this.setState({ selectedItems }, () => this.props.onItemsSelected?.(selectedItems));
+  }
+
+  protected buildHeaderSubtitle(): string {
+    const { count } = this.state;
+    return count > 0 && `(${I18nManager.formatNumber(count)})`;
   }
 
   protected async refresh(showSpinner = false, callback: () => void = () => null) {

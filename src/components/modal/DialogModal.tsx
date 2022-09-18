@@ -1,16 +1,16 @@
-import React from 'react';
-import Modal from 'react-native-modal';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { Icon } from 'native-base';
 import I18n from 'i18n-js';
-import computeStyleSheet from './DialogModalStyle';
-import computeModalCommonStyles from '../modal/ModalCommonStyle';
+import { Icon } from 'native-base';
+import React from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Animation } from 'react-native-animatable';
 import { Button } from 'react-native-elements';
+import Modal from 'react-native-modal';
 import { RootSiblingParent } from 'react-native-root-siblings';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { scale } from 'react-native-size-matters';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
+import computeModalCommonStyles from '../modal/ModalCommonStyle';
+import computeStyleSheet from './DialogModalStyle';
 
 export interface DialogModalButton {
   text: string;
@@ -92,7 +92,7 @@ export default class DialogModal extends React.Component<Props, State> {
           <View style={style.modalContainer}>
             {withCloseButton && (
               <TouchableOpacity onPress={() => close?.()} style={style.closeButtonContainer}>
-                <Icon size={scale(35)} style={style.closeButton} name={'close'} as={EvilIcons} />
+                <Icon size={scale(30)} style={style.closeButton} name={'close'} as={EvilIcons} />
               </TouchableOpacity>
             )}
             {renderIcon?.(iconStyle)}

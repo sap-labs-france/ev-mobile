@@ -59,6 +59,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     modalTitle: {
       fontSize: '17@s',
       flexShrink: 1,
+      marginLeft: '5@s',
       marginRight: '5@s',
       color: commonColor.textColor
     },
