@@ -520,7 +520,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
           ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
         />
-        {showMap ?
+        <SimpleSearchComponent
+          containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent}
+          onChange={async (searchText) => this.search(searchText)}
+          navigation={this.props.navigation} />
+        {/* {showMap ?
           <GooglePlacesAutocomplete
             placeholder='Search Places'
             onFail={(error) => console.error(error)}
@@ -547,7 +551,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent}
             onChange={async (searchText) => this.search(searchText)}
             navigation={this.props.navigation} />
-        }
+        } */}
         {this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
             <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />

@@ -62,14 +62,6 @@ static void InitializeFlipper(UIApplication *application) {
 
   [application registerForRemoteNotifications];
 
-  [[FIRInstanceID instanceID] instanceIDWithHandler:^(FIRInstanceIDResult * _Nullable result, NSError * _Nullable error) {
-    if (error != nil) {
-      NSLog(@"Error fetching remote instance ID: %@", error);
-    } else {
-      NSLog(@"Remote instance ID token: %@", result.token);
-    }
-  }];
-
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"eMobility" initialProperties:nil];
 

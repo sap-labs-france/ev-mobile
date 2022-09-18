@@ -6,7 +6,7 @@ buildscript {
         minSdkVersion = 21
         compileSdkVersion = 32
         targetSdkVersion = 32
-        playServicesVersion = "17.0.0"
+        playServicesVersion = "18.0.0"
         supportLibVersion = "29.0.0"
         ndkVersion = "22.1.7171670"
     }

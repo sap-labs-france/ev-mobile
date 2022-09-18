@@ -1,11 +1,16 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '12.4'
+platform :ios, '13.0'
+
+use_frameworks! :linkage => :static
 
 target 'eMobility' do
   project 'eMobility.xcodeproj'
   config = use_native_modules!
+
+  $RNFirebaseAsStaticFramework = true
+  $static_framework = []
 
   use_react_native!(
     :path => config["../node_modules/react-native"],
@@ -13,25 +18,25 @@ target 'eMobility' do
     :hermes_enabled => false
   )
 
+    # Hit build times and times and which library ever failing add here
+  $static_framework += [
+    'react-native-maps',
+    'react-native-google-maps',
+    'Google-Maps-iOS-Utils',
+    'GoogleMaps',
+    'Permission-Camera'
+  ]
+
   # Add RNCharts dependencies
   pod 'SwiftyJSON', '5.0'
   pod 'Charts', '3.6.0'
 
   # Add Firebase
-  pod 'Firebase', :modular_headers => true
-  pod 'FirebaseCore', :modular_headers => true
-  pod 'FirebaseCoreInternal', :modular_headers => true  
-  pod 'FirebaseStorageInternal', :modular_headers => true
-  pod 'FirebaseCoreExtension', :modular_headers => true
-  pod 'FirebaseAppCheckInterop', :modular_headers => true
-  pod 'FirebaseAuthInterop', :modular_headers => true
-  pod 'FirebaseMessagingInterop', :modular_headers => true
-  pod 'GTMSessionFetcher', :modular_headers => true
-  pod 'FirebaseAppCheckInterop', :modular_headers => true
-  pod 'FirebaseAuthInterop', :modular_headers => true
-  pod 'GoogleUtilities', :modular_headers => true
+  pod 'Firebase/Core', '~> 6.34.0'
   pod 'FirebaseMessaging'
   pod 'FirebaseAnalytics'
+  # pod 'GoogleUtilities', :modular_headers => true
+  # pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
   # React Native Maps dependencies
   rn_maps_path = '../node_modules/react-native-maps'
@@ -47,14 +52,42 @@ target 'eMobility' do
     inherit! :complete
     # Pods for testing
   end
+end
 
-  # Enables Flipper.
-  #
-  # Note that if you have use_frameworks! enabled, Flipper will not work and
-  # you should disable the next line.
-  use_flipper!()
-  post_install do |installer|
-    flipper_post_install(installer)
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+pre_install do |installer|
+  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+    installer.pod_targets.each do |pod|
+      if $static_framework.include?(pod.name)
+        def pod.build_type;
+        Pod::BuildType.static_library # >= 1.9
+      end
+    end
+  end
+end
+
+# Enables Flipper.
+# Note that if you have use_frameworks! enabled, Flipper will not work and
+# you should disable the next line.
+# use_flipper!()
+post_install do |installer|
+  # flipper_post_install(installer)
+  # Firebase handling
+  react_native_post_install(installer)
+  rnfirebase = installer.pods_project.targets.find { |target| target.name == 'RNFirebase' }
+  rnfirebase.build_configurations.each do |config|
+    config.build_settings['HEADER_SEARCH_PATHS'] = '$(inherited) ${PODS_ROOT}/Headers/Public/**'
+  end
+  installer.pods_project.targets.each do |target|
+    if target.name == 'RCT-Folly'
+      target.build_configurations.each do |config|
+        config.build_settings['HEADER_SEARCH_PATHS'] = "$(inherited) ${PODS_ROOT}/fmt/include"
+      end
+    end
+  end
+  system("mkdir -p Pods/Headers/Public/FirebaseCore && cp Pods/FirebaseCore/FirebaseCore/Sources/Public/FirebaseCore/* Pods/Headers/Public/FirebaseCore/")
+  system("mkdir -p Pods/Headers/Public/FirebaseMessaging && cp Pods/FirebaseMessaging/FirebaseMessaging/Sources/Public/* Pods/Headers/Public/FirebaseMessaging/")
+  #   __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  installer.pods_project.build_configurations.each do |config|
+    config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
   end
 end
