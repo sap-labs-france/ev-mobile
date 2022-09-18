@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 import React from 'react';
-import { Image, ImageStyle, Text, View } from 'react-native';
+import { Image, ImageStyle, Platform, Text, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import Configuration from '../../config/Configuration';
@@ -30,21 +30,17 @@ export default class AuthHeader extends React.Component<Props, State>{
     const { tenantName, tenantLogo } = this.props;
     return (
       <View style={style.header}>
-        {tenantLogo ?
-          <Image style={style.logo as ImageStyle} source={{ uri: tenantLogo }} />
-          :
-          <View style={style.logo}/>
-        }
+        {!Platform.isPad && (tenantLogo ? <Image style={style.logo as ImageStyle} source={{ uri: tenantLogo }} /> : <View style={style.logo}/>)}
         <View>
           <Text style={style.appText}>{Configuration.APPLICATION_NAME}</Text>
           <Text style={style.appVersionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
         </View>
-        {tenantName ? (
+        {!Platform.isPad && tenantName &&
           <View>
             <Text style={style.appTenant}>{I18n.t('authentication.tenantTitle')}</Text>
             <Text style={style.appTenantName}>{tenantName}</Text>
           </View>
-        ) : undefined}
+        }
       </View>
     );
   }
