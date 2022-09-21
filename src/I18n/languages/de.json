@@ -549,5 +549,13 @@
     "kilometers": "Kilometer",
     "miles": "Meilen",
     "automatic": "Automatik"
+  },
+  "settingsDeleteAccount": {
+    "deleteAccount": "Delete your Account",
+    "deleteAccountProcedure1": "You can request to delete your account by sending an email to our support team",
+    "deleteAccountProcedure2": "Your account will be deleted in the next five working days and you will be notified by email.",
+    "deleteAccountSendEmail": "Delete my Account",
+    "deleteAccountEmailSubject": "Delete my Account...",
+    "deleteAccountEmailBody": "Hello,\n\nCould you please proceed with the deletion of my personal account in your system.\n\nBest Regards."
   }
 }

@@ -2,6 +2,7 @@ import deepmerge from 'deepmerge';
 import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
+
 import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
@@ -14,14 +15,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     content: {
       flex: 1,
-      alignItems: 'center',
+      alignItems: 'flex-start',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      padding: '15@s',
       width: '100%'
     },
     headerContainer: {
       marginBottom: '10@s'
     },
     settingSection: {
-      width: '90%'
+      marginBottom: '10@s'
     },
     selectDropdownButton: {
       backgroundColor: commonColor.selectFieldBackgroundColor,
@@ -54,7 +58,23 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontWeight: 'bold',
       paddingVertical: '4@s'
-    }
+    },
+    settingDeleteAccountProcedure: {
+      fontSize: '14@s',
+      color: commonColor.textColor,
+      marginTop: '5@s'
+    },
+    settingDeleteAccountButton: {
+      width: '100%',
+      height: '40@s',
+      marginTop: '15@s',
+      backgroundColor: commonColor.danger
+    },
+    settingDeleteAccountTextButton: {
+      color: 'white',
+      textAlign: 'center',
+      fontSize: '16@s'
+    },
   });
   const portraitStyles = {};
   const landscapeStyles = {};
