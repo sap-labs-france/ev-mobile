@@ -87,7 +87,9 @@
     "showLess": "Show less",
     "newEntry": "New entry",
     "userOrTenantUpdated": "Você foi descontactado porque o seu perfil ou as configurações da sua organização foram atualizadas",
-    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain",
+    "from": "De",
+    "to": "A"
   },
   "sidebar": {
     "home": "Home",

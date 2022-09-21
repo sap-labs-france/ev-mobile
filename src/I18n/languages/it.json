@@ -87,7 +87,9 @@
     "showLess": "Show less",
     "newEntry": "New entry",
     "userOrTenantUpdated": "Sei stato disconnesso perchè le impostazioni del tuo profilo o della tua organizzazione sono state aggiornate",
-    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain",
+    "from": "Da",
+    "to": "A"
   },
   "sidebar": {
     "home": "Home",

@@ -87,7 +87,9 @@
     "showLess": "Show less",
     "newEntry": "New entry",
     "userOrTenantUpdated": "You have been logged off because either your profile or your organization's settings have been updated",
-    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain",
+    "from": "From",
+    "to": "To"
   },
   "sidebar": {
     "home": "Home",

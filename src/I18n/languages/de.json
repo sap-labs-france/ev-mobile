@@ -87,7 +87,9 @@
     "showLess": "Weniger anzeigen",
     "newEntry": "Neuer Eintrag",
     "userOrTenantUpdated": "Sie wurden ausgeloggt, weil entweder Ihre Einstellungen oder die Ihrer Organisation aktualisiert wurden",
-    "tenantRedirectionInvalidDomain": "Ungültige Tenant Redirection Domain"
+    "tenantRedirectionInvalidDomain": "Ungültige Tenant Redirection Domain",
+    "from": "Von",
+    "to": "Bis"
   },
   "sidebar": {
     "home": "Home",
@@ -333,7 +335,7 @@
     "departureTime": "Departure time",
     "departureStateOfCharge": "Departure state of charge",
     "currentStateOfCharge": "Current state of charge",
-    "stateOfCharge": "State of charge"
+    "stateOfCharge": "Ladezustand"
   },
   "home": {
     "browseSites": "Standorte",

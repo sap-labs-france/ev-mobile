@@ -87,7 +87,9 @@
     "showLess": "Show less",
     "newEntry": "New entry",
     "userOrTenantUpdated": "Se cerró la sesión porque se actualizó su perfil o la configuración de su organización",
-    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain",
+    "from": "De",
+    "to": "A"
   },
   "sidebar": {
     "home": "Menú principal",
