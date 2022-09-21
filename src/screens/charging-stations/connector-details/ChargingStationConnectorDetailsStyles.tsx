@@ -46,7 +46,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '50@s',
       borderRadius: '25@s',
       borderStyle: 'solid',
-      borderWidth: '4@s',
+      borderWidth: '2@s',
       borderColor: commonColor.textColor,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
@@ -62,7 +62,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '50@s',
       borderRadius: '25@s',
       borderStyle: 'solid',
-      borderWidth: '4@s',
+      borderWidth: '2@s',
       borderColor: commonColor.danger,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
@@ -78,7 +78,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '90@s',
       borderRadius: '45@s',
       borderStyle: 'solid',
-      borderWidth: '4@s',
+      borderWidth: '2@s',
       borderColor: commonColor.textColor,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
@@ -139,7 +139,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     settingLabel: {
       fontSize: '13@s',
       color: commonColor.textColor,
-      marginRight: '10@s'
+      marginRight: '10@s',
+      maxWidth: '40%'
     },
     departureTimeContainer: {
       width: '100%',
@@ -416,23 +417,22 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontWeight: 'bold',
       textAlign: 'right',
-      flex: 1,
       paddingHorizontal: scale(5),
       fontSize: scale(14),
-      backgroundColor: commonColor.listItemBackground
+      backgroundColor: commonColor.listItemBackground,
+      paddingVertical: 0
     },
     currentSocInputContainer: {
       marginRight: '8@s'
     },
     socInputContainer: {
       flex: 1,
-      flexDirection: 'row',
       paddingHorizontal: scale(10),
       backgroundColor: commonColor.listItemBackground,
       alignItems: 'center',
       justifyContent: 'flex-end',
       borderRadius: scale(8),
-      paddingVertical: Platform.OS === PLATFORM.IOS ? '13@s' : '3@s'
+      paddingVertical: '13@s'
     },
     socInputContainerError: {
       borderColor: commonColor.danger,
@@ -442,23 +442,24 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '11@s',
       color: commonColor.textColor
     },
+    socInputLabelText: {
+      fontStyle: 'italic',
+      color: commonColor.disabledDark,
+      flex: 1
+    },
     sliderMarker: {
       width: scale(25),
       height: scale(25),
       borderRadius: scale(25),
       backgroundColor: commonColor.disabled,
-
       elevation: 6,
-      shadowColor: "#000",
+      shadowColor: '#000',
       shadowOffset: {
         width: 0,
         height: 3,
       },
       shadowOpacity: 0.27,
       shadowRadius: 4.65
-
-    //  borderColor: commonColor.disabledDark,
-     // borderWidth: 1
     },
     sliderTrack: {
       width: '100%',
@@ -471,8 +472,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     sliderMiddleTrack: {
       backgroundColor: commonColor.primary,
       borderStyle: 'dashed',
-      borderWidth: 1,
-      borderColor: commonColor.disabled
+      borderWidth: 0.6,
+      borderColor: commonColor.textColor
     },
     sliderRightTrack: {
       backgroundColor: commonColor.disabledDark,

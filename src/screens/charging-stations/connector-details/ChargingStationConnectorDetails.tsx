@@ -11,9 +11,12 @@ import {
   ImageStyle,
   RefreshControl,
   ScrollView,
-  Text, TextInput, TextInputProps,
+  Text,
+  TextInput,
+  TextInputProps,
   TouchableOpacity,
-  View, ViewStyle
+  View,
+  ViewStyle
 } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
@@ -64,12 +67,13 @@ function SocInput(props: { inputProps: TextInputProps; leftText: string; contain
   const style = computeStyleSheet();
   return (
     <HStack style={[style.socInputContainer, props?.containerStyle]}>
-      <Text style={style.socInputText}>{props?.leftText}</Text>
+      <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.socInputText, style.socInputLabelText]}>{props?.leftText}</Text>
       <TextInput
         style={style.socInput}
         keyboardType={'number-pad'}
         placeholder={'0'}
         maxLength={3}
+        returnKeyType={'done'}
         {...props?.inputProps}
       />
       <Text style={style.socInputText}>%</Text>
@@ -80,7 +84,7 @@ function SocInput(props: { inputProps: TextInputProps; leftText: string; contain
 // Max session duration is 20 hours
 const MAX_SESSION_DURATION_MILLISECS = 20 * 60 * 60 * 1000;
 // Min session
-const MIN_SESSION_DURATION_MILLISECS = 1000;
+const MIN_SESSION_DURATION_MILLISECS = 60000;
 
 const DEFAULT_DEPARTURE_SOC = 85;
 
@@ -170,7 +174,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       transactionPendingTimesUp: false,
       showChargingSettings: undefined,
       showTimePicker: false,
-      departureTime: new Date(new Date().getTime() + 1000),
+      departureTime: new Date(this.getMinimumDateMillisecs()),
       departureSoC: DEFAULT_DEPARTURE_SOC,
       currentSoC: null
     };
@@ -387,7 +391,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         transaction,
         siteImage,
         ...(!transactionStillPending && {transactionPending: false, didPreparing: false}),
-        departureTime: new Date(Math.max(new Date().getTime() + MIN_SESSION_DURATION_MILLISECS, this.state.departureTime.getTime())),
+        departureTime: new Date(Math.max(this.getMinimumDateMillisecs(), this.state.departureTime.getTime())),
         refreshing: false,
         isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
         isSiteAdmin: this.securityProvider?.isSiteAdmin(chargingStation?.siteArea?.siteID) ?? false,
@@ -434,7 +438,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public async startTransaction(): Promise<void> {
     await this.refresh();
-    const { chargingStation, connector, selectedTag, selectedCar, selectedUser, canStartTransaction } = this.state;
+    const { chargingStation, connector, selectedTag, selectedCar, selectedUser, canStartTransaction, currentSoC, departureSoC } = this.state;
     try {
       if (this.isButtonDisabled() || !canStartTransaction) {
         Message.showError(I18n.t('general.notAuthorized'));
@@ -447,13 +451,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
       // Disable the button
       this.setState({ buttonDisabled: true });
+      const departureTime = new Date(Math.max(this.getMinimumDateMillisecs(), this.state.departureTime.getTime()));
       // Start the Transaction
       const response = await this.centralServerProvider.startTransaction(
         chargingStation.id,
         connector.connectorId,
         selectedTag?.visualID,
         selectedCar?.id as string,
-        selectedUser?.id as string
+        selectedUser?.id as string,
+        currentSoC,
+        departureSoC,
+        departureTime?.toISOString()
       );
       if (response?.status === OCPPGeneralResponse.ACCEPTED) {
         // Show success message
@@ -924,12 +932,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const durationSeconds = Math.abs((departureTime.getTime() - new Date().getTime())/1000);
     const durationFormatted = I18nManager.formatDuration(durationSeconds, durationFormatOptions);
     const locale = this.centralServerProvider.getUserInfo()?.locale;
-    const is24Hour = I18nManager.isLocale24Hour(locale);
+    const is24Hour = I18nManager?.isLocale24Hour(locale);
     return (
       <View style={style.departureTimeContainer}>
-        <Text style={style.settingLabel}>{I18n.t('transactions.departureTime')}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.settingLabel}>{I18n.t('transactions.departureTime')}</Text>
         <TouchableOpacity style={style.departureTimeInput} onPress={() => this.setState({showTimePicker: true})}>
-          <Text ellipsizeMode={'tail'} style={style.departureTimeText}>{departureTimeFormatted}  ({durationFormatted})</Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.departureTimeText}>{departureTimeFormatted}  ({durationFormatted})</Text>
           <Icon color={commonColors.textColor} size={scale(18)} as={MaterialIcons} name={'arrow-drop-down'} />
         </TouchableOpacity>
         <DateTimePicker
@@ -941,10 +949,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           confirmTextIOS={I18n.t('general.confirm')}
           buttonTextColorIOS={commonColors.textColor}
           minimumDate={minimumDate}
-         // maximumDate={maximumDate}
+          maximumDate={maximumDate}
           date={departureTime}
           onConfirm={(newDepartureTime) => this.setState({showTimePicker: false, departureTime: newDepartureTime})}
-          onCancel={() => this.setState({showTimePicker: false})} />
+          onCancel={() => this.setState({showTimePicker: false})}
+        />
       </View>
     );
   }
@@ -959,17 +968,19 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.socContainer}>
         <View style={style.socInputsContainer}>
-          <Text style={style.settingLabel}>{I18n.t('transactions.stateOfCharge')}</Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.settingLabel}>{I18n.t('transactions.stateOfCharge')}</Text>
           <HStack alignItems={'center'} flex={1} justifyContent={'space-between'}>
-            {!isSoCAvailable && (
+            {!isSoCAvailable ? (
               <SocInput
                 inputProps={{
                   onChangeText: (newCurrentSoC: string) => this.onSoCChanged(this.computeNumericSoC(newCurrentSoC), departureSoC),
                   value: currentSoCText
                 }}
-                leftText={'Current'}
+                leftText={I18n.t('general.from')}
                 containerStyle={style.currentSocInputContainer}
               />
+            ) : (
+              <View style={{ flex: 1 }}/>
             )}
             <SocInput
               inputProps={{
@@ -977,7 +988,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 value: departureSoCText,
                 editable: !tagCarLoading
               }}
-              leftText={'Target'}
+              leftText={I18n.t('general.to')}
               containerStyle={{...(settingsErrors?.departureSoCError && style.socInputContainerError)}}
             />
           </HStack>
@@ -992,7 +1003,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           enabledTwo={true}
           onValuesChange={([newCurrentSoC, newDepartureSoC]) => this.onSoCChanged(newCurrentSoC, newDepartureSoC)}
           markerOffsetY={scale(2)}
-          sliderLength={Dimensions.get('window').width - scale(40)}
+          sliderLength={Dimensions.get('window').width - scale(30)}
           trackStyle={style.sliderTrack}
           unselectedStyle={style.sliderLeftTrack}
           selectedStyle={style.sliderMiddleTrack}
@@ -1163,7 +1174,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const style = computeStyleSheet();
     return (
       <View style={[listItemCommonStyle.container, style.noItemContainer, style.noCarContainer]}>
-        <Icon style={style.noCarIcon} as={MaterialCommunityIcons} name={'car'} />
+        <Icon size={scale(50)} style={style.noCarIcon} as={MaterialCommunityIcons} name={'car'} />
         <View style={style.column}>
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
         </View>
@@ -1291,7 +1302,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private isCurrentSoCAvailable(): boolean {
     const { selectedCar, connector, chargingStation } = this.state;
     const connectorCurrentType = Utils.getConnectorCurrentType(chargingStation, connector?.connectorId);
-    return connectorCurrentType === CurrentType.DC || !Utils.isNullOrUndefined(selectedCar?.carConnectorData?.carConnectorID);
+    const connectorData = selectedCar?.carConnectorData;
+    return connectorCurrentType === CurrentType.DC ||
+        (!Utils.isNullOrUndefined(connectorData?.carConnectorID) && !Utils.isNullOrUndefined(connectorData?.carConnectorMeterID));
   }
 
   private renderStartTransactionDialog() {
@@ -1330,5 +1343,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         || connector?.status === ChargePointStatus.FAULTED
         || connector?.status === ChargePointStatus.FINISHING
         || connector?.status === ChargePointStatus.UNAVAILABLE;
+  }
+
+  private getMinimumDateMillisecs(): number {
+    return new Date().getTime() + MIN_SESSION_DURATION_MILLISECS
   }
 }
