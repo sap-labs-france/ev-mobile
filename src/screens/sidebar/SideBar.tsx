@@ -139,18 +139,16 @@ export default class SideBar extends React.Component<Props, State> {
             {tenantLogo && <Image source={{ uri: tenantLogo }} style={style.logo as ImageStyle} />}
             <View style={style.tenantContainer}>
               <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.tenantName}>
-                {tenantName}
+                {tenantName} ({DeviceInfo.getVersion()})
               </Text>
             </View>
             <View style={style.versionContainer}>
-              {!appVersion?.needsUpdate ? (
-                <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
-              ) : (
+              {appVersion?.needsUpdate &&
                 <TouchableOpacity style={style.newVersionContainer}>
                   <SidebarIcon style={style.newVersionIcon} as={MaterialIcons} name={'update'} />
                   <Text style={style.newVersionText}>{I18n.t('appUpdate.appUpdateDialogTitle')}</Text>
                 </TouchableOpacity>
-              )}
+              }
             </View>
             {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
           </View>
