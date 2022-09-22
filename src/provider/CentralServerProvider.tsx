@@ -589,7 +589,7 @@ export default class CentralServerProvider {
   }
 
   // eslint-disable-next-line max-len
-  public async startTransaction(chargingStationID: string, connectorId: number, visualTagID: string, carID: string, userID: string): Promise<ActionResponse> {
+  public async startTransaction(chargingStationID: string, connectorId: number, visualTagID: string, carID: string, userID: string, carStateOfCharge: number, targetStateOfCharge: number, departureTime: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
     // Call
     const result = await this.axiosInstance.put<any>(
@@ -598,6 +598,9 @@ export default class CentralServerProvider {
         chargingStationID,
         carID,
         userID,
+        carStateOfCharge,
+        targetStateOfCharge,
+        departureTime,
         args: {
           visualTagID,
           connectorId
