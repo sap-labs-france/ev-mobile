@@ -87,10 +87,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontSize: '14@s'
     },
-    icon: {
-      color: commonColor.light,
-      fontSize: '20@s'
-    },
     chargingStationMarker: {
       fontSize: '30@s',
     },
@@ -129,8 +125,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '30@s'
     },
     closeIcon: {
-      padding: '8@s',
-      fontSize: '37@s',
       color: commonColor.textColor
     },
     activityIndicator: {

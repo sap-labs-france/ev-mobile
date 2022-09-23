@@ -85,22 +85,24 @@
     "showMore": "Voir plus",
     "showLess": "Voir moins",
     "newEntry": "Nouveau",
-    "userOrTenantUpdated": "Vous avez été déconnecté suite à une modification de votre profil ou des paramètres de votre organisation"
+    "userOrTenantUpdated": "Vous avez été déconnecté suite à une modification de votre profil ou des paramètres de votre organisation",
+    "tenantRedirectionInvalidDomain": "Le domaine de redirection de l'organisation est invalide"
   },
   "sidebar": {
     "home": "Home",
     "sites": "Sites",
     "chargers": "Bornes",
-    "transactionsHistory": "Historique Sessions",
-    "transactionsInProgress": "Sessions En Cours",
+    "transactionsHistory": "Historique sessions",
+    "transactionsInProgress": "Sessions en cours",
     "statistics": "Statistiques",
-    "reportError": "Signaler Erreur",
+    "reportError": "Signaler erreur",
     "users": "Utilisateurs",
     "badges": "Badges",
     "cars": "Voitures",
     "invoices": "Factures",
     "paymentMethods": "Moyens de paiement",
-    "qrCodeScanner": "Scanneur QR-Code"
+    "qrCodeScanner": "Scanneur QR-Code",
+    "settings": "Paramètres"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -532,7 +534,7 @@
     }
   },
   "appUpdate": {
-    "appUpdateDialogTitle": "Nouvelle version disponible",
+    "appUpdateDialogTitle": "Mise à jour disponible",
     "appUpdateDialogDescription": "Voulez-vous mettre à jour votre application avec la dernière version disponible?",
     "noUpdateAvailable": "Vous avez la dernière version"
   },
@@ -544,5 +546,11 @@
     "siteAreasRoamingFilterLabel": "Afficher les zones en itinérance",
     "transactionsRoamingFilterLabel": "Afficher les sessions en itinérance",
     "usersRoamingFilterLabel": "Afficher les utilisateurs en itinérance"
+  },
+  "settingsDistanceUnit": {
+    "distanceUnit": "Unité de distance",
+    "kilometers": "Kilomètres",
+    "miles": "Miles",
+    "automatic": "Automatique"
   }
 }

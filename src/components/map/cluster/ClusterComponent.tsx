@@ -1,7 +1,6 @@
 import React from 'react';
 import { Marker } from 'react-native-maps';
-import { View } from 'native-base';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import computeStyleSheet from './ClusterComponentStyle';
 
 export interface Props {

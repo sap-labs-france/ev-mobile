@@ -1,4 +1,3 @@
-import { Text, View } from 'native-base';
 import React from 'react';
 
 import BaseProps from '../../types/BaseProps';
@@ -8,7 +7,7 @@ import computeChipStyleSheet from '../chip/ChipStyle';
 import UserAvatar from './avatar/UserAvatar';
 import computeStyleSheet from './UserComponentStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
-import { ViewStyle } from 'react-native';
+import { ViewStyle, Text, View } from 'react-native';
 
 export interface Props extends BaseProps {
   user: User;

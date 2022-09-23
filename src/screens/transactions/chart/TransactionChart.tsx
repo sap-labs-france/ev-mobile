@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Spinner, Text } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
-import { View, processColor } from 'react-native';
+import { View, processColor, Text } from 'react-native';
 import { LineChart, LineChartProps, LineValue } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
 
@@ -387,7 +387,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           subTitle={chargingStation ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
           containerStyle={style.headerContainer}
         />
-        {loading ? <Spinner style={style.spinner} color="grey" /> : (
+        {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={{flex: 1}}>
             {showTransactionDetails && transaction && (
               <TransactionHeaderComponent

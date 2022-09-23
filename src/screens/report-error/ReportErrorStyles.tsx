@@ -27,7 +27,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     reportErrorIcon: {
-      fontSize: '100@s',
       color: commonColor.danger
     },
     formContainer: {
@@ -44,7 +43,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '94%',
       marginTop: '15@s',
       paddingLeft: '10@s',
-      paddingRight: '10@s'
+      paddingRight: '10@s',
+      borderWidth: 0.6,
+      borderColor: commonColor.textColor
     },
     descriptionInput: {
       width: '94%',
@@ -53,7 +54,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingLeft: '10@s',
       marginLeft: '10@s',
       marginRight: '10@s',
-      marginTop: '15@s'
+      marginTop: '15@s',
+      borderWidth: 0.6,
+      borderColor: commonColor.textColor
     },
     inputText: {
       flex: 1,

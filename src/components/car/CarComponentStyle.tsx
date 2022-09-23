@@ -64,7 +64,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     noImageContainer: {
       flex: 1,
-      height: '100%',
       justifyContent: 'center',
       alignItems: 'center'
     },
@@ -125,7 +124,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '20@s',
       width: 'auto'
     },
     currentTypeIcon: {

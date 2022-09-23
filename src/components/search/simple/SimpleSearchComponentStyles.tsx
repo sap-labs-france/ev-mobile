@@ -28,9 +28,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     icon: {
-      paddingLeft: '5@s',
-      paddingRight: '5@s',
-      fontSize: '22@s',
       color: commonColor.textColor
     },
     clearIcon: {

@@ -3,9 +3,9 @@ export interface RequestError extends Error {
     status: number;
   };
   response?: {
-    data: Record<string, any>
+    data: Record<string, any>;
   };
-  config? : {
-    data: string
+  config?: {
+    data: string;
   };
 }

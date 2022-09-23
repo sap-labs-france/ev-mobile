@@ -1,4 +1,4 @@
-import { Icon, Spinner, Text, View } from 'native-base';
+import { Icon, Spinner} from 'native-base';
 import React from 'react';
 import Modal from 'react-native-modal';
 import BaseProps from '../../types/BaseProps';
@@ -8,10 +8,12 @@ import computeStyleSheet from './ModalSelectStyles';
 import I18n from 'i18n-js';
 import SelectableList from '../../screens/base-screen/SelectableList';
 import ListItem from '../../types/ListItem';
-import { SafeAreaView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import computeModalCommonStyle from './ModalCommonStyle';
 import { Button } from 'react-native-elements';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props<T> extends BaseProps {
   defaultItems?: T[];
@@ -82,27 +84,30 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
         {this.renderButton(style)}
         <Modal
           propagateSwipe={true}
-          useNativeDriver={true}
+          useNativeDriverForBackdrop={true}
           supportedOrientations={['portrait', 'landscape']}
           style={style.modal}
           isVisible={isVisible}
-          swipeDirection={'down'}
-          animationInTiming={800}
+          swipeDirection={['down']}
+          statusBarTranslucent={true}
+          animationInTiming={500}
+          animationOutTiming={500}
           onSwipeComplete={() => this.setState({ isVisible: false })}
-          // Modal component registers the given method for hardwareBackPress event and unregisters it when the modal inner content unmounts.
+          // Modal component registers the given method for hardwareBackPress event and unregisters it when the modal
+          // inner content unmounts.
           // Inner component list also unsubscribe on unmount, allowing the last subscriber to choose back implementation.
           // Here the last subscriber is the parent component
           onBackButtonPress={() => this.setState({ isVisible: false })}
-          onBackdropPress={() => this.setState({ isVisible: false })}
+         // onBackdropPress={() => this.setState({ isVisible: false })}
           hideModalContentWhileAnimating={true}>
           <SafeAreaView style={style.modalContainer}>
             <View style={style.modalHeader}>
               <View style={style.modalTitleContainer}>
-                  {title && <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.modalTitle}>{title}</Text>}
-                  {subtitle && <Text numberOfLines={1} style={style.modalSubtitle}>{subtitle}</Text>}
+                {title && <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.modalTitle}>{title}</Text>}
+                {subtitle && <Text numberOfLines={1} style={style.modalSubtitle}>{subtitle}</Text>}
               </View>
               <TouchableOpacity onPress={() => this.setState({ isVisible: false })}>
-                <Icon style={style.closeIcon} type="EvilIcons" name={'close'} />
+                <Icon size={scale(30)} style={style.closeIcon} as={EvilIcons} name={'close'} />
               </TouchableOpacity>
             </View>
             <View style={style.listContainer}>
@@ -181,7 +186,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     if (defaultItemLoading) {
       return (
         <View style={[listItemCommonStyle.container, style.spinnerContainer]}>
-          <Spinner color={commonColors.textColor} style={style.spinner} />
+          <Spinner size={scale(20)} color={commonColors.textColor} style={style.spinner} />
         </View>
       );
     }
@@ -200,7 +205,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           </TouchableOpacity>
           {clearable && (
             <TouchableOpacity style={style.clearContainer} onPress={() => this.resetInput(true)}>
-              <Icon style={style.clearIcon} type={'EvilIcons'} name={'close'} />
+              <Icon size={scale(25)} style={style.clearIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           )}
         </View>
@@ -211,8 +216,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           {renderItemPlaceholder?.()}
         </TouchableOpacity>
       );
-    }
-    else {
+    } else {
       return <View style={style.itemContainer}>{renderNoItem?.()}</View>;
     }
   }

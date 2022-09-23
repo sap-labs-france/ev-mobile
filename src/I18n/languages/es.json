@@ -85,7 +85,8 @@
     "showMore": "Show more",
     "showLess": "Show less",
     "newEntry": "New entry",
-    "userOrTenantUpdated": "Se cerró la sesión porque se actualizó su perfil o la configuración de su organización"
+    "userOrTenantUpdated": "Se cerró la sesión porque se actualizó su perfil o la configuración de su organización",
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -100,7 +101,8 @@
     "cars": "vehículos",
     "invoices": "Facturas",
     "paymentMethods": "Métodos de pago",
-    "qrCodeScanner": "QR-Code Scanner"
+    "qrCodeScanner": "QR-Code Scanner",
+    "settings": "Configuración"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -532,7 +534,7 @@
     }
   },
   "appUpdate": {
-    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogTitle": "Update available",
     "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
     "noUpdateAvailable": "You have the latest version"
   },
@@ -544,5 +546,11 @@
     "siteAreasRoamingFilterLabel": "Show roaming site areas",
     "transactionsRoamingFilterLabel": "Show roaming sessions",
     "usersRoamingFilterLabel": "Show roaming users"
+  },
+  "settingsDistanceUnit": {
+    "distanceUnit": "Distance unit",
+    "kilometers": "Kilometers",
+    "miles": "Miles",
+    "automatic": "Automatic"
   }
 }

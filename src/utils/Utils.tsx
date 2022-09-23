@@ -40,6 +40,8 @@ import { scale } from 'react-native-size-matters';
 import SecuredStorage from './SecuredStorage';
 import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
 import ProviderFactory from '../provider/ProviderFactory';
+import { Buffer } from 'buffer';
+import { AxiosError } from 'axios';
 
 export default class Utils {
   public static async getEndpointClouds(): Promise<EndpointCloud[]> {
@@ -663,10 +665,11 @@ export default class Utils {
 
   public static async handleHttpUnexpectedError(
     centralServerProvider: CentralServerProvider,
-    error: RequestError,
+    error: AxiosError,
     defaultErrorMessage: string,
     navigation?: NavigationContainerRef<any>,
-    fctRefresh?: () => void
+    fctRefresh?: () => void,
+    redirectCallback?: (...args: any[]) => any
   ): Promise<void> {
     console.error('HTTP request error', error);
     // Check if HTTP?
@@ -687,26 +690,48 @@ export default class Utils {
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
-        case StatusCodes.MOVED_PERMANENTLY:
-          await this.redirect(error);
-          if (centralServerProvider.isUserConnected()) {
-            const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
-            Message.showWarning(I18n.t('general.userOrTenantUpdated'));
-            await centralServerProvider.logoff();
-            navigation.dispatch(
-              StackActions.replace('AuthNavigator', {
-                name: 'Login',
-                key: `${Utils.randomNumber()}`,
-                params: {
-                  tenantSubDomain
-                }
-              })
-            );
+        case StatusCodes.MOVED_TEMPORARILY:
+          try {
+            let errorDetailedMessage: {redirectDomain: string; subdomain: string};
+            if (error.request.responseType === 'arraybuffer') {
+              const errorData = await (error?.response?.data as Promise<ArrayBuffer>);
+              const decodedData = Buffer.from(errorData)?.toString();
+              const parsedData = JSON.parse(decodedData) as {errorDetailedMessage: {subdomain: string; redirectDomain: string}};
+              errorDetailedMessage = parsedData?.errorDetailedMessage;
+            } else {
+              const data = error?.response?.data as {errorDetailedMessage: {redirectDomain: string; subdomain: string}};
+              errorDetailedMessage = data?.errorDetailedMessage;
+            }
+            const newURLDomain = errorDetailedMessage?.redirectDomain;
+            const subdomain = errorDetailedMessage?.subdomain;
+            const redirectTenant = await this.redirectTenant(newURLDomain, subdomain);
+            try {
+              redirectCallback?.(redirectTenant);
+            } catch ( error ) {
+              Message.showWarning('This organisation has just been moved to a new server, please try again');
+            }
+            if (centralServerProvider.isUserConnected()) {
+              const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
+              Message.showWarning(I18n.t('general.userOrTenantUpdated'));
+              await centralServerProvider.logoff();
+              navigation.dispatch(
+                StackActions.replace('AuthNavigator', {
+                  name: 'Login',
+                  key: `${Utils.randomNumber()}`,
+                  params: {
+                    tenantSubDomain
+                  }
+                })
+              );
+            }
+          } catch ( redirectError ) {
+            Message.showError('Unexpected situation, tenant redirection failed ' + redirectError?.message);
+            console.log(redirectError);
           }
           break;
         // Other errors
         default:
-          Message.showError(I18n.t(defaultErrorMessage ?? 'general.unexpectedErrorBackend'));
+          Message.showError(I18n.t(defaultErrorMessage || 'general.unexpectedErrorBackend'));
           break;
       }
     } else if (error.name === 'InvalidTokenError') {
@@ -721,17 +746,48 @@ export default class Utils {
     }
   }
 
-  public static async redirect(error: RequestError) {
+  /**
+   * @param redirectDomain The domain to redirect to
+   * @param tenantSubdomain The tenant to redirect. If not provided, use the current tenant
+   */
+  public static async redirectTenant(redirectDomain: string, tenantSubdomain?: string): Promise<TenantConnection> {
+    console.log('Redirect start');
     const centralServerProvider = await ProviderFactory.getProvider();
-    const newURLDomain = error?.response?.data?.errorDetailedMessage?.redirectDomain;
-    let currentTenant = centralServerProvider.getUserTenant() || {} as TenantConnection;
-    const tenants = await SecuredStorage.getTenants();
-    const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === currentTenant.subdomain);
-    const endpoints = Configuration.getEndpoints();
-    const newEndpoint = endpoints.find(endpoint => endpoint.endpoint === Configuration.SERVER_URL_PREFIX + newURLDomain);
-    currentTenant.endpoint = newEndpoint;
-    tenants.splice(currentTenantIndex, 1, currentTenant);
-    await SecuredStorage.saveTenants(tenants);
+    // Do not redirect if redirect domain is undefined, null or empty string
+    if (redirectDomain) {
+      const tenants = await SecuredStorage.getTenants();
+      const redirectedTenant = tenantSubdomain ?
+        tenants?.find(tenant => tenant.subdomain === tenantSubdomain)
+        :
+        (centralServerProvider.getUserTenant() || {} as TenantConnection);
+      if (redirectedTenant) {
+        const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === tenantSubdomain);
+        const endpoints = await this.getAllEndpoints();
+        let newEndpoint = endpoints.find(
+          endpoint =>
+            (endpoint.endpoint === Configuration.URL_PREFIX + redirectDomain)
+            ||
+            (endpoint.endpoint === Configuration.SERVER_URL_PREFIX + redirectDomain));
+        // If endpoint no yet created, create it
+        if (!newEndpoint) {
+          newEndpoint = {name: redirectDomain, endpoint: Configuration.URL_PREFIX + redirectDomain};
+          const userEndpoints = await SecuredStorage.getEndpoints();
+          userEndpoints.push(newEndpoint);
+          await SecuredStorage.saveEndpoints(userEndpoints);
+        }
+        redirectedTenant.endpoint = newEndpoint;
+        tenants.splice(currentTenantIndex, 1, redirectedTenant);
+        await SecuredStorage.saveTenants(tenants);
+        console.log('Redirect succeeded');
+        return redirectedTenant;
+      } else {
+        console.error(`Redirect tenant - tenant with subdomain ${tenantSubdomain} not found`);
+        throw new Error('Tenant not found');
+      }
+    } else {
+      console.error(`Redirect tenant - redirection domain '${redirectDomain}' is invalid`);
+      throw new Error('Invalid redirection domain');
+    }
   }
 
   public static buildUserName(user: User): string {
@@ -958,7 +1014,7 @@ export default class Utils {
   public static computeMaxBoundaryDistanceKm(region: Region) {
     if (region) {
       const height = region.latitudeDelta * 111;
-      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360
+      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360;
       return Math.sqrt(height**2 + width**2)/2 * 1000;
     }
     return null;
@@ -1023,5 +1079,11 @@ export default class Utils {
     } catch ( error ) {
       return null;
     }
+  }
+
+  public static async getAllEndpoints(): Promise<EndpointCloud[]> {
+    const userEndpoints = (await SecuredStorage.getEndpoints()) || [];
+    const staticEndpoints = Configuration.getEndpoints() || [];
+    return [...userEndpoints, ...staticEndpoints];
   }
 }

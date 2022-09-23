@@ -1,5 +1,5 @@
 import { default as I18n } from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
@@ -15,6 +15,8 @@ import computeStyleSheet from './UsersStyle';
 import SelectableList, { SelectableProps, SelectableState } from '../../base-screen/SelectableList';
 import computeListItemCommonStyles from '../../../components/list/ListItemCommonStyle';
 import UsersFilters, { UsersFiltersDef } from './UsersFilters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends SelectableProps<User> {
   filters?: UsersFiltersDef
@@ -137,20 +139,20 @@ export default class Users extends SelectableList<User> {
     const { users, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, isModal, selectionMode } = this.props;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         {!isModal && (
           <HeaderComponent
-          title={this.buildHeaderTitle()}
-          subTitle={this.buildHeaderSubtitle()}
-          modalized={isModal}
-          backArrow={!isModal}
-          navigation={this.props.navigation}
-          displayTenantLogo={false}
-          containerStyle={style.headerContainer}
+            title={this.buildHeaderTitle()}
+            subTitle={this.buildHeaderSubtitle()}
+            modalized={isModal}
+            backArrow={!isModal}
+            navigation={this.props.navigation}
+            displayTenantLogo={false}
+            containerStyle={style.headerContainer}
           />
         )}
         {this.renderFilters()}
-        {loading ? <Spinner style={style.spinner} color="grey" /> : (
+        {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<User>
               ref={this.itemsListRef}
@@ -170,7 +172,7 @@ export default class Users extends SelectableList<User> {
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   }
 
@@ -194,7 +196,7 @@ export default class Users extends SelectableList<User> {
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {!isModal && this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
-            <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

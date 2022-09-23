@@ -6,64 +6,76 @@ import { scale, ScaledSheet } from 'react-native-size-matters';
 import { PLATFORM } from '../../theme/variables/commonColor';
 import Utils from '../../utils/Utils';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import Color from 'color';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
+  const borderColor = Color(commonColor.disabledDark).alpha(0.38).toString();
   const commonStyles = ScaledSheet.create({
-    sidebar: {
-      flex: 1,
-      backgroundColor: commonColor.containerBgColor,
-      paddingTop: '10@s',
+    container: {
       paddingTop: getStatusBarHeight() + scale(10),
-      alignItems: 'center'
+      backgroundColor: commonColor.containerBgColor
+    },
+    sidebar: {
+      backgroundColor: commonColor.listItemBackground,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%'
     },
     header: {
       alignItems: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: '10@s'
+      justifyContent: 'flex-start',
+      backgroundColor: commonColor.containerBgColor,
+      paddingHorizontal: '10@s',
+      paddingBottom: '5@s',
+      width: '100%',
+      borderBottomWidth: 0.8,
+      borderColor
     },
-    border: {
-      width: '70%',
-      borderTopWidth: 0.8,
-      borderColor: commonColor.disabledDark,
-      marginVertical: '10@s'
-    },
-    background: {
-      flex: 1
-    },
-    drawerContent: {
-      height: 'auto',
+    sidebarSection: {
+      borderColor,
+      borderBottomWidth: 0.8,
+      paddingVertical: '2@s',
       width: '100%'
     },
-    linkContainer: {
-      marginBottom: '10@s',
-      paddingHorizontal: '5@s',
-      marginHorizontal: 0
+    tenantContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start'
+    },
+    safeArea:{
+      width: '100%'
+    },
+    scrollviewInnerContainer: {
+      width: '100%'
+    },
+    scrollview: {
+      width: '100%',
+      height: 'auto',
+      backgroundColor: commonColor.containerBgColor
     },
     logo: {
       resizeMode: 'contain',
-      width: '100@s',
+      width: '30%',
       height: '60@s',
-      marginBottom: '10@s'
+      marginLeft: '8@s'
     },
     tenantName: {
       color: commonColor.textColor,
       fontSize: '13@s',
-      margin: '2@s',
-      alignSelf: 'center',
-      textAlign: 'center',
-      width: '90%'
+      marginLeft: '10@s',
+      flex: 1
     },
     versionContainer: {
-      justifyContent: 'center',
+      justifyContent: 'flex-end',
       alignItems: 'center',
+      width: '100%',
+      flexDirection: 'row',
+      marginTop: '5@s'
     },
     newVersionContainer: {
-      height: '25@s',
-      padding: '5@s',
-      paddingLeft: '10@s',
-      paddingRight: '10@s',
-      margin: '5@s',
+      paddingLeft: '5@s',
+      paddingRight: '5@s',
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: commonColor.primary,
@@ -71,51 +83,42 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '3@s',
     },
     newVersionText: {
-      fontSize: '12@s',
+      fontSize: '9@s',
       color: commonColor.light
     },
     newVersionIcon: {
-      fontSize: '15@s',
+      fontSize: '10@s',
       paddingRight: '5@s',
       color: commonColor.light
     },
     versionText: {
       color: commonColor.textColor,
-      fontSize: '12@s',
-      margin: '2@s',
-      alignSelf: 'center',
-      fontWeight: 'bold',
-    },
-    versionDate: {
-      color: commonColor.textColor,
-      fontSize: '14@s',
-      alignSelf: 'center',
-      marginTop: '-5@s',
-      marginBottom: '2@s'
+      fontSize: '10@s',
+      textAlign: 'right',
+      paddingHorizontal: '5@s'
     },
     links: {
       borderBottomWidth: 0,
       paddingTop: '13@s',
-      paddingBottom: '13@s'
+      paddingBottom: '13@s',
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingLeft: '20@s',
     },
     focused: {
       opacity: 0.7,
       borderTopEndRadius: '8@s',
       borderBottomEndRadius: '8@s'
     },
-    linkIcon: {
-      fontSize: '22@s',
-      color: commonColor.textColor
-    },
     linkText: {
       color: commonColor.textColor,
-      fontSize: '16@s',
-      paddingLeft: '15@s'
+      fontSize: '14@s',
+      marginLeft: '22@s',
+      opacity: 1
     },
     bottomContainer: {
       paddingHorizontal: '10@s',
       flexDirection: 'row',
-      marginTop: '10@s',
       paddingVertical: '15@s',
       backgroundColor: commonColor.listItemBackground
     },
@@ -131,13 +134,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: 'transparent'
     },
     logoutText: {
-      fontSize: '14@s',
+      fontSize: '13@s',
       color: commonColor.primary,
       paddingVertical: '3@s'
     },
     userName: {
       paddingTop: '5@s',
-      fontSize: '14@s',
+      fontSize: '13@s',
       color: commonColor.textColor
     },
     avatarContainer: {

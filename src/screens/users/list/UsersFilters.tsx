@@ -1,4 +1,3 @@
-import { View } from 'native-base';
 import React from 'react';
 
 import ScreenFilters from '../../../components/search/filter/screen/ScreenFilters';
@@ -11,6 +10,7 @@ import { GlobalFilters } from '../../../types/Filter';
 import I18n from 'i18n-js';
 import computeStyleSheet from './UsersFiltersStyles';
 import SecuredStorage from '../../../utils/SecuredStorage';
+import { View } from 'react-native';
 
 export interface UsersFiltersDef {
   users?: User[];
@@ -44,7 +44,7 @@ export default class UsersFilters extends ScreenFilters<UsersFiltersDef> {
               label={I18n.t('filters.usersRoamingFilterLabel')}
               initialValue={filters?.issuer}
               ref={async (
-                roamingFilterControlComponent : SwitchFilterComponent<boolean>
+                roamingFilterControlComponent: SwitchFilterComponent<boolean>
               ) => this.addModalFilter(roamingFilterControlComponent)}
             />
           )}

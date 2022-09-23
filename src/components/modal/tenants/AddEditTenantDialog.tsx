@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Icon, Text, View } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 
@@ -13,7 +13,11 @@ import { Button, Input } from 'react-native-elements';
 import computeStyleSheet from './AddTenantManuallyDialogStyle';
 import computeModalCommonStyle from '../ModalCommonStyle';
 import Message from '../../../utils/Message';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
+import { scale } from 'react-native-size-matters';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 export interface Props extends BaseProps, DialogCommonProps {
   tenants: TenantConnection[];
@@ -120,9 +124,9 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
       <DialogModal
         renderIcon={(iconStyle) =>
           mode === TenantDialogMode.ADD ? (
-            <Icon style={iconStyle} type={'MaterialIcons'} name={'add-business'} />
+            <Icon style={iconStyle} size={scale(iconStyle.fontSize)} as={MaterialIcons} name={'add-business'} />
           ) : (
-            <Icon style={iconStyle} type={'MaterialCommunityIcons'} name={'home-edit'} />
+            <Icon style={iconStyle} size={scale(iconStyle.fontSize)} as={MaterialCommunityIcons} name={'home-edit'} />
           )
         }
         animationIn={'fadeInLeft'}
@@ -182,7 +186,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const modalCommonStyles = computeModalCommonStyle();
     const allEndpoints = [...this.staticEndpoints, ...userEndpoints];
-    allEndpoints.sort((endpoint1, endpoint2) => endpoint1.name.toUpperCase() < endpoint2.name.toUpperCase() ? -1 : 1 );
+    allEndpoints.sort((endpoint1, endpoint2) => endpoint1?.name?.toUpperCase() < endpoint2?.name?.toUpperCase() ? -1 : 1 );
     const data = [{}, ...allEndpoints];
     return (
       <View style={style.modalControlsContainer}>
@@ -234,7 +238,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
                 if ( index === 0 ) {
                   return (
                     <TouchableOpacity onPress={() => this.setState({showEndpointCreationForm: true})} style={style.selectDropdownRowContainer}>
-                      <Icon type={'MaterialIcons'} name={'add'} style={[style.newEntryText, style.newEntryIcon]}/>
+                      <Icon size={scale(25)} as={MaterialIcons} name={'add'} style={[style.newEntryText, style.newEntryIcon]}/>
                       <Text style={[style.selectDropdownRowText, style.newEntryText]}>{I18n.t('general.newEntry')}</Text>
                     </TouchableOpacity>
                   );
@@ -244,7 +248,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
                     <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.selectDropdownRowText}>{item.name}</Text>
                     {userEndpoints.map(userEndpoint => userEndpoint.name).includes(item.name) && (
                       <TouchableOpacity style={style.selectDropdownRowIconContainer} onPress={() => this.deleteEndpoint(item.name)}>
-                        <Icon style={style.selectDropdownRowIcon} name={'close'} type={'EvilIcons'}/>
+                        <Icon size={scale(30)} style={style.selectDropdownRowIcon} name={'close'} as={EvilIcons}/>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -255,7 +259,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
               dropdownStyle={style.selectDropdown}
               rowStyle={style.selectDropdownRow}
               rowTextStyle={style.selectDropdownRowText}
-              renderDropdownIcon={() => <Icon style={style.selectDropdownIcon} type={'MaterialIcons'} name={'arrow-drop-down'} />}
+              renderDropdownIcon={() => <Icon size={scale(26)} style={style.selectDropdownIcon} as={MaterialIcons} name={'arrow-drop-down'} />}
               onSelect={(endpointCloud: EndpointCloud) => this.setState({ newTenantEndpointCloud: endpointCloud })}
             />
           )}
@@ -265,7 +269,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
             <View style={style.endpointCreationFormHeader}>
               <Text style={[style.inputLabel, style.endpointCreationFormTitle]}>{I18n.t('authentication.createEndpoint')}</Text>
               <TouchableOpacity onPress={() => this.setState({showEndpointCreationForm: false})}>
-                <Icon type={'EvilIcons'} name={'close'} />
+                <Icon color={commonColor.textColor} size={scale(25)} as={EvilIcons} name={'close'} />
               </TouchableOpacity>
             </View>
             <Input

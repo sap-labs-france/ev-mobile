@@ -16,8 +16,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     label: {
-     color: commonColor.textColor,
-     fontSize: '14@s' ,
+      color: commonColor.textColor,
+      fontSize: '14@s' ,
       marginBottom: '5@s'
     },
     inputContainer: {
@@ -34,9 +34,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '13@s'
     },
     dateIcon: {
-      color: commonColor.textColor,
-      fontSize: '28@s',
-      marginLeft: '10@s'
+      color: commonColor.textColor
     },
     content: {
       flex: 1

@@ -1,8 +1,9 @@
-import { Spinner, View } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
 
 import BaseProps from '../../../types/BaseProps';
 import computeStyleSheet from './ListFooterComponentStyles';
+import { View } from 'react-native';
 
 export interface Props extends BaseProps {
   skip: number;

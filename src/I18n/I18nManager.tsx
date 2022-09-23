@@ -22,9 +22,11 @@ import frJsonLanguage from './languages/fr.json';
 import itJsonLanguage from './languages/it.json';
 import ptJsonLanguage from './languages/pt.json';
 import DurationUnitFormat, { DurationUnitFormatOptions } from 'intl-unofficial-duration-unit-format';
+import SecuredStorage from '../utils/SecuredStorage';
+import { DistanceUnit } from '../types/Settings';
 
 export interface FormatNumberOptions extends Intl.NumberFormatOptions {
-  [option: string] : any;
+  [option: string]: any;
   compactThreshold?: number;
   compactStyle?: NumberFormatCompactStyleEnum;
 }
@@ -72,6 +74,7 @@ export enum NumberFormatStyleEnum {
 
 export default class I18nManager {
   public static currency: string;
+  public static distanceUnit: string;
 
   public static initialize(): void {
     // Translation files
@@ -112,6 +115,10 @@ export default class I18nManager {
     }
     // Keep the currency
     I18nManager.currency = currency;
+  }
+
+  public static switchDistanceUnit(distanceUnit: DistanceUnit): void {
+    I18nManager.distanceUnit = distanceUnit;
   }
 
   public static formatNumber(value: number, options: Intl.NumberFormatOptions = {}): string {
@@ -196,7 +203,15 @@ export default class I18nManager {
   }
 
   public static isMetricsSystem(): boolean {
-    return usesMetricSystem();
+    const distanceUnit = I18nManager.distanceUnit;
+    switch ( distanceUnit ) {
+      case DistanceUnit.KILOMETERS:
+        return true;
+      case DistanceUnit.MILES:
+        return false;
+      default:
+        return usesMetricSystem();
+    }
   }
 
   public static formatDateTime(value: Date, options?: Intl.DateTimeFormatOptions ): string {

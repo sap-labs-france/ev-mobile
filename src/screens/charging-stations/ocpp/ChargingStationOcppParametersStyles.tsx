@@ -30,7 +30,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     actionButton: {},
     actionButtonIcon: {
-      fontSize: '20@s'
+      color: commonColor.light
     },
     actionButtonText: {
       fontSize: '15@s'

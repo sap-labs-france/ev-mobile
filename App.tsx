@@ -1,16 +1,14 @@
-import { StyleProvider, View } from 'native-base';
 import React from 'react';
-import { EventSubscription } from 'react-native';
-import { Appearance, AppearanceProvider } from 'react-native-appearance';
+import { Appearance, NativeEventSubscription, View } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/src/types';
 import SplashScreen from 'react-native-splash-screen';
-
+import {NativeBaseProvider} from 'native-base';
 import App from './src/App';
-import buildTheme from './src/custom-theme';
 import ThemeManager from './src/custom-theme/ThemeManager';
 import BaseProps from './src/types/BaseProps';
 import { ThemeType } from './src/types/Theme';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export interface Props extends BaseProps {}
 
@@ -19,7 +17,7 @@ interface State {
 }
 
 export default class AppBootstrap extends React.Component<Props, State> {
-  private themeSubscription: EventSubscription;
+  private themeSubscription: NativeEventSubscription;
 
   public constructor(props: Props) {
     super(props);
@@ -61,15 +59,17 @@ export default class AppBootstrap extends React.Component<Props, State> {
       dark: themeManager.isThemeTypeIsDark()
     };
     return switchTheme ? (
-      <AppearanceProvider>
-        <StyleProvider style={buildTheme(Appearance.getColorScheme() as ThemeType)}>
+      <NativeBaseProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
           <PaperProvider theme={theme}>
             <App />
           </PaperProvider>
-        </StyleProvider>
-      </AppearanceProvider>
+        </GestureHandlerRootView>
+      </NativeBaseProvider>
     ) : (
-      <View />
+      <NativeBaseProvider>
+        <View />
+      </NativeBaseProvider>
     );
   }
 }

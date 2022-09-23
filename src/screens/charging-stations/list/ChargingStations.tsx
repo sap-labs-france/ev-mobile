@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, View } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, BackHandler, Image, ImageStyle, SafeAreaView, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, BackHandler, Image, ImageStyle, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import computeConnectorStatusStyles from '../../../components/connector-status/ConnectorStatusComponentStyles';
@@ -30,6 +30,10 @@ import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
 import computeActivityIndicatorCommonStyle from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import { scale } from 'react-native-size-matters';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+
 
 export interface Props extends BaseProps {}
 
@@ -136,7 +140,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       let chargingStations: DataResult<ChargingStation>;
       const { filters, showMap } = this.state;
       const currentLocation = await Utils.getUserCurrentLocation();
-      const projectFields = 'id|coordinates|inactive|connectors.connectorId|connectors.coordinates|connectors.status|siteArea.siteID'
+      const projectFields = 'id|coordinates|inactive|connectors.connectorId|connectors.coordinates|connectors.status|siteArea.siteID';
       try {
         const params = {
           Search: searchText,
@@ -303,23 +307,22 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const style = computeStyleSheet();
     return (
       <Modal
-        useNativeDriver={true}
-        animationIn={'slideInUp'}
-        animationInTiming={800}
-        animationOut={'slideOutDown'}
-        animationOutTiming={1000}
+        useNativeDriverForBackdrop={true}
+        statusBarTranslucent={true}
+        animationInTiming={500}
+        animationOutTiming={500}
+        swipeDirection={['down']}
         hideModalContentWhileAnimating={true}
         onSwipeComplete={() => this.setState({ visible: false })}
         style={modalStyle.modalBottomHalf}
         isVisible={true}
         propagateSwipe={true}
-        onBackdropPress={() => this.setState({ visible: false })}
         onBackButtonPress={() => this.setState({ visible: false })}
       >
         <SafeAreaView style={style.chargingStationDetailsModalContainer}>
           <View style={style.chargingStationDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ visible: false })}>
-              <Icon style={style.closeIcon} type="EvilIcons" name={'close'} />
+              <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           </View>
           {this.state.loadingChargingStationDetails ? (
@@ -349,8 +352,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const { navigation } = this.props;
     const modalStyle = computeModalStyle();
     const { loading, chargingStations, isAdmin, skip, count, showMap, visible, chargingStationSelected, refreshing } = this.state;
+    const commonColors = Utils.getCurrentCommonColor();
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
@@ -361,7 +365,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               onPress: () => navigation.navigate('QRCodeScanner'),
               renderAction: () => (
                 <View style={style.qrcodeButton}>
-                  <Icon type={'MaterialIcons'} name={'qr-code-scanner'} style={style.icon} />
+                  <Icon as={MaterialIcons} name={'qr-code-scanner'} color={commonColors.light} size={scale(20)} />
                 </View>
               )
             }
@@ -375,7 +379,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           {visible && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
           {showMap ? this.renderMap() : (
             <View style={style.chargingStationsContainer}>
-              {loading ? <Spinner style={style.spinner} color="grey" /> : (
+              {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
                 <ItemsList<ChargingStation>
                   skip={skip}
                   count={count}
@@ -399,7 +403,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             </View>
           )}
         </View>
-      </Container>
+      </View>
     );
   }
 
@@ -426,7 +430,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               title={chargingStation.id}
               onPress={() => this.showMapChargingStationDetail(chargingStation.id)}
             >
-              <Icon type={'FontAwesome5'} name={'charging-station'} style={[style.chargingStationMarker, this.buildMarkerStyle(chargingStation?.connectors, chargingStation?.inactive)]} />
+              <Icon as={MaterialCommunityIcons} name={'ev-station'} size={scale(40)} style={this.buildMarkerStyle(chargingStation?.connectors, chargingStation?.inactive)} />
             </Marker>
           )}
           initialRegion={this.currentRegion}
@@ -456,7 +460,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           style={[fabStyles.fab, style.fab]}
           onPress={() => this.setState({ showMap: !showMap, chargingStations: [], count: 0}, () => this.refresh(true)) }
         >
-          <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
+          <Icon size={scale(18)} style={fabStyles.fabIcon} as={MaterialCommunityIcons} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -506,7 +510,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-            <Icon style={{color: commonColors.textColor}} type={'MaterialCommunityIcons'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

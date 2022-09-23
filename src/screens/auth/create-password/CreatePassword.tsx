@@ -1,24 +1,27 @@
 import { CommonActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
+import { Button, FormControl, Icon, Stack, Spinner } from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput, Text, View } from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
-import { HTTPError } from '../../../types/HTTPError';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import { TenantConnection } from '../../../types/Tenant';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
 interface State {
   tenantSubDomain?: string;
   tenantName?: string;
+  tenantLogo?: string;
   hash?: string;
   password?: string;
   repeatPassword?: string;
@@ -67,6 +70,7 @@ export default class CreatePassword extends BaseScreen<Props, State> {
       tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
       hash: Utils.getParamFromNavigation(this.props.route, 'hash', null) as string,
       tenantName: '',
+      tenantLogo: null,
       password: '',
       repeatPassword: '',
       loading: false,
@@ -88,16 +92,49 @@ export default class CreatePassword extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount() {
+  public async setTenantLogo(tenant: TenantConnection): Promise<void> {
+    try {
+      if (tenant) {
+        const tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+        this.setState({tenantLogo});
+      }
+    } catch (error) {
+      switch ( error?.request?.status ) {
+        case StatusCodes.NOT_FOUND:
+          return null;
+        default:
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            null,
+            null,
+            null,
+            async (redirectedTenant: TenantConnection) => this.setTenantLogo(redirectedTenant)
+          );
+          break;
+      }
+    }
+    return null;
+  }
+
+  public async componentDidMount(): Promise<void> {
     // Call parent
     await super.componentDidMount();
     // Init
     const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+    await this.setTenantLogo(tenant);
     this.setState({
       tenantName: tenant ? tenant.name : ''
     });
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
+  }
+
+  public async componentDidFocus(): Promise<void> {
+    super.componentDidFocus();
+    const tenantSubdomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain) as string;
+    const tenant = await this.centralServerProvider.getTenant(tenantSubdomain);
+    await this.setTenantLogo(tenant);
   }
 
   public async componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
@@ -152,7 +189,7 @@ export default class CreatePassword extends BaseScreen<Props, State> {
               break;
             default:
               // Other common Error
-              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError');
+              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError', null, null, async () => this.resetPassword());
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));
@@ -165,17 +202,16 @@ export default class CreatePassword extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
+    const { tenantName, loading, hidePassword, hideRepeatPassword, tenantLogo } = this.state;
     // Get logo
-    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
-            <Form style={formStyle.form}>
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+            <FormControl style={formStyle.form}>
+              <Stack style={formStyle.inputGroup}>
+                <Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
@@ -191,20 +227,21 @@ export default class CreatePassword extends BaseScreen<Props, State> {
                   secureTextEntry={hidePassword}
                 />
                 <Icon
-                  active
                   name={hidePassword ? 'eye' : 'eye-off'}
+                  size={scale(20)}
+                  as={MaterialCommunityIcons}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
                   style={formStyle.inputIcon}
                 />
-              </Item>
+              </Stack>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
+              <Stack style={formStyle.inputGroup}>
+                <Icon name="lock" size={scale(20)} as={MaterialCommunityIcons} style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -221,12 +258,13 @@ export default class CreatePassword extends BaseScreen<Props, State> {
                   secureTextEntry={hideRepeatPassword}
                 />
                 <Icon
-                  active
+                  as={MaterialCommunityIcons}
+                  size={scale(20)}
                   name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
                   style={formStyle.inputIcon}
                 />
-              </Item>
+              </Stack>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
@@ -236,28 +274,25 @@ export default class CreatePassword extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={formStyle.spinner} color="grey" />
               ) : (
-                <Button primary block style={formStyle.button} onPress={async () => this.resetPassword()}>
-                  <Text style={formStyle.buttonText} uppercase={false}>
+                <Button style={formStyle.button} onPress={async () => this.resetPassword()}>
+                  <Text style={formStyle.buttonText} >
                     {I18n.t('authentication.createPassword')}
                   </Text>
                 </Button>
               )}
-            </Form>
+            </FormControl>
           </KeyboardAvoidingView>
         </ScrollView>
-        <Footer style={style.footer}>
-          <Left>
-            <Button
-              small
-              transparent
-              style={[style.linksButton, style.linksButtonLeft]}
-              onPress={() => this.props.navigation.navigate('Login')}>
-              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>
-                {I18n.t('authentication.backLogin')}
-              </Text>
-            </Button>
-          </Left>
-        </Footer>
+        <View style={style.footer}>
+          <Button
+            bgColor={'transparent'}
+            style={[style.linksButton, style.linksButtonLeft]}
+            onPress={() => this.props.navigation.navigate('Login')}>
+            <Text style={[style.linksTextButton, style.linksTextButtonLeft]}>
+              {I18n.t('authentication.backLogin')}
+            </Text>
+          </Button>
+        </View>
       </View>
     );
   }

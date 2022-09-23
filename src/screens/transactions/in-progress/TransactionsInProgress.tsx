@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -15,6 +15,8 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsInProgressFilters, { TransactionsInProgressFiltersDef } from './TransactionsInProgressFilters';
+import { View } from 'react-native';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -148,7 +150,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     const { navigation } = this.props;
     const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, refreshing, filters } = this.state;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
@@ -161,7 +163,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => this.setScreenFilters(transactionsInProgressFilters, true)}
         />
         {(loading || !filters) ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
             <ItemsList<Transaction>
@@ -187,7 +189,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   };
 }

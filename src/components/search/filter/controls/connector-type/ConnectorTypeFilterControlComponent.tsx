@@ -1,11 +1,10 @@
-import { Text, View } from 'native-base';
 import React from 'react';
 
 import { ConnectorType } from '../../../../../types/ChargingStation';
 import Utils from '../../../../../utils/Utils';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 
 export interface Props extends FilterControlComponentProps<string> {}
 
