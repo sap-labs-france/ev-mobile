@@ -87,6 +87,7 @@ const MAX_SESSION_DURATION_MILLISECS = 20 * 60 * 60 * 1000;
 const MIN_SESSION_DURATION_MILLISECS = 60000;
 
 const DEFAULT_DEPARTURE_SOC = 85;
+const DEFAULT_CURRENT_SOC = 20;
 
 export interface Props extends BaseProps {}
 
@@ -176,7 +177,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       showTimePicker: false,
       departureTime: new Date(this.getMinimumDateMillisecs()),
       departureSoC: DEFAULT_DEPARTURE_SOC,
-      currentSoC: null
+      currentSoC: DEFAULT_CURRENT_SOC
     };
   }
 
@@ -883,12 +884,15 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   contentContainerStyle={style.chargingSettingsContainer}
                   keyboardShouldPersistTaps={'always'}
                 >
-                  {this.renderDepartureTime()}
-                  {this.renderDepartureSoC()}
                   {this.renderUserSelection(style)}
                   {this.renderTagSelection(style)}
-
                   {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
+                  {this.state.selectedCar && (
+                    <>
+                      {this.renderDepartureTime()}
+                      {this.renderDepartureSoC()}
+                    </>
+                  )}
 
                 </ScrollView>
               </View>
@@ -920,16 +924,15 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  // TODO BUG local not working on Android
   private renderDepartureTime() {
     const commonColors = Utils.getCurrentCommonColor();
     const style = computeStyleSheet();
     const { departureTime, showTimePicker } = this.state;
-    const durationFormatOptions = {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'};
     const minimumDate = new Date();
     const maximumDate = new Date(new Date().getTime() + MAX_SESSION_DURATION_MILLISECS);
     const departureTimeFormatted = I18nManager.formatDateTime(departureTime, {dateStyle: 'short', timeStyle: 'short'});
     const durationSeconds = Math.abs((departureTime.getTime() - new Date().getTime())/1000);
+    const durationFormatOptions = {style: DurationUnitFormat.styles.NARROW, format: `{hour} {minutes} ${durationSeconds < 60 ? '{seconds}': ''}`};
     const durationFormatted = I18nManager.formatDuration(durationSeconds, durationFormatOptions);
     const locale = this.centralServerProvider.getUserInfo()?.locale;
     const is24Hour = I18nManager?.isLocale24Hour(locale);

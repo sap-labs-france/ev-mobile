@@ -147,7 +147,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginBottom: '20@s'
+      marginVertical: '20@s'
     },
     departureTimeInput: {
       backgroundColor: commonColor.listItemBackground,
