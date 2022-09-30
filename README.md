@@ -1,3 +1,6 @@
+<img src="https://user-images.githubusercontent.com/32574035/193282473-32e9490b-3d03-4826-a819-872b6c2a0898.png" alt="drawing" width="200"/>
+
+
 # Open e-Mobility React-Native Mobile App
 
 ## Summary
