@@ -142,7 +142,7 @@
     "react-native-svg": "^12.4.4",
     "react-native-vector-icons": "^7.1.0",
     "react-native-webview": "^11.23.0",
-    "rn-secure-storage": "^2.0.7",
+    "rn-secure-storage": "github:sap-labs-france/rn-secure-storage",
     "tslib": "^2.2.0",
     "validate.js": "^0.13.1"
   },
