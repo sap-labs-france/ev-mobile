@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* eMobilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* eMobilityTests.m */; };
+		6757D1F528E5EFAA00CEE5E3 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6757D1F428E5EFAA00CEE5E3 /* BootSplash.storyboard */; };
+		6757D1F728E5F17200CEE5E3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6757D1F628E5F17200CEE5E3 /* Colors.xcassets */; };
 		BA9C04B6C5EC3A1CBBEBFF11 /* libPods-eMobility-eMobilityTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEA14C29F4811DB49D3FBBA6 /* libPods-eMobility-eMobilityTests.a */; };
 		D2336F6323510E6F00A1BCB0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		D2336F7D23510E6F00A1BCB0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		D2336F9D23510E6F00A1BCB0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		D2D3C43A2469AFDC00D6DECE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D3C4392469AFDC00D6DECE /* GoogleService-Info.plist */; };
-		D2F07E6824CB15C300BD3DD2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2F07E6724CB15C300BD3DD2 /* LaunchScreen.storyboard */; };
 		E14E229E2687AF8D0048CD9B /* RNScatterChartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14E225E2687AF8C0048CD9B /* RNScatterChartManager.swift */; };
 		E14E229F2687AF8D0048CD9B /* RNScatterChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14E225F2687AF8C0048CD9B /* RNScatterChartView.swift */; };
 		E14E22A02687AF8D0048CD9B /* RNScatterChartManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E14E22602687AF8C0048CD9B /* RNScatterChartManagerBridge.m */; };
@@ -82,10 +83,11 @@
 		3A22F3488431E240765B4440 /* Pods-eMobility.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility.debug.xcconfig"; path = "Target Support Files/Pods-eMobility/Pods-eMobility.debug.xcconfig"; sourceTree = "<group>"; };
 		5BC73DCA785A999EFE06221F /* Pods-eMobility.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility.release.xcconfig"; path = "Target Support Files/Pods-eMobility/Pods-eMobility.release.xcconfig"; sourceTree = "<group>"; };
 		5C500D9F45ACE51AA82F010A /* libPods-eMobility.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobility.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6757D1F428E5EFAA00CEE5E3 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = eMobility/BootSplash.storyboard; sourceTree = "<group>"; };
+		6757D1F628E5F17200CEE5E3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		8DE584B878AAE9E411C5DA98 /* Pods-eMobility-eMobilityTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-eMobilityTests.debug.xcconfig"; path = "Target Support Files/Pods-eMobility-eMobilityTests/Pods-eMobility-eMobilityTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D2336FA623510E6F00A1BCB0 /* eMobility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eMobility.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2D3C4392469AFDC00D6DECE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		D2F07E6724CB15C300BD3DD2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = eMobility/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E14E225C2687AF8C0048CD9B /* RNChartManagerBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNChartManagerBridge.h; path = "../../node_modules/react-native-charts-wrapper/ios/ReactNativeCharts/RNChartManagerBridge.h"; sourceTree = "<group>"; };
 		E14E225E2687AF8C0048CD9B /* RNScatterChartManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNScatterChartManager.swift; sourceTree = "<group>"; };
 		E14E225F2687AF8C0048CD9B /* RNScatterChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNScatterChartView.swift; sourceTree = "<group>"; };
@@ -188,13 +190,14 @@
 		13B07FAE1A68108700A75B9A /* eMobility */ = {
 			isa = PBXGroup;
 			children = (
-				D2F07E6724CB15C300BD3DD2 /* LaunchScreen.storyboard */,
 				D2D3C4392469AFDC00D6DECE /* GoogleService-Info.plist */,
+				6757D1F428E5EFAA00CEE5E3 /* BootSplash.storyboard */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				6757D1F628E5F17200CEE5E3 /* Colors.xcassets */,
 			);
 			name = eMobility;
 			sourceTree = "<group>";
@@ -503,8 +506,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6757D1F528E5EFAA00CEE5E3 /* BootSplash.storyboard in Resources */,
+				6757D1F728E5F17200CEE5E3 /* Colors.xcassets in Resources */,
 				D2D3C43A2469AFDC00D6DECE /* GoogleService-Info.plist in Resources */,
-				D2F07E6824CB15C300BD3DD2 /* LaunchScreen.storyboard in Resources */,
 				D2336F9D23510E6F00A1BCB0 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
