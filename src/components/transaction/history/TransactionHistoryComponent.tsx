@@ -13,6 +13,7 @@ import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { scale } from 'react-native-size-matters';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 export interface Props extends BaseProps {
   transaction: Transaction;
@@ -81,7 +82,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
             </View>
             {isPricingActive && (
               <View style={style.transactionDetailContainer}>
-                <Icon size={scale(25)} as={FontAwesome} name="money" style={[style.icon, style.info]} />
+                <Icon size={scale(25)} as={MaterialIcons} name="money" style={[style.icon, style.info]} />
                 <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>
                   {price}
                 </Text>
