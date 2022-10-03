@@ -256,12 +256,12 @@ export default class SideBar extends React.Component<Props, State> {
                 {Utils.buildUserName(user)}
               </Text>
               <HStack style={{alignItems: 'center'}}>
-                <TouchableOpacity onPress={() => this.navigateTo('SettingsNavigator', 'Settings')}>
-                  <Text style={style.logoutText}>{I18n.t('sidebar.settings')}</Text>
+                <TouchableOpacity style={style.settingsContainer} onPress={() => this.navigateTo('SettingsNavigator', 'Settings')}>
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('sidebar.settings')}</Text>
                 </TouchableOpacity>
                 <View style={{width: scale(4), height: scale(4), borderRadius: scale(4), backgroundColor: commonColor.primary, marginHorizontal: scale(10)}} />
                 <TouchableOpacity style={style.logoutContainer} onPress={async () => this.logoff()}>
-                  <Text style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
                 </TouchableOpacity>
               </HStack>
             </View>
