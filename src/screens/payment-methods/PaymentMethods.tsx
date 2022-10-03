@@ -201,7 +201,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
           {deleteInProgress ? (
             <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
           ) : (
-            <Icon as={MaterialCommunityIcons} style={style.trashIcon} name="trash-can" />
+            <Icon size={scale(23)} as={MaterialCommunityIcons} style={style.trashIcon} name="trash-can" />
           )}
         </TouchableOpacity>
       )

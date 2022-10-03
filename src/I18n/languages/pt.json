@@ -326,7 +326,7 @@
     "selectUser": "Select User",
     "selectEV": "Select EV",
     "selectChargeCard": "Select Charge Card",
-    "chargingSettings": "Charging Settings",
+    "chargingSettings": "Charging settings",
     "adviceMessage": "Ensure that the cable is connected",
     "sessionAlreadyInProgressError": "A session is already in progress on this connector"
   },
