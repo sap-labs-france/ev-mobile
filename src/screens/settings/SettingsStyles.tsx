@@ -15,7 +15,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     content: {
       flex: 1,
       alignItems: 'center',
-      width: '100%'
+      width: '100%',
+      justifyContent: 'space-between'
     },
     headerContainer: {
       marginBottom: '10@s'
@@ -54,6 +55,32 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontWeight: 'bold',
       paddingVertical: '4@s'
+    },
+    deleteAccountLabel: {
+      color: commonColor.danger,
+      opacity: 0.8
+    },
+    deleteAccountButtonContainer: {
+      borderRadius: '8@s',
+      width: '100%',
+      marginVertical: '10@s'
+    },
+    deleteAccountButton: {
+      backgroundColor: commonColor.selectFieldBackgroundColor
+    },
+    deleteAccountButtonText: {
+      color: commonColor.textColor
+    },
+    deleteAccountText: {
+      padding: '8@s',
+      backgroundColor: commonColor.listItemBackground,
+      borderRadius: '8@s',
+      color: commonColor.textColor,
+      marginTop: '5@s'
+    },
+    buttonIcon: {
+      marginRight: '10@s',
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

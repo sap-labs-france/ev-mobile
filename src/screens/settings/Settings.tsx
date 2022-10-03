@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Linking, Text, View } from 'react-native';
 import computeStyleSheet from './SettingsStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseScreen from '../base-screen/BaseScreen';
@@ -9,6 +9,12 @@ import SelectDropdown from 'react-native-select-dropdown';
 import I18n from 'i18n-js';
 import SecuredStorage from '../../utils/SecuredStorage';
 import I18nManager from '../../I18n/I18nManager';
+import { Button } from 'react-native-elements';
+import Configuration from '../../config/Configuration';
+import { Icon } from 'native-base';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { scale } from 'react-native-size-matters';
+import i18n from 'i18n-js';
 
 export interface Props extends BaseProps{}
 
@@ -59,6 +65,20 @@ export default class Settings extends BaseScreen<Props, State> {
                   <Text style={style.selectDropdownRowText}>{I18n.t(`settingsDistanceUnit.${item.toString()}`)}</Text>
                 </View>
               ) }   />
+          </View>
+          <View style={style.settingSection}>
+            <Text style={[style.settingLabel, style.deleteAccountLabel]}>{I18n.t('settingsDeleteAccount.deleteAccount')}</Text>
+            <Text style={style.deleteAccountText}>{I18n.t('settingsDeleteAccount.deleteAccountText', {contactEmail: Configuration.DPO_EMAIL})}</Text>
+            <Button
+              containerStyle={style.deleteAccountButtonContainer}
+              buttonStyle={style.deleteAccountButton}
+              titleStyle={style.deleteAccountButtonText}
+              onPress={() => void Linking.openURL(
+                `mailto:${Configuration.DPO_EMAIL}?subject=${I18n.t('settingsDeleteAccount.deleteAccountEmailSubject')}&body=${I18n.t('settingsDeleteAccount.deleteAccountEmailBody')}`
+              )}
+              title={I18n.t('settingsDeleteAccount.openEmailApp')}
+              icon={<Icon style={style.buttonIcon} size={scale(18)} as={Entypo} name={'paper-plane'} />}
+            />
           </View>
         </View>
       </View>

@@ -548,5 +548,12 @@
     "kilometers": "Kilomètres",
     "miles": "Miles",
     "automatic": "Automatique"
+  },
+  "settingsDeleteAccount": {
+    "deleteAccount": "Supprimer mon compte",
+    "deleteAccountText": "Envoyez un e-mail à  {{contactEmail}}  pour demander la suppression de votre compte. La procédure peut prendre jusqu'à 5 jours ouvrés. Vous serez informé(e) par e-mail une fois celle-ci achevée",
+    "deleteAccountEmailSubject": "Demande de suppression de compte",
+    "deleteAccountEmailBody": "Je souhaite supprimer mon compte",
+    "openEmailApp": "Ouvrir ma messagerie"
   }
 }

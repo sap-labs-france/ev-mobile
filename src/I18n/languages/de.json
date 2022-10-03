@@ -548,5 +548,12 @@
     "kilometers": "Kilometer",
     "miles": "Meilen",
     "automatic": "Automatik"
+  },
+  "settingsDeleteAccount": {
+    "deleteAccount": "Delete account",
+    "deleteAccountText": "Send an email to  {{contactEmail}}  to ask for your account to be deleted. The process can take up to five working days. You will be informed by email when your request is completed",
+    "deleteAccountEmailSubject": "Account deletion request",
+    "deleteAccountEmailBody": "I would like to request the deletion of my account and of all the data associated",
+    "openEmailApp": "Open email app"
   }
 }
