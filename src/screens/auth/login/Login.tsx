@@ -116,7 +116,7 @@ export default class Login extends BaseScreen<Props, State> {
     }
     // Check if sub-domain is provided
     if (!this.state.tenantSubDomain) {
-      // Not provided: display latest saved credentials
+      // Not provided: Use last saved connexion info
       const userCredentials = await SecuredStorage.getUserCredentials();
       if (userCredentials) {
         tenant = await this.centralServerProvider.getTenant(userCredentials.tenantSubDomain);
