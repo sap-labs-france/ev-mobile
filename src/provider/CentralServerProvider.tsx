@@ -244,8 +244,8 @@ export default class CentralServerProvider {
     return false;
   }
 
-  public async clearUserPassword(): Promise<void> {
-    await SecuredStorage.clearUserPassword(this.tenant.subdomain);
+  public async clearUserPassword(tenantSubdomain: string): Promise<void> {
+    await SecuredStorage.clearUserPassword(tenantSubdomain);
     this.password = null;
   }
 
