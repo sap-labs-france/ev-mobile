@@ -1,11 +1,15 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 import ListItem from './ListItem';
+import Address from './Address';
 
 export default interface Tenant extends CreatedUpdatedProps, ListItem {
+  id: string;
   name: string;
   email: string;
+  address: Address;
   subdomain: string;
-  components: TenantComponent;
+  components?: TenantComponent;
+  logo: string;
 }
 
 export interface TenantComponent {
