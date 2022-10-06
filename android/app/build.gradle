@@ -143,8 +143,8 @@ android {
         applicationId "com.emobility"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 302
-        versionName "2.6.10"
+        versionCode 304
+        versionName "2.7.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
@@ -210,6 +210,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'androidx.appcompat:appcompat:1.3.0-alpha02'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
+    implementation "androidx.core:core-splashscreen:1.0.0"
     implementation "com.google.android.gms:play-services-base:17.5.0"
     implementation platform('com.google.firebase:firebase-bom:29.3.1')
     implementation 'com.google.firebase:firebase-analytics'
@@ -217,6 +218,7 @@ dependencies {
     implementation "com.google.firebase:firebase-iid"
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar' // <-- Add this line if you wish to use badge on Android
     implementation "com.google.android.gms:play-services-location:17.1.0"
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
     }

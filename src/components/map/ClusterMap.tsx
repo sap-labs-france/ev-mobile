@@ -15,7 +15,7 @@ interface State {}
 type Localizable = ChargingStation | Site | SiteArea;
 
 export interface Props<T> {
-  items: T[]
+  items: T[];
   renderMarker: (item: T, index: number) => React.ReactElement;
   initialRegion: Region;
   onMapRegionChangeComplete: (region: Region) => void;

@@ -170,7 +170,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon size={scale(25)} as={FontAwesome} name="money" style={[style.icon, style.info]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="money" style={[style.icon, style.info]} />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
           {transaction?.stop ? I18nManager.formatCurrency(transaction.stop.price, transaction.stop.priceUnit) : '-'}
         </Text>

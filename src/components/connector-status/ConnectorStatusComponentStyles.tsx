@@ -27,7 +27,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       borderStyle: 'solid',
       alignItems: 'center',
-      borderWidth: '4@s',
+      borderWidth: '2@s',
       borderRadius: '22@s',
       borderColor: commonColor.textColor,
       backgroundColor: 'transparent'

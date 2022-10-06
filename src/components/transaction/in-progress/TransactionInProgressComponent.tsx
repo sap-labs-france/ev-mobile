@@ -95,7 +95,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
             </View>
             {isPricingActive && (
               <View style={style.transactionDetailContainer}>
-                <Icon size={scale(25)} as={FontAwesome} name="money" style={[style.icon, style.info]} />
+                <Icon size={scale(25)} as={MaterialIcons} name="money" style={[style.icon, style.info]} />
                 <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{price}</Text>
               </View>
             )}
