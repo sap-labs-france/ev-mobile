@@ -4,4 +4,5 @@
   <color name="modalBackground">#262626</color>
   <color name="navigationBarBackground">#FFF</color>
   <color name="white">#FFF</color>
+  <color name="bootsplash_background">#f2f2f2</color>
 </resources>

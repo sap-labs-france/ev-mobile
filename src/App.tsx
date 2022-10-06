@@ -57,6 +57,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Settings from './screens/settings/Settings';
+import RNBootSplash from 'react-native-bootsplash';
 
 // Init i18n
 I18nManager.initialize();
@@ -598,6 +599,7 @@ export default class App extends React.Component<Props, State> {
     return (
       <SafeAreaProvider>
         <NavigationContainer
+          onReady={() => void RNBootSplash.hide({ fade: true })}
           ref={(navigatorRef) => {
             if (navigatorRef) {
               this.notificationManager?.initialize(navigatorRef);

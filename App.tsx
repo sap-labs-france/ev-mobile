@@ -2,13 +2,13 @@ import React from 'react';
 import { Appearance, NativeEventSubscription, View } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/src/types';
-import SplashScreen from 'react-native-splash-screen';
 import {NativeBaseProvider} from 'native-base';
 import App from './src/App';
 import ThemeManager from './src/custom-theme/ThemeManager';
 import BaseProps from './src/types/BaseProps';
 import { ThemeType } from './src/types/Theme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import RNBootSplash from 'react-native-bootsplash';
 
 export interface Props extends BaseProps {}
 
@@ -29,7 +29,6 @@ export default class AppBootstrap extends React.Component<Props, State> {
   public componentDidMount() {
     // Do stuff while splash screen is shown
     // After having done stuff (such as async tasks) hide the splash screen
-    SplashScreen.hide();
     // Theme ------------------------------------------------
     const themeManager = ThemeManager.getInstance();
     // Set theme

@@ -24,7 +24,7 @@ export default {
   listItemSelected: '#BFBFBF',
   background: '#f2f2f2',
   borderColor: palette.dark,
-  textColor: palette.primaryDark,
+  textColor: '#272727',
   placeholderTextColor: palette.disabledDark,
   inverseTextColor: palette.light,
   subTextColor: palette.disabledDark,
@@ -34,6 +34,6 @@ export default {
   selectDropdownBackgroundColor: '#eeeeee',
   listHeaderBackground: palette.light,
   listItemBackground: palette.light,
-  mapClusterBorder: palette.primaryDark,
+  mapClusterBorder: '#272727',
   lightDark: null
 };

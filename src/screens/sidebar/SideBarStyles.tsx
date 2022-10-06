@@ -129,9 +129,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between',
       marginLeft: '20@s'
     },
+    settingsContainer: {
+      maxWidth: '40%'
+    },
     logoutContainer: {
-      alignSelf: 'flex-start',
-      backgroundColor: 'transparent'
+      flex: 1
     },
     logoutText: {
       fontSize: '13@s',

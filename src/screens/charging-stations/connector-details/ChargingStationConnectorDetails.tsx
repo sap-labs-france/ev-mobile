@@ -698,12 +698,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
     return connector && connector.currentTransactionID && transaction ? (
       <View style={style.columnContainer}>
-        <Icon size={scale(25)} as={FontAwesome} name="money" style={[style.icon, style.info]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="money" style={[style.icon, style.info]} />
         <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>{price}</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon size={scale(25)} as={FontAwesome} name="money" style={[style.icon, style.disabled]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="money" style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -1125,7 +1125,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const style = computeStyleSheet();
     return (
       <View style={[listItemCommonStyle.container, style.noItemContainer, style.noCarContainer]}>
-        <Icon style={style.noCarIcon} as={MaterialCommunityIcons} name={'car'} />
+        <Icon size={scale(50)} style={style.noCarIcon} as={MaterialCommunityIcons} name={'car'} />
         <View style={style.column}>
           <Text style={style.messageText}>{I18n.t('cars.noCarMessageTitle')}</Text>
         </View>

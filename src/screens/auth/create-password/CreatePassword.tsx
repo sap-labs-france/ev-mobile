@@ -157,7 +157,7 @@ export default class CreatePassword extends BaseScreen<Props, State> {
         // Register
         await this.centralServerProvider.resetPassword(tenantSubDomain, hash, password);
         // Clear user's credentials
-        await this.centralServerProvider.clearUserPassword();
+        await this.centralServerProvider.clearUserPassword(tenantSubDomain);
         // Reset
         this.setState({ loading: false });
         // Show
