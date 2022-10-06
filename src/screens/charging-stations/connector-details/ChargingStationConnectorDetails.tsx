@@ -887,7 +887,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   {this.renderUserSelection(style)}
                   {this.renderTagSelection(style)}
                   {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
-                  {this.state.selectedCar && (
+                  {this.state.selectedCar && this.securityProvider?.isComponentSmartChargingActive && (
                     <>
                       {this.renderDepartureTime()}
                       {this.renderDepartureSoC()}

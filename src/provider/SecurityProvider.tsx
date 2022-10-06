@@ -65,6 +65,10 @@ export default class SecurityProvider {
     return this.isComponentActive(TenantComponents.BILLING);
   }
 
+  public isComponentSmartChargingActive(): boolean {
+    return this.isComponentActive(TenantComponents.SMART_CHARGING);
+  }
+
   public isComponentActive(componentName: string): boolean {
     if (this.loggedUser && this.loggedUser.activeComponents) {
       return this.loggedUser.activeComponents.includes(componentName);
