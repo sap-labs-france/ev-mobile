@@ -7,9 +7,9 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:*.e-mobility-group.com</string>
-		<string>applinks:*.a4e2-213-11-30-75.eu.ngrok.io?mode=developer</string>
-		<string>applinks:*.a4e2-213-11-30-75.eu.ngrok.io</string>
 		<string>applinks:*.qa-e-mobility-group.com</string>
+		<string>applinks:*.e-mobility-labs.org</string>
+		<string>applinks:*.e-mobility-labs.com</string>
 	</array>
 </dict>
 </plist>
