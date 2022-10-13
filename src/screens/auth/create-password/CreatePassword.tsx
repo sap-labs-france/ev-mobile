@@ -3,7 +3,14 @@ import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import { Button, FormControl, Icon, Stack, Spinner } from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput, Text, View } from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  TextInput,
+  Text,
+  View,
+} from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
@@ -27,7 +34,8 @@ interface State {
   repeatPassword?: string;
   errorPassword?: Record<string, unknown>[];
   errorRepeatPassword?: Record<string, unknown>[];
-  loading?: boolean;
+  createPasswordLoading?: boolean;
+  contentLoading?: boolean;
   hideRepeatPassword?: boolean;
   hidePassword?: boolean;
   email?: string;
@@ -73,9 +81,10 @@ export default class CreatePassword extends BaseScreen<Props, State> {
       tenantLogo: null,
       password: '',
       repeatPassword: '',
-      loading: false,
+      createPasswordLoading: false,
       hidePassword: true,
-      hideRepeatPassword: true
+      hideRepeatPassword: true,
+      contentLoading: true
     };
   }
 
@@ -92,11 +101,11 @@ export default class CreatePassword extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async setTenantLogo(tenant: TenantConnection): Promise<void> {
+  public async getTenantLogo(tenant: TenantConnection): Promise<string> {
     try {
       if (tenant) {
         const tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
-        this.setState({tenantLogo});
+        return tenantLogo;
       }
     } catch (error) {
       switch ( error?.request?.status ) {
@@ -109,7 +118,7 @@ export default class CreatePassword extends BaseScreen<Props, State> {
             null,
             null,
             null,
-            async (redirectedTenant: TenantConnection) => this.setTenantLogo(redirectedTenant)
+            async (redirectedTenant: TenantConnection) => this.getTenantLogo(redirectedTenant)
           );
           break;
       }
@@ -117,32 +126,34 @@ export default class CreatePassword extends BaseScreen<Props, State> {
     return null;
   }
 
-  public async componentDidMount(): Promise<void> {
+  private async load(): Promise<void> {
+    this.setState({contentLoading: true}, async () => {
+      const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain) as string;
+      const hash = Utils.getParamFromNavigation(this.props.route, 'hash', null) as string;
+      const tenant = await this.centralServerProvider.getTenant(tenantSubDomain);
+      const tenantLogo = await this.getTenantLogo(tenant);
+      this.setState({ tenantLogo, tenantSubDomain, tenantName: tenant?.name ?? '', hash, contentLoading: false});
+    });
+  }
+
+  public async componentDidMount(): Promise<void>  {
     // Call parent
     await super.componentDidMount();
     // Init
-    const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
-    await this.setTenantLogo(tenant);
-    this.setState({
-      tenantName: tenant ? tenant.name : ''
-    });
+    await this.load();
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
   }
 
   public async componentDidFocus(): Promise<void> {
     super.componentDidFocus();
-    const tenantSubdomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain) as string;
-    const tenant = await this.centralServerProvider.getTenant(tenantSubdomain);
-    await this.setTenantLogo(tenant);
+    await this.load();
   }
 
   public async componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
-    const hash = Utils.getParamFromNavigation(this.props.route, 'hash', null) as string;
-    const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string;
-    const tenant = await this.centralServerProvider.getTenant(tenantSubDomain);
-    if (hash !== this.state.hash || tenantSubDomain !== this.state.tenantSubDomain) {
-      this.setState({hash, tenantSubDomain, tenantName: tenant?.name});
+    const load = Utils.getParamFromNavigation(this.props.route, 'load', false, true) as string;
+    if (load) {
+      this.load();
     }
   }
 
@@ -153,13 +164,13 @@ export default class CreatePassword extends BaseScreen<Props, State> {
       const { tenantSubDomain, password, hash } = this.state;
       try {
         // Loading
-        this.setState({ loading: true });
+        this.setState({ createPasswordLoading: true });
         // Register
         await this.centralServerProvider.resetPassword(tenantSubDomain, hash, password);
         // Clear user's credentials
         await this.centralServerProvider.clearUserPassword(tenantSubDomain);
         // Reset
-        this.setState({ loading: false });
+        this.setState({ createPasswordLoading: false });
         // Show
         Message.showSuccess(I18n.t('authentication.resetPasswordSuccess'));
         // Navigate
@@ -178,7 +189,7 @@ export default class CreatePassword extends BaseScreen<Props, State> {
         );
       } catch (error) {
         // Reset
-        this.setState({ loading: false });
+        this.setState({ createPasswordLoading: false });
         // Check request?
         if (error.request) {
           // Show error
@@ -202,97 +213,101 @@ export default class CreatePassword extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { tenantName, loading, hidePassword, hideRepeatPassword, tenantLogo } = this.state;
+    const { tenantName, createPasswordLoading, hidePassword, hideRepeatPassword, tenantLogo, contentLoading } = this.state;
     // Get logo
     return (
       <View style={style.container}>
-        <ScrollView contentContainerStyle={style.scrollContainer}>
-          <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
-            <FormControl style={formStyle.form}>
-              <Stack style={formStyle.inputGroup}>
-                <Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
-                <TextInput
-                  selectionColor={commonColor.textColor}
-                  onSubmitEditing={() => this.repeatPasswordInput.focus()}
-                  returnKeyType={'next'}
-                  placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
-                  style={formStyle.inputField}
-                  autoCapitalize="none"
-                  blurOnSubmit={false}
-                  autoCorrect={false}
-                  keyboardType={'default'}
-                  onChangeText={(text) => this.setState({ password: text })}
-                  secureTextEntry={hidePassword}
-                />
-                <Icon
-                  name={hidePassword ? 'eye' : 'eye-off'}
-                  size={scale(20)}
-                  as={MaterialCommunityIcons}
-                  onPress={() => this.setState({ hidePassword: !hidePassword })}
-                  style={formStyle.inputIcon}
-                />
-              </Stack>
-              {this.state.errorPassword &&
-                this.state.errorPassword.map((errorMessage, index) => (
-                  <Text style={formStyle.formErrorText} key={index}>
-                    {errorMessage}
-                  </Text>
-                ))}
-              <Stack style={formStyle.inputGroup}>
-                <Icon name="lock" size={scale(20)} as={MaterialCommunityIcons} style={formStyle.inputIcon} />
-                <TextInput
-                  ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={commonColor.textColor}
-                  onSubmitEditing={() => Keyboard.dismiss()}
-                  returnKeyType={'next'}
-                  placeholder={I18n.t('authentication.repeatPassword')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
-                  style={formStyle.inputField}
-                  autoCapitalize="none"
-                  blurOnSubmit={false}
-                  autoCorrect={false}
-                  keyboardType={'default'}
-                  onChangeText={(text) => this.setState({ repeatPassword: text })}
-                  secureTextEntry={hideRepeatPassword}
-                />
-                <Icon
-                  as={MaterialCommunityIcons}
-                  size={scale(20)}
-                  name={hideRepeatPassword ? 'eye' : 'eye-off'}
-                  onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
-                  style={formStyle.inputIcon}
-                />
-              </Stack>
-              {this.state.errorRepeatPassword &&
-                this.state.errorRepeatPassword.map((errorMessage, index) => (
-                  <Text style={formStyle.formErrorText} key={index}>
-                    {errorMessage}
-                  </Text>
-                ))}
-              {loading ? (
-                <Spinner style={formStyle.spinner} color="grey" />
-              ) : (
-                <Button style={formStyle.button} onPress={async () => this.resetPassword()}>
-                  <Text style={formStyle.buttonText} >
-                    {I18n.t('authentication.createPassword')}
-                  </Text>
-                </Button>
-              )}
-            </FormControl>
-          </KeyboardAvoidingView>
-        </ScrollView>
-        <View style={style.footer}>
-          <Button
-            bgColor={'transparent'}
-            style={[style.linksButton, style.linksButtonLeft]}
-            onPress={() => this.props.navigation.navigate('Login')}>
-            <Text style={[style.linksTextButton, style.linksTextButtonLeft]}>
-              {I18n.t('authentication.backLogin')}
-            </Text>
-          </Button>
-        </View>
+        {contentLoading ? (
+          <Spinner size={scale(30)} style={{ flex: 1, alignSelf: 'center' }} color="grey"/>
+        ) : (
+          <>
+            <ScrollView contentContainerStyle={style.scrollContainer}>
+              <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
+                <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
+                <FormControl style={formStyle.form}>
+                  <Stack style={formStyle.inputGroup}>
+                    <Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
+                    <TextInput
+                      selectionColor={commonColor.textColor}
+                      onSubmitEditing={() => this.repeatPasswordInput.focus()}
+                      returnKeyType={'next'}
+                      placeholder={I18n.t('authentication.password')}
+                      placeholderTextColor={commonColor.placeholderTextColor}
+                      style={formStyle.inputField}
+                      autoCapitalize="none"
+                      blurOnSubmit={false}
+                      autoCorrect={false}
+                      keyboardType={'default'}
+                      onChangeText={(text) => this.setState({ password: text })}
+                      secureTextEntry={hidePassword}
+                    />
+                    <Icon
+                      name={hidePassword ? 'eye' : 'eye-off'}
+                      size={scale(20)}
+                      as={MaterialCommunityIcons}
+                      onPress={() => this.setState({ hidePassword: !hidePassword })}
+                      style={formStyle.inputIcon}
+                    />
+                  </Stack>
+                  {this.state.errorPassword &&
+                  this.state.errorPassword.map((errorMessage, index) => (
+                    <Text style={formStyle.formErrorText} key={index}>
+                      {errorMessage}
+                    </Text>
+                  ))}
+                  <Stack style={formStyle.inputGroup}>
+                    <Icon name="lock" size={scale(20)} as={MaterialCommunityIcons} style={formStyle.inputIcon} />
+                    <TextInput
+                      ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
+                      selectionColor={commonColor.textColor}
+                      onSubmitEditing={() => Keyboard.dismiss()}
+                      returnKeyType={'next'}
+                      placeholder={I18n.t('authentication.repeatPassword')}
+                      placeholderTextColor={commonColor.placeholderTextColor}
+                      style={formStyle.inputField}
+                      autoCapitalize="none"
+                      blurOnSubmit={false}
+                      autoCorrect={false}
+                      keyboardType={'default'}
+                      onChangeText={(text) => this.setState({ repeatPassword: text })}
+                      secureTextEntry={hideRepeatPassword}
+                    />
+                    <Icon
+                      as={MaterialCommunityIcons}
+                      size={scale(20)}
+                      name={hideRepeatPassword ? 'eye' : 'eye-off'}
+                      onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
+                      style={formStyle.inputIcon}
+                    />
+                  </Stack>
+                  {this.state.errorRepeatPassword &&
+                  this.state.errorRepeatPassword.map((errorMessage, index) => (
+                    <Text style={formStyle.formErrorText} key={index}>
+                      {errorMessage}
+                    </Text>
+                  ))}
+                  {createPasswordLoading ? (
+                    <Spinner style={formStyle.spinner} color="grey" />
+                  ) : (
+                    <Button style={formStyle.button} onPress={async () => this.resetPassword()}>
+                      <Text style={formStyle.buttonText} >
+                        {I18n.t('authentication.createPassword')}
+                      </Text>
+                    </Button>
+                  )}
+                </FormControl>
+              </KeyboardAvoidingView>
+            </ScrollView>
+            <View style={style.footer}>
+              <Button
+                bgColor={'transparent'}
+                style={[style.linksButton, style.linksButtonLeft]}
+                onPress={() => this.props.navigation.navigate('Login')}>
+                <Text style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</Text>
+              </Button>
+            </View>
+          </>
+        )}
       </View>
     );
   }
