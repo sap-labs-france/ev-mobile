@@ -18,6 +18,7 @@
 		<string>kakaomap</string>
 		<string>szn-mapy</string>
 		<string>mapsme</string>
+		<string>mailto</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

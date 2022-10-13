@@ -26,7 +26,7 @@ import { BillingSettings } from '../types/Setting';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
 import Tag from '../types/Tag';
-import { TenantConnection } from '../types/Tenant';
+import Tenant, { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
 import User, { UserDefaultTagCar } from '../types/User';
 import UserToken from '../types/UserToken';
@@ -567,6 +567,17 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async getCurrentTenant(): Promise<Tenant> {
+    this.debugMethod('getTenant');
+    const result = await this.axiosInstance.get(
+      this.buildRestEndpointUrl(RESTServerRoute.REST_TENANT, {id: this.getUserInfo()?.tenantID}),
+      {
+        headers: this.buildSecuredHeaders()
+      }
+    );
+    return result?.data;
+  }
+
   public async getSiteAreas(
     params = {},
     paging: PagingParams = Constants.DEFAULT_PAGING,
@@ -616,18 +627,6 @@ export default class CentralServerProvider {
     const result = await this.axiosInstance.put<any>(
       this.buildRestEndpointUrl(RESTServerRoute.REST_TRANSACTION_STOP, { id: transactionId }),
       { },
-      {
-        headers: this.buildSecuredHeaders()
-      }
-    );
-    return result.data;
-  }
-
-  public async softStopTransaction(transactionID: number): Promise<ActionResponse> {
-    this.debugMethod('softStopTransaction');
-    const result = await this.axiosInstance.put<any>(
-      this.buildRestEndpointUrl(RESTServerRoute.REST_TRANSACTION_SOFT_STOP, { id: transactionID }),
-      {},
       {
         headers: this.buildSecuredHeaders()
       }

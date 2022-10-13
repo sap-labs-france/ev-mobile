@@ -548,5 +548,12 @@
     "kilometers": "Kilomètres",
     "miles": "Miles",
     "automatic": "Automatique"
+  },
+  "settingsDeleteAccount": {
+    "deleteAccount": "Supprimer mon compte",
+    "deleteAccountText": "Envoyez un e-mail à  {{contactEmail}}  pour demander la suppression de votre compte. La procédure peut prendre plusieurs jours. Vous serez informé(e) par e-mail une fois celle-ci achevée",
+    "deleteAccountEmailSubject": "Demande de suppression de compte sur le tenant {{tenantSubdomain}}",
+    "deleteAccountEmailBody": "Je souhaite supprimer mon compte sur le tenant {{tenantSubdomain}}\nEmail: {{userEmail}}\nuserID: {{userID}}",
+    "openEmailApp": "Ouvrir ma messagerie"
   }
 }
