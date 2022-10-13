@@ -33,6 +33,8 @@ export default class DeepLinkingManager {
     this.centralServerProvider = centralServerProvider;
     // Activate Deep Linking
     DeepLinking.addScheme(this.scheme);
+    // Workaround to allow opening the app when link has been opened by the dashboard
+    DeepLinking.addScheme('eMobility://');
     // Init Routes
     this.addResetPasswordRoute();
     this.addVerifyAccountRoute();
@@ -55,30 +57,29 @@ export default class DeepLinkingManager {
   }
 
   public async handleUrl({ url }: { url: string }): Promise<void> {
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      this.url = url;
-      DeepLinking.evaluateUrl(url);
+    this.url = url;
+    DeepLinking.evaluateUrl(url);
+  }
 
-    }
+  private getTenantSubdomainFromURL(): string {
+    const regex = new RegExp('\\/\\/(.*?)\\.');
+    const res =  this.url?.match(regex);
+    return res?.[1];
   }
 
   private addResetPasswordRoute(): void {
-    // Add Route
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    DeepLinking.addRoute('/define-password:hash', async (response) => {
-      const subdomain = this.getTenant();
-      const tenant = await this.centralServerProvider.getTenant(subdomain);
+    // Handle reset password request
+    const definePasswordCallback = async (subdomain: string, params: Record<string, string>) => {
       if (!subdomain) {
         Message.showError(I18n.t('authentication.invalidLinkNoSubdomain'));
         return;
       }
+      const tenant = await this.centralServerProvider.getTenant(subdomain);
       if (!tenant) {
         Message.showError(I18n.t('authentication.unknownTenant', {tenantSubdomain: subdomain}));
         return;
       }
-      const params = Utils.getURLParameters(this.url) as {hash: string};
-      const hash = params.hash;
+      const hash = params?.hash;
       if (!hash) {
         Message.showError(I18n.t('authentication.invalidLinkNoHash'));
         return;
@@ -89,98 +90,111 @@ export default class DeepLinkingManager {
       this.navigator.navigate('ResetPassword', {
         key: `${Utils.randomNumber()}`,
         tenantSubDomain: subdomain,
-        hash
+        hash,
+        load: true
       });
+    };
+    // Add route to handle links from the dashboard
+    DeepLinking.addRoute('/resetPassword/:tenant/:hash', ({tenant, ...params}: {tenant: string; hash: string}) => {
+      void definePasswordCallback(tenant, params as Record<any, any>);
+    });
+    // Add route to handle links directly from the mails
+    DeepLinking.addRoute('/define-password:hash', () => {
+      const subdomain = this.getTenantSubdomainFromURL();
+      const params = Utils.getURLParameters(this.url) as {hash: string};
+      void definePasswordCallback(subdomain, params);
     });
   }
 
-  private getTenant(): string {
-    const regex = new RegExp('\\/\\/(.*?)\\.');
-    const res =  this.url?.match(regex);
-    return res?.[1];
-  }
-
   private addVerifyAccountRoute(): void {
-    // Add Route
-    DeepLinking.addRoute(
-      '/verify-email:params',
-      async (response) => {
-        const params = Utils.getURLParameters(this.url) as {Email: string; VerificationToken: string; ResetToken: string};
-        const subdomain = this.getTenant();
-        const tenant = await this.centralServerProvider.getTenant(subdomain);
-        const email = params.Email;
-        const verificationToken = params.VerificationToken;
-        const resetToken = params.ResetToken;
-        // Check params
-        if (!email) {
-          Message.showError(I18n.t('authentication.invalidLinkNoEmail'));
-          return;
-        }
-        if (!subdomain) {
-          Message.showError(I18n.t('authentication.invalidLinkNoSubdomain'));
-          return;
-        }
-        if (!tenant) {
-          Message.showError(I18n.t('authentication.unknownTenant', {tenantSubdomain: subdomain}));
-          return;
-        }
-        if (!verificationToken) {
-          Message.showError(I18n.t('authentication.invalidLinkNoToken'));
-          return;
-        }
-        // Disable
-        this.centralServerProvider.setAutoLoginDisabled(true);
-        await this.centralServerProvider.logoff();
-        // Navigate to login page
-        this.navigator.navigate('Login', {
-          key: `${Utils.randomNumber()}`,
-          tenantSubDomain: subdomain,
-          email
-        });
-        // Call the backend
-        try {
-          // Validate Account
-          const result = await this.centralServerProvider.verifyEmail(subdomain, email, verificationToken);
-          if (result.status === Constants.REST_RESPONSE_SUCCESS) {
-            Message.showSuccess(I18n.t('authentication.accountVerifiedSuccess'));
-            // Check if user has to change his password
-            if (resetToken && resetToken !== 'null') {
-              // Change password
-              this.navigator.dispatch(
-                CommonActions.navigate({
-                  name: 'ResetPassword',
-                  key: `${Utils.randomNumber()}`,
-                  params: { tenantSubDomain: subdomain, hash: response.resetToken, email }
-                })
-              );
-            }
+    // Handle verify account request
+    const verifyAccountCallback = async (subdomain: string, params: Record<string, string>) => {
+      const tenant = await this.centralServerProvider.getTenant(subdomain);
+      const email = params?.Email;
+      const verificationToken = params?.VerificationToken;
+      const resetToken = params?.ResetToken;
+      // Check params
+      if (!email) {
+        Message.showError(I18n.t('authentication.invalidLinkNoEmail'));
+        return;
+      }
+      if (!subdomain) {
+        Message.showError(I18n.t('authentication.invalidLinkNoSubdomain'));
+        return;
+      }
+      if (!tenant) {
+        Message.showError(I18n.t('authentication.unknownTenant', {tenantSubdomain: subdomain}));
+        return;
+      }
+      if (!verificationToken) {
+        Message.showError(I18n.t('authentication.invalidLinkNoToken'));
+        return;
+      }
+      // Disable
+      this.centralServerProvider.setAutoLoginDisabled(true);
+      await this.centralServerProvider.logoff();
+      // Navigate to login page
+      this.navigator.navigate('Login', {
+        key: `${Utils.randomNumber()}`,
+        tenantSubDomain: subdomain,
+        email
+      });
+      // Call the backend
+      try {
+        // Validate Account
+        const result = await this.centralServerProvider.verifyEmail(subdomain, email, verificationToken);
+        if (result.status === Constants.REST_RESPONSE_SUCCESS) {
+          Message.showSuccess(I18n.t('authentication.accountVerifiedSuccess'));
+          // Check if user has to change his password
+          if (resetToken && resetToken !== 'null') {
+            // Change password
+            this.navigator.dispatch(
+              CommonActions.navigate({
+                name: 'ResetPassword',
+                key: `${Utils.randomNumber()}`,
+                params: { tenantSubDomain: subdomain, hash: resetToken, email }
+              })
+            );
           }
-        } catch (error) {
-          // Check request?
-          if (error.request) {
-            // Show error
-            switch (error.request.status) {
-              // Account already active
-              case HTTPError.USER_ACCOUNT_ALREADY_ACTIVE_ERROR:
-                Message.showError(I18n.t('authentication.accountAlreadyActive'));
-                break;
+        }
+      } catch (error) {
+        // Check request?
+        if (error.request) {
+          // Show error
+          switch (error.request.status) {
+            // Account already active
+            case HTTPError.USER_ACCOUNT_ALREADY_ACTIVE_ERROR:
+              Message.showError(I18n.t('authentication.accountAlreadyActive'));
+              break;
               // VerificationToken no longer valid
-              case HTTPError.INVALID_TOKEN_ERROR:
-                Message.showError(I18n.t('authentication.verifyAccountTokenNotValid'));
-                break;
+            case HTTPError.INVALID_TOKEN_ERROR:
+              Message.showError(I18n.t('authentication.verifyAccountTokenNotValid'));
+              break;
               // Email does not exist
-              case StatusCodes.NOT_FOUND:
-                Message.showError(I18n.t('authentication.activationEmailNotValid', {tenantName: tenant?.name}));
-                break;
+            case StatusCodes.NOT_FOUND:
+              Message.showError(I18n.t('authentication.activationEmailNotValid', {tenantName: tenant?.name}));
+              break;
               // Other common Error
-              default:
-                await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.activationUnexpectedError');
-            }
-          } else {
-            Message.showError(I18n.t('authentication.activationUnexpectedError'));
+            default:
+              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.activationUnexpectedError');
           }
+        } else {
+          Message.showError(I18n.t('authentication.activationUnexpectedError'));
         }
       }
+    };
+    // Add route to handle links from the dashboard
+    DeepLinking.addRoute(
+      '/verifyAccount/:tenant/:email/:token/:resetToken',
+      ({ tenant, ...params}: {tenant: string; email: string; token: string; resetToken: string}) => {
+        void verifyAccountCallback(tenant, params as Record<any, any>);
+      });
+    // Add route to handle links directly from the mails
+    DeepLinking.addRoute('/verify-email:params', () => {
+      const params = Utils.getURLParameters(this.url) as {Email: string; VerificationToken: string; ResetToken: string};
+      const subdomain = this.getTenantSubdomainFromURL();
+      void verifyAccountCallback(subdomain, params);
+    }
     );
   }
 }
