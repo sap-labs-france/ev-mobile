@@ -7,8 +7,17 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:*.e-mobility-group.com</string>
+        <string>applinks:*.e-mobility-group.org</string>
+		<string>applinks:*.e-mobility-group.eu</string>
+		<string>applinks:*.e-mobility-group.fr</string>
 		<string>applinks:*.qa-e-mobility-group.com</string>
+        <string>applinks:*.qa-e-mobility-group.org</string>
+		<string>applinks:*.qa-e-mobility-group.eu</string>
+		<string>applinks:*.qa-e-mobility-group.fr</string>
+		<string>applinks:*.e-mobility-labs.com</string>
 		<string>applinks:*.e-mobility-labs.org</string>
+		<string>applinks:*.e-mobility-labs.eu</string>
+		<string>applinks:*.e-mobility-labs.fr</string>
 	</array>
 </dict>
 </plist>
