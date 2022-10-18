@@ -58,6 +58,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Settings from './screens/settings/Settings';
 import RNBootSplash from 'react-native-bootsplash';
+import Message from './utils/Message';
 
 // Init i18n
 I18nManager.initialize();
@@ -521,6 +522,7 @@ export default class App extends React.Component<Props, State> {
   private location: LocationManager;
   private appVersion: CheckVersionResponse;
   private deepLinkingUnsubscribe: () => void;
+  private navigationRef: any;
 
   public constructor(props: Props) {
     super(props);
@@ -541,6 +543,7 @@ export default class App extends React.Component<Props, State> {
 
   public async componentDidMount() {
     // Load Navigation State
+    Message.showError('mounted')
     const navigationState = await SecuredStorage.getNavigationState();
     // Get the central server
     this.centralServerProvider = await ProviderFactory.getProvider();
@@ -550,10 +553,6 @@ export default class App extends React.Component<Props, State> {
     await this.notificationManager.start();
     // Assign
     this.centralServerProvider.setNotificationManager(this.notificationManager);
-    // Init Deep Linking ---------------------------------------
-    this.deepLinkingManager = DeepLinkingManager.getInstance();
-    // Activate Deep links
-    this.deepLinkingUnsubscribe = this.deepLinkingManager.startListening();
     // Location ------------------------------------------------
     this.location = await LocationManager.getInstance();
     this.location.startListening();
@@ -599,14 +598,8 @@ export default class App extends React.Component<Props, State> {
     return (
       <SafeAreaProvider>
         <NavigationContainer
-          onReady={() => void RNBootSplash.hide({ fade: true })}
-          ref={(navigatorRef) => {
-            if (navigatorRef) {
-              this.notificationManager?.initialize(navigatorRef);
-              this.notificationManager.checkOnHoldNotification();
-              this.deepLinkingManager?.initialize(navigatorRef, this.centralServerProvider);
-            }
-          }}
+          onReady={() => void this.onNavigationReady()}
+          ref={(ref) => this.navigationRef = ref}
           onStateChange={persistNavigationState}
           initialState={this.state.navigationState}>
           <rootStack.Navigator initialRouteName="AuthNavigator" screenOptions={{ headerShown: false }}>
@@ -617,4 +610,17 @@ export default class App extends React.Component<Props, State> {
       </SafeAreaProvider>
     );
   }
+
+  private async onNavigationReady(): Promise<void> {
+    await RNBootSplash.hide({ fade: true });
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    Message.showWarning('onnavigationready');
+    this.notificationManager?.initialize(this.navigationRef);
+    void this.notificationManager.checkOnHoldNotification();
+    // Init Deep Linking ---------------------------------------
+    this.deepLinkingManager = DeepLinkingManager.getInstance();
+    this.deepLinkingManager?.initialize(this.navigationRef, this.centralServerProvider);
+    // Activate deep linking
+    this.deepLinkingUnsubscribe = this.deepLinkingManager.startListening();
+    }
 }

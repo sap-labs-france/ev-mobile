@@ -10,6 +10,8 @@ import Constants from '../utils/Constants';
 import Message from '../utils/Message';
 import Utils from '../utils/Utils';
 
+let isInitialURLRead = false;
+
 export default class DeepLinkingManager {
   private static instance: DeepLinkingManager;
   private navigator: NavigationContainerRef<ReactNavigation.RootParamList>;
@@ -27,25 +29,30 @@ export default class DeepLinkingManager {
     return DeepLinkingManager.instance;
   }
 
-  public async initialize(navigator: NavigationContainerRef<ReactNavigation.RootParamList>, centralServerProvider: CentralServerProvider) {
+  public async initialize(navigator: NavigationContainerRef<ReactNavigation.RootParamList>, centralServerProvider: CentralServerProvider): Promise<void> {
     // Keep
     this.navigator = navigator;
     this.centralServerProvider = centralServerProvider;
     // Activate Deep Linking
     DeepLinking.addScheme(this.scheme);
-    // Workaround to allow opening the app when link has been opened by the dashboard
+    // Allow opening the app when link has been opened by the dashboard
     DeepLinking.addScheme('eMobility://');
     // Init Routes
     this.addResetPasswordRoute();
     this.addVerifyAccountRoute();
     // Init URL
-    try {
-      const initialURL = await Linking.getInitialURL();
-      if ( initialURL ) {
-        await this.handleUrl({ url: initialURL });
+    if (!isInitialURLRead) {
+      try {
+        const initialURL = await Linking.getInitialURL();
+        isInitialURLRead = true;
+        Message.showError(initialURL);
+        console.log('initialURL ' + initialURL);
+        if ( initialURL ) {
+          await this.handleUrl({ url: initialURL });
+        }
+      } catch ( err ) {
+        console.error('An error occurred', err);
       }
-    } catch ( err ) {
-      console.error('An error occurred', err);
     }
   }
 
@@ -57,8 +64,16 @@ export default class DeepLinkingManager {
   }
 
   public async handleUrl({ url }: { url: string }): Promise<void> {
-    this.url = url;
-    DeepLinking.evaluateUrl(url);
+ // const canOpenURl = await Linking.canOpenURL(url);
+ // if (canOpenURl) {
+    if (url) {
+      this.centralServerProvider.setAutoLoginDisabled(true);
+      this.url = url;
+      console.log('evaluating url');
+      Message.showSuccess('Evaluating URL');
+      DeepLinking.evaluateUrl(url);
+    }
+  //}
   }
 
   private getTenantSubdomainFromURL(): string {
@@ -87,6 +102,7 @@ export default class DeepLinkingManager {
       // Disable
       this.centralServerProvider.setAutoLoginDisabled(true);
       // Navigate
+ //     Message.showInfo('Navigating to reset password');
       this.navigator.navigate('ResetPassword', {
         key: `${Utils.randomNumber()}`,
         tenantSubDomain: subdomain,
