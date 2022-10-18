@@ -1059,6 +1059,20 @@ export default class Utils {
     return <NoConnector width={scale(40)} height={scale(40)} fill={color} />;
   };
 
+  public static getURLParameters(url: string): Record<string, string> {
+    const res = {} as Record<string, string>;
+    if ( url ) {
+      const params = url.split('?')?.[1]?.split('&');
+      params?.forEach(param => {
+        const paramParts = param.split('=');
+        if ( paramParts.length === 2 ) {
+          res[paramParts[0]] = paramParts[1];
+        }
+      });
+    }
+    return res;
+  }
+
   public static async checkForUpdate(): Promise<CheckVersionResponse | null> {
     try {
       return await checkVersion();

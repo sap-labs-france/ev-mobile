@@ -60,7 +60,12 @@
     "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/GoogleService-Info.plist; fi",
     "import-sort": "npx import-sort-cli --write '{src,__tests__,types}/**/*.ts{,x}' *.ts{,x}",
     "check:i18n": "cross-env TS_NODE_FILES=true ts-node-dev --project tsconfig-i18n.json --files test/I18nChecker.ts",
-    "react-native:install": "npm install --force && npm clean-install && cd ios && pod install"
+    "react-native:install": "npm install --force && npm clean-install && cd ios && pod install",
+    "deep-link:android:verify-email": "npx uri-scheme open \"https://slf.e-mobility-group.com/verify-email?Email=alixhumbert@gmail.com&VerificationToken=3q45j34trqfweofn2eijtne234fwegf\" --android",
+    "deep-link:android:reset-password": "npx uri-scheme open \"https://slfcah.e-mobility-group.com/define-password?hash=3q45j34trqfweofn2eijtne234fwegf\" --android",
+    "deep-link:ios:verify-email": "npx uri-scheme open \"https://slf.e-mobility-group.com/verify-email?Email=alixhumbert@gmail.com&VerificationToken=3q45j34trqfweofn2eijtne234fwegf\" --ios",
+    "deep-link:ios:reset-password": "npx uri-scheme open \"https://slfcah.e-mobility-group.com/define-password?hash=3q45j34trqfweofn2eijtne234fwegf\" --ios"
+
   },
   "importSort": {
     ".js, .jsx, .es6, .es, .mjs": {

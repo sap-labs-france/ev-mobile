@@ -228,7 +228,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
           </KeyboardAvoidingView>
           {captchaSiteKey && captchaBaseUrl && !captcha && (
             <ReactNativeRecaptchaV3
-              action="ResetPassword"
+              action="CreatePassword"
               onHandleToken={this.onCaptchaCreated.bind(this)}
               url={captchaBaseUrl}
               siteKey={captchaSiteKey}

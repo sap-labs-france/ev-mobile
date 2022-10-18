@@ -1,72 +1,100 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.emobility">
+          package="com.emobility">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
-      android:name=".MainApplication"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
-      android:allowBackup="false"
-      android:theme="@style/BootTheme">
+            android:name=".MainApplication"
+            android:label="@string/app_name"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:allowBackup="false"
+            android:theme="@style/BootTheme">
 
-      <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyAkTPaxSFLk2UJEf0IJd3exWzoAgd3DZPk"/>
-      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyAkTPaxSFLk2UJEf0IJd3exWzoAgd3DZPk"/>
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
-      <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-        See README(https://goo.gl/l4GJaQ) for more. -->
-      <meta-data
-        android:name="com.google.firebase.messaging.default_notification_icon"
-        android:resource="@drawable/ic_stat_ic_notification" />
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+          See README(https://goo.gl/l4GJaQ) for more. -->
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_stat_ic_notification"/>
 
-      <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-        notification message. See README(https://goo.gl/6BKBk7) for more. -->
-      <meta-data
-        android:name="com.google.firebase.messaging.default_notification_color"
-        android:resource="@color/primary_dark" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+          notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/primary_dark"/>
 
-      <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id"
-                 android:value="e-Mobility"/>
-      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_name"
-                 android:value="e-Mobility"/>
-      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_description"
-                 android:value="e-Mobility notification channel"/>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id"
+                   android:value="e-Mobility"/>
+        <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_name"
+                   android:value="e-Mobility"/>
+        <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_description"
+                   android:value="e-Mobility notification channel"/>
 
-      <service android:name="io.invertase.firebase.messaging.RNFirebaseMessagingService"
-          android:exported="true">
-        <intent-filter>
-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
-        </intent-filter>
-      </service>
+        <service android:name="io.invertase.firebase.messaging.RNFirebaseMessagingService"
+                 android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
-      <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
+        <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService"/>
 
-      <activity
-        android:name=".MainActivity"
-        android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-        android:launchMode="singleTask"
-        android:windowSoftInputMode="adjustResize"
-        android:exported="true"
-      >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
-        </intent-filter>
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="eMobility" />
-        </intent-filter>
-      </activity>
+        <activity
+                android:name=".MainActivity"
+                android:label="@string/app_name"
+                android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+                android:launchMode="singleTask"
+                android:windowSoftInputMode="adjustResize"
+                android:exported="true"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https"/>
+                <data android:host="*.e-mobility-group.com"/>
+                <data android:host="*.qa-e-mobility-group.com"/>
+                <data android:host="*.e-mobility-labs.com"/>
+                <data android:host="*.e-mobility-labs.org"/>
+                <data android:pathPrefix="/auth/verify-email"/>
+                <data android:pathPrefix="/auth/define-password"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https"/>
+                <data android:host="*.e-mobility-group.org"/>
+                <data android:host="*.e-mobility-group.eu"/>
+                <data android:host="*.e-mobility-group.fr"/>
+                <data android:host="*.qa-e-mobility-group.org"/>
+                <data android:host="*.qa-e-mobility-group.eu"/>
+                <data android:host="*.qa-e-mobility-group.fr"/>
+                <data android:host="*.e-mobility-labs.eu"/>
+                <data android:host="*.e-mobility-labs.fr"/>
+                <data android:pathPrefix="/auth/verify-email"/>
+                <data android:pathPrefix="/auth/define-password"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="eMobility"/>
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

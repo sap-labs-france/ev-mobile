@@ -19,7 +19,7 @@ import CentralServerProvider from './provider/CentralServerProvider';
 import ProviderFactory from './provider/ProviderFactory';
 import Eula from './screens/auth/eula/Eula';
 import Login from './screens/auth/login/Login';
-import ResetPassword from './screens/auth/reset-password/ResetPassword';
+import CreatePassword from './screens/auth/create-password/CreatePassword';
 import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
 import SignUp from './screens/auth/sign-up/SignUp';
 import Cars from './screens/cars/Cars';
@@ -58,6 +58,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Settings from './screens/settings/Settings';
 import RNBootSplash from 'react-native-bootsplash';
+import Message from './utils/Message';
 
 // Init i18n
 I18nManager.initialize();
@@ -135,7 +136,7 @@ function createAuthNavigator(props: BaseProps) {
       <AuthStack.Screen name="TenantQrCode" component={TenantQrCode} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="Eula" component={Eula} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="SignUp" component={SignUp} initialParams={props?.route?.params?.params} />
-      <AuthStack.Screen name="ResetPassword" component={ResetPassword} initialParams={props?.route?.params?.params} />
+      <AuthStack.Screen name="ResetPassword" component={CreatePassword} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="RetrievePassword" component={RetrievePassword} initialParams={props?.route?.params?.params} />
     </AuthStack.Navigator>
   );
@@ -520,6 +521,8 @@ export default class App extends React.Component<Props, State> {
   public centralServerProvider: CentralServerProvider;
   private location: LocationManager;
   private appVersion: CheckVersionResponse;
+  private deepLinkingUnsubscribe: () => void;
+  private navigationRef: any;
 
   public constructor(props: Props) {
     super(props);
@@ -540,6 +543,7 @@ export default class App extends React.Component<Props, State> {
 
   public async componentDidMount() {
     // Load Navigation State
+    Message.showError('mounted')
     const navigationState = await SecuredStorage.getNavigationState();
     // Get the central server
     this.centralServerProvider = await ProviderFactory.getProvider();
@@ -549,10 +553,6 @@ export default class App extends React.Component<Props, State> {
     await this.notificationManager.start();
     // Assign
     this.centralServerProvider.setNotificationManager(this.notificationManager);
-    // Init Deep Linking ---------------------------------------
-    this.deepLinkingManager = DeepLinkingManager.getInstance();
-    // Activate Deep links
-    this.deepLinkingManager.startListening();
     // Location ------------------------------------------------
     this.location = await LocationManager.getInstance();
     this.location.startListening();
@@ -572,7 +572,7 @@ export default class App extends React.Component<Props, State> {
 
   public componentWillUnmount() {
     // Deactivate Deep links
-    this.deepLinkingManager?.stopListening();
+    this.deepLinkingUnsubscribe?.();
     // Stop Notifications
     this.notificationManager?.stop();
     // Stop Location
@@ -598,14 +598,8 @@ export default class App extends React.Component<Props, State> {
     return (
       <SafeAreaProvider>
         <NavigationContainer
-          onReady={() => void RNBootSplash.hide({ fade: true })}
-          ref={(navigatorRef) => {
-            if (navigatorRef) {
-              this.notificationManager?.initialize(navigatorRef);
-              this.notificationManager.checkOnHoldNotification();
-              this.deepLinkingManager?.initialize(navigatorRef, this.centralServerProvider);
-            }
-          }}
+          onReady={() => void this.onNavigationReady()}
+          ref={(ref) => this.navigationRef = ref}
           onStateChange={persistNavigationState}
           initialState={this.state.navigationState}>
           <rootStack.Navigator initialRouteName="AuthNavigator" screenOptions={{ headerShown: false }}>
@@ -616,4 +610,17 @@ export default class App extends React.Component<Props, State> {
       </SafeAreaProvider>
     );
   }
+
+  private async onNavigationReady(): Promise<void> {
+    await RNBootSplash.hide({ fade: true });
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    Message.showWarning('onnavigationready');
+    this.notificationManager?.initialize(this.navigationRef);
+    void this.notificationManager.checkOnHoldNotification();
+    // Init Deep Linking ---------------------------------------
+    this.deepLinkingManager = DeepLinkingManager.getInstance();
+    this.deepLinkingManager?.initialize(this.navigationRef, this.centralServerProvider);
+    // Activate deep linking
+    this.deepLinkingUnsubscribe = this.deepLinkingManager.startListening();
+    }
 }

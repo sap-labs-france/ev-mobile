@@ -8,7 +8,6 @@ import ThemeManager from './src/custom-theme/ThemeManager';
 import BaseProps from './src/types/BaseProps';
 import { ThemeType } from './src/types/Theme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import RNBootSplash from 'react-native-bootsplash';
 
 export interface Props extends BaseProps {}
 
