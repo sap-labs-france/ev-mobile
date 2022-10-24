@@ -246,9 +246,14 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
+secrets {
+    defaultPropertiesFileName = 'secrets.defaults.properties'
+}
+
 apply plugin: 'com.google.gms.google-services'
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+// local.properties is not checked into git
 if (project.rootProject.file('local.properties').exists()) {
     apply plugin: "com.google.android.libraries.mapsplatform.secrets-gradle-plugin"
 }
