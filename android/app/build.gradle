@@ -249,4 +249,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 apply plugin: 'com.google.gms.google-services'
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply plugin: "com.google.android.libraries.mapsplatform.secrets-gradle-plugin"
+if (project.rootProject.file('local.properties').exists()) {
+    apply plugin: "com.google.android.libraries.mapsplatform.secrets-gradle-plugin"
+}
