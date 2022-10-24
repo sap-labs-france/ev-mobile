@@ -28,7 +28,7 @@ jobs:
     - name: npm install
       run: npm ci
     - name: Create properties file
-      run: echo GOOGLE_API_KEY="" > android/local.properties
+      run: echo GOOGLE_API_KEY="GOOGLE_API_KEY" > android/local.properties
     - name: npm run android:assembleDebug
       run: |
         npm run build:prepare
