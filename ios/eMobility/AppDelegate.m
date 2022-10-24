@@ -36,7 +36,6 @@ static void InitializeFlipper(UIApplication *application) {
    #ifdef FB_SONARKIT_ENABLED
      InitializeFlipper(application);
    #endif
-   [GMSServices provideAPIKey:@"AIzaSyCGEd01GGu3RaUvQzzIg74t9f3Dtm-9LG0"];
    [FIRApp configure];
    [RNFirebaseNotifications configure];
    [FIRMessaging messaging].delegate = self;
