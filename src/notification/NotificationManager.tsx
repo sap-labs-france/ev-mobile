@@ -1,8 +1,7 @@
-import { NavigationContainerRef, StackActions } from '@react-navigation/native';
+import { NavigationContainerRef } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Platform } from 'react-native';
-import firebase from 'react-native-firebase';
-import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
+import messaging from '@react-native-firebase/messaging';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { UserNotificationType } from '../types/UserNotifications';
@@ -20,7 +19,7 @@ export default class NotificationManager {
   private removeTokenRefreshListener: () => any;
   private messageListener: () => any;
   private centralServerProvider: CentralServerProvider;
-  private lastNotification: NotificationOpen;
+ // private lastNotification: NotificationOpen;
 
   // eslint-disable-next-line no-useless-constructor
   private constructor() {}
@@ -40,7 +39,25 @@ export default class NotificationManager {
     // Keep the nav
     this.navigator = navigator;
     // Check if user has given permission
-    let enabled = await firebase.messaging().hasPermission();
+
+    const authorizationStatus = await messaging().hasPermission();
+    //  const isMessagingEnabled = authorizationStatus === AuthorizationStatus.AUTHORIZED || AuthorizationStatus.PROVISIONAL || AuthorizationStatus.NOT_DETERMINED;
+    //  let hasUserAuthorizedNotifications;
+   // await messaging().requestPermission();
+  }
+/*    if (!isMessagingEnabled) {
+      try {
+        hasUserAuthorizedNotifications = await messaging().requestPermission();
+        // User has authorized permissions
+      } catch (error) {
+        hasUserAuthorizedNotifications = false;
+        // User has rejected permissions
+      }
+    }*/
+
+
+
+   /* let enabled = await firebase.messaging().hasPermission();
     if (!enabled) {
       // Request permission
       try {
@@ -264,5 +281,5 @@ export default class NotificationManager {
         break;
     }
     return true;
-  }
+  }*/
 }
