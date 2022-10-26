@@ -6,10 +6,8 @@
 #import "RNBootSplash.h"
 #import "Orientation.h"
 #import <React/RCTLinkingManager.h>
-#import <Firebase.h>
-#import <RNFirebaseNotifications.h>
-#import <RNFirebaseMessaging.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import <Firebase.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -37,7 +35,6 @@ static void InitializeFlipper(UIApplication *application) {
      InitializeFlipper(application);
    #endif
    [FIRApp configure];
-   [RNFirebaseNotifications configure];
    [FIRMessaging messaging].delegate = self;
    if ([UNUserNotificationCenter class] != nil) {
      // iOS 10 or later
@@ -61,13 +58,13 @@ static void InitializeFlipper(UIApplication *application) {
 
   [application registerForRemoteNotifications];
 
-  [[FIRInstanceID instanceID] instanceIDWithHandler:^(FIRInstanceIDResult * _Nullable result, NSError * _Nullable error) {
-    if (error != nil) {
-      NSLog(@"Error fetching remote instance ID: %@", error);
-    } else {
-      NSLog(@"Remote instance ID token: %@", result.token);
-    }
-  }];
+ // [[FIRInstanceID instanceID] instanceIDWithHandler:^(FIRInstanceIDResult * _Nullable result, NSError * _Nullable error) {
+  //  if (error != nil) {
+  //    NSLog(@"Error fetching remote instance ID: %@", error);
+  //  } else {
+  //    NSLog(@"Remote instance ID token: %@", result.token);
+ //   }
+ // }];
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"eMobility" initialProperties:nil];
@@ -106,10 +103,6 @@ static void InitializeFlipper(UIApplication *application) {
   // Note: This callback is fired at each app startup and whenever a new token is generated.
 }
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-  [[RNFirebaseNotifications instance] didReceiveLocalNotification:notification];
-}
-
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
   NSLog(@"Oh no! Failed to register for remote notifications with error \(error)");
 }
@@ -127,14 +120,6 @@ static void InitializeFlipper(UIApplication *application) {
     [hexString appendFormat:@"%02x", dataBuffer[i]];
   }
   NSLog(@"%@", [hexString copy]);
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
-  [[RNFirebaseNotifications instance] didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
-}
-
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
-  [[RNFirebaseMessaging instance] didRegisterUserNotificationSettings:notificationSettings];
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
