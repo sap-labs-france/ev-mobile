@@ -13,10 +13,6 @@ target 'eMobility' do
     :hermes_enabled => false
   )
 
-  # Add RNCharts dependencies
-  pod 'SwiftyJSON', '5.0'
-  pod 'Charts', '3.6.0'
-
   # Add Firebase
   pod 'FirebaseCore'
   pod 'FirebaseMessaging'
