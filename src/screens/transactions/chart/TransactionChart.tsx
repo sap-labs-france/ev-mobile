@@ -415,7 +415,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
                   enabled: true,
                   markerColor: processColor(commonColor.listItemBackground),
                   textSize: scale(12),
-                  textColor: processColor(commonColor.textColor)
+                  textColor: processColor(commonColor.textColor),
+                  // Required for iOS
+                  textAlign: 'center'
                 }}
                 xAxis={chartDefinition.xAxis}
                 yAxis={chartDefinition.yAxis}

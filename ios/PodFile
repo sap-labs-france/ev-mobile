@@ -1,9 +1,8 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
+platform :ios, '12.0'
 $RNFirebaseAsStaticFramework = true
-
-platform :ios, '11.0'
 
 target 'eMobility' do
   project 'eMobility.xcodeproj'
@@ -14,10 +13,6 @@ target 'eMobility' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false
   )
-
-  # Add RNCharts dependencies
-  pod 'SwiftyJSON', '5.0'
-  pod 'Charts', '3.6.0'
 
   # Required for Firebase
   pod 'GoogleUtilities', :modular_headers => true
