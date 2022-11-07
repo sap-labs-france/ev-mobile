@@ -187,7 +187,7 @@
     "metro": "^0.70.0",
     "metro-config": "^0.64.0",
     "metro-react-native-babel-preset": "^0.66.2",
-    "npm-check": "^5.9.2",
+    "npm-check": "^6.0.1",
     "patch-package": "^6.4.7",
     "prettier": "^2.3.0",
     "react-native-clean-project": "^3.6.7",
