@@ -130,7 +130,7 @@
     "react-native-paper": "^3.12.0",
     "react-native-permissions": "^2.2.2",
     "react-native-qrcode-scanner": "^1.6.0",
-    "react-native-reanimated": "^2.9.1",
+    "react-native-reanimated": "^2.12.0",
     "react-native-responsive-stylesheet": "^1.1.0",
     "react-native-root-siblings": "^4.1.1",
     "react-native-root-toast": "^3.3.0",
