@@ -1,13 +1,10 @@
 import { NavigationContainerRef } from '@react-navigation/native';
-import I18n from 'i18n-js';
-import { Platform } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
+import { Alert, Platform } from 'react-native';
+import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
-import { UserNotificationType } from '../types/UserNotifications';
-import Message from '../utils/Message';
-import SecuredStorage from '../utils/SecuredStorage';
-import Utils from '../utils/Utils';
+import { NotificationData, UserNotificationType } from '../types/UserNotifications';
+import { Dialog } from 'react-native-paper';
 
 export default class NotificationManager {
   private static instance: NotificationManager;
@@ -17,6 +14,7 @@ export default class NotificationManager {
   private removeNotificationListener: () => any;
   private removeNotificationOpenedListener: () => any;
   private removeTokenRefreshListener: () => any;
+  private removeForegroundNotificationListener: () => void;
   private messageListener: () => any;
   private centralServerProvider: CentralServerProvider;
  // private lastNotification: NotificationOpen;
@@ -31,68 +29,75 @@ export default class NotificationManager {
     return NotificationManager.instance;
   }
 
-  public setCentralServerProvider(centralServerProvider: CentralServerProvider) {
+  public setCentralServerProvider(centralServerProvider: CentralServerProvider): void {
     this.centralServerProvider = centralServerProvider;
   }
 
-  public async initialize(navigator: NavigationContainerRef) {
-    // Keep the nav
+  public async initialize(navigator: NavigationContainerRef): Promise<void> {
     this.navigator = navigator;
-    // Check if user has given permission
-
-    const authorizationStatus = await messaging().hasPermission();
-    //  const isMessagingEnabled = authorizationStatus === AuthorizationStatus.AUTHORIZED || AuthorizationStatus.PROVISIONAL || AuthorizationStatus.NOT_DETERMINED;
-    //  let hasUserAuthorizedNotifications;
-   // await messaging().requestPermission();
-  }
-/*    if (!isMessagingEnabled) {
+    // Check if app has permission
+    const appAuthorizationStatus = await messaging().hasPermission();
+    console.log(appAuthorizationStatus);
+    if (appAuthorizationStatus === messaging.AuthorizationStatus.AUTHORIZED
+        || messaging.AuthorizationStatus.PROVISIONAL
+        // NOT_DETERMINED is used in iOS when user permission not yet requested
+        || messaging.AuthorizationStatus.NOT_DETERMINED
+    ) {
       try {
-        hasUserAuthorizedNotifications = await messaging().requestPermission();
-        // User has authorized permissions
-      } catch (error) {
-        hasUserAuthorizedNotifications = false;
-        // User has rejected permissions
-      }
-    }*/
-
-
-
-   /* let enabled = await firebase.messaging().hasPermission();
-    if (!enabled) {
-      // Request permission
-      try {
-        await firebase.messaging().requestPermission();
-        // User has authorized permissions
-      } catch (error) {
-        // User has rejected permissions
-      }
-    }
-    // Check again
-    enabled = await firebase.messaging().hasPermission();
-    if (enabled) {
-      try {
-        const fcmToken = await firebase.messaging().getToken();
-        if (fcmToken) {
-          this.token = fcmToken;
+        // request permission from user (mandatory in iOS, always returning AUTHORIZED on Android)
+        const userAuthorizationStatus = await messaging().requestPermission();
+        if (userAuthorizationStatus === messaging.AuthorizationStatus.AUTHORIZED || messaging.AuthorizationStatus.PROVISIONAL) {
+          try {
+            // Retrieve mobile token
+            const fcmToken = await messaging().getToken();
+            console.log('TOOKENNNNN: ' + fcmToken);
+            if ( fcmToken ) {
+              this.token = fcmToken;
+            }
+          } catch ( error ) {
+            console.error(error);
+          }
         }
-      } catch (error) {
+      } catch ( error ) {
         console.error(error);
       }
     }
   }
 
-  public async start() {
-    // Check Initial Notification
-    const initialNotificationOpen = await firebase.notifications().getInitialNotification();
-    if (initialNotificationOpen) {
-      this.lastNotification = initialNotificationOpen;
+  public async start(): Promise<void> {
+    // Check initial notification when app was closed
+    const initialNotification = await messaging().getInitialNotification();
+    if (initialNotification) {
+      this.handleNotification(initialNotification);
     }
-    // Notification Displayed
-    this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
-      // Do nothing
+    // Listen for notifications when the app is in background state
+    messaging().onNotificationOpenedApp((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+      this.handleNotification(remoteMessage);
     });
-    // Notification Received
-    this.removeNotificationListener = firebase.notifications().onNotification(async (notification: Notification) => {
+    // Listen for notifications when app is in foreground state
+    this.removeForegroundNotificationListener = messaging().onMessage((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+      Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body);
+    });
+  }
+
+    private handleNotification(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
+    // Check remote message is of notification type
+    if (remoteMessage?.notification) {
+      const notificationData = remoteMessage.data as unknown as NotificationData;
+      if (notificationData) {
+        const notificationType = notificationData?.notificationType;
+        switch ( notificationType ) {
+          case UserNotificationType.END_USER_ERROR:
+            const errorMessage = remoteMessage.notification.body;
+            const errorTitle = remoteMessage.notification.title;
+            Alert.alert(errorTitle, errorMessage);
+        }
+      }
+    }
+
+
+
+    /*this.removeNotificationListener = firebase.notifications().onNotification(async (notification: Notification) => {
       // App in foreground: Display the notification
       notification.setSound('default');
       // Check if notification has to be displayed
@@ -139,15 +144,16 @@ export default class NotificationManager {
       } catch (error) {
         console.log('Error saving Mobile Token:', error);
       }
-    });
+    });*/
   }
 
   public stop() {
-    this.removeNotificationDisplayedListener();
-    this.removeNotificationListener();
-    this.removeNotificationOpenedListener();
-    this.removeTokenRefreshListener();
-    this.messageListener();
+    this.removeForegroundNotificationListener?.();
+    // this.removeNotificationDisplayedListener();
+    // this.removeNotificationListener();
+    // this.removeNotificationOpenedListener();
+    // this.removeTokenRefreshListener();
+    // this.messageListener();
   }
 
   public getToken(): string {
@@ -168,7 +174,7 @@ export default class NotificationManager {
   }
 
   // eslint-disable-next-line complexity
-  private async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
+/*  private async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
     let connectionIsValid = true;
     // Not valid
     if (!notificationOpen?.notification?.data) {
