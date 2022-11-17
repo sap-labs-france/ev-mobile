@@ -546,7 +546,7 @@ export default class App extends React.Component<Props, State> {
     // Init Notification --------------------------------------
     this.notificationManager = NotificationManager.getInstance();
     this.notificationManager.setCentralServerProvider(this.centralServerProvider);
-  //  await this.notificationManager.start();
+    await this.notificationManager.start();
     // Assign
     this.centralServerProvider.setNotificationManager(this.notificationManager);
     // Init Deep Linking ---------------------------------------
@@ -574,7 +574,7 @@ export default class App extends React.Component<Props, State> {
     // Deactivate Deep links
     this.deepLinkingManager?.stopListening();
     // Stop Notifications
-  //  this.notificationManager?.stop();
+    this.notificationManager?.stop();
     // Stop Location
     this.location?.stopListening();
   }
