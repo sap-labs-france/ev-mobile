@@ -2,11 +2,11 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '12.0'
-$RNFirebaseAsStaticFramework = true
 
 target 'eMobility' do
   project 'eMobility.xcodeproj'
   config = use_native_modules!
+  $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
     :path => config["../node_modules/react-native"],
