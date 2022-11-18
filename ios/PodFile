@@ -2,11 +2,12 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '12.0'
+$RNFirebaseAsStaticFramework = true
+use_frameworks! :linkage => :static
 
 target 'eMobility' do
   project 'eMobility.xcodeproj'
   config = use_native_modules!
-  $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
     :path => config["../node_modules/react-native"],
@@ -14,10 +15,6 @@ target 'eMobility' do
     :hermes_enabled => false
   )
 
-  # Required for Firebase
-  pod 'GoogleUtilities', :modular_headers => true
-  pod 'Firebase', :modular_headers => true
-  pod 'FirebaseCore', :modular_headers => true
 
   # React Native Maps dependencies
   rn_maps_path = '../node_modules/react-native-maps'
