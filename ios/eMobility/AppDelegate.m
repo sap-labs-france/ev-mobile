@@ -6,7 +6,6 @@
 #import "RNBootSplash.h"
 #import "Orientation.h"
 #import <React/RCTLinkingManager.h>
-#import <GoogleMaps/GoogleMaps.h>
 #import <Firebase.h>
 #import "RNFBMessagingModule.h"
 
