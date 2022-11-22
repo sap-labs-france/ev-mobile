@@ -602,7 +602,7 @@ export default class App extends React.Component<Props, State> {
           ref={(navigatorRef) => {
             if (navigatorRef) {
               this.notificationManager?.initialize(navigatorRef);
-              this.notificationManager.checkOnHoldNotification();
+            //  this.notificationManager.checkOnHoldNotification();
               this.deepLinkingManager?.initialize(navigatorRef, this.centralServerProvider);
             }
           }}

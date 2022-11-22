@@ -2,7 +2,6 @@ import I18n from 'i18n-js';
 import { Spinner } from 'native-base';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import HTMLView from 'react-native-htmlview';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
@@ -10,6 +9,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './EulaStyles';
 import { scale } from 'react-native-size-matters';
+import {WebView} from "react-native-webview";
 
 export interface Props extends BaseProps {}
 
@@ -72,7 +72,7 @@ export default class Eula extends BaseScreen<Props, State> {
           <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <ScrollView style={style.HTMLViewContainer}>
-            <HTMLView textComponentProps={{style: {color: Utils.getCurrentCommonColor().textColor}}} value={eulaTextHtml} />
+            <WebView source={{html: `${eulaTextHtml}`}} />
           </ScrollView>
         )}
       </View>

@@ -13,5 +13,12 @@ export enum UserNotificationType {
   USER_ACCOUNT_INACTIVITY = 'UserAccountInactivity',
   OFFLINE_CHARGING_STATION = 'OfflineChargingStation',
   BILLING_USER_SYNCHRONIZATION_FAILED = 'BillingUserSynchronizationFailed',
-  SESSION_NOT_STARTED_AFTER_AUTHORIZE = 'SessionNotStartedAfterAuthorize'
+  SESSION_NOT_STARTED_AFTER_AUTHORIZE = 'SessionNotStartedAfterAuthorize',
+  END_USER_ERROR = 'EndUserErrorNotification'
+}
+
+export interface NotificationData {
+  tenantID: string;
+  tenantSubdomain: string;
+  notificationType: UserNotificationType;
 }

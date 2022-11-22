@@ -7,9 +7,7 @@
 #import "Orientation.h"
 #import <React/RCTLinkingManager.h>
 #import <Firebase.h>
-#import <RNFirebaseNotifications.h>
-#import <RNFirebaseMessaging.h>
-#import <GoogleMaps/GoogleMaps.h>
+#import "RNFBMessagingModule.h"
 
 #import <React/RCTAppSetupUtils.h>
 
@@ -20,6 +18,7 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
   SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
@@ -53,45 +52,15 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure];
    RCTAppSetupPrepareApp(application);
    #ifdef FB_SONARKIT_ENABLED
      InitializeFlipper(application);
    #endif
-   [FIRApp configure];
-   [RNFirebaseNotifications configure];
-   [FIRMessaging messaging].delegate = self;
-   if ([UNUserNotificationCenter class] != nil) {
-     // iOS 10 or later
-     // For iOS 10 display notification (sent via APNS)
-     [UNUserNotificationCenter currentNotificationCenter].delegate = self;
-     UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert |
-     UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
-     [[UNUserNotificationCenter currentNotificationCenter]
-       requestAuthorizationWithOptions:authOptions
-       completionHandler:^(BOOL granted, NSError * _Nullable error) {
-         // ...
-       }];
-   } else {
-     // iOS 10 notifications aren't available; fall back to iOS 8-9 notifications.
-     UIUserNotificationType allNotificationTypes =
-     (UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge);
-     UIUserNotificationSettings *settings =
-     [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
-     [application registerUserNotificationSettings:settings];
-   }
-
-  [application registerForRemoteNotifications];
-
-  [[FIRInstanceID instanceID] instanceIDWithHandler:^(FIRInstanceIDResult * _Nullable result, NSError * _Nullable error) {
-    if (error != nil) {
-      NSLog(@"Error fetching remote instance ID: %@", error);
-    } else {
-      NSLog(@"Remote instance ID token: %@", result.token);
-    }
-  }];
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"eMobility" initialProperties:nil];
+  NSDictionary *appProperties = [RNFBMessagingModule addCustomPropsToUserProps:nil withLaunchOptions:launchOptions];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"eMobility" initialProperties:appProperties];
 
   #if RCT_NEW_ARCH_ENABLED
     _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
@@ -177,47 +146,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   return RCTAppSetupDefaultModuleFromClass(moduleClass);
 }
 #endif
-
-- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
-  NSLog(@"FCM registration token: %@", fcmToken);
-  // Notify about received token.
-  NSDictionary *dataDict = [NSDictionary dictionaryWithObject:fcmToken forKey:@"token"];
-  [[NSNotificationCenter defaultCenter] postNotificationName:
-   @"FCMToken" object:nil userInfo:dataDict];
-  // TODO: If necessary send token to application server.
-  // Note: This callback is fired at each app startup and whenever a new token is generated.
-}
-
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-  [[RNFirebaseNotifications instance] didReceiveLocalNotification:notification];
-}
-
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-  NSLog(@"Oh no! Failed to register for remote notifications with error \(error)");
-}
-
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  NSLog(@"Received an APNs device token:");
-  NSUInteger dataLength = deviceToken.length;
-  if (dataLength == 0) {
-    NSLog(@"Oh no! No Token found!!!");
-    return;
-  }
-  const unsigned char *dataBuffer = (const unsigned char *)deviceToken.bytes;
-  NSMutableString *hexString  = [NSMutableString stringWithCapacity:(dataLength * 2)];
-  for (int i = 0; i < dataLength; ++i) {
-    [hexString appendFormat:@"%02x", dataBuffer[i]];
-  }
-  NSLog(@"%@", [hexString copy]);
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
-  [[RNFirebaseNotifications instance] didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
-}
-
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
-  [[RNFirebaseMessaging instance] didRegisterUserNotificationSettings:notificationSettings];
-}
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {

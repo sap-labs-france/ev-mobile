@@ -1,8 +1,25 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '12.4'
+platform :ios, '13'
 install! 'cocoapods', :deterministic_uuids => false
+$RNFirebaseAsStaticFramework = true
+use_frameworks! :linkage => :static
+
+  # Convert all permission pods into static libraries
+  # Workaround to make react-native-permission work with use_frameworks! (See their doc)
+  pre_install do |installer|
+    Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+    installer.pod_targets.each do |pod|
+      if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
+        def pod.build_type;
+          # Uncomment the line corresponding to your CocoaPods version
+          Pod::BuildType.static_library # >= 1.9
+          # Pod::Target::BuildType.static_library # < 1.9
+        end
+      end
+    end
+  end
 
 target 'eMobility' do
   project 'eMobility.xcodeproj'
@@ -27,20 +44,9 @@ target 'eMobility' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  # Add Firebase
-  pod 'FirebaseCore'
-  pod 'FirebaseMessaging'
-  pod 'FirebaseAnalytics'
-
-  # React Native Maps dependencies
-  rn_maps_path = '../node_modules/react-native-maps'
-  pod 'react-native-google-maps', :path => rn_maps_path
-  pod 'GoogleMaps'
-  pod 'Google-Maps-iOS-Utils'
-
   # Camera Permission
   permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
   target 'eMobilityTests' do
     inherit! :complete

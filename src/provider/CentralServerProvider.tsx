@@ -360,7 +360,7 @@ export default class CentralServerProvider {
       console.log('Error saving Mobile Token:', error);
     }
     // Check on hold notification
-    await this.notificationManager.checkOnHoldNotification();
+   // await this.notificationManager.checkOnHoldNotification();
   }
 
   public async getEndUserLicenseAgreement(params: { Language: string }): Promise<Eula> {
