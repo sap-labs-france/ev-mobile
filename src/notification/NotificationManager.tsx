@@ -4,7 +4,6 @@ import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messag
 
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { NotificationData, UserNotificationType } from '../types/UserNotifications';
-import { Dialog } from 'react-native-paper';
 
 export default class NotificationManager {
   private static instance: NotificationManager;
@@ -15,6 +14,7 @@ export default class NotificationManager {
   private removeNotificationOpenedListener: () => any;
   private removeTokenRefreshListener: () => any;
   private removeForegroundNotificationListener: () => void;
+  private removeBackgroundNotificationListener: () => void;
   private messageListener: () => any;
   private centralServerProvider: CentralServerProvider;
  // private lastNotification: NotificationOpen;
@@ -71,7 +71,7 @@ export default class NotificationManager {
       this.handleNotification(initialNotification);
     }
     // Listen for notifications when the app is in background state
-    messaging().onNotificationOpenedApp((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+   this.removeBackgroundNotificationListener = messaging().onNotificationOpenedApp((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
       this.handleNotification(remoteMessage);
     });
     // Listen for notifications when app is in foreground state
@@ -149,6 +149,7 @@ export default class NotificationManager {
 
   public stop() {
     this.removeForegroundNotificationListener?.();
+    this.removeBackgroundNotificationListener?.();
     // this.removeNotificationDisplayedListener();
     // this.removeNotificationListener();
     // this.removeNotificationOpenedListener();
