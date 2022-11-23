@@ -1,7 +1,5 @@
 import React from 'react';
 import { Appearance, NativeEventSubscription, View } from 'react-native';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { Theme } from 'react-native-paper/lib/typescript/src/types';
 import {NativeBaseProvider} from 'native-base';
 import App from './src/App';
 import ThemeManager from './src/custom-theme/ThemeManager';
@@ -51,17 +49,10 @@ export default class AppBootstrap extends React.Component<Props, State> {
 
   public render() {
     const { switchTheme } = this.state;
-    const themeManager = ThemeManager.getInstance();
-    const theme: Theme = {
-      ...DefaultTheme,
-      dark: themeManager.isThemeTypeIsDark()
-    };
     return switchTheme ? (
       <NativeBaseProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <PaperProvider theme={theme}>
-            <App />
-          </PaperProvider>
+          <App />
         </GestureHandlerRootView>
       </NativeBaseProvider>
     ) : (

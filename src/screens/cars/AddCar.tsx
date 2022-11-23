@@ -21,7 +21,6 @@ import Orientation from 'react-native-orientation-locker';
 import Message from '../../utils/Message';
 import { HTTPError } from '../../types/HTTPError';
 import I18n from 'i18n-js';
-import { RadioButton } from 'react-native-paper';
 import Constants from '../../utils/Constants';
 import { RestResponse } from '../../types/ActionResponse';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -206,36 +205,36 @@ export default class AddCar extends BaseScreen<Props, State> {
           </View>
           <View style={style.carTypeContainer}>
             <TouchableOpacity onPress={() => this.setState({ type: CarType.COMPANY })} style={style.typeContainer}>
-              <RadioButton.Android
+              {/*<RadioButton.Android
                 color={commonColors.textColor}
                 uncheckedColor={commonColors.textColor}
                 onPress={() => this.setState({ type: CarType.COMPANY })}
                 value={'Company'}
                 style={style.radioButton}
                 status={type === CarType.COMPANY ? 'checked' : 'unchecked'}
-              />
+              />*/}
               <Text style={style.text}>{I18n.t('carTypes.companyCar')}</Text>
             </TouchableOpacity>
             {this.securityProvider?.isAdmin() && (
               <TouchableOpacity onPress={() => this.setState({ type: CarType.POOL_CAR })} style={style.typeContainer}>
-                <RadioButton.Android
+                {/*<RadioButton.Android
                   color={commonColors.textColor}
                   uncheckedColor={commonColors.textColor}
                   onPress={() => this.setState({ type: CarType.POOL_CAR })}
                   value={'Pool'}
                   status={type === CarType.POOL_CAR ? 'checked' : 'unchecked'}
-                />
+                />*/}
                 <Text style={style.text}>{I18n.t('carTypes.poolCar')}</Text>
               </TouchableOpacity>
             )}
             <TouchableOpacity onPress={() => this.setState({ type: CarType.PRIVATE })} style={style.typeContainer}>
-              <RadioButton.Android
+              {/*<RadioButton.Android
                 color={commonColors.textColor}
                 onPress={() => this.setState({ type: CarType.PRIVATE })}
                 uncheckedColor={commonColors.textColor}
                 value={'Private'}
                 status={type === CarType.PRIVATE ? 'checked' : 'unchecked'}
-              />
+              />*/}
               <Text style={style.text}>{I18n.t('carTypes.privateCar')}</Text>
             </TouchableOpacity>
           </View>
