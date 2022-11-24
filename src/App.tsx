@@ -558,7 +558,6 @@ export default class App extends React.Component<Props, State> {
     this.location.startListening();
     // Check migration
     const migrationManager = MigrationManager.getInstance();
-    migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
     // Check for app updates
     this.appVersion = await Utils.checkForUpdate();
