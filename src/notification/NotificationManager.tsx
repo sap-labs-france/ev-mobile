@@ -4,20 +4,17 @@ import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messag
 
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { NotificationData, UserNotificationType } from '../types/UserNotifications';
+import { getVersion, getApplicationName, getBundleId } from 'react-native-device-info';
+import {PLATFORM} from "../theme/variables/commonColor";
 
 export default class NotificationManager {
   private static instance: NotificationManager;
   private token: string;
-  private navigator: NavigationContainerRef;
-  private removeNotificationDisplayedListener: () => any;
-  private removeNotificationListener: () => any;
-  private removeNotificationOpenedListener: () => any;
-  private removeTokenRefreshListener: () => any;
+  private navigator: NavigationContainerRef<any>;
   private removeForegroundNotificationListener: () => void;
   private removeBackgroundNotificationListener: () => void;
-  private messageListener: () => any;
+  private removeTokenRefreshEventListener: () => void;
   private centralServerProvider: CentralServerProvider;
- // private lastNotification: NotificationOpen;
 
   // eslint-disable-next-line no-useless-constructor
   private constructor() {}
@@ -33,30 +30,27 @@ export default class NotificationManager {
     this.centralServerProvider = centralServerProvider;
   }
 
-  public async initialize(navigator: NavigationContainerRef): Promise<void> {
+  public async initialize(navigator: NavigationContainerRef<any>): Promise<void> {
     this.navigator = navigator;
     // Check if app has permission
-    const appAuthorizationStatus = await messaging().hasPermission();
-    console.log(appAuthorizationStatus);
-    if (appAuthorizationStatus === messaging.AuthorizationStatus.AUTHORIZED
-        || messaging.AuthorizationStatus.PROVISIONAL
-        // NOT_DETERMINED is used in iOS when user permission not yet requested
-        || messaging.AuthorizationStatus.NOT_DETERMINED
+    let authorizationStatus = await messaging().hasPermission();
+    if (Platform.OS === PLATFORM.IOS &&
+        authorizationStatus !== messaging.AuthorizationStatus.PROVISIONAL &&
+        authorizationStatus !== messaging.AuthorizationStatus.AUTHORIZED
     ) {
       try {
-        // request permission from user (mandatory in iOS, always returning AUTHORIZED on Android)
-        const userAuthorizationStatus = await messaging().requestPermission();
-        if (userAuthorizationStatus === messaging.AuthorizationStatus.AUTHORIZED || messaging.AuthorizationStatus.PROVISIONAL) {
-          try {
-            // Retrieve mobile token
-            const fcmToken = await messaging().getToken();
-            console.log('TOOKENNNNN: ' + fcmToken);
-            if ( fcmToken ) {
-              this.token = fcmToken;
-            }
-          } catch ( error ) {
-            console.error(error);
-          }
+        // requesting permission from user is required for iOS
+        authorizationStatus = await messaging().requestPermission();
+      } catch ( error ) {
+        console.error(error);
+      }
+    }
+    if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED || messaging.AuthorizationStatus.PROVISIONAL) {
+      try {
+        // Retrieve mobile token
+        const fcmToken = await messaging().getToken();
+        if ( fcmToken ) {
+          this.token = fcmToken;
         }
       } catch ( error ) {
         console.error(error);
@@ -65,22 +59,45 @@ export default class NotificationManager {
   }
 
   public async start(): Promise<void> {
-    // Check initial notification when app was closed
+    // Get initial notification received when the app was in quit state
     const initialNotification = await messaging().getInitialNotification();
     if (initialNotification) {
-      this.handleNotification(initialNotification);
+      this.onBackgroundNotificationOpened(initialNotification);
     }
     // Listen for notifications when the app is in background state
-   this.removeBackgroundNotificationListener = messaging().onNotificationOpenedApp((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
-      this.handleNotification(remoteMessage);
-    });
+    this.removeBackgroundNotificationListener = this.removeBackgroundNotificationListener ??
+        messaging().onNotificationOpenedApp((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+          this.onBackgroundNotificationOpened(remoteMessage);
+        });
     // Listen for notifications when app is in foreground state
-    this.removeForegroundNotificationListener = messaging().onMessage((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
-      Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body);
+    this.removeForegroundNotificationListener = this.removeForegroundNotificationListener ??
+        messaging().onMessage((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+          //Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body);
+        });
+    // Listen for mobile token refresh event
+    this.removeTokenRefreshEventListener = messaging().onTokenRefresh((token) => {
+      if (this.centralServerProvider.isUserConnected()) {
+        void this.updateToken(token);
+      }
     });
   }
 
-    private handleNotification(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
+  private async updateToken(token: string) {
+    this.token = token;
+    try {
+      await this.centralServerProvider.saveUserMobileData(this.centralServerProvider.getUserInfo().id, {
+        mobileToken: this.getToken(),
+        mobileOS: Platform.OS,
+        mobileAppName: getApplicationName(),
+        mobileBundleID: getBundleId(),
+        mobileVersion: getVersion()
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+    private onBackgroundNotificationOpened(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
     // Check remote message is of notification type
     if (remoteMessage?.notification) {
       const notificationData = remoteMessage.data as unknown as NotificationData;
@@ -149,12 +166,11 @@ export default class NotificationManager {
 
   public stop() {
     this.removeForegroundNotificationListener?.();
+    this.removeForegroundNotificationListener = null;
     this.removeBackgroundNotificationListener?.();
-    // this.removeNotificationDisplayedListener();
-    // this.removeNotificationListener();
-    // this.removeNotificationOpenedListener();
-    // this.removeTokenRefreshListener();
-    // this.messageListener();
+    this.removeBackgroundNotificationListener = null;
+    this.removeTokenRefreshEventListener?.();
+    this.removeTokenRefreshEventListener = null;
   }
 
   public getToken(): string {
