@@ -51,6 +51,8 @@ jobs:
       run: npm clean-install
     - name: npm run pod:install
       run: npm run pod:install
+    - name: set Node path
+      run: ln -s $(which node) /usr/local/bin/node
     - name: xcodebuild
       run: |
         npm run build:prepare
