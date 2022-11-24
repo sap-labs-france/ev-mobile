@@ -46,9 +46,13 @@ static NSString *onst kRNConcurrentRoot = @"concurrentRoot";
     bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
   #endif
 
+  // Call to prepareInitialProps
   NSDictionary *initProps = [self prepareInitialProps];
+  // Create initial props for Firebase (inject isHeadless prop)
   NSDictionary *appProperties = [RNFBMessagingModule addCustomPropsToUserProps:nil withLaunchOptions:launchOptions];
+  // Define props to use
   NSMutableDictionary *initialProps = [initProps mutableCopy];
+  // Merge initProps with appProperties into initialProps
   [initialProps addEntriesFromDictionary:appProperties];
   UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"eMobility", initialProps);
 
