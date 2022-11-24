@@ -47,7 +47,10 @@ static NSString *onst kRNConcurrentRoot = @"concurrentRoot";
   #endif
 
   NSDictionary *initProps = [self prepareInitialProps];
-  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"eMobility", initProps);
+  NSDictionary *appProperties = [RNFBMessagingModule addCustomPropsToUserProps:nil withLaunchOptions:launchOptions];
+  NSMutableDictionary *initialProps = [initProps mutableCopy];
+  [initialProps addEntriesFromDictionary:appProperties];
+  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"eMobility", initialProps);
 
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];
