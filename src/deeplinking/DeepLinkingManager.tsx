@@ -12,7 +12,7 @@ import Utils from '../utils/Utils';
 
 export default class DeepLinkingManager {
   private static instance: DeepLinkingManager;
-  private navigator: NavigationContainerRef;
+  private navigator: NavigationContainerRef<ReactNavigation.RootParamList>;
   private centralServerProvider: CentralServerProvider;
   private linkingSubscription: EmitterSubscription;
 
