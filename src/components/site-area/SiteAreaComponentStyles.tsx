@@ -42,13 +42,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     subTitleContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      flexWrap: 'wrap',
       width: '100%',
       paddingVertical: '3@s'
     },
     address: {
       color: commonColor.headerTextColor,
       fontSize: '13@s',
-      width: '85%',
+      flex: 1,
       marginRight: '10@s'
     },
     distance: {
