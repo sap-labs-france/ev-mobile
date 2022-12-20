@@ -128,7 +128,7 @@ export default class SecuredStorage {
 
   public static async loadFilterValue(user: UserToken, filterInternalID: string): Promise<string | boolean> {
     // Get
-    const value = await SecuredStorage.getString(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
+    const value = await SecuredStorage.getString(`${user?.tenantID}~${user?.id}~filter~${filterInternalID}`);
     if (value === 'null' || value === 'undefined' ) {
       return null;
     }
