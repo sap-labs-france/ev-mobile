@@ -18,7 +18,15 @@ export enum UserNotificationType {
 }
 
 export interface NotificationData {
+  [p: string]: string;
   tenantID: string;
   tenantSubdomain: string;
   notificationType: UserNotificationType;
+  deepLink?: string;
+}
+
+export interface Notification {
+  [p: string]: any;
+  data: NotificationData;
+  notification: any;
 }
