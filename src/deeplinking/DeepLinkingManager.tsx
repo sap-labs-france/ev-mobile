@@ -26,7 +26,7 @@ export default class DeepLinkingManager {
     return DeepLinkingManager.instance;
   }
 
-  public initialize(navigator: NavigationContainerRef, centralServerProvider: CentralServerProvider) {
+  public initialize(navigator: NavigationContainerRef<ReactNavigation.RootParamList>, centralServerProvider: CentralServerProvider) {
     // Keep
     this.navigator = navigator;
     this.centralServerProvider = centralServerProvider;
@@ -83,12 +83,10 @@ export default class DeepLinkingManager {
       // Disable
       this.centralServerProvider.setAutoLoginDisabled(true);
       // Navigate
-      this.navigator.dispatch(
-        CommonActions.navigate({
-          name: 'ResetPassword',
-          key: `${Utils.randomNumber()}`,
-          params: { tenantSubDomain: response.tenant, hash: response.hash }
-        })
+      this.navigator.navigate('ResetPassword', {
+        key: `${Utils.randomNumber()}`,
+        params: { tenantSubDomain: response.tenant, hash: response.hash }
+      }
       );
     });
   };
