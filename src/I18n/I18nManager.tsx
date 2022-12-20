@@ -228,7 +228,7 @@ export default class I18nManager {
       options.format =  `${durationSecs < 36000 ? '0' : ''}{hour}:{minutes}`;
     }
     const formatter =  new DurationUnitFormat(i18n.locale, options);
-    return formatter.format(durationSecs)
+    return formatter.format(durationSecs);
   }
 
   private static isValidDate(date: Date): boolean {
