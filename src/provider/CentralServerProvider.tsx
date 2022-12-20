@@ -279,6 +279,15 @@ export default class CentralServerProvider {
     if (this.tenant) {
       await SecuredStorage.clearUserToken(this.tenant.subdomain);
     }
+    try {
+      // Clear mobile data on logout
+      await this.saveUserMobileData(this.getUserInfo().id, {});
+      await this.axiosInstance.get(`${this.buildRestServerAuthURL(this.tenant)}/${RESTServerRoute.REST_SIGNOUT}`);
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e);
+      }
+    }
     // Clear local data
     this.token = null;
     this.decodedToken = null;
