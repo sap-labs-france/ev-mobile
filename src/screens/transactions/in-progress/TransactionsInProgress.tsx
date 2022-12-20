@@ -61,6 +61,30 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     if (!this.screenFilters) {
       this.refresh(true);
     }
+    await this.handleNavigationParameters();
+  }
+
+  public async componentDidFocus(): Promise<void> {
+    super.componentDidFocus();
+    await this.handleNavigationParameters();
+  }
+
+  private async handleNavigationParameters(): Promise<void> {
+    const transactionID = Utils.getParamFromNavigation(this.props.route, 'TransactionID', null, true) as number;
+    if (transactionID) {
+      try {
+        const transaction = await this.centralServerProvider.getTransaction(transactionID);
+        this.props.navigation.navigate('ChargingStationConnectorDetailsTabs', {
+          params: {
+            chargingStationID: transaction?.chargeBoxID,
+            connectorID: transaction?.connectorId
+          },
+          key: `${Utils.randomNumber()}`
+        });
+      } catch (e) {
+
+      }
+    }
   }
 
   public setState = (

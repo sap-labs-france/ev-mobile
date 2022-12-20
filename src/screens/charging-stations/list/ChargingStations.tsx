@@ -86,7 +86,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public async componentDidMount() {
     // Get initial filters
-    await super.componentDidMount()
+    await super.componentDidMount();
     const { navigation } = this.props;
     // Enable swipe for opening sidebar
     this.parent = navigation.getParent();
@@ -105,6 +105,14 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.parent?.setOptions({
       swipeEnabled: false
     });
+  }
+
+  private handleNavigationParameters(): void {
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'ChargingStationID', null, true);
+    if (chargingStationID) {
+      this.searchText = chargingStationID as string;
+      this.setState({showMap: false});
+    }
   }
 
   public componentDidFocus(): void {
@@ -218,12 +226,12 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     // Else, if currentLocation available, use it
     const currentLocation = await Utils.getUserCurrentLocation();
     if ( currentLocation ) {
-        return {
-          longitude: currentLocation.longitude,
-          latitude: currentLocation.latitude,
-          longitudeDelta: 0.01,
-          latitudeDelta: 0.01
-        }
+      return {
+        longitude: currentLocation.longitude,
+        latitude: currentLocation.latitude,
+        longitudeDelta: 0.01,
+        latitudeDelta: 0.01
+      };
     }
     // Else, use coordinates of the first charging station
     const firstChargingStationResponse = await this.getChargingStations('', 0, 1);
@@ -507,7 +515,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
           ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
         />
-        <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        <SimpleSearchComponent searchText={this.searchText} containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
             <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />

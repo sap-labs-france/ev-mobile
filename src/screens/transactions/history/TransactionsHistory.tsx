@@ -65,6 +65,22 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     if (!this.screenFilters) {
       this.refresh(true);
     }
+    this.handleNavigationParameters();
+  }
+
+  public async componentDidFocus() {
+    super.componentDidFocus();
+    this.handleNavigationParameters();
+  }
+
+  private handleNavigationParameters(): void {
+    const transactionID = Utils.getParamFromNavigation(this.props.route, 'TransactionID', null, true);
+    if (transactionID) {
+      this.props.navigation.navigate('TransactionDetailsTabs', {
+        params: {transactionID},
+        key: `${Utils.randomNumber()}`
+      });
+    }
   }
 
   public setState = (
@@ -86,7 +102,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
         EndDateTime: endDateTime?.toISOString(),
         Search: this.searchText,
         Issuer: !issuer
-      }
+      };
       const transactions = await this.centralServerProvider.getTransactions(params, paging, ['-timestamp']);
       // Get total number of records
       if (transactions?.count === -1) {
