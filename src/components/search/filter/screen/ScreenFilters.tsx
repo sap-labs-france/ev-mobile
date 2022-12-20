@@ -93,7 +93,7 @@ export default class ScreenFilters<T, P extends ScreenFiltersProps<T> = ScreenFi
   onFiltersChanged(newVisibleFilters: T = {} as T, newModalFilters: T = {} as T, applyFilters?: boolean) {
     const { onFilterChanged } = this.props;
     const filters = { ...this.state.filters, ...newVisibleFilters, ...newModalFilters };
-    const modalFilters = { ...this.state.modalFilters, ...newModalFilters}
+    const modalFilters = { ...this.state.modalFilters, ...newModalFilters};
     this.setState({ filters, modalFilters }, applyFilters ? () => onFilterChanged(filters) : () => {});
   }
 

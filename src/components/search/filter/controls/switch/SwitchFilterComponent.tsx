@@ -18,7 +18,7 @@ export default class SwitchFilterComponent<T> extends FilterControlComponent<T> 
     super(props);
     this.state = {
       value: props.initialValue
-    }
+    };
   }
 
   public canBeSaved() {

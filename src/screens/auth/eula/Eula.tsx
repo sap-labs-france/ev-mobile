@@ -9,7 +9,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './EulaStyles';
 import { scale } from 'react-native-size-matters';
-import RenderHtml, {useContentWidth} from 'react-native-render-html';
+import RenderHtml from 'react-native-render-html';
 
 export interface Props extends BaseProps {}
 
