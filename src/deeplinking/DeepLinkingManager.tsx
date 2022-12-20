@@ -19,6 +19,18 @@ export default class DeepLinkingManager {
   // eslint-disable-next-line no-useless-constructor
   private constructor() {}
 
+  public static getAuthorizedURLs(): string[] {
+    return [
+      ...((__DEV__ && ['http://*.localhost:45000']) || []),
+      'https://*.e-mobility-group.org',
+      'https://*.e-mobility-group.com',
+      'https://*.e-mobility-group.eu',
+      'https://*.e-mobility-labs.com',
+      'https://*.e-mobility-labs.org',
+      'https://*.qa-e-mobility-group.com',
+    ];
+  }
+
   public static getInstance(): DeepLinkingManager {
     if (!DeepLinkingManager.instance) {
       DeepLinkingManager.instance = new DeepLinkingManager();
