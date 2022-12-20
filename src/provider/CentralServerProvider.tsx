@@ -10,7 +10,7 @@ import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
-import NotificationManager from '../notification/NotificationManager';
+import Notifications from '../notification/Notifications';
 import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
@@ -54,7 +54,6 @@ export default class CentralServerProvider {
   private siteImagesCache: Map<string, string> = new Map<string, string>();
   private tenantLogosCache: Map<string, string> = new Map<string, string>();
   private autoLoginDisabled = false;
-  private notificationManager: NotificationManager;
 
   private securityProvider: SecurityProvider = null;
 
@@ -73,10 +72,6 @@ export default class CentralServerProvider {
         return response;
       });
     }
-  }
-
-  public setNotificationManager(notificationManager: NotificationManager): void {
-    this.notificationManager = notificationManager;
   }
 
   public async initialize(): Promise<void> {
@@ -207,11 +202,6 @@ export default class CentralServerProvider {
     }
   }
 
-  public hasUserConnectionExpired(): boolean {
-    this.debugMethod('hasUserConnectionExpired');
-    return this.isUserConnected() && !this.isUserConnectionValid();
-  }
-
   public isUserConnected(): boolean {
     this.debugMethod('isUserConnected');
     return !!this.token;
@@ -248,14 +238,6 @@ export default class CentralServerProvider {
     this.password = null;
   }
 
-  public getUserEmail(): string {
-    return this.email;
-  }
-
-  public getUserCurrency(): string {
-    return this.currency;
-  }
-
   public getUserLocale(): string {
     if (Configuration.isServerLocalePreferred && this.locale && Constants.SUPPORTED_LOCALES.includes(this.locale)) {
       return this.locale;
@@ -274,16 +256,8 @@ export default class CentralServerProvider {
     return Utils.getDeviceDefaultSupportedLanguage();
   }
 
-  public getUserPassword(): string {
-    return this.password;
-  }
-
   public getUserTenant(): TenantConnection {
     return this.tenant;
-  }
-
-  public getUserToken(): string {
-    return this.token;
   }
 
   public getUserInfo(): UserToken {
@@ -351,7 +325,7 @@ export default class CentralServerProvider {
     try {
       // Save the User's token
       await this.saveUserMobileData(this.getUserInfo().id, {
-        mobileToken: this.notificationManager.getToken(),
+        mobileToken: Notifications.getToken(),
         mobileOS: Platform.OS,
         mobileAppName: getApplicationName(),
         mobileVersion: getVersion(),

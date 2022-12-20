@@ -1,4 +1,3 @@
-import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
 import { HStack, Icon, IIconProps } from 'native-base';
@@ -30,6 +29,7 @@ import SecurityProvider from '../../provider/SecurityProvider';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
+import {AuthContext} from '../../context/AuthContext';
 
 export interface Props extends BaseProps {}
 
@@ -92,6 +92,7 @@ export default class SideBar extends React.Component<Props, State> {
     await this.getUserInfo();
     const appVersion = await Utils.checkForUpdate();
     this.setState({ appVersion, tenantLogo });
+    // this.componentFocusUnsubscribe = this.props.navigation.addListener('focus', () => this.componentDidFocus());
     // Init User (delay it)
   }
 
@@ -111,25 +112,15 @@ export default class SideBar extends React.Component<Props, State> {
     this.setState({
       userToken: this.centralServerProvider.getUserInfo(),
       isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false,
-      tenantName: userInfo.tenantName
+      tenantName: userInfo?.tenantName
     });
   };
 
-  public async logoff() {
-    const userTenant = this.centralServerProvider.getUserTenant();
+  public async logoff(callback?: () => void) {
     // Logoff
     this.centralServerProvider.setAutoLoginDisabled(true);
     await this.centralServerProvider.logoff();
-    // Navigate to login
-    this.props.navigation.dispatch(
-      StackActions.replace('AuthNavigator', {
-        name: 'Login',
-        key: `${Utils.randomNumber()}`,
-        params: {
-          tenantSubDomain: userTenant.subdomain
-        }
-      })
-    );
+    callback?.();
   }
 
   public navigateTo = (container: string, screen: string, params?: {}) => {
@@ -167,7 +158,7 @@ export default class SideBar extends React.Component<Props, State> {
             </View>
             {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
           </View>
-          <ScrollView contentContainerStyle={style.scrollviewInnerContainer} style={style.scrollview}>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={style.scrollviewInnerContainer} style={style.scrollview}>
             <View style={style.sidebarSection}>
               <SidebarEntry onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
                 <SidebarIcon as={MaterialIcons} name="qr-code-scanner" />
@@ -260,9 +251,13 @@ export default class SideBar extends React.Component<Props, State> {
                   <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('sidebar.settings')}</Text>
                 </TouchableOpacity>
                 <View style={{width: scale(4), height: scale(4), borderRadius: scale(4), backgroundColor: commonColor.primary, marginHorizontal: scale(10)}} />
-                <TouchableOpacity style={style.logoutContainer} onPress={async () => this.logoff()}>
-                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
-                </TouchableOpacity>
+                <AuthContext.Consumer>
+                  {authService => (
+                    <TouchableOpacity style={style.logoutContainer} onPress={async () => this.logoff(() => authService.handleSignOut())}>
+                      <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
+                    </TouchableOpacity>
+                  )}
+                </AuthContext.Consumer>
               </HStack>
             </View>
           </View>
