@@ -43,7 +43,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
     // Ok
     this.mounted = true;
-    this.screenFilters?.loadInitialFilters();
+    await this.screenFilters?.loadInitialFilters();
   }
 
   public componentWillUnmount() {
@@ -51,7 +51,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.componentFocusUnsubscribe?.();
     this.componentBlurUnsubscribe?.();
     // Unbind the back button and reset its default behavior (Android)
-    this.backHandler.remove();
+    this.backHandler?.remove();
   }
 
   public setHeaderComponent(headerComponent: HeaderComponent, headerDisplay?: boolean) {

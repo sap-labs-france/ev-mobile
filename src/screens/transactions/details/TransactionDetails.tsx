@@ -15,7 +15,6 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
 

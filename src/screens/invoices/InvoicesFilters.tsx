@@ -20,19 +20,19 @@ export default class InvoicesFilters extends ScreenFilters<InvoicesFiltersDef> {
   public render() {
     const { filters } = this.state;
     return (
-        <FilterModalContainerComponent
-          onFilterChanged={(filters) => this.onFiltersChanged(null, filters, true)}
-          ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
-            this.setFilterModalContainerComponent(filterVisibleContainerComponent)
-          }>
-          {this.securityProvider?.canListUsers() && (
-            <UserFilterComponent
+      <FilterModalContainerComponent
+        onFilterChanged={(newFilters) => this.onFiltersChanged(null, newFilters, true)}
+        ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
+          this.setFilterModalContainerComponent(filterVisibleContainerComponent)
+        }>
+        {this.securityProvider?.canListUsers() && (
+          <UserFilterComponent
             filterID={'users'}
             initialValue={filters.users}
-            ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
+            ref={(userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
           />
-          )}
-        </FilterModalContainerComponent>
+        )}
+      </FilterModalContainerComponent>
     );
   }
 }

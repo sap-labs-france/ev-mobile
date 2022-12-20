@@ -25,7 +25,7 @@ export default class CarsFilters extends ScreenFilters<CarsFiltersDef> {
             <UserFilterComponent
               filterID={'users'}
               initialValue={filters.users}
-              ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
+              ref={(userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
             />
           )}
         </FilterModalContainerComponent>
