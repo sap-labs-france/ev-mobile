@@ -29,26 +29,7 @@ export default class SecuredStorage {
       key: string;
       navigationState: NavigationState;
     };
-    // Check the key
-    if (navigationState) {
-      if (navigationState.key === navigationID) {
-        const routeNames: string[] = [];
-        // Clear dups
-        if (__DEV__ && !Utils.isEmptyArray(navigationState.navigationState?.routes)) {
-          // FIXME: 'routes' is a read-only property.
-          // @ts-ignore
-          navigationState.navigationState.routes = navigationState.navigationState?.routes.filter((route) => {
-            if (!routeNames.includes(route.name)) {
-              routeNames.push(route.name);
-              return true;
-            }
-            return false;
-          });
-        }
-        return navigationState.navigationState;
-      }
-    }
-    return null;
+    return navigationState?.navigationState;
   }
 
   public static async saveNavigationState(navigationState: NavigationState): Promise<void> {
