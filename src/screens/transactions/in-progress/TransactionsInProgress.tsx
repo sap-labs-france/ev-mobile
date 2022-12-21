@@ -59,7 +59,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     await super.componentDidMount();
     // When filters are enabled, first refresh is triggered via onFiltersChanged
     if (!this.screenFilters) {
-      this.refresh(true);
+      await this.refresh(true);
     }
     await this.handleNavigationParameters();
   }

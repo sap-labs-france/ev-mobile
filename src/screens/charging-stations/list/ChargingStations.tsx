@@ -95,8 +95,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     });
     // When filters are enabled, first refresh is triggered via onFiltersChanged
     if (!this.screenFilters) {
-      this.refresh(true);
+      await this.refresh(true);
     }
+    this.handleNavigationParameters();
   }
 
   public componentWillUnmount() {
@@ -105,6 +106,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.parent?.setOptions({
       swipeEnabled: false
     });
+    this.handleNavigationParameters();
   }
 
   private handleNavigationParameters(): void {

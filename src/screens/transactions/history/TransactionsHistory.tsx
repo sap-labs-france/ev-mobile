@@ -63,12 +63,12 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     await super.componentDidMount();
     // When filters are enabled, first refresh is triggered via onFiltersChanged
     if (!this.screenFilters) {
-      this.refresh(true);
+      await this.refresh(true);
     }
     this.handleNavigationParameters();
   }
 
-  public async componentDidFocus() {
+  public componentDidFocus() {
     super.componentDidFocus();
     this.handleNavigationParameters();
   }
