@@ -281,7 +281,7 @@ export default class CentralServerProvider {
     }
     try {
       // Clear mobile data on logout
-      await this.saveUserMobileData(this.getUserInfo().id, {});
+      await this.saveUserMobileData(this.getUserInfo().id, {} as UserMobileData);
       await this.axiosInstance.get(`${this.buildRestServerAuthURL(this.tenant)}/${RESTServerRoute.REST_SIGNOUT}`);
     } catch (e) {
       if (__DEV__) {
