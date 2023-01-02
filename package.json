@@ -174,7 +174,7 @@
     "deep-object-diff": "^1.1.7",
     "eslint": "^7.32.0",
     "eslint-define-config": "^1.0.9",
-    "eslint-plugin-import": "^2.23.3",
+    "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-jsdoc": "^36.1.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-react": "^7.26.0",
