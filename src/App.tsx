@@ -520,10 +520,10 @@ function createAppDrawerNavigator(props: BaseProps) {
 
 export interface Props {}
 interface State {
-  switchTheme?: boolean;
   navigationState?: InitialState;
   showAppUpdateDialog?: boolean;
   isSignedIn?: boolean;
+  theme?: string;
 }
 
 export default class App extends React.Component<Props, State> {
@@ -546,7 +546,6 @@ export default class App extends React.Component<Props, State> {
       handleSignOut: () => this.setState({isSignedIn: false})
     };
     this.state = {
-      switchTheme: false,
       navigationState: null,
       showAppUpdateDialog: false,
       isSignedIn: undefined
@@ -566,10 +565,10 @@ export default class App extends React.Component<Props, State> {
     // Set up theme
     const themeManager = ThemeManager.getInstance();
     themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
-    this.setState({ switchTheme: true });
     // Listen for theme changes
     this.themeSubscription = Appearance.addChangeListener(({ colorScheme }) => {
       themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
+      this.setState({theme: colorScheme});
     });
 
     // Get the central server
@@ -618,8 +617,6 @@ export default class App extends React.Component<Props, State> {
       showAppUpdateDialog: !!this.appVersion?.needsUpdate,
       isSignedIn
     });
-
-    hide();
   }
 
   public componentWillUnmount() {
@@ -629,7 +626,7 @@ export default class App extends React.Component<Props, State> {
   }
 
   public render() {
-    const { showAppUpdateDialog, isSignedIn } = this.state;
+    const { showAppUpdateDialog, isSignedIn, theme } = this.state;
     return (
       <NativeBaseProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
