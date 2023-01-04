@@ -11,8 +11,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import I18n from 'i18n-js';
 import {Icon, NativeBaseProvider} from 'native-base';
-import React, {useRef, useState} from 'react';
-import {Appearance, Linking, NativeEventSubscription, StatusBar, Text, View} from 'react-native';
+import React from 'react';
+import {Appearance, NativeEventSubscription, StatusBar, Text} from 'react-native';
 import { scale } from 'react-native-size-matters';
 
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
@@ -66,13 +66,12 @@ import {hide} from 'react-native-bootsplash';
 import {ThemeType} from './types/Theme';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import messaging from '@react-native-firebase/messaging';
-import {AuthContext, AuthService} from './context/AuthContext';
+import {AuthContext} from './context/AuthContext';
 import Loading from './screens/loading/Loading';
-import UserToken from "./types/UserToken";
-import jwtDecode from "jwt-decode";
-import {Notification, NotificationData} from "./types/UserNotifications";
-import Message from "./utils/Message";
-import Configuration from "./config/Configuration";
+import {Notification} from './types/UserNotifications';
+import Message from './utils/Message';
+import Configuration from './config/Configuration';
+import {RootSiblingParent} from 'react-native-root-siblings';
 
 // Init i18n
 I18nManager.initialize();
@@ -571,7 +570,6 @@ export default class App extends React.Component<Props, State> {
     // Listen for theme changes
     this.themeSubscription = Appearance.addChangeListener(({ colorScheme }) => {
       themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
-      this.setState({ switchTheme: false }, () => this.setState({ switchTheme: true }));
     });
 
     // Get the central server
@@ -620,6 +618,8 @@ export default class App extends React.Component<Props, State> {
       showAppUpdateDialog: !!this.appVersion?.needsUpdate,
       isSignedIn
     });
+
+    hide();
   }
 
   public componentWillUnmount() {
@@ -629,30 +629,22 @@ export default class App extends React.Component<Props, State> {
   }
 
   public render() {
-    const { switchTheme, showAppUpdateDialog, isSignedIn } = this.state;
-    return switchTheme ? (
+    const { showAppUpdateDialog, isSignedIn } = this.state;
+    return (
       <NativeBaseProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          {/*
           <RootSiblingParent>
-*/}
-          {showAppUpdateDialog && (
-            <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />
-          )}
-          <StatusBar barStyle={ThemeManager.getInstance()?.isThemeTypeIsDark() ? 'light-content' : 'dark-content'} translucent backgroundColor="transparent" />
-          {isSignedIn == null ?
-            <Loading />
-            :
-            this.createRootNavigator()
-          }
-          {/*
+            {showAppUpdateDialog && (
+              <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />
+            )}
+            <StatusBar barStyle={ThemeManager.getInstance()?.isThemeTypeIsDark() ? 'light-content' : 'dark-content'} translucent backgroundColor="transparent" />
+            {isSignedIn == null ?
+              <Loading/>
+              :
+              this.createRootNavigator()
+            }
           </RootSiblingParent>
-*/}
         </GestureHandlerRootView>
-      </NativeBaseProvider>
-    ) : (
-      <NativeBaseProvider>
-        <View />
       </NativeBaseProvider>
     );
   }
@@ -735,7 +727,9 @@ export default class App extends React.Component<Props, State> {
           >
             <rootStack.Navigator initialRouteName="AuthNavigator" screenOptions={{ headerShown: false }}>
               {isSignedIn ?
-                <rootStack.Screen name="AppDrawerNavigator" children={createAppDrawerNavigator} />
+                <rootStack.Screen name="AppDrawerNavigator">
+                  {createAppDrawerNavigator}
+                </rootStack.Screen>
                 :
                 <rootStack.Screen options={{animationTypeForReplace: 'pop'}} name="AuthNavigator" children={createAuthNavigator} />
               }
