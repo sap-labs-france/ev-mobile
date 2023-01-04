@@ -35,7 +35,7 @@ export default class MigrationManager {
         Message.showError(I18n.t('general.migrationError'));
       }
     }
-  };
+  }
 
   public async refactorTenants(tenants: any[]): Promise<TenantConnection[]> {
     tenants.forEach(tenant => {

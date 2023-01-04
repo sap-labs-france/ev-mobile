@@ -5,7 +5,6 @@ import { SecuredStorageKey } from '../types/SecuredStorageKeys';
 import Tenant, { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
 import UserToken from '../types/UserToken';
-import Utils from './Utils';
 import { Settings } from '../types/Settings';
 
 // Generate a new Id for persisting the navigation each time the app is launched for the first time
