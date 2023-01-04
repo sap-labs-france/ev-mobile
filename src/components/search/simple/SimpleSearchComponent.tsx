@@ -52,7 +52,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
     if (this.props.searchText !== this.state.searchText) {
-      this.setState({searchText: this.props.searchText});
+      this.setState({searchText: this.props.searchText}, () => this.props.onChange(this.props.searchText));
     }
   }
 

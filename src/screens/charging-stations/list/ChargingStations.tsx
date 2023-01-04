@@ -1,7 +1,16 @@
 import I18n from 'i18n-js';
 import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, BackHandler, Image, ImageStyle, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  BackHandler,
+  Image,
+  ImageStyle,
+  SafeAreaView,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import computeConnectorStatusStyles from '../../../components/connector-status/ConnectorStatusComponentStyles';
@@ -106,13 +115,20 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.parent?.setOptions({
       swipeEnabled: false
     });
-    this.handleNavigationParameters();
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    const prevNavParams = JSON.stringify(prevProps.route?.params);
+    const currentNavParams = JSON.stringify(this.props.route?.params);
+    if (currentNavParams &&  currentNavParams !== prevNavParams) {
+      this.handleNavigationParameters();
+    }
   }
 
   private handleNavigationParameters(): void {
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'ChargingStationID', null, true);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'ChargingStationID', null, true) as string;
     if (chargingStationID) {
-      this.searchText = chargingStationID as string;
+      this.searchText = chargingStationID;
       this.setState({showMap: false});
     }
   }

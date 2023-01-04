@@ -68,9 +68,12 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     this.handleNavigationParameters();
   }
 
-  public componentDidFocus() {
-    super.componentDidFocus();
-    this.handleNavigationParameters();
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    const prevNavParams = JSON.stringify(prevProps.route?.params);
+    const currentNavParams = JSON.stringify(this.props.route?.params);
+    if (currentNavParams &&  currentNavParams !== prevNavParams) {
+      this.handleNavigationParameters();
+    }
   }
 
   private handleNavigationParameters(): void {

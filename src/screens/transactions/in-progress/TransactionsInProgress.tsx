@@ -64,9 +64,12 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     await this.handleNavigationParameters();
   }
 
-  public async componentDidFocus(): Promise<void> {
-    super.componentDidFocus();
-    await this.handleNavigationParameters();
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    const prevNavParams = JSON.stringify(prevProps.route?.params);
+    const currentNavParams = JSON.stringify(this.props.route?.params);
+    if (currentNavParams &&  currentNavParams !== prevNavParams) {
+      this.handleNavigationParameters();
+    }
   }
 
   private async handleNavigationParameters(): Promise<void> {
