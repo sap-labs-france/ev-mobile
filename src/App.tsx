@@ -133,14 +133,6 @@ const createTabBarIcon = (
   );
 };
 
-const persistNavigationState = async (navigationState: NavigationState) => {
-  try {
-    await SecuredStorage.saveNavigationState(navigationState);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 function createAuthNavigator(props: BaseProps) {
   return (
     <AuthStack.Navigator initialRouteName={'Login'} screenOptions={{ headerShown: false }}>
@@ -561,7 +553,6 @@ export default class App extends React.Component<Props, State> {
 
 
   public async componentDidMount() {
-    console.log('mount App');
     // Set up theme
     const themeManager = ThemeManager.getInstance();
     themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
