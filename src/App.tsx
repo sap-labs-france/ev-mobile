@@ -574,16 +574,18 @@ export default class App extends React.Component<Props, State> {
     // Setup notifications
     await Notifications.initialize();
 
-    // Set authentication state
+    // Store initial url through which app was launched (if any)
     const initialNotification = await messaging().getInitialNotification() as Notification;
     const canHandleNotification = await Notifications.canHandleNotification(initialNotification);
     let tenantSubdomain: string;
-    let isSignedIn = false;
     if (canHandleNotification) {
       tenantSubdomain = initialNotification.data.tenantSubdomain;
       // Store the initial url because second call returns null
       this.initialUrl = initialNotification.data.deepLink;
     }
+
+    // Set authentication state
+    let isSignedIn = false;
     try {
       const userCredentials = await SecuredStorage.getUserCredentials(tenantSubdomain);
       if (userCredentials?.password && userCredentials?.email && userCredentials?.tenantSubDomain) {
