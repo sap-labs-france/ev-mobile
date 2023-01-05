@@ -165,12 +165,10 @@ function createReportErrorNavigator(props: BaseProps) {
 
 function getTabStyle(): any {
   const commonColor = Utils.getCurrentCommonColor();
-  const insets = useSafeAreaInsets();
   return {
     backgroundColor: commonColor.containerBgColor,
     borderTopWidth: 0.5,
     borderTopColor: commonColor.disabledDark,
-    paddingBottom: insets.bottom,
     paddingTop: 0,
     marginTop: 0
   };
@@ -617,7 +615,7 @@ export default class App extends React.Component<Props, State> {
   }
 
   public render() {
-    const { showAppUpdateDialog, isSignedIn, theme } = this.state;
+    const { showAppUpdateDialog, isSignedIn } = this.state;
     return (
       <NativeBaseProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
