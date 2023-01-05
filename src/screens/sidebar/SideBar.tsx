@@ -62,8 +62,6 @@ export default class SideBar extends React.Component<Props, State> {
   public props: Props;
   private centralServerProvider: CentralServerProvider;
   private securityProvider: SecurityProvider;
-  private componentFocusUnsubscribe: () => void;
-  private componentBlurUnsubscribe: () => void;
 
   public constructor(props: Props) {
     super(props);
@@ -92,13 +90,6 @@ export default class SideBar extends React.Component<Props, State> {
     await this.getUserInfo();
     const appVersion = await Utils.checkForUpdate();
     this.setState({ appVersion, tenantLogo });
-    // this.componentFocusUnsubscribe = this.props.navigation.addListener('focus', () => this.componentDidFocus());
-    // Init User (delay it)
-  }
-
-  public componentWillUnmount(): void {
-    this.componentFocusUnsubscribe?.();
-    this.componentBlurUnsubscribe?.();
   }
 
   public async getUpdateDate() {
