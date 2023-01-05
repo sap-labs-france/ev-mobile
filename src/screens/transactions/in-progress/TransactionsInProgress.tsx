@@ -61,7 +61,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     if (!this.screenFilters) {
       await this.refresh(true);
     }
-    await this.handleNavigationParameters();
+    this.handleNavigationParameters();
   }
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
