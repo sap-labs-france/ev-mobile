@@ -187,8 +187,7 @@
     "mandatoryErrorDescription": "La descrizione è obbligatoria",
     "reportErrorSuccess": "L'errore è stato segnalato con successo",
     "reportErrorFailed": "Impossibile segnalare l'errore",
-    "createEndpoint": "Créer endpoint",
-    "autoLoginFailed": "We could not sign you in automatically"
+    "createEndpoint": "Créer endpoint"
     },
   "qrCode": {
     "qrCode": "Codice QR",

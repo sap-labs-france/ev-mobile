@@ -73,7 +73,6 @@ export default class Notifications {
           if (userCredentials?.password && userCredentials?.email && userCredentials?.tenantSubDomain) {
             await this.centralServerProvider.login(userCredentials.email, userCredentials.password, true, userCredentials.tenantSubDomain);
           } else {
-            Message.showError(I18n.t('authentication.autoLoginFailed'));
             return false;
           }
         } catch (error) {

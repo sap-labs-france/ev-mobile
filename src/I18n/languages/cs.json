@@ -187,8 +187,7 @@
     "mandatoryErrorDescription": "Popis je povinný",
     "reportErrorSuccess": "Chyba byla úspěšně nahlášena",
     "reportErrorFailed": "Chybu nelze nahlásit",
-    "createEndpoint": "Create endpoint",
-    "autoLoginFailed": "We could not sign you in automatically"
+    "createEndpoint": "Create endpoint"
   },
   "qrCode": {
     "qrCode": "QR kód",

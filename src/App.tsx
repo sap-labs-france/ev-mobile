@@ -593,7 +593,6 @@ export default class App extends React.Component<Props, State> {
         isSignedIn = true;
       } else {
         this.initialUrl = `${Configuration.AWS_REST_ENDPOINT_PROD}/login?tenantSubDomain=${userCredentials?.tenantSubDomain}`;
-        Message.showError(I18n.t('authentication.autoLoginFailed'));
       }
     } catch (error) {
       if (__DEV__) {
