@@ -187,7 +187,8 @@
     "mandatoryErrorDescription": "La description est obligatoire",
     "reportErrorSuccess": "L'erreur a été envoyée avec succès",
     "reportErrorFailed": "Impossible d'envoyer l'erreur",
-    "createEndpoint": "Créer endpoint"
+    "createEndpoint": "Créer endpoint",
+    "autoLoginFailed": "Nous n'avons pas pu vous authentifier automatiquement"
   },
   "qrCode": {
     "qrCode": "QR Code",
