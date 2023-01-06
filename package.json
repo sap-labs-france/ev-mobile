@@ -90,7 +90,7 @@
     "@react-navigation/material-bottom-tabs": "^6.2.5",
     "@react-navigation/native": "^6.0.14",
     "@react-navigation/stack": "^6.3.5",
-    "@stripe/stripe-react-native": "^0.21.0",
+    "@stripe/stripe-react-native": "^0.22.1",
     "@types/intl-unofficial-duration-unit-format": "^3.1.0",
     "axios": "^0.22.0",
     "base-64": "^1.0.0",
