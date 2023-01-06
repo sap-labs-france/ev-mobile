@@ -5,14 +5,13 @@ import {
   InitialState, LinkingOptions,
   NavigationContainer,
   NavigationContainerRef,
-  NavigationState
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import I18n from 'i18n-js';
 import {Icon, NativeBaseProvider} from 'native-base';
 import React from 'react';
-import {Appearance, NativeEventSubscription, StatusBar, Text} from 'react-native';
+import {Appearance, ColorSchemeName, NativeEventSubscription, StatusBar, Text} from 'react-native';
 import { scale } from 'react-native-size-matters';
 
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
@@ -69,7 +68,6 @@ import messaging from '@react-native-firebase/messaging';
 import {AuthContext} from './context/AuthContext';
 import Loading from './screens/loading/Loading';
 import {Notification} from './types/UserNotifications';
-import Message from './utils/Message';
 import Configuration from './config/Configuration';
 import {RootSiblingParent} from 'react-native-root-siblings';
 
@@ -339,7 +337,7 @@ function createSitesNavigator(props: BaseProps) {
   );
 }
 
-function createChargingStationsNavigator(props: BaseProps) {
+function ChargingStationsNavigator(props: BaseProps) {
   return (
     <ChargingStationsStack.Navigator initialRouteName="ChargingStations" screenOptions={{ headerShown: false, gestureEnabled: false }}>
       <ChargingStationsStack.Screen
@@ -378,7 +376,7 @@ function createChargingStationsNavigator(props: BaseProps) {
   );
 }
 
-function createTransactionHistoryNavigator(props: BaseProps) {
+function TransactionHistoryNavigator(props: BaseProps) {
   return (
     <TransactionHistoryStack.Navigator initialRouteName="TransactionsHistory" screenOptions={{ headerShown: false }}>
       <TransactionHistoryStack.Screen
@@ -395,7 +393,7 @@ function createTransactionHistoryNavigator(props: BaseProps) {
   );
 }
 
-function createTransactionInProgressNavigator(props: BaseProps) {
+function TransactionInProgressNavigator(props: BaseProps) {
   return (
     <TransactionInProgressStack.Navigator initialRouteName="TransactionsInProgress" screenOptions={{ headerShown: false }}>
       <TransactionInProgressStack.Screen
@@ -437,7 +435,7 @@ function createCarsNavigator(props: BaseProps) {
   );
 }
 
-function createInvoicesNavigator(props: BaseProps) {
+function InvoicesNavigator(props: BaseProps) {
   return (
     <InvoicesStack.Navigator initialRouteName="Invoices" screenOptions={{ headerShown: false }}>
       <InvoicesStack.Screen name="Invoices" component={Invoices} initialParams={props?.route?.params?.params} />
@@ -488,20 +486,20 @@ function createAppDrawerNavigator(props: BaseProps) {
           width: '83%'
         }
       })}
-      backBehavior={'history'}
+      backBehavior={'initialRoute'}
       drawerPosition="left"
       drawerContent={(drawerProps) => <Sidebar {...drawerProps} />}>
-      <AppDrawer.Screen name="ChargingStationsNavigator" children={createChargingStationsNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="ChargingStationsNavigator" component={ChargingStationsNavigator} initialParams={props?.route?.params?.params}/>
       <AppDrawer.Screen name="QRCodeScanner" component={ChargingStationQrCode} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="SitesNavigator" children={createSitesNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="StatisticsNavigator" children={createStatsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="ReportErrorNavigator" children={createReportErrorNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="TransactionHistoryNavigator" children={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name="TransactionInProgressNavigator" children={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="TransactionHistoryNavigator" component={TransactionHistoryNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="TransactionInProgressNavigator" component={TransactionInProgressNavigator} initialParams={props?.route?.params?.params}/>
       <AppDrawer.Screen name="UsersNavigator" children={createUsersNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="TagsNavigator" children={createTagsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="CarsNavigator" children={createCarsNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="InvoicesNavigator" children={createInvoicesNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="InvoicesNavigator" component={InvoicesNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="PaymentMethodsNavigator" children={createPaymentMethodsNavigator} initialParams={props?.route?.params?.params}/>
       <AppDrawer.Screen name="SettingsNavigator" children={createSettingsNavigator} initialParams={props?.route?.params?.params}/>
     </AppDrawer.Navigator>
@@ -513,7 +511,7 @@ interface State {
   navigationState?: InitialState;
   showAppUpdateDialog?: boolean;
   isSignedIn?: boolean;
-  theme?: string;
+  theme?: ColorSchemeName;
 }
 
 export default class App extends React.Component<Props, State> {
