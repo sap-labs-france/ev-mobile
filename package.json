@@ -124,7 +124,7 @@
     "react-native-location": "^2.5.0",
     "react-native-map-clustering": "^3.4.2",
     "react-native-map-link": "^2.10.2",
-    "react-native-maps": "^0.29.3",
+    "react-native-maps": "^0.29.4",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^14.0.0",
     "react-native-orientation-locker": "1.5.0",
