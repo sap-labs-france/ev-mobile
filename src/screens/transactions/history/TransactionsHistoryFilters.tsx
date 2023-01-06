@@ -25,7 +25,7 @@ export interface TransactionsHistoryFiltersDef {
   startDateTime?: Date;
   endDateTime?: Date;
   users?: User[];
-  issuer?: boolean
+  issuer?: boolean;
 }
 
 export default class TransactionsHistoryFilters extends ScreenFilters<TransactionsHistoryFiltersDef, Props> {
@@ -67,8 +67,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
               style={style.switchFilterControlComponentContainer}
               label={I18n.t('filters.transactionsRoamingFilterLabel')}
               initialValue={filters?.issuer}
-              ref={async (
-                roamingFilterControlComponent : SwitchFilterComponent<boolean>
+              ref={(roamingFilterControlComponent: SwitchFilterComponent<boolean>
               ) => this.addModalFilter(roamingFilterControlComponent)}
             />
           )}
@@ -78,7 +77,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
                 <UserFilterComponent
                   filterID={'users'}
                   initialValue={filters.users}
-                  ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
+                  ref={(userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
                 />
               )}
             </View>
@@ -89,8 +88,8 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
               style={style.dateFilterComponentContainer}
               internalFilterID={GlobalFilters.TRANSACTIONS_START_DATE_FILTER}
               label={I18n.t('general.startDate')}
-              onFilterChanged={async (id: string, startDateTime: Date) => this.onFiltersChanged(null, {startDateTime})}
-              ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
+              onFilterChanged={(id: string, newStartDateTime: Date) => this.onFiltersChanged(null, {startDateTime: newStartDateTime})}
+              ref={(dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
               locale={this.state.locale}
               minimumDate={minTransactionDate}
               initialValue={startDateTime}
@@ -102,8 +101,8 @@ export default class TransactionsHistoryFilters extends ScreenFilters<Transactio
               internalFilterID={GlobalFilters.TRANSACTIONS_END_DATE_FILTER}
               style={style.dateFilterComponentContainer}
               label={I18n.t('general.endDate')}
-              onFilterChanged={async (id: string, endDateTime: Date) => this.onFiltersChanged(null, {endDateTime})}
-              ref={async (dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
+              onFilterChanged={(id: string, newEndDateTime: Date) => this.onFiltersChanged(null, {endDateTime: newEndDateTime})}
+              ref={(dateFilterControlComponent: DateFilterControlComponent) => this.addModalFilter(dateFilterControlComponent)}
               locale={this.state.locale}
               minimumDate={startDateTime ?? minTransactionDate}
               initialValue={endDateTime}

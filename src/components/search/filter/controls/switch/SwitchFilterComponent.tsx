@@ -18,7 +18,7 @@ export default class SwitchFilterComponent<T> extends FilterControlComponent<T> 
     super(props);
     this.state = {
       value: props.initialValue
-    }
+    };
   }
 
   public canBeSaved() {
@@ -33,7 +33,12 @@ export default class SwitchFilterComponent<T> extends FilterControlComponent<T> 
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text numberOfLines={2} ellipsizeMode={'tail'} style={internalStyle.textFilter}>{label}</Text>
-        <Switch trackColor={{ true: commonColors.primary, false: commonColors.disabledDark }} thumbColor={commonColors.disabled} style={internalStyle.switchFilter} value={!!value} onValueChange={this.onValueChanged} />
+        <Switch
+          trackColor={{ true: commonColors.primary, false: commonColors.disabledDark }}
+          thumbColor={commonColors.disabled}
+          style={internalStyle.switchFilter}
+          value={!!value}
+          onToggle={(newValue) => this.onValueChanged(newValue)} />
       </View>
     );
   };

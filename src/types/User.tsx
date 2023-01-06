@@ -75,3 +75,12 @@ export interface UserDefaultTagCar {
   tag: Tag;
   errorCodes?: StartTransactionErrorCode[];
 }
+
+export interface UserMobileData {
+  mobileOS: 'ios' | 'android' | 'windows' | 'macos' | 'web';
+  mobileToken: string;
+  mobileBundleID: string;
+  mobileAppName: string;
+  mobileVersion: string;
+  mobileLastChangedOn?: Date;
+}

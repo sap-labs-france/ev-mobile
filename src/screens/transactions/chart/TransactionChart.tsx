@@ -90,8 +90,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         if (chargingStation) {
           connector = chargingStation ? chargingStation.connectors[Utils.convertToInt(connectorID) - 1] : null;
           // Refresh Consumption
-          if (connector.currentTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
-            transactionWithConsumptions = await this.getTransactionWithConsumptions(connector.currentTransactionID);
+          if (connector?.currentTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
+            transactionWithConsumptions = await this.getTransactionWithConsumptions(connector?.currentTransactionID);
           }
         }
       }
@@ -441,7 +441,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
                 keepPositionOnRotation={false}
               />
             ) : (
-              transaction || (connector && connector.currentTransactionID) ? (
+              transaction || (connector?.currentTransactionID) ? (
                 canDisplayTransaction ? (
                   <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
                 ) : (

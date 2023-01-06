@@ -22,7 +22,6 @@ import frJsonLanguage from './languages/fr.json';
 import itJsonLanguage from './languages/it.json';
 import ptJsonLanguage from './languages/pt.json';
 import DurationUnitFormat, { DurationUnitFormatOptions } from 'intl-unofficial-duration-unit-format';
-import SecuredStorage from '../utils/SecuredStorage';
 import { DistanceUnit } from '../types/Settings';
 
 export interface FormatNumberOptions extends Intl.NumberFormatOptions {
@@ -229,7 +228,7 @@ export default class I18nManager {
       options.format =  `${durationSecs < 36000 ? '0' : ''}{hour}:{minutes}`;
     }
     const formatter =  new DurationUnitFormat(i18n.locale, options);
-    return formatter.format(durationSecs)
+    return formatter.format(durationSecs);
   }
 
   private static isValidDate(date: Date): boolean {

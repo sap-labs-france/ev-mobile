@@ -13,10 +13,6 @@ export default class Message {
     Message.show(message, 'warning');
   }
 
-  public static showInfo(message: string): void {
-    Message.show(message, 'success');
-  }
-
   public static showSuccess(message: string): void {
     Message.show(message, 'success');
   }

@@ -1,45 +1,67 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '12.0'
+platform :ios, '13'
+install! 'cocoapods', :deterministic_uuids => false
+$RNFirebaseAsStaticFramework = true
+use_frameworks! :linkage => :static
+
+# Convert all permission pods into static libraries
+# Workaround to make react-native-permission work with use_frameworks! (See their doc)
+pre_install do |installer|
+Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+installer.pod_targets.each do |pod|
+  if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
+    def pod.build_type;
+      # Uncomment the line corresponding to your CocoaPods version
+      Pod::BuildType.static_library # >= 1.9
+      # Pod::Target::BuildType.static_library # < 1.9
+    end
+  end
+end
+end
 
 target 'eMobility' do
   project 'eMobility.xcodeproj'
   config = use_native_modules!
 
+   # Flags change depending on the env values.
+   flags = get_default_flags()
+
   use_react_native!(
-    :path => config["../node_modules/react-native"],
-    # to enable hermes on iOS, change `false` to `true` and then install pods
-    :hermes_enabled => false
+    :path => config[:reactNativePath],
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    # Upcoming versions of React Native may rely on get_default_flags(), but
+    # we make it explicit here to aid in the React Native upgrade process.
+    :hermes_enabled => false,
+    :fabric_enabled => false, #flags[:fabric_enabled],
+    # Enables Flipper.
+    #
+    # Note that if you have use_frameworks! enabled, Flipper will not work and
+    # you should disable the next line.
+    # :flipper_configuration => FlipperConfiguration.enabled,
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
-  # Add Firebase
-  pod 'FirebaseCore'
-  pod 'FirebaseMessaging'
-  pod 'FirebaseAnalytics'
-
-  # React Native Maps dependencies
-  rn_maps_path = '../node_modules/react-native-maps'
-  pod 'react-native-google-maps', :path => rn_maps_path
-  pod 'GoogleMaps'
-  pod 'Google-Maps-iOS-Utils'
 
   # Camera Permission
   permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+
+  pod 'RNSecureStorage', :path => '../node_modules/rn-secure-storage/ios/RNSecureStorage.podspec'
 
   target 'eMobilityTests' do
     inherit! :complete
     # Pods for testing
   end
 
-  # Enables Flipper.
-  #
-  # Note that if you have use_frameworks! enabled, Flipper will not work and
-  # you should disable the next line.
-  use_flipper!()
   post_install do |installer|
-    flipper_post_install(installer)
+    react_native_post_install(
+          installer,
+          # Set `mac_catalyst_enabled` to `true` in order to apply patches
+          # necessary for Mac Catalyst builds
+          :mac_catalyst_enabled => false
+    )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
     ## Workaround for Stripe, see issue https://github.com/stripe/stripe-ios/issues/2012
     installer.pods_project.targets.each do |target|

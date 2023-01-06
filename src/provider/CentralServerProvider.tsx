@@ -10,7 +10,7 @@ import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
-import NotificationManager from '../notification/NotificationManager';
+import Notifications from '../notification/Notifications';
 import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
@@ -28,13 +28,14 @@ import SiteArea from '../types/SiteArea';
 import Tag from '../types/Tag';
 import { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
-import User, { UserDefaultTagCar } from '../types/User';
+import User, {UserDefaultTagCar, UserMobileData} from '../types/User';
 import UserToken from '../types/UserToken';
 import AxiosFactory from '../utils/AxiosFactory';
 import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
+import { getApplicationName, getBundleId, getVersion } from 'react-native-device-info';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -52,9 +53,7 @@ export default class CentralServerProvider {
   private currency: string = null;
   private siteImagesCache: Map<string, string> = new Map<string, string>();
   private tenantLogosCache: Map<string, string> = new Map<string, string>();
-  private tenantLogo: string;
   private autoLoginDisabled = false;
-  private notificationManager: NotificationManager;
 
   private securityProvider: SecurityProvider = null;
 
@@ -73,10 +72,6 @@ export default class CentralServerProvider {
         return response;
       });
     }
-  }
-
-  public setNotificationManager(notificationManager: NotificationManager): void {
-    this.notificationManager = notificationManager;
   }
 
   public async initialize(): Promise<void> {
@@ -170,7 +165,6 @@ export default class CentralServerProvider {
         this.tenantLogosCache.set(`${tenant.subdomain}${tenant.endpoint?.endpoint}`, tenantLogo);
       }
     }
-    this.tenantLogo = tenantLogo;
     return tenantLogo;
   }
 
@@ -206,11 +200,6 @@ export default class CentralServerProvider {
         );
       }
     }
-  }
-
-  public hasUserConnectionExpired(): boolean {
-    this.debugMethod('hasUserConnectionExpired');
-    return this.isUserConnected() && !this.isUserConnectionValid();
   }
 
   public isUserConnected(): boolean {
@@ -249,14 +238,6 @@ export default class CentralServerProvider {
     this.password = null;
   }
 
-  public getUserEmail(): string {
-    return this.email;
-  }
-
-  public getUserCurrency(): string {
-    return this.currency;
-  }
-
   public getUserLocale(): string {
     if (Configuration.isServerLocalePreferred && this.locale && Constants.SUPPORTED_LOCALES.includes(this.locale)) {
       return this.locale;
@@ -275,16 +256,8 @@ export default class CentralServerProvider {
     return Utils.getDeviceDefaultSupportedLanguage();
   }
 
-  public getUserPassword(): string {
-    return this.password;
-  }
-
   public getUserTenant(): TenantConnection {
     return this.tenant;
-  }
-
-  public getUserToken(): string {
-    return this.token;
   }
 
   public getUserInfo(): UserToken {
@@ -305,6 +278,15 @@ export default class CentralServerProvider {
     // Clear the token and tenant
     if (this.tenant) {
       await SecuredStorage.clearUserToken(this.tenant.subdomain);
+    }
+    try {
+      // Clear mobile data on logout
+      await this.saveUserMobileData(this.getUserInfo().id, {} as UserMobileData);
+      await this.axiosInstance.get(`${this.buildRestServerAuthURL(this.tenant)}/${RESTServerRoute.REST_SIGNOUT}`);
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e);
+      }
     }
     // Clear local data
     this.token = null;
@@ -351,16 +333,16 @@ export default class CentralServerProvider {
     I18nManager.switchLanguage(this.getUserLanguage(), this.currency);
     try {
       // Save the User's token
-      await this.saveUserMobileToken({
-        id: this.getUserInfo().id,
-        mobileToken: this.notificationManager.getToken(),
-        mobileOS: this.notificationManager.getOs()
+      await this.saveUserMobileData(this.getUserInfo().id, {
+        mobileToken: Notifications.getToken(),
+        mobileOS: Platform.OS,
+        mobileAppName: getApplicationName(),
+        mobileVersion: getVersion(),
+        mobileBundleID: getBundleId()
       });
     } catch (error) {
       console.log('Error saving Mobile Token:', error);
     }
-    // Check on hold notification
-    await this.notificationManager.checkOnHoldNotification();
   }
 
   public async getEndUserLicenseAgreement(params: { Language: string }): Promise<Eula> {
@@ -509,11 +491,11 @@ export default class CentralServerProvider {
     return result?.data;
   }
 
-  public async saveUserMobileToken(params: { id: string; mobileToken: string; mobileOS: string }): Promise<ActionResponse> {
-    this.debugMethod('saveUserMobileToken');
+  public async saveUserMobileData(userID: string, params: UserMobileData): Promise<ActionResponse> {
+    this.debugMethod('saveUserMobileData');
     // Call
     const result = await this.axiosInstance.put<any>(
-      this.buildRestEndpointUrl(RESTServerRoute.REST_USER_UPDATE_MOBILE_TOKEN, { id: params.id }),
+      this.buildRestEndpointUrl(RESTServerRoute.REST_USER_UPDATE_MOBILE_DATA, { id: userID }),
       params,
       {
         headers: this.buildSecuredHeaders()

@@ -2,7 +2,6 @@
 
 import i18n from 'i18n-js';
 
-jest.mock('../src/utils/Utils');
 import I18nManager, {
   FormatNumberOptions,
   MetricCompactEnum,
@@ -30,7 +29,7 @@ test('getNumberFormatPartValue', () => {
     {type: 'currency', value: 'EUR'},
     {type: 'compact', value: 'million'},
     {type: 'integer', 'value': '756000000'}
-  ]
+  ];
   expect(I18nManager.getNumberFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'currency')).toEqual('EUR');
   expect(I18nManager.getNumberFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'compact')).toEqual('million');
   expect(I18nManager.getNumberFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'integer')).toEqual('756000000');
@@ -48,16 +47,16 @@ test('concatenateNumberFormatParts', () => {
     {type: 'decimal', 'value': ','},
     {type: 'fraction', 'value': '234'},
     {type: 'unit', 'value': 'Watt'}
-  ]
-  expect(I18nManager.concatenateNumberFormatParts(numberFormatParts as Intl.NumberFormatPart[])).toEqual('-756 000 000,234')
-})
+  ];
+  expect(I18nManager.concatenateNumberFormatParts(numberFormatParts as Intl.NumberFormatPart[])).toEqual('-756 000 000,234');
+});
 
 test('formatNumberWithCompacts MetricShortCompact', () => {
   const formatNumberOptions = {
     notation: NumberFormatNotationEnum.COMPACT,
     compactStyle: NumberFormatCompactStyleEnum.METRIC,
     compactDisplay: 'short',
-  }
+  } as FormatNumberOptions;
   let formattedNumber = I18nManager.formatNumberWithCompacts(127486.457, formatNumberOptions);
   expect(formattedNumber?.value).toEqual('127');
   expect(formattedNumber?.compact).toEqual('k');
@@ -80,7 +79,7 @@ test('formatNumberWithCompacts FinanceShortCompact', () => {
     notation: NumberFormatNotationEnum.COMPACT,
     compactStyle: NumberFormatCompactStyleEnum.FINANCE,
     compactDisplay: 'short',
-  }
+  } as FormatNumberOptions;
   let formattedNumber = I18nManager.formatNumberWithCompacts(127486.457, formatNumberOptions, 'en');
   expect(formattedNumber?.value).toEqual('127');
   expect(formattedNumber?.compact).toEqual('K');
@@ -123,7 +122,7 @@ test('formatNumberWithCompacts FinanceLongCompact', () => {
     notation: NumberFormatNotationEnum.COMPACT,
     compactStyle: NumberFormatCompactStyleEnum.FINANCE,
     compactDisplay: 'long',
-  }
+  } as FormatNumberOptions;
   let formattedNumber = I18nManager.formatNumberWithCompacts(127486.457, formatNumberOptions);
   expect(formattedNumber?.value).toEqual('127');
   expect(formattedNumber?.compact).toEqual('thousand');
@@ -166,7 +165,7 @@ test('formatNumberWithCompacts CompactThreshold', () => {
     notation: NumberFormatNotationEnum.COMPACT,
     compactDisplay: 'long',
     compactThreshold: 1200000
-  }
+  } as FormatNumberOptions;
   let formattedNumber = I18nManager.formatNumberWithCompacts(1000.457, formatNumberOptions, 'es');
   expect(formattedNumber?.value).toEqual('1000,457');
 
@@ -183,12 +182,12 @@ test('formatNumberWithCompacts MaxDigits', () => {
     compactStyle: NumberFormatCompactStyleEnum.FINANCE,
     compactDisplay: 'long',
     maximumFractionDigits: 0
-  } as FormatNumberOptions
+  } as FormatNumberOptions;
   let formattedNumber = I18nManager.formatNumberWithCompacts(1200000.457, formatNumberOptions, 'es');
   expect(formattedNumber?.value).toEqual('1');
   expect(formattedNumber?.compact).toEqual('millón');
 
-  formatNumberOptions.maximumFractionDigits = 9
+  formatNumberOptions.maximumFractionDigits = 9;
   formattedNumber = I18nManager.formatNumberWithCompacts(1200000.457, formatNumberOptions, 'es');
   expect(formattedNumber?.value).toEqual('1,200000457');
   expect(formattedNumber?.compact).toEqual('millones');
@@ -201,7 +200,7 @@ test('formatNumberWithCompacts MinDigits', () => {
     compactDisplay: 'long',
     maximumFractionDigits: 9,
     minimumFractionDigits: 3
-  } as FormatNumberOptions
+  } as FormatNumberOptions;
   let formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
   expect(formattedNumber?.value).toEqual('1,200');
   expect(formattedNumber?.compact).toEqual('millones');
@@ -212,46 +211,46 @@ test('formatNumberWithCompacts MinDigits', () => {
 });
 
 test('formatNumberWithCompacts Currency', () => {
-  let formatNumberOptions = {
+  const formatNumberOptions = {
     style: NumberFormatStyleEnum.CURRENCY,
     maximumFractionDigits: 0
-  } as FormatNumberOptions
+  } as FormatNumberOptions;
   let formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
   expect(formattedNumber.value).toEqual('1.200.000');
 
   formatNumberOptions.currency = null;
   formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
   expect(formattedNumber.value).toEqual('1.200.000');
-})
+});
 
 test('formatNumberWithCompacts Unit', () => {
-  let formatNumberOptions = {
+  const formatNumberOptions = {
     style: NumberFormatStyleEnum.UNIT,
     maximumFractionDigits: 0
-  } as FormatNumberOptions
+  } as FormatNumberOptions;
   let formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
   expect(formattedNumber.value).toEqual('1.200.000');
 
   formatNumberOptions.unit = null;
   formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
   expect(formattedNumber.value).toEqual('1.200.000');
-})
+});
 
 test('formatNumberWithCompacts NullOptions', () => {
-  let formatNumberOptions = {
+  const formatNumberOptions = {
     style: NumberFormatStyleEnum.UNIT,
     unit: null,
     currency: 'EUR',
     compactStyle: null,
     currencySign: null,
     maximumFractionDigits: null
-  } as FormatNumberOptions
-  let formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
+  } as FormatNumberOptions;
+  const formattedNumber = I18nManager.formatNumberWithCompacts(1200000.00, formatNumberOptions, 'es');
   expect(formattedNumber.value).toEqual('1.200.000');
-})
+});
 
 test('formatDistance', () => {
-  i18n.locale = 'en'
+  i18n.locale = 'en';
   let formattedDistance = I18nManager.formatDistance(999, true);
   expect(formattedDistance).toEqual('999 m');
   formattedDistance = I18nManager.formatDistance(999, false);
@@ -260,6 +259,4 @@ test('formatDistance', () => {
   expect(formattedDistance).toEqual('1.7 km');
   formattedDistance = I18nManager.formatDistance(1700, false);
   expect(formattedDistance).toEqual('1.1 mi');
-})
-
-jest.unmock('../src/utils/Utils')
+});

@@ -1,20 +1,24 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { InitialState, NavigationContainer, NavigationState } from '@react-navigation/native';
+import {
+  getStateFromPath,
+  InitialState, LinkingOptions,
+  NavigationContainer,
+  NavigationContainerRef,
+} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import I18n from 'i18n-js';
-import { Icon } from 'native-base';
+import {Icon, NativeBaseProvider} from 'native-base';
 import React from 'react';
-import { StatusBar, Text } from 'react-native';
-import { RootSiblingParent } from 'react-native-root-siblings';
+import {Appearance, ColorSchemeName, NativeEventSubscription, StatusBar, Text} from 'react-native';
 import { scale } from 'react-native-size-matters';
 
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
-import NotificationManager from './notification/NotificationManager';
+import Notifications from './notification/Notifications';
 import CentralServerProvider from './provider/CentralServerProvider';
 import ProviderFactory from './provider/ProviderFactory';
 import Eula from './screens/auth/eula/Eula';
@@ -57,7 +61,15 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Settings from './screens/settings/Settings';
-import RNBootSplash from 'react-native-bootsplash';
+import {hide} from 'react-native-bootsplash';
+import {ThemeType} from './types/Theme';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import messaging from '@react-native-firebase/messaging';
+import {AuthContext} from './context/AuthContext';
+import Loading from './screens/loading/Loading';
+import {Notification} from './types/UserNotifications';
+import Configuration from './config/Configuration';
+import {RootSiblingParent} from 'react-native-root-siblings';
 
 // Init i18n
 I18nManager.initialize();
@@ -119,14 +131,6 @@ const createTabBarIcon = (
   );
 };
 
-const persistNavigationState = async (navigationState: NavigationState) => {
-  try {
-    await SecuredStorage.saveNavigationState(navigationState);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 function createAuthNavigator(props: BaseProps) {
   return (
     <AuthStack.Navigator initialRouteName={'Login'} screenOptions={{ headerShown: false }}>
@@ -159,12 +163,10 @@ function createReportErrorNavigator(props: BaseProps) {
 
 function getTabStyle(): any {
   const commonColor = Utils.getCurrentCommonColor();
-  const insets = useSafeAreaInsets();
   return {
     backgroundColor: commonColor.containerBgColor,
     borderTopWidth: 0.5,
     borderTopColor: commonColor.disabledDark,
-    paddingBottom: insets.bottom,
     paddingTop: 0,
     marginTop: 0
   };
@@ -335,7 +337,7 @@ function createSitesNavigator(props: BaseProps) {
   );
 }
 
-function createChargingStationsNavigator(props: BaseProps) {
+function ChargingStationsNavigator(props: BaseProps) {
   return (
     <ChargingStationsStack.Navigator initialRouteName="ChargingStations" screenOptions={{ headerShown: false, gestureEnabled: false }}>
       <ChargingStationsStack.Screen
@@ -374,7 +376,7 @@ function createChargingStationsNavigator(props: BaseProps) {
   );
 }
 
-function createTransactionHistoryNavigator(props: BaseProps) {
+function TransactionHistoryNavigator(props: BaseProps) {
   return (
     <TransactionHistoryStack.Navigator initialRouteName="TransactionsHistory" screenOptions={{ headerShown: false }}>
       <TransactionHistoryStack.Screen
@@ -391,7 +393,7 @@ function createTransactionHistoryNavigator(props: BaseProps) {
   );
 }
 
-function createTransactionInProgressNavigator(props: BaseProps) {
+function TransactionInProgressNavigator(props: BaseProps) {
   return (
     <TransactionInProgressStack.Navigator initialRouteName="TransactionsInProgress" screenOptions={{ headerShown: false }}>
       <TransactionInProgressStack.Screen
@@ -433,7 +435,7 @@ function createCarsNavigator(props: BaseProps) {
   );
 }
 
-function createInvoicesNavigator(props: BaseProps) {
+function InvoicesNavigator(props: BaseProps) {
   return (
     <InvoicesStack.Navigator initialRouteName="Invoices" screenOptions={{ headerShown: false }}>
       <InvoicesStack.Screen name="Invoices" component={Invoices} initialParams={props?.route?.params?.params} />
@@ -484,20 +486,20 @@ function createAppDrawerNavigator(props: BaseProps) {
           width: '83%'
         }
       })}
-      backBehavior={'history'}
+      backBehavior={'initialRoute'}
       drawerPosition="left"
       drawerContent={(drawerProps) => <Sidebar {...drawerProps} />}>
-      <AppDrawer.Screen name="ChargingStationsNavigator" children={createChargingStationsNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="ChargingStationsNavigator" component={ChargingStationsNavigator} initialParams={props?.route?.params?.params}/>
       <AppDrawer.Screen name="QRCodeScanner" component={ChargingStationQrCode} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="SitesNavigator" children={createSitesNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="StatisticsNavigator" children={createStatsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="ReportErrorNavigator" children={createReportErrorNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="TransactionHistoryNavigator" children={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name="TransactionInProgressNavigator" children={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="TransactionHistoryNavigator" component={TransactionHistoryNavigator} initialParams={props?.route?.params?.params}/>
+      <AppDrawer.Screen name="TransactionInProgressNavigator" component={TransactionInProgressNavigator} initialParams={props?.route?.params?.params}/>
       <AppDrawer.Screen name="UsersNavigator" children={createUsersNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="TagsNavigator" children={createTagsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="CarsNavigator" children={createCarsNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="InvoicesNavigator" children={createInvoicesNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="InvoicesNavigator" component={InvoicesNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="PaymentMethodsNavigator" children={createPaymentMethodsNavigator} initialParams={props?.route?.params?.params}/>
       <AppDrawer.Screen name="SettingsNavigator" children={createSettingsNavigator} initialParams={props?.route?.params?.params}/>
     </AppDrawer.Navigator>
@@ -506,28 +508,35 @@ function createAppDrawerNavigator(props: BaseProps) {
 
 export interface Props {}
 interface State {
-  switchTheme?: boolean;
-  isNavigationStateLoaded?: boolean;
   navigationState?: InitialState;
   showAppUpdateDialog?: boolean;
+  isSignedIn?: boolean;
+  theme?: ColorSchemeName;
 }
 
 export default class App extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  public notificationManager: NotificationManager;
-  public deepLinkingManager: DeepLinkingManager;
   public centralServerProvider: CentralServerProvider;
-  private location: LocationManager;
+  public deepLinkingManager: DeepLinkingManager;
   private appVersion: CheckVersionResponse;
+  private location: LocationManager;
+  private themeSubscription: NativeEventSubscription;
+  private readonly navigationRef: React.RefObject<NavigationContainerRef<ReactNavigation.RootParamList>>;
+  private readonly appContext;
+  private initialUrl: string;
 
   public constructor(props: Props) {
     super(props);
+    this.navigationRef = React.createRef();
+    this.appContext = {
+      handleSignIn: () => this.setState({isSignedIn: true}),
+      handleSignOut: () => this.setState({isSignedIn: false})
+    };
     this.state = {
-      switchTheme: false,
       navigationState: null,
-      isNavigationStateLoaded: false,
-      showAppUpdateDialog: false
+      showAppUpdateDialog: false,
+      isSignedIn: undefined
     };
   }
 
@@ -538,82 +547,190 @@ export default class App extends React.Component<Props, State> {
     super.setState(state, callback);
   };
 
+
   public async componentDidMount() {
-    // Load Navigation State
-    const navigationState = await SecuredStorage.getNavigationState();
+    // Set up theme
+    const themeManager = ThemeManager.getInstance();
+    themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
+    // Listen for theme changes
+    this.themeSubscription = Appearance.addChangeListener(({ colorScheme }) => {
+      themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
+      this.setState({theme: colorScheme});
+    });
+
     // Get the central server
     this.centralServerProvider = await ProviderFactory.getProvider();
-    // Init Notification --------------------------------------
-    this.notificationManager = NotificationManager.getInstance();
-    this.notificationManager.setCentralServerProvider(this.centralServerProvider);
-    await this.notificationManager.start();
-    // Assign
-    this.centralServerProvider.setNotificationManager(this.notificationManager);
-    // Init Deep Linking ---------------------------------------
-    this.deepLinkingManager = DeepLinkingManager.getInstance();
-    // Activate Deep links
-    this.deepLinkingManager.startListening();
-    // Location ------------------------------------------------
+
+    // Set up location
     this.location = await LocationManager.getInstance();
     this.location.startListening();
-    // Check migration
+
+    // Perform local data migration
     const migrationManager = MigrationManager.getInstance();
-    migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
+
+    // Setup notifications
+    await Notifications.initialize();
+
+    // Store initial url through which app was launched (if any)
+    const initialNotification = await messaging().getInitialNotification() as Notification;
+    const canHandleNotification = await Notifications.canHandleNotification(initialNotification);
+    let tenantSubdomain: string;
+    if (canHandleNotification) {
+      tenantSubdomain = initialNotification.data.tenantSubdomain;
+      // Store the initial url because second call returns null
+      this.initialUrl = initialNotification.data.deepLink;
+    }
+
+    // Set authentication state
+    let isSignedIn = false;
+    try {
+      const userCredentials = await SecuredStorage.getUserCredentials(tenantSubdomain);
+      if (userCredentials?.password && userCredentials?.email && userCredentials?.tenantSubDomain) {
+        await this.centralServerProvider.login(userCredentials.email, userCredentials.password, true, userCredentials.tenantSubDomain);
+        isSignedIn = true;
+      } else {
+        this.initialUrl = `${Configuration.AWS_REST_ENDPOINT_PROD}/login?tenantSubDomain=${userCredentials?.tenantSubDomain}`;
+      }
+    } catch (error) {
+      if (__DEV__) {
+        console.log(error);
+      }
+    }
+
     // Check for app updates
     this.appVersion = await Utils.checkForUpdate();
     // Set
     this.setState({
-      navigationState,
-      isNavigationStateLoaded: true,
-      showAppUpdateDialog: !!this.appVersion?.needsUpdate
+      showAppUpdateDialog: !!this.appVersion?.needsUpdate,
+      isSignedIn
     });
   }
 
   public componentWillUnmount() {
-    // Deactivate Deep links
+    this.themeSubscription?.remove();
     this.deepLinkingManager?.stopListening();
-    // Stop Notifications
-    this.notificationManager?.stop();
-    // Stop Location
     this.location?.stopListening();
   }
 
   public render() {
-    const { showAppUpdateDialog } = this.state;
+    const { showAppUpdateDialog, isSignedIn } = this.state;
     return (
-      this.state.isNavigationStateLoaded && (
-        <RootSiblingParent>
-          {showAppUpdateDialog && (
-            <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />
-          )}
-          <StatusBar barStyle={ThemeManager.getInstance()?.isThemeTypeIsDark() ? 'light-content' : 'dark-content'} translucent backgroundColor="transparent" />
-          {this.createRootNavigator()}
-        </RootSiblingParent>
-      )
+      <NativeBaseProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <RootSiblingParent>
+            {showAppUpdateDialog && (
+              <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />
+            )}
+            <StatusBar barStyle={ThemeManager.getInstance()?.isThemeTypeIsDark() ? 'light-content' : 'dark-content'} translucent backgroundColor="transparent" />
+            {isSignedIn == null ?
+              <Loading/>
+              :
+              this.createRootNavigator()
+            }
+          </RootSiblingParent>
+        </GestureHandlerRootView>
+      </NativeBaseProvider>
+    );
+  }
+
+  private buildLinking(): LinkingOptions<ReactNavigation.RootParamList> {
+    return (
+      {
+        prefixes: DeepLinkingManager.getAuthorizedURLs(),
+        getInitialURL: () => this.initialUrl,
+        subscribe: (listener) => {
+          // Listen for background notifications when the app is running,
+          const removeBackgroundNotificationListener = messaging().onNotificationOpenedApp(async (remoteMessage: Notification) => {
+            const canHandleNotification = await Notifications.canHandleNotificationOpenedApp(remoteMessage);
+            if (canHandleNotification) {
+              this.setState({isSignedIn: true}, () => listener(remoteMessage.data.deepLink));
+            }
+          });
+          // Listen for FCM token refresh event
+          const removeTokenRefreshEventListener = messaging().onTokenRefresh((token) => {
+            void Notifications.onTokenRefresh(token);
+          });
+          return () => {
+            removeBackgroundNotificationListener();
+            removeTokenRefreshEventListener();
+          };
+        },
+        config: {
+          screens: {
+            AuthNavigator: {
+              screens: {
+                Login: 'login'
+              }
+            },
+            AppDrawerNavigator: {
+              initialRouteName: 'ChargingStationsNavigator',
+              screens: {
+                ChargingStationsNavigator: {
+                  initialRouteName: 'ChargingStations',
+                  screens: {
+                    ChargingStations: 'charging-stations/all'
+                  }
+                },
+                InvoicesNavigator: 'invoices',
+                TransactionInProgressNavigator: {
+                  screens: {
+                    TransactionsInProgress: 'transactions/inprogress'
+                  }
+                },
+                TransactionHistoryNavigator: {
+                  screens: {
+                    TransactionsHistory: 'transactions/history'
+                  }
+                }
+              }
+            }
+          }
+        },
+        getStateFromPath:  (url, options) => {
+          const path = url.split('#')?.[0].split('?')?.[0];
+          const query = url.split('?')?.[1]?.split('#')?.[0];
+          const fragment = url.split('#')?.[1];
+          const newURL = path + (fragment ? '/' + fragment : '') + (query ? '?' + query : '');
+          return getStateFromPath(newURL, options);
+        }
+      }
     );
   }
 
   private createRootNavigator() {
+    const { isSignedIn } = this.state;
     return (
-      <SafeAreaProvider>
-        <NavigationContainer
-          onReady={() => void RNBootSplash.hide({ fade: true })}
-          ref={(navigatorRef) => {
-            if (navigatorRef) {
-              this.notificationManager?.initialize(navigatorRef);
-              this.notificationManager.checkOnHoldNotification();
-              this.deepLinkingManager?.initialize(navigatorRef, this.centralServerProvider);
-            }
-          }}
-          onStateChange={persistNavigationState}
-          initialState={this.state.navigationState}>
-          <rootStack.Navigator initialRouteName="AuthNavigator" screenOptions={{ headerShown: false }}>
-            <rootStack.Screen name="AuthNavigator" children={createAuthNavigator} />
-            <rootStack.Screen name="AppDrawerNavigator" children={createAppDrawerNavigator} />
-          </rootStack.Navigator>
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <AuthContext.Provider value={this.appContext}>
+        <SafeAreaProvider>
+          <NavigationContainer
+            onReady={() => this.onReady()}
+            linking={this.buildLinking()}
+            ref={this.navigationRef}
+            onStateChange={(newState) => this.setState({navigationState: newState})}
+            initialState={this.state.navigationState}
+          >
+            <rootStack.Navigator initialRouteName="AuthNavigator" screenOptions={{ headerShown: false }}>
+              {isSignedIn ?
+                <rootStack.Screen name="AppDrawerNavigator">
+                  {createAppDrawerNavigator}
+                </rootStack.Screen>
+                :
+                <rootStack.Screen options={{animationTypeForReplace: 'pop'}} name="AuthNavigator" children={createAuthNavigator} />
+              }
+            </rootStack.Navigator>
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </AuthContext.Provider>
     );
+  }
+
+  private onReady(): void {
+    void hide({ fade: true });
+    // Set up deep linking
+    this.deepLinkingManager = DeepLinkingManager.getInstance();
+    this.deepLinkingManager?.initialize(this.navigationRef?.current, this.centralServerProvider);
+    // Activate Deep links
+    this.deepLinkingManager.startListening();
   }
 }
