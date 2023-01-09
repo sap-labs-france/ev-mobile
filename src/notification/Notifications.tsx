@@ -84,11 +84,13 @@ export default class Notifications {
       }
       const currentSubdomain = this.centralServerProvider.getUserInfo()?.tenantSubdomain;
       if (notificationSubdomain !== currentSubdomain) {
-        Message.showError('Wrong subdomain');
+        Message.showError(I18n.t('authentication.wrongOrganization'));
         return false;
       }
+      return true;
+    } else {
+      return false;
     }
-    return true;
   }
 
   public static async canHandleNotification(remoteMessage: Notification): Promise<boolean> {
