@@ -187,7 +187,8 @@
     "mandatoryErrorDescription": "La descrizione è obbligatoria",
     "reportErrorSuccess": "L'errore è stato segnalato con successo",
     "reportErrorFailed": "Impossibile segnalare l'errore",
-    "createEndpoint": "Créer endpoint"
+    "createEndpoint": "Créer endpoint",
+    "wrongOrganization": "Wrong organization"
   },
   "qrCode": {
     "qrCode": "Codice QR",

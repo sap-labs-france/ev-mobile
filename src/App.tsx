@@ -688,7 +688,7 @@ export default class App extends React.Component<Props, State> {
           }
         },
         getStateFromPath:  (url, options) => {
-          const path = url.split('#')?.[0].split('?')?.[0];
+          const path = url.split('/')?.[1].split('#')?.[0].split('?')?.[0];
           const query = url.split('?')?.[1]?.split('#')?.[0];
           const fragment = url.split('#')?.[1];
           const newURL = path + (fragment ? '/' + fragment : '') + (query ? '?' + query : '');

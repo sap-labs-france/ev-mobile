@@ -187,7 +187,8 @@
     "mandatoryErrorDescription": "Popis je povinný",
     "reportErrorSuccess": "Chyba byla úspěšně nahlášena",
     "reportErrorFailed": "Chybu nelze nahlásit",
-    "createEndpoint": "Create endpoint"
+    "createEndpoint": "Create endpoint",
+    "wrongOrganization": "Wrong organization"
   },
   "qrCode": {
     "qrCode": "QR kód",
