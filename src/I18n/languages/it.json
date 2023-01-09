@@ -189,7 +189,7 @@
     "reportErrorFailed": "Impossibile segnalare l'errore",
     "createEndpoint": "Créer endpoint",
     "wrongOrganization": "Wrong organization"
-    },
+  },
   "qrCode": {
     "qrCode": "Codice QR",
     "browseScan&Charge": "Scansiona & Ricarica",
