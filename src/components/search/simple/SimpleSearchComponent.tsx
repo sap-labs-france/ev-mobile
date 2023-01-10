@@ -51,8 +51,10 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   }
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
-    if (this.props.searchText !== this.state.searchText) {
-      this.setState({searchText: this.props.searchText}, () => this.props.onChange(this.props.searchText));
+    const { searchText } = this.props;
+    // If prop has changed and component is not aware, use prop for search input
+    if ((searchText !== prevProps.searchText) && (searchText !== this.state.searchText)) {
+      this.setState({searchText}, () => this.props.onChange(searchText));
     }
   }
 
