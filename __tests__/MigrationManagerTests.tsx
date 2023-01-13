@@ -2,6 +2,8 @@
 import MigrationManager from '../src/migration/MigrationManager';
 import Configuration from '../src/config/Configuration';
 
+jest.mock('../src/utils/SecuredStorage');
+
 test('refactorTenants', async () => {
   const tenants = [
     {
@@ -27,8 +29,8 @@ test('refactorTenants', async () => {
         endpoint: 'http://...'
       }
     }
-  ]
-  const migrationManager = MigrationManager.getInstance()
+  ];
+  const migrationManager = MigrationManager.getInstance();
   const refactoredTenants = await migrationManager.refactorTenants(tenants);
   expect(refactoredTenants.length).toEqual(4);
   for (let i = 0; i < 4; i++) {
@@ -49,3 +51,4 @@ test('refactorTenants', async () => {
   expect(tenant4.endpoint.endpoint).toEqual('http://...');
 });
 
+jest.unmock('../src/utils/SecuredStorage');

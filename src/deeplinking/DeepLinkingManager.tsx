@@ -12,12 +12,24 @@ import Utils from '../utils/Utils';
 
 export default class DeepLinkingManager {
   private static instance: DeepLinkingManager;
-  private navigator: NavigationContainerRef;
+  private navigator: NavigationContainerRef<ReactNavigation.RootParamList>;
   private centralServerProvider: CentralServerProvider;
   private linkingSubscription: EmitterSubscription;
 
   // eslint-disable-next-line no-useless-constructor
   private constructor() {}
+
+  public static getAuthorizedURLs(): string[] {
+    return [
+      ...((__DEV__ && ['http://*.localhost:45000']) || []),
+      'https://*.e-mobility-group.org',
+      'https://*.e-mobility-group.com',
+      'https://*.e-mobility-group.eu',
+      'https://*.e-mobility-labs.com',
+      'https://*.e-mobility-labs.org',
+      'https://*.qa-e-mobility-group.com',
+    ];
+  }
 
   public static getInstance(): DeepLinkingManager {
     if (!DeepLinkingManager.instance) {
@@ -26,7 +38,7 @@ export default class DeepLinkingManager {
     return DeepLinkingManager.instance;
   }
 
-  public initialize(navigator: NavigationContainerRef, centralServerProvider: CentralServerProvider) {
+  public initialize(navigator: NavigationContainerRef<ReactNavigation.RootParamList>, centralServerProvider: CentralServerProvider) {
     // Keep
     this.navigator = navigator;
     this.centralServerProvider = centralServerProvider;
@@ -83,12 +95,10 @@ export default class DeepLinkingManager {
       // Disable
       this.centralServerProvider.setAutoLoginDisabled(true);
       // Navigate
-      this.navigator.dispatch(
-        CommonActions.navigate({
-          name: 'ResetPassword',
-          key: `${Utils.randomNumber()}`,
-          params: { tenantSubDomain: response.tenant, hash: response.hash }
-        })
+      this.navigator.navigate('ResetPassword', {
+        key: `${Utils.randomNumber()}`,
+        params: { tenantSubDomain: response.tenant, hash: response.hash }
+      }
       );
     });
   };

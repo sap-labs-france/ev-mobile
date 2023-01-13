@@ -190,7 +190,8 @@
     "mandatoryErrorDescription": "La descripción es obligatoria",
     "reportErrorSuccess": "El error se ha informado correctamente",
     "reportErrorFailed": "No se puede informar el error",
-    "createEndpoint": "Create endpoint"
+    "createEndpoint": "Create endpoint",
+    "wrongOrganization": "Wrong organization"
   },
   "qrCode": {
     "qrCode": "Código QR",

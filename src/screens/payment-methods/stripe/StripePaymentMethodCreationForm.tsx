@@ -74,7 +74,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
           if (clientSecret) {
             // STEP 2 - Call Stripe API to confirm intent
             const { error, setupIntent } = await confirmSetupIntent(clientSecret, {
-              type: 'Card'
+              paymentMethodType: 'Card'
             });
             if (error) {
               // TODO: Display the error

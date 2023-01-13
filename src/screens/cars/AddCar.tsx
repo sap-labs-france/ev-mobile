@@ -21,11 +21,11 @@ import Orientation from 'react-native-orientation-locker';
 import Message from '../../utils/Message';
 import { HTTPError } from '../../types/HTTPError';
 import I18n from 'i18n-js';
-import { RadioButton } from 'react-native-paper';
 import Constants from '../../utils/Constants';
 import { RestResponse } from '../../types/ActionResponse';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
+import {RadioButton} from "react-native-paper";
 
 interface State {
   selectedCarCatalog: CarCatalog;

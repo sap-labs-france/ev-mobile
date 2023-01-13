@@ -59,7 +59,34 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     await super.componentDidMount();
     // When filters are enabled, first refresh is triggered via onFiltersChanged
     if (!this.screenFilters) {
-      this.refresh(true);
+      await this.refresh(true);
+    }
+    this.handleNavigationParameters();
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    const prevNavParams = JSON.stringify(prevProps.route?.params);
+    const currentNavParams = JSON.stringify(this.props.route?.params);
+    if (currentNavParams &&  currentNavParams !== prevNavParams) {
+      this.handleNavigationParameters();
+    }
+  }
+
+  private async handleNavigationParameters(): Promise<void> {
+    const transactionID = Utils.getParamFromNavigation(this.props.route, 'TransactionID', null, true) as number;
+    if (transactionID) {
+      try {
+        const transaction = await this.centralServerProvider.getTransaction(transactionID);
+        this.props.navigation.navigate('ChargingStationConnectorDetailsTabs', {
+          params: {
+            chargingStationID: transaction?.chargeBoxID,
+            connectorID: transaction?.connectorId
+          },
+          key: `${Utils.randomNumber()}`
+        });
+      } catch (e) {
+
+      }
     }
   }
 

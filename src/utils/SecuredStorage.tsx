@@ -5,7 +5,6 @@ import { SecuredStorageKey } from '../types/SecuredStorageKeys';
 import Tenant, { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
 import UserToken from '../types/UserToken';
-import Utils from './Utils';
 import { Settings } from '../types/Settings';
 
 // Generate a new Id for persisting the navigation each time the app is launched for the first time
@@ -29,26 +28,7 @@ export default class SecuredStorage {
       key: string;
       navigationState: NavigationState;
     };
-    // Check the key
-    if (navigationState) {
-      if (navigationState.key === navigationID) {
-        const routeNames: string[] = [];
-        // Clear dups
-        if (__DEV__ && !Utils.isEmptyArray(navigationState.navigationState?.routes)) {
-          // FIXME: 'routes' is a read-only property.
-          // @ts-ignore
-          navigationState.navigationState.routes = navigationState.navigationState?.routes.filter((route) => {
-            if (!routeNames.includes(route.name)) {
-              routeNames.push(route.name);
-              return true;
-            }
-            return false;
-          });
-        }
-        return navigationState.navigationState;
-      }
-    }
-    return null;
+    return navigationState?.navigationState;
   }
 
   public static async saveNavigationState(navigationState: NavigationState): Promise<void> {
@@ -128,7 +108,7 @@ export default class SecuredStorage {
 
   public static async loadFilterValue(user: UserToken, filterInternalID: string): Promise<string | boolean> {
     // Get
-    const value = await SecuredStorage.getString(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
+    const value = await SecuredStorage.getString(`${user?.tenantID}~${user?.id}~filter~${filterInternalID}`);
     if (value === 'null' || value === 'undefined' ) {
       return null;
     }

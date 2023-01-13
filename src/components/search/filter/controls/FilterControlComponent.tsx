@@ -10,7 +10,7 @@ export interface FilterControlComponentProps<T> {
   locale?: string;
   initialValue?: T;
   style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
-  onFilterChanged?: (id: string, value: T) => Promise<void>;
+  onFilterChanged?: (id: string, value: T) => Promise<void> | void;
 }
 
 export interface FilterControlComponentState<T> {

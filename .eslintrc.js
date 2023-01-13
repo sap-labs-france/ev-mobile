@@ -211,7 +211,7 @@ module.exports = defineConfig({
         "ignoreRegExpLiterals": true,
         "ignoreStrings": true,
         "ignorePattern": "(^(import|export)|(public|private))\\s.+;",
-        "code": 140
+        "code": 170
       }
     ],
     "new-parens": "error",

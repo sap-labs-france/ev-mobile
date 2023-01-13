@@ -63,7 +63,26 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     await super.componentDidMount();
     // When filters are enabled, first refresh is triggered via onFiltersChanged
     if (!this.screenFilters) {
-      this.refresh(true);
+      await this.refresh(true);
+    }
+    this.handleNavigationParameters();
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    const prevNavParams = JSON.stringify(prevProps.route?.params);
+    const currentNavParams = JSON.stringify(this.props.route?.params);
+    if (currentNavParams &&  currentNavParams !== prevNavParams) {
+      this.handleNavigationParameters();
+    }
+  }
+
+  private handleNavigationParameters(): void {
+    const transactionID = Utils.getParamFromNavigation(this.props.route, 'TransactionID', null, true);
+    if (transactionID) {
+      this.props.navigation.navigate('TransactionDetailsTabs', {
+        params: {transactionID},
+        key: `${Utils.randomNumber()}`
+      });
     }
   }
 
@@ -86,7 +105,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
         EndDateTime: endDateTime?.toISOString(),
         Search: this.searchText,
         Issuer: !issuer
-      }
+      };
       const transactions = await this.centralServerProvider.getTransactions(params, paging, ['-timestamp']);
       // Get total number of records
       if (transactions?.count === -1) {

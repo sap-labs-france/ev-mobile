@@ -190,7 +190,8 @@
     "mandatoryErrorDescription": "Die Beschreibung ist notwendig",
     "reportErrorSuccess": "Der Fehler wurde erfolgreich gemeldet",
     "reportErrorFailed": "Der Fehler kann nicht gemeldet werden",
-    "createEndpoint": "Endpunkt erstellen"
+    "createEndpoint": "Endpunkt erstellen",
+    "wrongOrganization": "Wrong organization"
   },
   "qrCode": {
     "qrCode": "QR Code",

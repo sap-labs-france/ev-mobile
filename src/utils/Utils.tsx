@@ -17,7 +17,6 @@ import Car, { CarCatalog, CarConverter } from '../types/Car';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
 import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
-import { RequestError } from '../types/RequestError';
 import { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
