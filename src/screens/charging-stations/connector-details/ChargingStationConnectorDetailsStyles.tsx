@@ -4,7 +4,6 @@ import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
-import { PLATFORM } from '../../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -26,7 +25,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     backgroundImage: {
       width: '100%',
-      height: '135@s',
+      height: '100@s',
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -147,7 +146,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginVertical: '20@s'
+      marginTop: '20@s'
     },
     departureTimeInput: {
       backgroundColor: commonColor.listItemBackground,
@@ -170,7 +169,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      marginTop: '20@s'
     },
     socContainer: {
       width: '100%',
@@ -448,9 +448,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1
     },
     sliderMarker: {
-      width: scale(25),
-      height: scale(25),
-      borderRadius: scale(25),
+      width: scale(28),
+      height: scale(28),
+      borderRadius: scale(28),
       backgroundColor: commonColor.disabled,
       elevation: 6,
       shadowColor: '#000',
