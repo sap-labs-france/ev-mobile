@@ -578,7 +578,7 @@
 				CODE_SIGN_ENTITLEMENTS = eMobility/eMobility.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = SG7N28T3A2;
 				ENABLE_BITCODE = NO;
@@ -631,7 +631,7 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-splash-screen\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/yoga\"",
 				);
-				MARKETING_VERSION = 2.7.3;
+				MARKETING_VERSION = 2.7.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -658,7 +658,7 @@
 				CODE_SIGN_ENTITLEMENTS = eMobility/eMobility.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = SG7N28T3A2;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -797,7 +797,7 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-splash-screen\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/yoga\"",
 				);
-				MARKETING_VERSION = 2.7.3;
+				MARKETING_VERSION = 2.7.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

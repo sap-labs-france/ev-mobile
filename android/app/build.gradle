@@ -146,8 +146,8 @@ android {
         applicationId "com.emobility"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 305
-        versionName "2.7.1"
+        versionCode 526
+        versionName "2.7.4"
         missingDimensionStrategy 'react-native-camera', 'general'
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         if (isNewArchitectureEnabled()) {
