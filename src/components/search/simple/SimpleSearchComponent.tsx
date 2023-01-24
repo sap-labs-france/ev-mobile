@@ -61,7 +61,8 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { containerStyle } = this.props;
+    const { containerStyle} = this.props;
+    const { searchText } = this.state;
     return (
       <View style={[style.container, containerStyle]}>
         <Icon marginX={scale(5)} size={scale((22))} as={MaterialIcons} name="search" style={style.icon} />
@@ -72,14 +73,16 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           selectionColor={commonColor.textColor}
           style={style.inputField}
           autoCorrect={false}
-          value={this.props.searchText}
+          value={this.state.searchText}
           placeholder={I18n.t('general.search')}
           placeholderTextColor={commonColor.placeholderTextColor}
-          onChangeText={(searchText) => this.searchHasChanged(searchText)}
+          onChangeText={(newSearchText) => this.searchHasChanged(newSearchText)}
         />
-        <TouchableOpacity onPress={() => this.clearSearch()}>
-          <Icon marginX={scale(5)} size={scale(20)} as={MaterialCommunityIcons} name="close-circle" style={[style.icon, style.clearIcon]} />
-        </TouchableOpacity>
+        {searchText && (
+          <TouchableOpacity onPress={() => this.clearSearch()}>
+            <Icon marginX={scale(5)} size={scale(20)} as={MaterialCommunityIcons} name="close-circle" style={[style.icon, style.clearIcon]} />
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
