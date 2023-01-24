@@ -21,9 +21,10 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     super(props);
     // Init
     this.state = {
-      connectorTypes: new Set<ConnectorType>(this.props.initialValue?.split("|") as ConnectorType[]),
+      connectorTypes: new Set<ConnectorType>(this.props.initialValue?.split('|') as ConnectorType[]),
       value: this.props.initialValue
-    }}
+    };
+  }
 
   public canBeSaved() {
     return true;
@@ -31,7 +32,7 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
 
   public clearValue(callback?: () => unknown) {
     super.clearValue(callback);
-    this.setState({connectorTypes: new Set()})
+    this.setState({connectorTypes: new Set()});
   }
 
   public render = () => {
@@ -40,14 +41,16 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     const { connectorTypes } = this.state;
     const commonColors = Utils.getCurrentCommonColor();
     return (
-        <View style={StyleSheet.compose(internalStyle.connectorTypeFilterContainer, style)}>
-          {Object.values(ConnectorType)?.map((connector, index) => (
-            <TouchableOpacity key={index} onPress={() => this.onValueChanged(connector)} style={[internalStyle.connectorContainer, connectorTypes.has(connector) && internalStyle.selectedConnectorContainer]}>
-              {Utils.buildConnectorTypeSVG(connector, connectorTypes.has(connector) ? commonColors.containerBgColor : commonColors.textColor)}
+      <View style={StyleSheet.compose(internalStyle.connectorTypeFilterContainer, style)}>
+        {Object.values(ConnectorType)?.map((connector, index) => (
+          <TouchableOpacity key={index} onPress={async () => this.onValueChanged(connector)} style={[internalStyle.connectorContainer, connectorTypes.has(connector) && internalStyle.selectedConnectorContainer]}>
+            <>
+              {Utils.buildConnectorTypeSVG(connector, connectorTypes.has(connector) ? commonColors.containerBgColor : commonColors.textColor, 30)}
               <Text numberOfLines={2} ellipsizeMode={'tail'} style={[internalStyle.connectorLabel, connectorTypes.has(connector) && internalStyle.selectedConnectorLabel]}>{Utils.translateConnectorType(connector)}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+            </>
+          </TouchableOpacity>
+        ))}
+      </View>
     );
   };
 
@@ -61,5 +64,5 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     }
     const value = connectorTypes.size > 0 ? Array.from(connectorTypes).join('|') : null;
     this.setState({connectorTypes, value}, () => onFilterChanged?.(this.getID(), value));
-  };
+  }
 }

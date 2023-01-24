@@ -5,13 +5,13 @@ import React from 'react';
 import {
   Image,
   ImageStyle,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
   TouchableHighlight,
-  TouchableHighlightProps
+  TouchableHighlightProps,
+  SafeAreaView
 } from 'react-native';
 import { CheckVersionResponse } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
@@ -30,6 +30,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
 import {AuthContext} from '../../context/AuthContext';
+import {} from 'react-native-safe-area-context';
 
 export interface Props extends BaseProps {}
 
@@ -129,7 +130,8 @@ export default class SideBar extends React.Component<Props, State> {
     // Get logo
     return (
       <View style={style.container}>
-        <SafeAreaView style={style.sidebar}>
+        <View style={style.sidebar}>
+          <SafeAreaView style={{flex: 0}} />
           <View style={style.header}>
             <View style={style.tenantContainer}>
               {tenantLogo && <Image source={{ uri: tenantLogo }} style={style.logo as ImageStyle} />}
@@ -229,30 +231,33 @@ export default class SideBar extends React.Component<Props, State> {
               <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
             </SidebarEntry>
           </ScrollView>
-          <View style={style.bottomContainer}>
-            <View style={style.avatarContainer}>
-              <UserAvatar user={user} navigation={this.props.navigation} />
+          <View style={{backgroundColor: commonColor.listItemBackground}}>
+            <View style={style.bottomContainer}>
+              <View style={style.avatarContainer}>
+                <UserAvatar user={user} navigation={this.props.navigation} />
+              </View>
+              <View style={style.rightContainer}>
+                <Text style={style.userName}>
+                  {Utils.buildUserName(user)}
+                </Text>
+                <HStack style={{alignItems: 'center'}}>
+                  <TouchableOpacity style={style.settingsContainer} onPress={() => this.navigateTo('SettingsNavigator', 'Settings')}>
+                    <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('sidebar.settings')}</Text>
+                  </TouchableOpacity>
+                  <View style={{width: scale(4), height: scale(4), borderRadius: scale(4), backgroundColor: commonColor.primary, marginHorizontal: scale(10)}} />
+                  <AuthContext.Consumer>
+                    {authService => (
+                      <TouchableOpacity style={style.logoutContainer} onPress={async () => this.logoff(() => authService.handleSignOut())}>
+                        <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
+                      </TouchableOpacity>
+                    )}
+                  </AuthContext.Consumer>
+                </HStack>
+              </View>
             </View>
-            <View style={style.rightContainer}>
-              <Text style={style.userName}>
-                {Utils.buildUserName(user)}
-              </Text>
-              <HStack style={{alignItems: 'center'}}>
-                <TouchableOpacity style={style.settingsContainer} onPress={() => this.navigateTo('SettingsNavigator', 'Settings')}>
-                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('sidebar.settings')}</Text>
-                </TouchableOpacity>
-                <View style={{width: scale(4), height: scale(4), borderRadius: scale(4), backgroundColor: commonColor.primary, marginHorizontal: scale(10)}} />
-                <AuthContext.Consumer>
-                  {authService => (
-                    <TouchableOpacity style={style.logoutContainer} onPress={async () => this.logoff(() => authService.handleSignOut())}>
-                      <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
-                    </TouchableOpacity>
-                  )}
-                </AuthContext.Consumer>
-              </HStack>
-            </View>
+            <SafeAreaView />
           </View>
-        </SafeAreaView>
+        </View>
       </View>
     );
   }
