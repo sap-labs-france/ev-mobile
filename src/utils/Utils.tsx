@@ -1024,7 +1024,7 @@ export default class Utils {
     return location?.getLocation();
   }
 
-  public static buildConnectorTypeSVG = (connectorType: ConnectorType, color: any, size: number = 40): Element => {
+  public static buildConnectorTypeSVG = (connectorType: ConnectorType, color?: any, size: number = 40): Element => {
     const commonColor = Utils.getCurrentCommonColor();
     color = color ?? commonColor.textColor;
     switch (connectorType) {
