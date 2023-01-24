@@ -49,10 +49,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     connectorContainer: {
-      width: '75@s',
-      borderWidth: 0.8,
+      height: '70@s',
+      width: '70@s',
+      borderWidth: 0.5,
       padding: '2@s',
-      height: '75@s',
       borderColor: commonColor.textColor,
       borderRadius: '8@s',
       alignItems: 'center',
@@ -63,7 +63,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.textColor
     },
     connectorLabel: {
-      fontSize: '11@s',
+      fontSize: '10@s',
       color: commonColor.textColor,
       textAlign: 'center'
     },

@@ -1024,38 +1024,38 @@ export default class Utils {
     return location?.getLocation();
   }
 
-  public static buildConnectorTypeSVG = (connectorType: ConnectorType, color: any): Element => {
+  public static buildConnectorTypeSVG = (connectorType: ConnectorType, color: any, size: number = 40): Element => {
     const commonColor = Utils.getCurrentCommonColor();
     color = color ?? commonColor.textColor;
     switch (connectorType) {
       case ConnectorType.CHADEMO:
         return (
-          <Chademo width={scale(40)} height={scale(40)} stroke={color} strokeWidth="25%" />
+          <Chademo width={scale(size)} height={scale(size)} stroke={color} strokeWidth="25%" />
         );
       case ConnectorType.TYPE_2:
         return (
-          <Type2 width={scale(40)} height={scale(40)} stroke={color} strokeWidth="8%" />
+          <Type2 width={scale(size)} height={scale(size)} stroke={color} strokeWidth="8%" />
         );
       case ConnectorType.COMBO_CCS:
         return (
-          <ComboCCS width={scale(40)} height={scale(40)} stroke={color} strokeWidth="20%" />
+          <ComboCCS width={scale(size)} height={scale(size)} stroke={color} strokeWidth="20%" />
         );
       case ConnectorType.DOMESTIC:
-        return <Domestic width={scale(40)} height={scale(40)} fill={color} strokeWidth="2%" />;
+        return <Domestic width={scale(size)} height={scale(size)} fill={color} strokeWidth="2%" />;
       case ConnectorType.TYPE_1:
         return (
-          <Type1 width={scale(40)} height={scale(40)} stroke={color} strokeWidth="2.5%" />
+          <Type1 width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />
         );
       case ConnectorType.TYPE_1_CCS:
         return (
-          <Type1CCS width={scale(40)} height={scale(40)} stroke={color} strokeWidth="2.5%" />
+          <Type1CCS width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />
         );
       case ConnectorType.TYPE_3C:
         return (
-          <Type3C width={scale(40)} height={scale(40)} stroke={color} strokeWidth="2.5%" />
+          <Type3C width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />
         );
     }
-    return <NoConnector width={scale(40)} height={scale(40)} fill={color} />;
+    return <NoConnector width={scale(size)} height={scale(size)} fill={color} />;
   };
 
   public static async checkForUpdate(): Promise<CheckVersionResponse | null> {

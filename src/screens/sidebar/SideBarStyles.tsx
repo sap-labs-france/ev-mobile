@@ -13,11 +13,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const borderColor = Color(commonColor.disabledDark).alpha(0.38).toString();
   const commonStyles = ScaledSheet.create({
     container: {
-      paddingTop: getStatusBarHeight() + scale(10),
-      backgroundColor: commonColor.containerBgColor
+      paddingTop : Platform.OS === PLATFORM.IOS ? '5@s' : getStatusBarHeight() + scale(5),
+      backgroundColor: commonColor.containerBgColor,
+      height: '100%'
     },
     sidebar: {
-      backgroundColor: commonColor.listItemBackground,
       alignItems: 'center',
       justifyContent: 'center',
       height: '100%'
@@ -25,12 +25,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     header: {
       alignItems: 'center',
       justifyContent: 'flex-start',
-      backgroundColor: commonColor.containerBgColor,
       paddingHorizontal: '10@s',
       paddingBottom: '5@s',
       width: '100%',
       borderBottomWidth: 0.8,
       borderColor
+    },
+    bottomContainer: {
+      paddingHorizontal: '10@s',
+      flexDirection: 'row',
+      paddingTop: '15@s',
+      paddingBottom: Platform.OS === PLATFORM.IOS ? 0 : '15@s',
+      backgroundColor: commonColor.listItemBackground,
+      width: '100%'
     },
     sidebarSection: {
       borderColor,
@@ -47,12 +54,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     scrollviewInnerContainer: {
-      width: '100%'
+      width: '100%',
+      height: 'auto'
     },
     scrollview: {
       width: '100%',
-      height: 'auto',
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      flex: 1
     },
     logo: {
       resizeMode: 'contain',
@@ -115,12 +123,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '14@s',
       marginLeft: '22@s',
       opacity: 1
-    },
-    bottomContainer: {
-      paddingHorizontal: '10@s',
-      flexDirection: 'row',
-      paddingVertical: '15@s',
-      backgroundColor: commonColor.listItemBackground
     },
     rightContainer: {
       flexDirection: 'column',
