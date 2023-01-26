@@ -14,49 +14,88 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     container: {
-      flex: 1,
+      height: '100%',
       backgroundColor: commonColor.containerBgColor,
-      paddingTop: getStatusBarHeight() + scale(10)
+      paddingTop: getStatusBarHeight() + scale(10),
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    applicationTitle: {
+      fontSize: scale(35),
+      color: commonColor.textColor,
+      fontWeight: 'bold'
+    },
+    tenantSelectionContainer: {
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginBottom: scale(20)
+    },
+    tenantName: {
+      fontSize: scale(15),
+      color: commonColor.textColor,
+      textAlign: 'right'
+    },
+    dropdownIcon: {
+      color: commonColor.textColor
+    },
+    loginFormContainer: {
+      width: '100%',
+      alignItems: 'center'
+    },
+    forgotPasswordContainer: {
+      width: '90%',
+      alignItems: 'flex-end',
+      marginTop: scale(5)
+    },
+    forgotPasswordText: {
+      fontSize: scale(12),
+      color: commonColor.textColor
+    },
+    buttonSeparatorLine: {
+      width: '50%',
+      borderTopWidth: 0.5,
+      borderTopColor: commonColor.disabledDark,
+      marginVertical: scale(20)
+    },
+    appVersionText: {
+      fontSize: scale(10),
+      color: commonColor.textColor,
+      width: '90%',
+      textAlign: 'right',
+      paddingVertical: scale(5)
     },
     keyboardContainer: {
       flex: 1
     },
     scrollContainer: {
-      minHeight: '90%'
+      height: '100%',
+      width: '100%'
     },
     header: {
-      flex: 1,
+     // flex: 1,
       flexDirection: 'column',
       justifyContent: 'space-evenly',
       alignItems: 'center'
     },
-    logo: {
-      width: '90%',
-      height: '100@s',
+    tenantLogoContainer: {
+      padding: scale(10)
+    },
+    tenantLogo: {
+      height: scale(50),
+      width: scale(100),
       resizeMode: 'contain'
     },
     appText: {
       color: commonColor.textColor,
-      fontSize: '30@s',
+      fontSize: '26@s',
       fontWeight: 'bold'
-    },
-    appVersionText: {
-      color: commonColor.textColor,
-      alignSelf: 'center',
-      fontSize: '15@s'
     },
     appTenant: {
       color: commonColor.textColor,
       marginTop: '20@s',
       fontSize: '15@s',
-      alignSelf: 'center'
-    },
-    appTenantName: {
-      color: commonColor.textColor,
-      marginTop: '5@s',
-      marginBottom: '5@s',
-      fontSize: '15@s',
-      fontWeight: 'bold',
       alignSelf: 'center'
     },
     formErrorTextEula: {

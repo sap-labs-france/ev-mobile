@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { ScaledSheet } from 'react-native-size-matters';
+import {scale, ScaledSheet} from 'react-native-size-matters';
 
 import Utils from './utils/Utils';
 
@@ -30,34 +30,42 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-start',
       alignItems: 'center'
     },
-    button: {
-      width: '90%',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      height: '40@s',
-      marginBottom: '10@s',
-      backgroundColor: commonColor.buttonBg
+    buttonContainer: {
+      width: '90%'
     },
     buttonDisabled: {
-      opacity: 0.4
+      backgroundColor: commonColor.disabledDark
+    },
+    button: {
+      alignSelf: 'center',
+      justifyContent: 'center',
+      backgroundColor: commonColor.primary,
+      borderRadius: '18@s',
+      padding: '7@s',
+      width: '100%'
     },
     buttonText: {
       width: '100%',
       textAlign: 'center',
       fontSize: '15@s',
-      color: commonColor.textColor
+      color: commonColor.light
     },
-    inputGroup: {
-      height: '40@s',
+    buttonTextDisabled: {
+      opacity: 0.8
+    },
+    inputContainer: {
       width: '90%',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      marginBottom: '10@s',
-      marginLeft: 0,
-      paddingLeft: '10@s',
-      paddingRight: '10@s',
-      backgroundColor: commonColor.buttonBg,
-      borderColor: 'transparent'
+      paddingHorizontal: 0,
+      height: scale(40),
+      marginBottom: scale(20)
+    },
+    inputTextContainer: {
+      height: '45@s',
+      width: '100%',
+      paddingHorizontal: '10@s',
+      backgroundColor: commonColor.listItemBackground,
+      borderRadius: '18@s',
+      borderBottomWidth: 0
     },
     inputIcon: {
       color: commonColor.textColor,
@@ -65,10 +73,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       textAlign: 'center',
       width: '25@s'
     },
-    inputField: {
-      flex: 1,
-      fontSize: '15@s',
-      color: commonColor.textColor
+    inputText: {
+      color: commonColor.textColor,
+      fontSize: scale(13)
     },
     formErrorText: {
       fontSize: '12@s',
