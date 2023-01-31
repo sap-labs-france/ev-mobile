@@ -32,6 +32,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AuthHeader from '../AuthHeader';
+import i18n from 'i18n-js';
 
 export interface Props extends BaseProps {}
 
@@ -349,7 +350,7 @@ export default class Login extends BaseScreen<Props, State> {
                   checkedIcon={<Icon size={scale(25)} name="checkbox-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
                 />
                 <Button
-                  title={I18n.t('authentication.login')}
+                  title={I18n.t('authentication.signIn')}
                   titleStyle={formStyle.buttonText}
                   disabled={!this.isFormValid()}
                   disabledStyle={formStyle.buttonDisabled}

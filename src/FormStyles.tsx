@@ -50,6 +50,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: scale(40),
       marginBottom: scale(20)
     },
+    inputContainerError: {
+      marginBottom: scale(40)
+    },
     inputTextContainer: {
       height: '45@s',
       width: '100%',
@@ -58,9 +61,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '18@s',
       borderBottomWidth: 0
     },
-    inputTextErrorContainer: {
+    inputTextContainerError: {
       borderColor: commonColor.danger,
-      borderWidth: 0.8
+      borderWidth: 0.8,
+      borderBottomWidth: 0.8
     },
     inputIcon: {
       color: commonColor.textColor,
@@ -73,7 +77,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: scale(13)
     },
     inputError: {
-      color: commonColor.danger
+      color: commonColor.danger,
+      fontSize: scale(10)
     },
     checkboxContainer: {
       flexDirection: 'row',

@@ -188,7 +188,8 @@
     "reportErrorSuccess": "The error has been reported successfully",
     "reportErrorFailed": "Cannot report the error",
     "createEndpoint": "Create endpoint",
-    "wrongOrganization": "Wrong organization"
+    "wrongOrganization": "Wrong organization",
+    "createAccount": "Create Account"
   },
   "qrCode": {
     "qrCode": "QR Code",

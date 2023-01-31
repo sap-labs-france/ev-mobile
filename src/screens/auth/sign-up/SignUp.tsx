@@ -22,7 +22,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button, Input, CheckBox} from 'react-native-elements';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import I18nManager from '../../../I18n/I18nManager';
 
 export interface Props extends BaseProps {}
 
@@ -287,9 +287,9 @@ export default class SignUp extends BaseScreen<Props, State> {
               as={MaterialCommunityIcons}
               onPress={() => this.setState({ hidePassword: !hidePassword })}
             />}
-            containerStyle={formStyle.inputContainer}
+            containerStyle={[formStyle.inputContainer, !Utils.validatePassword(password) && formStyle.inputContainerError]}
             inputStyle={formStyle.inputText}
-            inputContainerStyle={formStyle.inputTextContainer}
+            inputContainerStyle={[formStyle.inputTextContainer, !Utils.validatePassword(password) && formStyle.inputTextContainerError]}
             value={password}
             placeholder={I18n.t('authentication.password')}
             placeholderTextColor={commonColor.placeholderTextColor}
@@ -300,6 +300,9 @@ export default class SignUp extends BaseScreen<Props, State> {
             keyboardType={'default'}
             returnKeyType={'next'}
             onSubmitEditing={() => this.repeatPasswordInput.focus()}
+            errorMessage={!Utils.validatePassword(password) ? I18n.t('authentication.passwordRule') : null}
+            errorProps={{numberOfLines: 2, ellipsizeMode: 'tail'}}
+            errorStyle={formStyle.inputError}
             onChangeText={(text) => this.setState({ password: text })}
           />
           <Input
@@ -312,7 +315,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
-            inputContainerStyle={formStyle.inputTextContainer}
+            inputContainerStyle={[formStyle.inputTextContainer, !this.checkPasswords() && formStyle.inputTextContainerError]}
             value={repeatPassword}
             placeholder={I18n.t('authentication.repeatPassword')}
             placeholderTextColor={commonColor.placeholderTextColor}
@@ -323,6 +326,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             returnKeyType={'done'}
             onSubmitEditing={() => Keyboard.dismiss()}
             errorMessage={!this.checkPasswords() ? I18n.t('authentication.passwordNotMatch') : null}
+            errorProps={{numberOfLines: 2, ellipsizeMode: 'tail'}}
             errorStyle={formStyle.inputError}
             onChangeText={(text) => this.setState({ repeatPassword: text })}
           />
@@ -343,7 +347,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             checkedIcon={<InputIcon size={scale(25)} name="checkbox-outline" as={MaterialCommunityIcons} />}
           />
           <Button
-            title={I18n.t('authentication.signUp')}
+            title={I18n.t('authentication.createAccount')}
             titleStyle={formStyle.buttonTitle}
             disabled={!this.isFormValid()}
             disabledStyle={formStyle.buttonDisabled}
@@ -375,6 +379,6 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   private isFormValid(): boolean {
     const {email, password, eula, name, firstName, repeatPassword} = this.state;
-    return !!name && !!firstName && !!email && !!password && !!repeatPassword && eula && this.checkPasswords();
+    return !!name && !!firstName && !!email && !!password && !!repeatPassword && eula && this.checkPasswords() && this.checkPassword();
   }
 }

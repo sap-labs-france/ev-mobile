@@ -188,7 +188,8 @@
     "reportErrorSuccess": "Chyba byla úspěšně nahlášena",
     "reportErrorFailed": "Chybu nelze nahlásit",
     "createEndpoint": "Create endpoint",
-    "wrongOrganization": "Wrong organization"
+    "wrongOrganization": "Wrong organization",
+    "createAccount": "Create Account"
   },
   "qrCode": {
     "qrCode": "QR kód",

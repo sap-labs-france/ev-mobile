@@ -188,7 +188,8 @@
     "reportErrorSuccess": "O erro foi relatado com sucesso",
     "reportErrorFailed": "Não é possível comunicar o erro",
     "createEndpoint": "Créer endpoint",
-    "wrongOrganization": "Wrong organization"
+    "wrongOrganization": "Wrong organization",
+    "createAccount": "Create Account"
   },
   "qrCode": {
     "qrCode": "QR Code",
