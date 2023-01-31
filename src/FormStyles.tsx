@@ -18,18 +18,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       alignItems: 'center'
     },
-    formHeader: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    form: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'center'
-    },
     buttonContainer: {
       width: '90%'
     },
@@ -43,6 +31,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '18@s',
       padding: '7@s',
       width: '100%'
+    },
+    secondaryButton: {
+      backgroundColor: commonColor.primaryDark
     },
     buttonText: {
       width: '100%',
@@ -67,6 +58,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '18@s',
       borderBottomWidth: 0
     },
+    inputTextErrorContainer: {
+      borderColor: commonColor.danger,
+      borderWidth: 0.8
+    },
     inputIcon: {
       color: commonColor.textColor,
       alignSelf: 'center',
@@ -77,19 +72,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontSize: scale(13)
     },
-    formErrorText: {
-      fontSize: '12@s',
-      marginLeft: '20@s',
-      color: commonColor.danger,
-      alignSelf: 'flex-start',
-      top: '-5@s'
+    inputError: {
+      color: commonColor.danger
     },
-    formCheckboxContainer: {
+    checkboxContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: '20@s',
-      marginTop: '10@s'
+      marginVertical: '10@s',
+      backgroundColor: 'transparent',
+      borderWidth: 0
     },
     checkbox: {
       borderColor: commonColor.textColor,
@@ -101,7 +93,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     checkboxText: {
       fontSize: '13@s',
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      paddingLeft: '10@s'
     }
   });
   const portraitStyles = {};
