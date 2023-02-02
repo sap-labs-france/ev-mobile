@@ -178,7 +178,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               onPress={() => this.setState({hidePassword: !hidePassword})}
               style={formStyle.inputIcon}
             />}
-            containerStyle={[formStyle.inputContainer, !Utils.validatePassword(password) && formStyle.inputContainerError]}
+            containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={[formStyle.inputTextContainer, !Utils.validatePassword(password) && formStyle.inputTextContainerError]}
             value={password}
@@ -190,8 +190,8 @@ export default class ResetPassword extends BaseScreen<Props, State> {
             keyboardType={'default'}
             returnKeyType={'next'}
             onSubmitEditing={() => this.repeatPasswordInput.focus()}
+            renderErrorMessage={!Utils.validatePassword(password)}
             errorMessage={!Utils.validatePassword(password) ? I18n.t('authentication.passwordRule') : null}
-            errorProps={{numberOfLines: 2, ellipsizeMode: 'tail'}}
             errorStyle={formStyle.inputError}
             onChangeText={(newPassword) => this.setState({password: newPassword})}
           />
@@ -205,7 +205,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               onPress={() => this.setState({hideRepeatPassword: !hideRepeatPassword})}
               style={formStyle.inputIcon}
             />}
-            containerStyle={[formStyle.inputContainer, !this.checkPasswords() && formStyle.inputContainerError]}
+            containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={[formStyle.inputTextContainer, !this.checkPasswords() && formStyle.inputTextContainerError]}
             value={repeatPassword}
@@ -217,8 +217,8 @@ export default class ResetPassword extends BaseScreen<Props, State> {
             keyboardType={'default'}
             returnKeyType={'done'}
             onSubmitEditing={() => Keyboard.dismiss()}
+            renderErrorMessage={!this.checkPasswords()}
             errorMessage={!this.checkPasswords() ? I18n.t('authentication.passwordNotMatch') : null}
-            errorProps={{numberOfLines: 2, ellipsizeMode: 'tail'}}
             errorStyle={formStyle.inputError}
             onChangeText={(text) => this.setState({repeatPassword: text})}
           />
@@ -253,6 +253,6 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   private isFormValid(): boolean {
     const { password, repeatPassword } = this.state;
-    return password && repeatPassword && this.checkPasswords();
+    return password && repeatPassword && this.checkPasswords() && Utils.validatePassword(password);
   }
 }

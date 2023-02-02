@@ -201,6 +201,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
             textContentType={'emailAddress'}
             keyboardType={'email-address'}
             returnKeyType={'done'}
+            renderErrorMessage={false}
             onChangeText={(newEmail) => this.setState({ email: newEmail })}
           />
           <Button

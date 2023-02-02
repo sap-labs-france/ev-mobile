@@ -22,7 +22,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button, Input, CheckBox} from 'react-native-elements';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import I18nManager from '../../../I18n/I18nManager';
 
 export interface Props extends BaseProps {}
 
@@ -241,6 +240,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             keyboardType={'default'}
             returnKeyType={'next'}
             onSubmitEditing={() => this.firstNameInput.focus()}
+            renderErrorMessage={false}
             onChangeText={(newName) => this.setState({ name: newName })}
           />
           <Input
@@ -259,6 +259,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             keyboardType={'default'}
             returnKeyType={'next'}
             onSubmitEditing={() => this.emailInput.focus()}
+            renderErrorMessage={false}
             onChangeText={(newFirstName) => this.setState({ firstName: newFirstName })}
           />
           <Input
@@ -277,6 +278,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             keyboardType={'email-address'}
             returnKeyType={'next'}
             onSubmitEditing={() => this.passwordInput.focus()}
+            renderErrorMessage={false}
             onChangeText={(newEmail) => this.setState({ email: newEmail })}
           />
           <Input
@@ -287,7 +289,7 @@ export default class SignUp extends BaseScreen<Props, State> {
               as={MaterialCommunityIcons}
               onPress={() => this.setState({ hidePassword: !hidePassword })}
             />}
-            containerStyle={[formStyle.inputContainer, !Utils.validatePassword(password) && formStyle.inputContainerError]}
+            containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={[formStyle.inputTextContainer, !Utils.validatePassword(password) && formStyle.inputTextContainerError]}
             value={password}
@@ -300,8 +302,8 @@ export default class SignUp extends BaseScreen<Props, State> {
             keyboardType={'default'}
             returnKeyType={'next'}
             onSubmitEditing={() => this.repeatPasswordInput.focus()}
+            renderErrorMessage={!Utils.validatePassword(password)}
             errorMessage={!Utils.validatePassword(password) ? I18n.t('authentication.passwordRule') : null}
-            errorProps={{numberOfLines: 2, ellipsizeMode: 'tail'}}
             errorStyle={formStyle.inputError}
             onChangeText={(text) => this.setState({ password: text })}
           />
@@ -325,8 +327,8 @@ export default class SignUp extends BaseScreen<Props, State> {
             keyboardType={'default'}
             returnKeyType={'done'}
             onSubmitEditing={() => Keyboard.dismiss()}
+            renderErrorMessage={!this.checkPasswords()}
             errorMessage={!this.checkPasswords() ? I18n.t('authentication.passwordNotMatch') : null}
-            errorProps={{numberOfLines: 2, ellipsizeMode: 'tail'}}
             errorStyle={formStyle.inputError}
             onChangeText={(text) => this.setState({ repeatPassword: text })}
           />
@@ -358,7 +360,6 @@ export default class SignUp extends BaseScreen<Props, State> {
             loadingProps={{color: commonColor.light}}
             onPress={() => this.setState({performSignUp: true, signingUp: true })}
           />
-
           {!captcha && captchaSiteKey && captchaBaseUrl && performSignUp && (
             <ReactNativeRecaptchaV3
               action="RegisterUser"
@@ -379,6 +380,6 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   private isFormValid(): boolean {
     const {email, password, eula, name, firstName, repeatPassword} = this.state;
-    return !!name && !!firstName && !!email && !!password && !!repeatPassword && eula && this.checkPasswords() && this.checkPassword();
+    return !!name && !!firstName && !!email && !!password && !!repeatPassword && eula && this.checkPasswords() && Utils.validatePassword(password);
   }
 }

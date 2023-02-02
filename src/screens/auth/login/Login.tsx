@@ -306,6 +306,7 @@ export default class Login extends BaseScreen<Props, State> {
                   textContentType={'emailAddress'}
                   returnKeyType="next"
                   onSubmitEditing={() => this.passwordInput.focus()}
+                  renderErrorMessage={false}
                   onChangeText={(newEmail: string) => this.setState({email: newEmail})}
                 />
                 <Input
@@ -331,6 +332,7 @@ export default class Login extends BaseScreen<Props, State> {
                   keyboardType={'default'}
                   returnKeyType={'done'}
                   onSubmitEditing={() => Keyboard.dismiss()}
+                  renderErrorMessage={false}
                   onChangeText={(newPassword: string) => this.setState({password: newPassword})}
                 />
                 <CheckBox
@@ -377,10 +379,10 @@ export default class Login extends BaseScreen<Props, State> {
                   buttonStyle={{...formStyle.button, ...formStyle.secondaryButton}}
                   onPress={() => this.register()}
                 />
+                <View style={style.appVersionTextContainer}>
+                  <Text style={style.appVersionText}>v{getVersion()}</Text>
+                </View>
               </KeyboardAwareScrollView>
-              <View style={style.appVersionTextContainer}>
-                <Text style={style.appVersionText}>v{getVersion()}</Text>
-              </View>
             </SafeAreaView>
           );
         }}

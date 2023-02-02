@@ -14,10 +14,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     scrollView: {
-      width: '100%'
+      width: '100%',
+      flex: 1
     },
     scrollViewContentContainer: {
-      height: 'auto',
+      flexGrow: 1,
       width: '100%',
       alignItems: 'center',
       paddingVertical: '5@s'

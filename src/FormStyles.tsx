@@ -47,14 +47,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     inputContainer: {
       width: '90%',
       paddingHorizontal: 0,
-      height: scale(40),
       marginBottom: scale(20)
     },
-    inputContainerError: {
-      marginBottom: scale(40)
+    inputText: {
+      color: commonColor.textColor,
+      fontSize: scale(13)
     },
     inputTextContainer: {
       height: '45@s',
+      flexGrow: 1,
+      maxHeight: '400@s',
       width: '100%',
       paddingHorizontal: '10@s',
       backgroundColor: commonColor.listItemBackground,
@@ -71,10 +73,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'center',
       textAlign: 'center',
       width: '25@s'
-    },
-    inputText: {
-      color: commonColor.textColor,
-      fontSize: scale(13)
     },
     inputError: {
       color: commonColor.danger,
