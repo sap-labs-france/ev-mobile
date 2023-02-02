@@ -142,7 +142,7 @@
     "eulaNotAccepted": "Vous devez accepter les conditions d'utilisation",
     "newUser": "Nouvel Utilisateur ?",
     "forgotYourPassword": "Mot de passe oublié?",
-    "retrievePassword": "Récupérez Mot de Passe",
+    "retrievePassword": "Récupérer Mot de Passe",
     "resetPassword": "Réinitialiser Mot de Passe",
     "backLogin": "Se Connecter",
     "required": "Obligatoire",
@@ -160,10 +160,10 @@
     "email": "Email",
     "password": "Mot de passe",
     "repeatPassword": "Répétez mot de passe",
-    "signUp": "S'enregistrer",
+    "signUp": "Inscription",
     "signIn": "Se connecter",
-    "passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur minimum de 8",
-    "passwordNotMatch": "Les mots de passes ne correspondent pas",
+    "passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 chiffre, 1 char. spécial et au moins 8 char.",
+    "passwordNotMatch": "Les mots de passe ne correspondent pas",
     "tenant": "Organisation",
     "createTenantTitle": "Créer une organisation",
     "addTenantTitle": "Ajouter une organisation",
@@ -188,7 +188,8 @@
     "reportErrorSuccess": "L'erreur a été envoyée avec succès",
     "reportErrorFailed": "Impossible d'envoyer l'erreur",
     "createEndpoint": "Créer endpoint",
-    "wrongOrganization": "L'organisation actuelle ne correspond pas"
+    "wrongOrganization": "L'organisation actuelle ne correspond pas",
+    "createAccount": "Créer Mon Compte"
   },
   "qrCode": {
     "qrCode": "QR Code",

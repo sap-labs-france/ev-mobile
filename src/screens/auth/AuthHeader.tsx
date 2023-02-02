@@ -1,14 +1,14 @@
-import I18n from 'i18n-js';
 import React from 'react';
-import { Image, ImageStyle, Text, View } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import {Image, ImageStyle, Text, View, ViewStyle} from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './AuthStyles';
+import {scale} from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
   tenantName?: string;
   tenantLogo?: string;
+  containerStyle?: ViewStyle;
 }
 
 interface State {}
@@ -26,24 +26,14 @@ export default class AuthHeader extends React.Component<Props, State>{
 
   public render() {
     const style = computeStyleSheet();
-    const { tenantName, tenantLogo } = this.props;
+    const { tenantName, tenantLogo, containerStyle } = this.props;
+    const imageSource = tenantLogo ? {uri: tenantLogo} : require('../../../assets/no-image.png');
     return (
-      <View style={style.header}>
-        {tenantLogo ?
-          <Image style={style.logo as ImageStyle} source={{ uri: tenantLogo }} />
-          :
-          <View style={style.logo}/>
-        }
-        <View>
-          <Text style={style.appText}>Open e-Mobility</Text>
-          <Text style={style.appVersionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
+      <View style={[style.header, (containerStyle || {})]}>
+        <View style={{padding: scale(10)}}>
+          <Image style={style.tenantLogo as ImageStyle} source={imageSource} />
         </View>
-        {tenantName ? (
-          <View>
-            <Text style={style.appTenant}>{I18n.t('authentication.tenantTitle')}</Text>
-            <Text style={style.appTenantName}>{tenantName}</Text>
-          </View>
-        ) : undefined}
+        <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.tenantName}>{tenantName}</Text>
       </View>
     );
   }

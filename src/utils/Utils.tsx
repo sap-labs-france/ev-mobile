@@ -813,6 +813,10 @@ export default class Utils {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
+  public static validatePassword(password: string): boolean {
+    return !password || /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
+  }
+
   public static validateInput(screen: React.Component, constraints: Record<string, unknown>): boolean {
     let formValid = true;
     const errorState: any = {};
