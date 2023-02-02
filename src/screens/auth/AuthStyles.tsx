@@ -41,6 +41,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     tenantName: {
       fontSize: scale(15),
       color: commonColor.textColor,
+      textAlign: 'left',
+      flexShrink: 1
     },
     dropdownIcon: {
       color: commonColor.textColor,

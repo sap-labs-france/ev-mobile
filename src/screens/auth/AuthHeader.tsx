@@ -33,7 +33,7 @@ export default class AuthHeader extends React.Component<Props, State>{
         <View style={{padding: scale(10)}}>
           <Image style={style.tenantLogo as ImageStyle} source={imageSource} />
         </View>
-        <Text numberOfLines={2} ellipsizeMode={'tail'} style={{...style.tenantName, textAlign: 'left', flexShrink: 1}}>{tenantName}</Text>
+        <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.tenantName}>{tenantName}</Text>
       </View>
     );
   }
