@@ -63,6 +63,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '18@s',
       borderBottomWidth: 0
     },
+    inputTextMultilineContainer: {
+      height: '90@s'
+    },
     inputTextContainerError: {
       borderColor: commonColor.danger,
       borderWidth: 0.8,

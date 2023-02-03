@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import {Icon, Spinner} from 'native-base';
 import React from 'react';
-import { Keyboard, TextInput } from 'react-native';
+import { Keyboard } from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
@@ -37,7 +37,7 @@ interface State {
 export default class ResetPassword extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
-  private repeatPasswordInput: TextInput;
+  private repeatPasswordInput: Input;
 
   public constructor(props: Props) {
     super(props);
@@ -196,7 +196,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
             onChangeText={(newPassword) => this.setState({password: newPassword})}
           />
           <Input
-            ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
+            ref={(ref: Input) => (this.repeatPasswordInput = ref)}
             leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon}/>}
             rightIcon={<Icon
               as={MaterialCommunityIcons}

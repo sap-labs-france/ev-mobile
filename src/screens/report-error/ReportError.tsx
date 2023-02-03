@@ -1,68 +1,50 @@
 import I18n from 'i18n-js';
-import { Button, FormControl, Icon, Stack, Spinner } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
-import { Keyboard, ScrollView, Text, TextInput, View } from 'react-native';
-import * as Animatable from 'react-native-animatable';
-import ChargingStation, { Connector } from 'types/ChargingStation';
+import {Keyboard, Text, TouchableOpacity, View} from 'react-native';
+import ChargingStation, { Connector } from '../../types/ChargingStation';
 
 import HeaderComponent from './../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
-import Constants from '../../utils/Constants';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './ReportErrorStyles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import computeFormStyleSheet from '../../FormStyles';
 import { scale } from 'react-native-size-matters';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Button, Input} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
 interface State {
+  reportingError?: boolean;
   loading?: boolean;
   chargingStation?: ChargingStation;
-  mobile?: string;
-  subject?: string;
+  phoneNumber?: string;
+  title?: string;
   description?: string;
   connector?: Connector;
   visible?: boolean;
-  errorMobile?: Record<string, unknown>[];
-  errorSubject?: Record<string, unknown>[];
-  errorDescription?: Record<string, unknown>[];
+  descriptionInputHeight?: number;
 }
 
 export default class ReportError extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
-  private descriptionInput: TextInput;
-  private subjectInput: TextInput;
-  private formValidation = {
-    mobile: {
-      format: {
-        pattern: '^[+]?([0-9] ?){9,14}[0-9]$',
-        message: '^' + I18n.t('authentication.invalidMobile')
-      }
-    },
-    subject: {
-      presence: {
-        allowEmpty: false,
-        message: '^' + I18n.t('authentication.mandatoryErrorSubject')
-      }
-    },
-    description: {
-      presence: {
-        allowEmpty: false,
-        message: '^' + I18n.t('authentication.mandatoryErrorDescription')
-      }
-    }
-  };
+  private phoneInput: Input;
+  private descriptionInput: Input;
+  private subjectInput: Input;
 
   public constructor(props: Props) {
     super(props);
     this.state = {
-      loading: true,
-      mobile: null,
-      subject: null,
-      description: null
+      reportingError: false,
+      phoneNumber: null,
+      title: Utils.getParamFromNavigation(this.props.route, 'title', null) as string,
+      description: null,
+      loading: true
     };
   }
 
@@ -75,71 +57,35 @@ export default class ReportError extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
-    const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string;
     const userMobile = this.centralServerProvider.getUserInfo().mobile;
-    let chargingStation = null;
-    let connector = null;
-    let connectorLetter = null;
-    // Get Charging Station
-    if (chargingStationID) {
-      chargingStation = await this.getChargingStation(chargingStationID);
-      if (chargingStation) {
-        connector = chargingStation ? chargingStation.connectors[Utils.convertToInt(connectorID) - 1] : null;
-        connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
-        this.setState({ subject: chargingStationID + ' - ' + connectorLetter });
-      }
-    }
     this.setState({
-      loading: false,
-      chargingStation,
-      connector,
-      mobile: userMobile,
-      isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
-      isSiteAdmin:
-        this.securityProvider && chargingStation && chargingStation.siteArea
-          ? this.securityProvider.isSiteAdmin(chargingStation.siteArea.siteID)
-          : false
+      phoneNumber: userMobile,
+      loading: false
     });
   }
 
-  public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
-    try {
-      // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
-      return chargingStation;
-    } catch (error) {
-      // Other common Error
-      await Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        'chargingStations.chargingStationUnexpectedError',
-        this.props.navigation
-      );
-    }
-    return null;
-  };
+  // public componentDidFocus() {
+  //   super.componentDidFocus();
+  //   // Enable swipe for opening sidebar
+  //   this.parent = this.props.navigation.getParent();
+  //   this.parent?.setOptions({
+  //     swipeEnabled: true
+  //   });
+  // }
 
   public sendErrorReport = async () => {
     // Check field
-    const formIsValid = Utils.validateInput(this, this.formValidation);
-
+    const formIsValid = this.isFormValid();
     if (formIsValid) {
-      this.centralServerProvider.getUserInfo().mobile = this.state.mobile;
-      const { mobile, subject, description } = this.state;
+      this.centralServerProvider.getUserInfo().mobile = this.state.phoneNumber;
+      const { phoneNumber, title, description } = this.state;
+      this.setState({ reportingError: true } as State);
       try {
-        this.setState({ loading: true } as State);
         // Submit
-        await this.centralServerProvider.sendErrorReport(mobile, subject, description);
+        await this.centralServerProvider.sendErrorReport(phoneNumber, title, description);
         // Ok
         Message.showSuccess(I18n.t('authentication.reportErrorSuccess'));
-        // Init
-        this.clearInput();
-        // Get to the previous screen
-        this.props.navigation.goBack();
       } catch (error) {
-        // submit failed
-        this.setState({ loading: false });
         // Check request?
         if (error.request) {
           // Other common Error
@@ -149,116 +95,113 @@ export default class ReportError extends BaseScreen<Props, State> {
         }
       }
     }
+    this.setState({reportingError: false});
   };
-
-  public clearInput = () => {
-    this.setState({
-      loading: false,
-      mobile: '',
-      subject: '',
-      description: '',
-      errorDescription: [],
-      errorSubject: [],
-      errorMobile: []
-    });
-  };
-
-  public changeMobileText(text: string) {
-    if (!text) {
-      this.setState({ mobile: null });
-    } else {
-      this.setState({ mobile: text });
-    }
-  }
 
   public render() {
     const commonColor = Utils.getCurrentCommonColor();
     const style = computeStyleSheet();
-    const { loading } = this.state;
+    const formStyle = computeFormStyleSheet();
+    const { reportingError, phoneNumber, title, description, descriptionInputHeight, loading } = this.state;
     return loading ? (
-      <Spinner size={scale(30)} style={style.spinner} />
+      <Spinner style={formStyle.spinner} color="grey" />
     ) : (
-      <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <SafeAreaView edges={['bottom']} style={style.container}>
         <HeaderComponent
+      //    sideBar={true}
           navigation={this.props.navigation}
           title={I18n.t('sidebar.reportError')}
           containerStyle={style.headerContainer}
         />
-        <View style={style.container}>
-          <View style={style.iconContainer}>
-            <Icon size={scale(100)} style={style.reportErrorIcon} as={MaterialIcons} name="error-outline" />
+        <KeyboardAwareScrollView bounces={false} persistentScrollbar={true} contentContainerStyle={style.scrollViewContentContainer} style={style.scrollView}>
+          <View style={style.clearButton}>
+            <TouchableOpacity onPress={() => this.clearForm()}>
+              <Text style={style.clearButtonText}>{I18n.t('general.clear')}</Text>
+            </TouchableOpacity>
           </View>
-          <FormControl style={style.formContainer}>
-            <Stack style={style.input}>
-              <TextInput
-                style={style.inputText}
-                placeholder={I18n.t('general.mobile')}
-                placeholderTextColor={commonColor.disabledDark}
-                selectionColor={commonColor.textColor}
-                onChangeText={(text) => this.changeMobileText(text)}
-                autoCapitalize="none"
-                blurOnSubmit={false}
-                autoCorrect={false}
-                value={this.state.mobile}
-              />
-            </Stack>
-            {this.state.errorMobile &&
-              this.state.errorMobile.map((errorMessage, index) => (
-                <Text style={style.errorMobileText} key={index}>
-                  {errorMessage}
-                </Text>
-              ))}
-            <Stack style={style.input}>
-              <TextInput
-                ref={(ref: TextInput) => (this.subjectInput = ref)}
-                style={style.inputText}
-                placeholder={I18n.t('general.errorTitle')}
-                placeholderTextColor={commonColor.disabledDark}
-                selectionColor={commonColor.textColor}
-                onChangeText={(text) => this.setState({ subject: text })}
-                autoCorrect={false}
-                blurOnSubmit={false}
-                autoCapitalize="none"
-                value={this.state.subject}
-              />
-            </Stack>
-            {this.state.errorSubject &&
-              this.state.errorSubject.map((errorMessage, index) => (
-                <Text style={style.errorSubjectText} key={index}>
-                  {errorMessage}
-                </Text>
-              ))}
-            <Stack style={style.descriptionInput}>
-              <ScrollView>
-                <TextInput
-                  ref={(ref: TextInput) => (this.descriptionInput = ref)}
-                  style={style.descriptionText}
-                  placeholder={I18n.t('general.errorDescription')}
-                  onSubmitEditing={() => Keyboard.dismiss()}
-                  placeholderTextColor={commonColor.disabledDark}
-                  selectionColor={commonColor.textColor}
-                  onChangeText={(text) => this.setState({ description: text })}
-                  multiline
-                  autoCorrect={false}
-                  blurOnSubmit={false}
-                  autoCapitalize="none"
-                />
-              </ScrollView>
-            </Stack>
-            {this.state.errorDescription &&
-              this.state.errorDescription.map((errorMessage, index) => (
-                <Text style={style.errorDescriptionText} key={index}>
-                  {errorMessage}
-                </Text>
-              ))}
-            <View style={style.buttonContainer}>
-              <Button style={style.sendButton} block onPress={async () => this.sendErrorReport()}>
-                <Text style={style.sendTextButton}>{I18n.t('general.send')}</Text>
-              </Button>
-            </View>
-          </FormControl>
-        </View>
-      </Animatable.View>
+          <Input
+            ref={(ref: Input) => (this.phoneInput = ref)}
+            containerStyle={formStyle.inputContainer}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={[formStyle.inputTextContainer, !this.checkPhoneNumber() && formStyle.inputTextContainerError]}
+            value={phoneNumber}
+            placeholder={`${I18n.t('authentication.phone')}*`}
+            placeholderTextColor={commonColor.placeholderTextColor}
+            autoCorrect={false}
+            autoComplete={'tel'}
+            textContentType={'telephoneNumber'}
+            keyboardType={'phone-pad'}
+            returnKeyType={'next'}
+            onSubmitEditing={() => this.subjectInput.focus()}
+            renderErrorMessage={!this.checkPhoneNumber()}
+            errorMessage={!this.checkPhoneNumber() ? I18n.t('authentication.invalidMobile') : null}
+            errorStyle={formStyle.inputError}
+            onChangeText={(newPhoneNumber) => this.setState({phoneNumber: newPhoneNumber})}
+          />
+          <Input
+            ref={(ref: Input) => (this.subjectInput = ref)}
+            containerStyle={formStyle.inputContainer}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={formStyle.inputTextContainer}
+            value={title}
+            placeholder={`${I18n.t('general.errorTitle')}*`}
+            placeholderTextColor={commonColor.placeholderTextColor}
+            autoCapitalize={'words'}
+            autoCorrect={false}
+            keyboardType={'default'}
+            returnKeyType={'next'}
+            onSubmitEditing={() => this.descriptionInput.focus()}
+            renderErrorMessage={false}
+            onChangeText={(newTitle) => this.setState({title: newTitle})}
+          />
+          <Input
+            ref={(ref: Input) => (this.descriptionInput = ref)}
+            containerStyle={formStyle.inputContainer}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={[formStyle.inputTextContainer, formStyle.inputTextMultilineContainer, description && {height: Math.max(descriptionInputHeight ?? 0, scale(90))}]}
+            value={description}
+            multiline={true}
+            placeholder={`${I18n.t('general.errorDescription')}*`}
+            placeholderTextColor={commonColor.placeholderTextColor}
+            autoCapitalize={'words'}
+            autoCorrect={false}
+            keyboardType={'default'}
+            returnKeyType={'done'}
+            onSubmitEditing={() => Keyboard.dismiss()}
+            renderErrorMessage={false}
+            onChangeText={(newDescription) => this.setState({description: newDescription})}
+            onContentSizeChange={(event) => this.setState({descriptionInputHeight: event?.nativeEvent?.contentSize?.height})}
+          />
+          <Button
+            title={I18n.t('general.send')}
+            titleStyle={formStyle.buttonTitle}
+            disabled={!this.isFormValid()}
+            disabledStyle={formStyle.buttonDisabled}
+            disabledTitleStyle={formStyle.disabledButton}
+            containerStyle={formStyle.buttonContainer}
+            buttonStyle={formStyle.button}
+            loading={reportingError}
+            loadingProps={{color: commonColor.light}}
+            onPress={() => void this.sendErrorReport()}
+          />
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
+  }
+
+  private checkPhoneNumber(): boolean {
+    const { phoneNumber } = this.state;
+    return !phoneNumber || /^[+]?([0-9] ?){9,14}[0-9]$/.test(phoneNumber);
+  }
+
+  private isFormValid(): boolean {
+    const { phoneNumber, title, description } = this.state;
+    return !!phoneNumber && !!title && !!description && this.checkPhoneNumber();
+  }
+
+  private clearForm(): void {
+    this.phoneInput?.clear();
+    this.subjectInput?.clear();
+    this.descriptionInput?.clear();
   }
 }
