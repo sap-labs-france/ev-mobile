@@ -9,9 +9,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      flex: 1,
+      height: '100%',
       backgroundColor: commonColor.containerBgColor,
       paddingBottom: '15@s'
+    },
+    scrollView: {
+      width: '100%',
+      flex: 1
+    },
+    scrollViewContentContainer: {
+      flexGrow: 1,
+      width: '100%',
+      alignItems: 'center',
+      paddingVertical: '5@s'
     },
     headerContainer: {
       marginBottom: '10@s'
@@ -94,6 +104,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginLeft: '20@s',
       color: commonColor.danger,
       alignSelf: 'flex-start'
+    },
+    clearButton: {
+      width: '90%',
+      marginVertical: '5@s'
+    },
+    clearButtonText: {
+      fontSize: '12@s',
+      color: commonColor.primary,
+      width: '100%',
+      textAlign: 'right',
+      padding: '5@s'
     }
   });
   const portraitStyles = {};
