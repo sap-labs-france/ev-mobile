@@ -5,7 +5,6 @@ import React from 'react';
 import {
   BackHandler,
   Keyboard,
-  TextInput,
   TouchableOpacity,
   Text,
   View,
@@ -32,7 +31,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AuthHeader from '../AuthHeader';
-import i18n from 'i18n-js';
 
 export interface Props extends BaseProps {}
 
@@ -54,7 +52,7 @@ export default class Login extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private tenants: TenantConnection[] = [];
-  private passwordInput: TextInput;
+  private passwordInput: Input;
   private authService: AuthService;
 
   public constructor(props: Props) {
@@ -310,7 +308,7 @@ export default class Login extends BaseScreen<Props, State> {
                   onChangeText={(newEmail: string) => this.setState({email: newEmail})}
                 />
                 <Input
-                  ref={(ref: TextInput) => (this.passwordInput = ref)}
+                  ref={(ref: Input) => (this.passwordInput = ref)}
                   leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
                   rightIcon={<Icon
                     name={hidePassword ? 'eye' : 'eye-off'}
