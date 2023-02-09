@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
 import React from 'react';
-import { TextInput, TouchableOpacity, View } from 'react-native';
+import {TextInput, TouchableOpacity, View, ViewStyle} from 'react-native';
 
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
@@ -10,9 +10,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+const DEBOUNCE_TIME_MILLIS = 400;
+
 export interface Props extends BaseProps {
   onChange: (search: string) => void;
-  containerStyle?: {};
+  containerStyle?: ViewStyle;
   searchText?: string;
 }
 
@@ -24,6 +26,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   public state: State;
   public props: Props;
   private textInput: TextInput;
+  private timer: NodeJS.Timer;
 
   public constructor(props: Props) {
     super(props);
@@ -39,15 +42,18 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
     super.setState(state, callback);
   };
 
-  public searchHasChanged(searchText: string) {
+  public onSearchInputChange(searchText: string, timeout: number = 0) {
     const { onChange } = this.props;
-    // Call the function
-    this.setState({searchText}, () => onChange(searchText));
+    // Debounce search queries with a timeout to avoid making API calls for every input change.
+    this.setState({searchText}, () => {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => onChange(searchText.trim()), timeout);
+    });
   }
 
   public clearSearch() {
     this.textInput.clear();
-    this.searchHasChanged('');
+    this.onSearchInputChange('');
   }
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
@@ -61,7 +67,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { containerStyle} = this.props;
+    const { containerStyle } = this.props;
     const { searchText } = this.state;
     return (
       <View style={[style.container, containerStyle]}>
@@ -70,13 +76,15 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           ref={(ref) => {
             this.textInput = ref;
           }}
-          selectionColor={commonColor.textColor}
           style={style.inputField}
           autoCorrect={false}
           value={this.state.searchText}
           placeholder={I18n.t('general.search')}
           placeholderTextColor={commonColor.placeholderTextColor}
-          onChangeText={(newSearchText) => this.searchHasChanged(newSearchText)}
+          keyboardType={'default'}
+          returnKeyType={'search'}
+          onSubmitEditing={(event) => this.onSearchInputChange(event.nativeEvent.text)}
+          onChangeText={(newSearchText) => this.onSearchInputChange(newSearchText, DEBOUNCE_TIME_MILLIS)}
         />
         {searchText && (
           <TouchableOpacity onPress={() => this.clearSearch()}>
