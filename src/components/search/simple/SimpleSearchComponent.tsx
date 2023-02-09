@@ -83,7 +83,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           placeholderTextColor={commonColor.placeholderTextColor}
           keyboardType={'default'}
           returnKeyType={'search'}
-          onSubmitEditing={(event) => this.onSearchInputChange(event.nativeEvent.text)}
+          onSubmitEditing={(event) => this.onSearchInputChange(event?.nativeEvent?.text)}
           onChangeText={(newSearchText) => this.onSearchInputChange(newSearchText, DEBOUNCE_TIME_MILLIS)}
         />
         {searchText && (
