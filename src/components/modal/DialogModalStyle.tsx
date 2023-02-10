@@ -14,12 +14,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingBottom: '20@s',
       borderRadius: '8@s',
       maxHeight: '90%',
-      alignItems: 'center'
+      alignItems: 'center',
+      width: '100%'
     },
     controlsContent: {
       alignItems: 'center',
-      height: 'auto',
-      width: '100%'
+      flexGrow: 1,
+      width: '100%',
+      paddingHorizontal: '5@s'
     },
     controlsContainer: {
       width: '100%'
