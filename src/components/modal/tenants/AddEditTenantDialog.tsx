@@ -13,7 +13,7 @@ import { Button, Input } from 'react-native-elements';
 import computeStyleSheet from './AddTenantManuallyDialogStyle';
 import computeModalCommonStyle from '../ModalCommonStyle';
 import Message from '../../../utils/Message';
-import { TouchableOpacity, Text, View } from 'react-native';
+import {TouchableOpacity, Text, View, TextInput} from 'react-native';
 import { scale } from 'react-native-size-matters';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -53,6 +53,9 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
   public props: Props;
   public staticEndpoints: EndpointCloud[] = Configuration.getEndpoints();
   private tenant: TenantConnection;
+  private nameInput: TextInput;
+  private endpointInput: SelectDropdown;
+  private endpointURLInput: TextInput;
 
   private formCreateTenantValidationDef = {
     newTenantSubDomain: {
@@ -98,7 +101,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
       errorNewEndpointName: [],
       errorNewEndpointURL: [],
       errorNewTenantSubDomain: []
-    }
+    };
   }
 
   public async componentDidMount() {
@@ -203,9 +206,12 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
           containerStyle={style.inputContainer}
           inputContainerStyle={style.inputInnerContainer}
           inputStyle={style.inputText}
+          returnKeyType={'next'}
+          onSubmitEditing={() => this.nameInput?.focus()}
           onChangeText={(value: string) => this.setState({ newTenantSubDomain: value?.toLowerCase() })}
         />
         <Input
+          ref={(ref: TextInput) => this.nameInput = ref}
           autoCorrect={false}
           defaultValue={newTenantName}
           placeholder={I18n.t('authentication.tenantNamePlaceholder')}
@@ -217,6 +223,8 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
           containerStyle={style.inputContainer}
           inputContainerStyle={style.inputInnerContainer}
           inputStyle={style.inputText}
+          returnKeyType={'next'}
+          onSubmitEditing={() => this.endpointInput?.openDropdown()}
           onChangeText={(value: string) => this.setState({ newTenantName: value })}
         />
 
@@ -229,8 +237,9 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
           containerStyle={style.inputContainer}
           inputStyle={style.inputText}
           inputContainerStyle={style.inputInnerContainerNoBorder}
-          InputComponent={() => (
+          InputComponent={() =>
             <SelectDropdown
+              ref={(ref) => this.endpointInput = ref}
               data={data}
               defaultButtonText={newTenantEndpointCloud?.name}
               buttonTextAfterSelection={(selectedItem: EndpointCloud) => selectedItem.name}
@@ -262,7 +271,7 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
               renderDropdownIcon={() => <Icon size={scale(26)} style={style.selectDropdownIcon} as={MaterialIcons} name={'arrow-drop-down'} />}
               onSelect={(endpointCloud: EndpointCloud) => this.setState({ newTenantEndpointCloud: endpointCloud })}
             />
-          )}
+          }
         />
         {showEndpointCreationForm && (
           <View style={style.endpointCreationFormContainer}>
@@ -283,9 +292,12 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
               containerStyle={style.inputContainer}
               inputContainerStyle={style.inputInnerContainer}
               inputStyle={style.inputText}
+              returnKeyType={'next'}
+              onSubmitEditing={() => this.endpointURLInput?.focus()}
               onChangeText={(value: string) => this.setState({newEndpointName: value})}
             />
             <Input
+              ref={(ref) => this.endpointURLInput = ref}
               defaultValue={newEndpointURL}
               autoCapitalize={'none'}
               autoCorrect={false}
@@ -351,11 +363,12 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
         const newEndpoint = { name: newEndpointName, endpoint: newEndpointURL } as EndpointCloud;
         userEndpoints.push(newEndpoint);
         await SecuredStorage.saveEndpoints(userEndpoints);
-        this.setState({ userEndpoints }, () => {
+        this.setState({ userEndpoints, showEndpointCreationForm: false }, () => {
           Message.showSuccess(I18n.t('general.createEndpointSuccess', { endpointName: newEndpointName }));
         });
       }
-      this.setState({loadingAddNewEndpoint: false, showEndpointCreationForm: false});
+
+      this.setState({loadingAddNewEndpoint: false});
     });
   }
 

@@ -1,15 +1,16 @@
 import React from 'react';
 import Modal from 'react-native-modal';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'native-base';
 import I18n from 'i18n-js';
 import computeStyleSheet from './DialogModalStyle';
 import computeModalCommonStyles from '../modal/ModalCommonStyle';
 import { Animation } from 'react-native-animatable';
-import { Button } from 'react-native-elements';
+import {Button, Input} from 'react-native-elements';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { scale } from 'react-native-size-matters';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 
 export interface DialogModalButton {
@@ -79,7 +80,9 @@ export default class DialogModal extends React.Component<Props, State> {
     const iconStyle = style.icon;
     return (
       <Modal
-        statusBarTranslucent={true}
+        // statusBarTranslucent prevents KeyboardAwareScrollView from working on Android
+        // See https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/525
+        // statusBarTranslucent={true}
         animationIn={animationIn ?? 'fadeIn'}
         animationOut={animationOut ?? 'fadeOut'}
         animationInTiming={600}
@@ -98,7 +101,7 @@ export default class DialogModal extends React.Component<Props, State> {
             {renderIcon?.(iconStyle)}
             <Text style={[style.text, style.title]}>{title?.toUpperCase()}</Text>
             <Text style={[style.text, style.description]}>{description}</Text>
-            <ScrollView keyboardShouldPersistTaps={'always'} contentContainerStyle={style.controlsContent} style={style.controlsContainer} >
+            <KeyboardAwareScrollView bounces={false} keyboardShouldPersistTaps={'always'} contentContainerStyle={style.controlsContent} style={style.controlsContainer} >
               {renderControls?.()}
               <View style={[style.buttonsContainer, buttonsContainerStyle]}>
                 {buttons?.filter((b) => b).map((button: DialogModalButton, index) => (
@@ -121,7 +124,7 @@ export default class DialogModal extends React.Component<Props, State> {
                   />
                 )}
               </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
           </View>
         </RootSiblingParent>
       </Modal>
