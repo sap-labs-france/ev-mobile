@@ -7,7 +7,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Text,
-  View,
+  View, TextInput,
 } from 'react-native';
 
 import DialogModal from '../../../components/modal/DialogModal';
@@ -52,7 +52,7 @@ export default class Login extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private tenants: TenantConnection[] = [];
-  private passwordInput: Input;
+  private passwordInput: TextInput;
   private authService: AuthService;
 
   public constructor(props: Props) {
@@ -308,7 +308,7 @@ export default class Login extends BaseScreen<Props, State> {
                   onChangeText={(newEmail: string) => this.setState({email: newEmail})}
                 />
                 <Input
-                  ref={(ref: Input) => (this.passwordInput = ref)}
+                  ref={(ref: TextInput) => (this.passwordInput = ref)}
                   leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
                   rightIcon={<Icon
                     name={hidePassword ? 'eye' : 'eye-off'}
