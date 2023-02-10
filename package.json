@@ -118,7 +118,7 @@
     "react-native-check-version": "^1.0.20",
     "react-native-deep-linking": "^2.2.0",
     "react-native-device-info": "^10.3.0",
-    "react-native-elements": "^2.3.2",
+    "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^2.8.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-localize": "^2.2.4",

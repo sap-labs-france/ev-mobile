@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Spinner } from 'native-base';
 import React from 'react';
-import {Keyboard, Text, TouchableOpacity, View} from 'react-native';
+import {Keyboard, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import ChargingStation, { Connector } from '../../types/ChargingStation';
 
 import HeaderComponent from './../../components/header/HeaderComponent';
@@ -33,9 +33,9 @@ interface State {
 export default class ReportError extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
-  private phoneInput: Input;
-  private descriptionInput: Input;
-  private subjectInput: Input;
+  private phoneInput: TextInput;
+  private descriptionInput: TextInput;
+  private subjectInput: TextInput;
 
   public constructor(props: Props) {
     super(props);
@@ -64,14 +64,6 @@ export default class ReportError extends BaseScreen<Props, State> {
     });
   }
 
-  // public componentDidFocus() {
-  //   super.componentDidFocus();
-  //   // Enable swipe for opening sidebar
-  //   this.parent = this.props.navigation.getParent();
-  //   this.parent?.setOptions({
-  //     swipeEnabled: true
-  //   });
-  // }
 
   public sendErrorReport = async () => {
     // Check field
@@ -120,7 +112,7 @@ export default class ReportError extends BaseScreen<Props, State> {
             </TouchableOpacity>
           </View>
           <Input
-            ref={(ref: Input) => (this.phoneInput = ref)}
+            ref={(ref: TextInput) => (this.phoneInput = ref)}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={[formStyle.inputTextContainer, !this.checkPhoneNumber() && formStyle.inputTextContainerError]}
@@ -139,7 +131,7 @@ export default class ReportError extends BaseScreen<Props, State> {
             onChangeText={(newPhoneNumber) => this.setState({phoneNumber: newPhoneNumber})}
           />
           <Input
-            ref={(ref: Input) => (this.subjectInput = ref)}
+            ref={(ref: TextInput) => (this.subjectInput = ref)}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={formStyle.inputTextContainer}
@@ -155,7 +147,7 @@ export default class ReportError extends BaseScreen<Props, State> {
             onChangeText={(newTitle) => this.setState({title: newTitle})}
           />
           <Input
-            ref={(ref: Input) => (this.descriptionInput = ref)}
+            ref={(ref: TextInput) => (this.descriptionInput = ref)}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={[formStyle.inputTextContainer, formStyle.inputTextMultilineContainer, description && {height: Math.max(descriptionInputHeight ?? 0, scale(90))}]}

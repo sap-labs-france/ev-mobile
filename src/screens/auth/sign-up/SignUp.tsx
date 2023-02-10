@@ -2,7 +2,7 @@ import { CommonActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Icon, IIconProps, Spinner } from 'native-base';
 import React from 'react';
-import { Keyboard, Text } from 'react-native';
+import {Keyboard, Text, TextInput} from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
@@ -48,10 +48,10 @@ interface State {
 export default class SignUp extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
-  private passwordInput: Input;
-  private firstNameInput: Input;
-  private emailInput: Input;
-  private repeatPasswordInput: Input;
+  private passwordInput: TextInput;
+  private firstNameInput: TextInput;
+  private emailInput: TextInput;
+  private repeatPasswordInput: TextInput;
 
   public constructor(props: Props) {
     super(props);
@@ -244,7 +244,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             onChangeText={(newName) => this.setState({ name: newName })}
           />
           <Input
-            ref={(ref: Input) => (this.firstNameInput = ref)}
+            ref={(ref: TextInput) => (this.firstNameInput = ref)}
             leftIcon={<InputIcon as={MaterialIcons} name="person" />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
@@ -263,7 +263,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             onChangeText={(newFirstName) => this.setState({ firstName: newFirstName })}
           />
           <Input
-            ref={(ref: Input) => (this.emailInput = ref)}
+            ref={(ref: TextInput) => (this.emailInput = ref)}
             leftIcon={<InputIcon  name="email" as={MaterialCommunityIcons} />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
@@ -282,7 +282,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             onChangeText={(newEmail) => this.setState({ email: newEmail })}
           />
           <Input
-            ref={(ref: Input) => (this.passwordInput = ref)}
+            ref={(ref: TextInput) => (this.passwordInput = ref)}
             leftIcon={<InputIcon name="lock" as={MaterialCommunityIcons} />}
             rightIcon={<InputIcon
               name={hidePassword ? 'eye' : 'eye-off'}
@@ -308,7 +308,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             onChangeText={(text) => this.setState({ password: text })}
           />
           <Input
-            ref={(ref: Input) => (this.repeatPasswordInput = ref)}
+            ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
             leftIcon={<InputIcon name="lock" as={MaterialCommunityIcons} />}
             rightIcon={<InputIcon
               name={hideRepeatPassword ? 'eye' : 'eye-off'}
@@ -353,7 +353,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             titleStyle={formStyle.buttonTitle}
             disabled={!this.isFormValid()}
             disabledStyle={formStyle.buttonDisabled}
-            disabledTitleStyle={formStyle.disabledButton}
+            disabledTitleStyle={formStyle.buttonTextDisabled}
             containerStyle={formStyle.buttonContainer}
             buttonStyle={formStyle.button}
             loading={signingUp}
