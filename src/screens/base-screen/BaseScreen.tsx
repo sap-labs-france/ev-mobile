@@ -99,6 +99,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   public componentDidFocus(): void {
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
+    this.setDrawerStatus();
   }
 
   public componentDidBlur(): void {
