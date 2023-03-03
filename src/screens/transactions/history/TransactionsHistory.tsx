@@ -193,6 +193,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           navigation={navigation}
           title={I18n.t('transactions.transactionsHistory')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
+          sideBar={this.canOpenDrawer}
           containerStyle={style.headerContainer}
         />
         {this.renderFilters()}

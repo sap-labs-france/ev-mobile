@@ -5,12 +5,9 @@ import React from 'react';
 import {
   Image,
   ImageStyle,
-  ScrollView,
   Text,
   TouchableOpacity,
   View,
-  TouchableHighlight,
-  TouchableHighlightProps,
   SafeAreaView
 } from 'react-native';
 import { CheckVersionResponse } from 'react-native-check-version';
@@ -18,7 +15,6 @@ import DeviceInfo from 'react-native-device-info';
 
 import AppUpdateDialog from '../../components/modal/app-update/AppUpdateDialog';
 import UserAvatar from '../../components/user/avatar/UserAvatar';
-import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
 import UserToken from '../../types/UserToken';
 import Utils from '../../utils/Utils';
@@ -27,22 +23,18 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
 import {AuthContext} from '../../context/AuthContext';
-import {} from 'react-native-safe-area-context';
+import {CommonActions, DrawerActions} from '@react-navigation/native';
+import {
+  DrawerContentComponentProps,
+  DrawerContentScrollView,
+  DrawerItem,
+} from '@react-navigation/drawer';
+import Color from 'color';
 
-export interface Props extends BaseProps {}
+export interface Props extends DrawerContentComponentProps {}
 
-function SidebarEntry(props: TouchableHighlightProps): React.ReactElement {
-  const style = computeStyleSheet();
-  const commonColor = Utils.getCurrentCommonColor();
-  return (
-    <TouchableHighlight underlayColor={commonColor.listItemBackground} {...props}>
-      <View style={style.links}>{props.children}</View>
-    </TouchableHighlight>
-  );
-}
 function SidebarIcon(props: IIconProps): React.ReactElement {
   const commonColor = Utils.getCurrentCommonColor();
   return <Icon color={commonColor.textColor} size={scale(22)} {...props} />;
@@ -88,7 +80,7 @@ export default class SideBar extends React.Component<Props, State> {
     this.securityProvider = this.centralServerProvider?.getSecurityProvider();
     await this.getUpdateDate();
     const tenantLogo = await this.centralServerProvider.getCurrentTenantLogo();
-    await this.getUserInfo();
+    this.getUserInfo();
     const appVersion = await Utils.checkForUpdate();
     this.setState({ appVersion, tenantLogo });
   }
@@ -98,7 +90,7 @@ export default class SideBar extends React.Component<Props, State> {
     this.setState({ updateDate: lastUpdateTime && lastUpdateTime !== -1 && moment(lastUpdateTime).format('LL') });
   }
 
-  public getUserInfo = async () => {
+  public getUserInfo() {
     // Logoff
     const userInfo = this.centralServerProvider.getUserInfo();
     this.setState({
@@ -123,10 +115,9 @@ export default class SideBar extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { userToken, tenantName, isComponentOrganizationActive, showAppUpdateDialog, appVersion, tenantLogo } = this.state;
+    const { userToken, tenantName, showAppUpdateDialog, appVersion, tenantLogo } = this.state;
     const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
-    const showEntitiesSection = this.securityProvider?.canListUsers() || this.securityProvider?.canListCars() || this.securityProvider?.canListTags();
-    const showBillingSection = this.securityProvider?.isComponentBillingActive() && (this.securityProvider?.canListInvoices() || this.securityProvider?.canListPaymentMethods());
+    let lastDrawerSection: boolean;
     // Get logo
     return (
       <View style={style.container}>
@@ -151,90 +142,40 @@ export default class SideBar extends React.Component<Props, State> {
             </View>
             {showAppUpdateDialog && <AppUpdateDialog appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
           </View>
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={style.scrollviewInnerContainer} style={style.scrollview}>
-            <View style={style.sidebarSection}>
-              <SidebarEntry onPress={() => this.props.navigation.navigate('QRCodeScanner')}>
-                <SidebarIcon as={MaterialIcons} name="qr-code-scanner" />
-                <Text style={style.linkText}>{I18n.t('sidebar.qrCodeScanner')}</Text>
-              </SidebarEntry>
-            </View>
-            <View style={style.sidebarSection}>
-              {isComponentOrganizationActive && (
-                <SidebarEntry onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
-                  <SidebarIcon as={MaterialIcons} name="store-mall-directory" />
-                  <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
-                </SidebarEntry>
-              )}
-              <SidebarEntry onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
-                <SidebarIcon as={MaterialIcons} name="ev-station" />
-                <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
-              </SidebarEntry>
-            </View>
-            <View style={style.sidebarSection}>
-              <SidebarEntry
-                onPress={() => this.navigateTo('TransactionHistoryNavigator', 'TransactionsHistory')}>
-                <SidebarIcon as={MaterialCommunityIcons} name="history" />
-                <Text style={style.linkText}>{I18n.t('sidebar.transactionsHistory')}</Text>
-              </SidebarEntry>
-              <SidebarEntry
-                onPress={() => this.navigateTo('TransactionInProgressNavigator', 'TransactionsInProgress')}>
-                <SidebarIcon as={MaterialIcons} name="play-arrow" />
-                <Text style={style.linkText}>{I18n.t('sidebar.transactionsInProgress')}</Text>
-              </SidebarEntry>
-              <SidebarEntry onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
-                <SidebarIcon as={MaterialIcons} name="assessment" />
-                <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
-              </SidebarEntry>
-            </View>
-            {showEntitiesSection && (
-              <View style={style.sidebarSection}>
-                {this.securityProvider?.canListUsers() && (
-                  <SidebarEntry onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
-                    <SidebarIcon as={MaterialIcons} name="people" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
-                  </SidebarEntry>
+          <DrawerContentScrollView contentContainerStyle={style.scrollviewInnerContainer} style={style.scrollview} {...this.props} >
+            {this.props.state.routes.map((route, index) => {
+              const { drawerIcon, drawerLabel, drawerSection, drawerActiveTintColor, drawerActiveBackgroundColor, drawerItemStyle } = this.props.descriptors[route.key].options;
+              const focused = this.props.state.index === index;
+              const newSection = drawerSection !== lastDrawerSection && index !== 0;
+              lastDrawerSection = drawerSection;
+              return <React.Fragment key={route.key}>
+                {newSection && (
+                  <View style={style.drawerSeparation} />
                 )}
-                {this.securityProvider?.canListTags() && (
-                  <SidebarEntry onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
-                    <SidebarIcon as={MaterialCommunityIcons} name="credit-card" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
-                  </SidebarEntry>
-                )}
-                {this.securityProvider?.canListCars() && this.securityProvider?.isComponentCarActive() && (
-                  <SidebarEntry onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
-                    <SidebarIcon as={MaterialIcons} name="directions-car" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
-                  </SidebarEntry>
-                )}
-              </View>
-            )}
-            {showBillingSection && (
-              <View style={style.sidebarSection}>
-                {this.securityProvider?.canListPaymentMethods() && this.securityProvider?.isComponentBillingActive() && (
-                  <SidebarEntry
-                    onPress={() => this.navigateTo('PaymentMethodsNavigator', 'PaymentMethods')}>
-                    <SidebarIcon as={MaterialIcons} name="payments" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
-                  </SidebarEntry>
-                )}
-                {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
-                  <SidebarEntry onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
-                    <SidebarIcon as={MaterialIcons} name="receipt" />
-                    <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
-                  </SidebarEntry>
-                )}
-              </View>
-            )}
-            <SidebarEntry
-              onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-              <SidebarIcon color={commonColor.dangerLight} as={MaterialIcons} name="error-outline" />
-              <Text style={[style.linkText, { color: commonColor.dangerLight }]}>{I18n.t('sidebar.reportError')}</Text>
-            </SidebarEntry>
-          </ScrollView>
+                <DrawerItem
+                  label={drawerLabel ?? ''}
+                  labelStyle={style.drawerLabel}
+                  style={[drawerItemStyle, style.drawerItem]}
+                  icon={drawerIcon}
+                  focused={focused}
+                  activeTintColor={drawerActiveTintColor}
+                  activeBackgroundColor={drawerActiveBackgroundColor}
+                  onPress={() => {
+                    this.props.navigation.dispatch({
+                      ...(focused
+                        ? DrawerActions.closeDrawer()
+                        : CommonActions.navigate(route.name)),
+                      target: this.props.state.key,
+                    });
+                  }}
+                />
+              </React.Fragment>;
+            })}
+          </DrawerContentScrollView>
           <View style={{backgroundColor: commonColor.listItemBackground}}>
             <View style={style.bottomContainer}>
               <View style={style.avatarContainer}>
-                <UserAvatar user={user} navigation={this.props.navigation} />
+                <UserAvatar user={user} />
               </View>
               <View style={style.rightContainer}>
                 <Text style={style.userName}>
@@ -247,7 +188,7 @@ export default class SideBar extends React.Component<Props, State> {
                   <View style={{width: scale(4), height: scale(4), borderRadius: scale(4), backgroundColor: commonColor.primary, marginHorizontal: scale(10)}} />
                   <AuthContext.Consumer>
                     {authService => (
-                      <TouchableOpacity style={style.logoutContainer} onPress={async () => this.logoff(() => authService.handleSignOut())}>
+                      <TouchableOpacity style={style.logoutContainer} onPress={() => void this.logoff(() => authService.handleSignOut())}>
                         <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
                       </TouchableOpacity>
                     )}

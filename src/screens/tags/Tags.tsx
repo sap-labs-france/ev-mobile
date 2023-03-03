@@ -151,7 +151,7 @@ export default class Tags extends SelectableList<Tag> {
             title={this.buildHeaderTitle()}
             subTitle={this.buildHeaderSubtitle()}
             modalized={isModal}
-            backArrow={!isModal}
+            sideBar={!isModal && this.canOpenDrawer}
             navigation={this.props.navigation}
             displayTenantLogo={false}
             containerStyle={style.headerContainer}

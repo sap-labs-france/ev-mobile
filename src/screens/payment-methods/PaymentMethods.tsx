@@ -152,6 +152,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
+          sideBar={this.canOpenDrawer}
           navigation={this.props.navigation}
           containerStyle={style.headerContainer}
         />

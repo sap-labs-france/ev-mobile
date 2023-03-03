@@ -69,7 +69,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private searchText: string;
   private siteArea: SiteArea = { name: ''} as SiteArea;
   private currentRegion: Region;
-  private parent: any;
   private mapLimit = 500;
   private listLimit = 25;
 
@@ -96,25 +95,10 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public async componentDidMount() {
     // Get initial filters
     await super.componentDidMount();
-    const { navigation } = this.props;
-    // Enable swipe for opening sidebar
-    this.parent = navigation.getParent();
-    this.parent?.setOptions({
-      swipeEnabled: !this.siteArea
-    });
-    // When filters are enabled, first refresh is triggered via onFiltersChanged
     if (!this.screenFilters) {
       await this.refresh(true);
     }
     this.handleNavigationParameters();
-  }
-
-  public componentWillUnmount() {
-    super.componentWillUnmount();
-    // Disable swipe for opening sidebar
-    this.parent?.setOptions({
-      swipeEnabled: false
-    });
   }
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
@@ -135,23 +119,13 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public componentDidFocus(): void {
     super.componentDidFocus();
-    this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     this.refresh(true);
-    // Enable swipe for opening sidebar
-    this.parent?.setOptions({
-      swipeEnabled: !this.siteArea
-    });
   }
 
   public componentDidBlur(): void {
     super.componentDidBlur();
-    delete this.siteArea;
     // Unbind the back button and reset its default behavior (Android)
     this.backHandler.remove();
-    // Disable swipe for opening sidebar
-    this.parent?.setOptions({
-      swipeEnabled: false
-    });
   }
 
   public setState = (
@@ -396,8 +370,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               )
             }
           ]}
-          sideBar={!this.siteArea}
-          backArrow={!!this.siteArea}
+          sideBar={this.canOpenDrawer}
+          backArrow={!this.canOpenDrawer}
         />
         <View style={style.content}>
           {this.renderFilters()}
