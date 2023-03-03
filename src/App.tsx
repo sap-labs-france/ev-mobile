@@ -361,7 +361,7 @@ function ChargingStationsNavigator(props: BaseProps) {
       <ChargingStationsStack.Screen
         name="QRCodeScanner"
         component={ChargingStationQrCode}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
       />
       <ChargingStationsStack.Screen
         name="TransactionDetailsTabs"
@@ -535,7 +535,7 @@ function AppDrawerNavigator(props: BaseProps) {
             drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="qr-code-scanner" />
 
           }}
-          initialParams={props?.route?.params?.params}
+          initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         />
       </AppDrawer.Group>
       <AppDrawer.Group screenOptions={{drawerSection: 1}}>

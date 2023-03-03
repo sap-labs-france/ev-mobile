@@ -16,7 +16,6 @@ import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import Configuration from '../../config/Configuration';
-import computeStyleSheet from './ChargingStationQrCodeStyles';
 
 export interface Props extends BaseProps {
   currentTenantSubDomain: string;
