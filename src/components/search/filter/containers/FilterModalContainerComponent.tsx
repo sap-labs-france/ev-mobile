@@ -3,7 +3,7 @@ import React from 'react';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
 import computeModalCommonStyle from '../../../modal/ModalCommonStyle';
 import computeStyleSheet from'./FilterModalContainerComponentStyles';
-import { Text, TouchableOpacity, View } from 'react-native';
+import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
@@ -87,24 +87,27 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
           onBackdropPress={() => this.setState({visible: false})}
         >
           <View style={style.modalContent}>
-            <View style={style.header}>
-              <Text style={style.title}>{I18n.t('general.filters')}</Text>
-              <TouchableOpacity onPress={() => this.setState({visible: false})}>
-                <Icon size={scale(37)}  name={'close'} as={EvilIcons} style={style.closeIcon}/>
-              </TouchableOpacity>
-            </View>
-            {this.props.children}
-            <View style={style.buttonsContainer}>
-              <Button
-                loading={applyLoading}
-                containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
-                onPress={() => this.applyFiltersAndNotify()} title={I18n.t('general.apply')}/>
-              <Button
-                loading={clearLoading}
-                containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
-                onPress={() => this.clearFilters()} title={I18n.t('general.clear')}/>
-            </View>
+            <SafeAreaView style={style.safeArea}>
+              <View style={style.header}>
+                <Text style={style.title}>{I18n.t('general.filters')}</Text>
+                <TouchableOpacity onPress={() => this.setState({visible: false})}>
+                  <Icon size={scale(37)}  name={'close'} as={EvilIcons} style={style.closeIcon}/>
+                </TouchableOpacity>
+              </View>
+              {this.props.children}
+              <View style={style.buttonsContainer}>
+                <Button
+                  loading={applyLoading}
+                  containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
+                  onPress={() => this.applyFiltersAndNotify()} title={I18n.t('general.apply')}/>
+                <Button
+                  loading={clearLoading}
+                  containerStyle={style.buttonContainer} style={modalCommonStyle.primary}
+                  onPress={() => this.clearFilters()} title={I18n.t('general.clear')}/>
+              </View>
+            </SafeAreaView>
           </View>
+
         </Modal>
       </View>
     );

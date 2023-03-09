@@ -191,7 +191,8 @@
     "reportErrorSuccess": "El error se ha informado correctamente",
     "reportErrorFailed": "No se puede informar el error",
     "createEndpoint": "Create endpoint",
-    "wrongOrganization": "Wrong organization"
+    "wrongOrganization": "Wrong organization",
+    "createAccount": "Create Account"
   },
   "qrCode": {
     "qrCode": "Código QR",

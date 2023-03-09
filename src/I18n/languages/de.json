@@ -191,7 +191,8 @@
     "reportErrorSuccess": "Der Fehler wurde erfolgreich gemeldet",
     "reportErrorFailed": "Der Fehler kann nicht gemeldet werden",
     "createEndpoint": "Endpunkt erstellen",
-    "wrongOrganization": "Wrong organization"
+    "wrongOrganization": "Wrong organization",
+    "createAccount": "Create Account"
   },
   "qrCode": {
     "qrCode": "QR Code",

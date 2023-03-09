@@ -275,6 +275,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     return (
       <View style={style.container}>
         <HeaderComponent
+          sideBar={this.canOpenDrawer}
           navigation={navigation}
           title={I18n.t('sidebar.sites')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}

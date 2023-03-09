@@ -322,14 +322,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public showReportError = async () => {
     const { navigation } = this.props;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
-    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', '') as string;
+    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as number);
     // Get the last session
     // Navigate
     navigation.navigate('ReportError', {
       params: {
-        chargingStationID,
-        connectorID
+        title: chargingStationID + '-' + Utils.getConnectorLetterFromConnectorID(connectorID)
       },
       key: `${Utils.randomNumber()}`
     });

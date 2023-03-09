@@ -1,10 +1,11 @@
 import deepmerge from 'deepmerge';
-import { StyleSheet } from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet, scale } from 'react-native-size-matters';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import Utils from '../../utils/Utils';
+import {PLATFORM} from '../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -18,8 +19,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'flex-start',
       margin: 0,
       borderBottomWidth: 0,
+      paddingTop : Platform.OS === PLATFORM.IOS ? '5@s' : getStatusBarHeight() + scale(5),
       borderTopWidth: 0,
-      paddingTop: scale(10) + getStatusBarHeight(),
       backgroundColor: commonColor.containerBgColor,
       elevation: 0
     },

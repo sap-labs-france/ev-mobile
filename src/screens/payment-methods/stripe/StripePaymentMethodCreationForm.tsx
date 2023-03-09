@@ -27,14 +27,23 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   const [isBillingSetUp, setIsBillingSetUp] = useState<boolean>(undefined);
   const style = computeStyleSheet();
   const commonColors = Utils.getCurrentCommonColor();
+  const canOpenDrawer = props?.route?.params?.canOpenDrawer ?? true;
 
   useEffect(() => {
     setUp().catch((error) => {
       console.error(I18n.t('paymentMethods.paymentMethodUnexpectedError'), error);
     });
+    // This screen does not extend from BaseScreen (functional component) so we need to add the logic
+    props.navigation.getParent()?.setOptions({
+      swipeEnabled: canOpenDrawer
+    });
   });
 
   useFocusEffect(React.useCallback(() => {
+    // This screen does not extend from BaseScreen (functional component) so we need to add the logic
+    props.navigation.getParent()?.setOptions({
+      swipeEnabled: canOpenDrawer
+    });
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => onBack());
     return () => backHandler.remove();
   }, [])

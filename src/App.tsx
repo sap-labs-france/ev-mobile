@@ -4,13 +4,13 @@ import {
   getStateFromPath,
   InitialState, LinkingOptions,
   NavigationContainer,
-  NavigationContainerRef,
+  NavigationContainerRef
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import I18n from 'i18n-js';
 import {Icon, NativeBaseProvider} from 'native-base';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Appearance, ColorSchemeName, NativeEventSubscription, StatusBar, Text} from 'react-native';
 import { scale } from 'react-native-size-matters';
 
@@ -98,21 +98,6 @@ const TransactionDetailsTabs = createMaterialBottomTabNavigator();
 // Navigation Drawer variable
 const AppDrawer = createDrawerNavigator();
 
-type TabBarIconType =
-  | 'AntDesign'
-  | 'Entypo'
-  | 'EvilIcons'
-  | 'Feather'
-  | 'FontAwesome'
-  | 'FontAwesome5'
-  | 'Foundation'
-  | 'Ionicons'
-  | 'MaterialCommunityIcons'
-  | 'MaterialIcons'
-  | 'Octicons'
-  | 'SimpleLineIcons'
-  | 'Zocial';
-
 const createTabBarIcon = (
   props: { focused: boolean; tintColor?: string; horizontal?: boolean },
   type: any,
@@ -131,7 +116,18 @@ const createTabBarIcon = (
   );
 };
 
-function createAuthNavigator(props: BaseProps) {
+function getTabStyle(): any {
+  const commonColor = Utils.getCurrentCommonColor();
+  return {
+    backgroundColor: commonColor.containerBgColor,
+    borderTopWidth: 0.5,
+    borderTopColor: commonColor.disabledDark,
+    paddingTop: 0,
+    marginTop: 0
+  };
+}
+
+function AuthNavigator(props: BaseProps) {
   return (
     <AuthStack.Navigator initialRouteName={'Login'} screenOptions={{ headerShown: false }}>
       <AuthStack.Screen name="Login" component={Login} initialParams={props?.route?.params?.params} />
@@ -145,34 +141,31 @@ function createAuthNavigator(props: BaseProps) {
   );
 }
 
-function createStatsNavigator(props: BaseProps) {
+function StatsNavigator(props: BaseProps) {
   return (
     <StatsStack.Navigator initialRouteName="Statistics" screenOptions={{ headerShown: false }}>
-      <StatsStack.Screen name="Statistics" component={Statistics} initialParams={props?.route?.params?.params} />
+      <StatsStack.Screen
+        name="Statistics"
+        component={Statistics}
+        initialParams={props?.route?.params?.params}
+      />
     </StatsStack.Navigator>
   );
 }
 
-function createReportErrorNavigator(props: BaseProps) {
+function ReportErrorNavigator(props: BaseProps) {
   return (
     <ReportErrorStack.Navigator initialRouteName="ReportError" screenOptions={{ headerShown: false }}>
-      <ReportErrorStack.Screen name="ReportError" component={ReportError} initialParams={props?.route?.params?.params} />
+      <ReportErrorStack.Screen
+        name="ReportError"
+        component={ReportError}
+        initialParams={props?.route?.params?.params}
+      />
     </ReportErrorStack.Navigator>
   );
 }
 
-function getTabStyle(): any {
-  const commonColor = Utils.getCurrentCommonColor();
-  return {
-    backgroundColor: commonColor.containerBgColor,
-    borderTopWidth: 0.5,
-    borderTopColor: commonColor.disabledDark,
-    paddingTop: 0,
-    marginTop: 0
-  };
-}
-
-function createChargingStationDetailsTabsNavigator(props: BaseProps) {
+function ChargingStationDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
   const barStyle = getTabStyle();
   const style = computeStyleSheet();
@@ -188,7 +181,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
       <ChargingStationDetailsTabs.Screen
         name="ChargingStationActions"
         component={ChargingStationActions}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.actions')}</Text>,
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'build')
@@ -197,7 +190,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
       <ChargingStationDetailsTabs.Screen
         name="ChargingStationOcppParameters"
         component={ChargingStationOcppParameters}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.ocpp')}</Text>,
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'format-list-bulleted')
@@ -206,7 +199,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
       <ChargingStationDetailsTabs.Screen
         name="ChargingStationProperties"
         component={ChargingStationProperties}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.properties')}</Text>,
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'info')
@@ -216,7 +209,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
   );
 }
 
-function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
+function ChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
   const barStyle = getTabStyle();
   const style = computeStyleSheet();
@@ -228,12 +221,11 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
       barStyle={barStyle}
       labeled
       backBehavior={'initialRoute'}
-
     >
       <ChargingStationConnectorDetailsTabs.Screen
         name="ChargingStationConnectorDetails"
         component={ChargingStationConnectorDetails}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('sites.chargePoint')}</Text>,
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, FontAwesome, 'bolt')
@@ -242,7 +234,7 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
       <ChargingStationConnectorDetailsTabs.Screen
         name="TransactionChart"
         component={TransactionChart}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('details.graph')}</Text>,
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialCommunityIcons, 'chart-areaspline-variant')
@@ -252,7 +244,7 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
   );
 }
 
-function createTransactionDetailsTabsNavigator(props: BaseProps) {
+function TransactionDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
   const barStyle = getTabStyle();
   const style = computeStyleSheet();
@@ -268,7 +260,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
       <TransactionDetailsTabs.Screen
         name="TransactionDetails"
         component={TransactionDetails}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('transactions.transaction')}</Text>,
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, FontAwesome, 'bolt')
@@ -277,7 +269,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
       <TransactionDetailsTabs.Screen
         name="TransactionChart"
         component={TransactionChart}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('details.graph')}</Text>,
           tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialCommunityIcons, 'chart-areaspline-variant')
@@ -287,9 +279,9 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
   );
 }
 
-function createSitesNavigator(props: BaseProps) {
+function SitesNavigator(props: BaseProps) {
   return (
-    <SitesStack.Navigator initialRouteName="Sites" screenOptions={{ headerShown: false }}>
+    <SitesStack.Navigator initialRouteName="Sites" screenOptions={{ headerShown: false}}>
       <SitesStack.Screen
         name="Sites"
         component={Sites}
@@ -298,40 +290,41 @@ function createSitesNavigator(props: BaseProps) {
       <SitesStack.Screen
         name="SiteAreas"
         component={SiteAreas}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
       />
       <SitesStack.Screen
         name="ChargingStations"
         component={ChargingStations}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
       />
       <SitesStack.Screen
-        name="AddCar" component={AddCar}
-        initialParams={props?.route?.params?.params}
+        name="AddCar"
+        component={AddCar}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
       />
       <SitesStack.Screen
         name="AddPaymentMethod"
         component={StripePaymentMethodCreationForm}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
       />
       <SitesStack.Screen name="ChargingStationDetailsTabs"
-        children={createChargingStationDetailsTabsNavigator}
+        component={ChargingStationDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <SitesStack.Screen
         name="ChargingStationConnectorDetailsTabs"
-        children={createChargingStationConnectorDetailsTabsNavigator}
+        component={ChargingStationConnectorDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <SitesStack.Screen
         name="TransactionDetailsTabs"
-        children={createTransactionDetailsTabsNavigator}
+        component={TransactionDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <SitesStack.Screen
         name="ReportError"
         component={ReportError}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
       />
     </SitesStack.Navigator>
   );
@@ -339,7 +332,7 @@ function createSitesNavigator(props: BaseProps) {
 
 function ChargingStationsNavigator(props: BaseProps) {
   return (
-    <ChargingStationsStack.Navigator initialRouteName="ChargingStations" screenOptions={{ headerShown: false, gestureEnabled: false }}>
+    <ChargingStationsStack.Navigator initialRouteName="ChargingStations" screenOptions={{ headerShown: false }}>
       <ChargingStationsStack.Screen
         name="ChargingStations"
         component={ChargingStations}
@@ -347,30 +340,38 @@ function ChargingStationsNavigator(props: BaseProps) {
       />
       <ChargingStationsStack.Screen
         name="ChargingStationDetailsTabs"
+        component={ChargingStationDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
-        children={createChargingStationDetailsTabsNavigator}
       />
       <ChargingStationsStack.Screen
         name="ChargingStationConnectorDetailsTabs"
-        children={createChargingStationConnectorDetailsTabsNavigator}
+        component={ChargingStationConnectorDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
-      <ChargingStationsStack.Screen name="AddCar" component={AddCar} initialParams={props?.route?.params?.params} />
+      <ChargingStationsStack.Screen
+        name="AddCar"
+        component={AddCar}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
+      />
       <ChargingStationsStack.Screen
         name="AddPaymentMethod"
         component={StripePaymentMethodCreationForm}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
       />
-      <ChargingStationsStack.Screen name="QRCodeScanner" component={ChargingStationQrCode} initialParams={props?.route?.params?.params} />
+      <ChargingStationsStack.Screen
+        name="QRCodeScanner"
+        component={ChargingStationQrCode}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
+      />
       <ChargingStationsStack.Screen
         name="TransactionDetailsTabs"
-        children={createTransactionDetailsTabsNavigator}
+        component={TransactionDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
       <ChargingStationsStack.Screen
         name="ReportError"
         component={ReportError}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
       />
     </ChargingStationsStack.Navigator>
   );
@@ -386,7 +387,7 @@ function TransactionHistoryNavigator(props: BaseProps) {
       />
       <TransactionHistoryStack.Screen
         name="TransactionDetailsTabs"
-        children={createTransactionDetailsTabsNavigator}
+        component={TransactionDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
     </TransactionHistoryStack.Navigator>
@@ -403,34 +404,50 @@ function TransactionInProgressNavigator(props: BaseProps) {
       />
       <TransactionInProgressStack.Screen
         name="ChargingStationConnectorDetailsTabs"
-        children={createChargingStationConnectorDetailsTabsNavigator}
+        component={ChargingStationConnectorDetailsTabsNavigator}
         initialParams={props?.route?.params?.params}
       />
     </TransactionInProgressStack.Navigator>
   );
 }
 
-function createUsersNavigator(props: BaseProps) {
+function UsersNavigator(props: BaseProps) {
   return (
     <UsersStack.Navigator initialRouteName="Users" screenOptions={{ headerShown: false }}>
-      <UsersStack.Screen name="Users" component={Users} initialParams={props?.route?.params?.params} />
+      <UsersStack.Screen
+        name="Users"
+        component={Users}
+        initialParams={props?.route?.params?.params}
+      />
     </UsersStack.Navigator>
   );
 }
 
-function createTagsNavigator(props: BaseProps) {
+function TagsNavigator(props: BaseProps) {
   return (
     <TagsStack.Navigator initialRouteName="Tags" screenOptions={{ headerShown: false }}>
-      <TagsStack.Screen name="Tags" component={Tags} initialParams={props?.route?.params?.params} />
+      <TagsStack.Screen
+        name="Tags"
+        component={Tags}
+        initialParams={props?.route?.params?.params}
+      />
     </TagsStack.Navigator>
   );
 }
 
-function createCarsNavigator(props: BaseProps) {
+function CarsNavigator(props: BaseProps) {
   return (
     <CarsStack.Navigator initialRouteName="Cars" screenOptions={{ headerShown: false }}>
-      <CarsStack.Screen name="Cars" component={Cars} initialParams={props?.route?.params?.params} />
-      <CarsStack.Screen name={'AddCar'} component={AddCar} initialParams={props?.route?.params?.params} />
+      <CarsStack.Screen
+        name="Cars"
+        component={Cars}
+        initialParams={props?.route?.params?.params}
+      />
+      <CarsStack.Screen
+        name={'AddCar'}
+        component={AddCar}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
+      />
     </CarsStack.Navigator>
   );
 }
@@ -438,12 +455,16 @@ function createCarsNavigator(props: BaseProps) {
 function InvoicesNavigator(props: BaseProps) {
   return (
     <InvoicesStack.Navigator initialRouteName="Invoices" screenOptions={{ headerShown: false }}>
-      <InvoicesStack.Screen name="Invoices" component={Invoices} initialParams={props?.route?.params?.params} />
+      <InvoicesStack.Screen
+        name="Invoices"
+        component={Invoices}
+        initialParams={props?.route?.params?.params}
+      />
     </InvoicesStack.Navigator>
   );
 }
 
-function createPaymentMethodsNavigator(props: BaseProps) {
+function PaymentMethodsNavigator(props: BaseProps) {
   return (
     <PaymentMethodsStack.Navigator initialRouteName="PaymentMethods" screenOptions={{ headerShown: false }}>
       <PaymentMethodsStack.Screen
@@ -454,13 +475,13 @@ function createPaymentMethodsNavigator(props: BaseProps) {
       <PaymentMethodsStack.Screen
         name="StripePaymentMethodCreationForm"
         component={StripePaymentMethodCreationForm}
-        initialParams={props?.route?.params?.params}
+        initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
       />
     </PaymentMethodsStack.Navigator>
   );
 }
 
-function createSettingsNavigator(props: BaseProps) {
+function SettingsNavigator(props: BaseProps) {
   return (
     <SettingsStack.Navigator initialRouteName="Settings" screenOptions={{ headerShown: false }}>
       <SettingsStack.Screen
@@ -472,36 +493,177 @@ function createSettingsNavigator(props: BaseProps) {
   );
 }
 
-function createAppDrawerNavigator(props: BaseProps) {
+function AppDrawerNavigator(props: BaseProps) {
+  const commonColors = Utils.getCurrentCommonColor();
+  const [centralServerProvider, setCentralServerProvider] = useState<CentralServerProvider>();
+  const securityProvider = centralServerProvider?.getSecurityProvider();
+
+  async function setUp(): Promise<void> {
+    const provider = await ProviderFactory.getProvider();
+    setCentralServerProvider(provider);
+  }
+
+  useEffect(() => {
+    void setUp();
+  });
+
   return (
     <AppDrawer.Navigator
+      id={'drawer'}
       initialRouteName="ChargingStationsNavigator"
-      screenOptions={(drawerProps) => ({
+      screenOptions={{
         headerShown: false,
         drawerType: 'front',
+        swipeEdgeWidth: scale(40),
         swipeEnabled: false,
-        swipeEdgeWidth: scale(50),
         unmountOnBlur: false,
+        drawerHideStatusBarOnOpen: true,
         drawerStyle: {
           width: '83%'
-        }
-      })}
+        },
+        drawerPosition: 'left'
+      }}
       backBehavior={'initialRoute'}
-      drawerPosition="left"
       drawerContent={(drawerProps) => <Sidebar {...drawerProps} />}>
-      <AppDrawer.Screen name="ChargingStationsNavigator" component={ChargingStationsNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name="QRCodeScanner" component={ChargingStationQrCode} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="SitesNavigator" children={createSitesNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="StatisticsNavigator" children={createStatsNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="ReportErrorNavigator" children={createReportErrorNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="TransactionHistoryNavigator" component={TransactionHistoryNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name="TransactionInProgressNavigator" component={TransactionInProgressNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name="UsersNavigator" children={createUsersNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="TagsNavigator" children={createTagsNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="CarsNavigator" children={createCarsNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="InvoicesNavigator" component={InvoicesNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name="PaymentMethodsNavigator" children={createPaymentMethodsNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name="SettingsNavigator" children={createSettingsNavigator} initialParams={props?.route?.params?.params}/>
+      {/*// Hack, drawerSection property does not exist but we can still pass it*/}
+      <AppDrawer.Group screenOptions={{drawerSection: 0}} >
+        <AppDrawer.Screen
+          name="QRCodeScanner"
+          component={ChargingStationQrCode}
+          options={{
+            drawerLabel: I18n.t('sidebar.qrCodeScanner'),
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="qr-code-scanner" />
+
+          }}
+          initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
+        />
+      </AppDrawer.Group>
+      <AppDrawer.Group screenOptions={{drawerSection: 1}}>
+        <AppDrawer.Screen
+          name="ChargingStationsNavigator"
+          component={ChargingStationsNavigator}
+          options={{
+            drawerLabel: I18n.t('sidebar.chargers'),
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="ev-station" />
+          }}
+          initialParams={props?.route?.params?.params}
+        />
+        {securityProvider?.isComponentOrganizationActive() && (
+          <AppDrawer.Screen
+            name="SitesNavigator"
+            component={SitesNavigator}
+            options={{
+              drawerLabel: I18n.t('sidebar.sites'),
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="store-mall-directory" />
+            }}
+            initialParams={props?.route?.params?.params}
+          />
+        )}
+      </AppDrawer.Group>
+      <AppDrawer.Group screenOptions={{drawerSection: 2}}>
+        <AppDrawer.Screen
+          name="TransactionHistoryNavigator"
+          component={TransactionHistoryNavigator}
+          options={{
+            drawerLabel: I18n.t('sidebar.transactionsHistory'),
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="history" />
+          }}
+          initialParams={props?.route?.params?.params}
+        />
+        <AppDrawer.Screen
+          name="TransactionInProgressNavigator"
+          component={TransactionInProgressNavigator}
+          options={{
+            drawerLabel: I18n.t('sidebar.transactionsInProgress'),
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="play-arrow" />
+          }}
+          initialParams={props?.route?.params?.params}
+        />
+        <AppDrawer.Screen
+          name="StatisticsNavigator"
+          component={StatsNavigator}
+          options={{
+            drawerLabel: I18n.t('sidebar.statistics'),
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="bar-chart" />
+          }}
+          initialParams={props?.route?.params?.params}
+        />
+      </AppDrawer.Group>
+      <AppDrawer.Group screenOptions={{drawerSection: 3}}>
+        {securityProvider?.canListUsers() && (
+          <AppDrawer.Screen
+            name="UsersNavigator"
+            component={UsersNavigator}
+            options={{
+              drawerLabel: I18n.t('sidebar.users'),
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="people" />
+            }}
+            initialParams={props?.route?.params?.params}
+          />
+        )}
+        {securityProvider?.canListTags() && (
+          <AppDrawer.Screen
+            name="TagsNavigator"
+            component={TagsNavigator}
+            options={{
+              drawerLabel: I18n.t('sidebar.badges'),
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialCommunityIcons} name="credit-card-wireless-outline" />
+            }}
+            initialParams={props?.route?.params?.params}
+          />
+        )}
+        {securityProvider?.canListCars() && (
+          <AppDrawer.Screen
+            name="CarsNavigator"
+            component={CarsNavigator}
+            options={{
+              drawerLabel: I18n.t('sidebar.cars'),
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="directions-car" />
+            }}
+            initialParams={props?.route?.params?.params}
+          />
+        )}
+      </AppDrawer.Group>
+      <AppDrawer.Group screenOptions={{drawerSection: 4}}>
+        {securityProvider?.canListPaymentMethods() && (
+          <AppDrawer.Screen
+            name="PaymentMethodsNavigator"
+            component={PaymentMethodsNavigator}
+            options={{
+              drawerLabel: I18n.t('sidebar.paymentMethods'),
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialCommunityIcons} name="credit-card-outline" />
+            }}
+            initialParams={props?.route?.params?.params}
+          />
+        )}
+        {securityProvider?.canListInvoices() && (
+          <AppDrawer.Screen
+            key={10}
+            name="InvoicesNavigator"
+            component={InvoicesNavigator}
+            options={{
+              drawerLabel: I18n.t('sidebar.invoices'),
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="receipt" />
+            }}
+            initialParams={props?.route?.params?.params}
+          />
+        )}
+      </AppDrawer.Group>
+      <AppDrawer.Screen
+        name="ReportErrorNavigator"
+        component={ReportErrorNavigator}
+        options={{
+          drawerLabel: I18n.t('sidebar.reportError'),
+          drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="error-outline" />
+        }}
+        initialParams={props?.route?.params?.params}
+      />
+      <AppDrawer.Screen
+        name="SettingsNavigator"
+        component={SettingsNavigator}
+        options={{drawerItemStyle: {display: 'none'}}}
+        initialParams={props?.route?.params?.params}
+      />
     </AppDrawer.Navigator>
   );
 }
@@ -712,11 +874,9 @@ export default class App extends React.Component<Props, State> {
           >
             <rootStack.Navigator initialRouteName="AuthNavigator" screenOptions={{ headerShown: false }}>
               {isSignedIn ?
-                <rootStack.Screen name="AppDrawerNavigator">
-                  {createAppDrawerNavigator}
-                </rootStack.Screen>
+                <rootStack.Screen name="AppDrawerNavigator" component={AppDrawerNavigator} />
                 :
-                <rootStack.Screen options={{animationTypeForReplace: 'pop'}} name="AuthNavigator" children={createAuthNavigator} />
+                <rootStack.Screen options={{animationTypeForReplace: 'pop'}} name="AuthNavigator" component={AuthNavigator} />
               }
             </rootStack.Navigator>
           </NavigationContainer>

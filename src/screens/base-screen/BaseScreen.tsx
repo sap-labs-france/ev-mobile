@@ -13,14 +13,15 @@ export interface Props extends BaseProps {}
 interface State {}
 
 export default class BaseScreen<P, S> extends React.Component<Props, State> {
+  backHandler: NativeEventSubscription;
   protected mounted: boolean;
   protected centralServerProvider: CentralServerProvider;
   protected securityProvider: SecurityProvider;
-  private headerComponent: HeaderComponent;
   protected screenFilters: ScreenFilters<any>;
+  protected canOpenDrawer = this.props?.route?.params?.canOpenDrawer ?? true;
+  private headerComponent: HeaderComponent;
   private componentFocusUnsubscribe: () => void;
   private componentBlurUnsubscribe: () => void;
-  backHandler: NativeEventSubscription;
 
   public constructor(props: Props) {
     super(props);
@@ -44,6 +45,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     // Ok
     this.mounted = true;
     await this.screenFilters?.loadInitialFilters();
+    this.setDrawerStatus();
   }
 
   public componentWillUnmount() {
@@ -52,6 +54,13 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.componentBlurUnsubscribe?.();
     // Unbind the back button and reset its default behavior (Android)
     this.backHandler?.remove();
+  }
+
+  private setDrawerStatus(): void {
+    const drawer = this.props?.navigation?.getParent('drawer');
+    drawer?.setOptions({
+      swipeEnabled: this.canOpenDrawer
+    });
   }
 
   public setHeaderComponent(headerComponent: HeaderComponent, headerDisplay?: boolean) {
@@ -90,6 +99,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   public componentDidFocus(): void {
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
+    this.setDrawerStatus();
   }
 
   public componentDidBlur(): void {

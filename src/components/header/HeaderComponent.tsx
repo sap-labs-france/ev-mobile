@@ -1,7 +1,7 @@
 import { DrawerActions } from '@react-navigation/native';
 import { Icon, IIconProps } from 'native-base';
 import React from 'react';
-import { Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import {SafeAreaView, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './HeaderComponentStyles';
@@ -75,55 +75,57 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const commonColors = Utils.getCurrentCommonColor();
     const HeaderIcon = (props: IIconProps) => <Icon {...props} size={scale(30)} color={commonColors.textColor}/>;
     return (
-      <View style={[style.header, modalized && style.modalHeader, containerStyle]}>
-        <View style={style.leftHeader}>
-          {sideBar ? (
-            <TouchableOpacity
-              style={style.leftIconContainer}
-              onPress={() => {
-                navigation.dispatch(DrawerActions.openDrawer());
-                return true;
-              }}>
-              <HeaderIcon as={SimpleLineIcons} name={'menu'} />
-            </TouchableOpacity>
-          ) : (
-            backArrow && (
+      <SafeAreaView>
+        <View style={[style.header, modalized && style.modalHeader, containerStyle]}>
+          <View style={style.leftHeader}>
+            {sideBar ? (
               <TouchableOpacity
                 style={style.leftIconContainer}
-                onPress={backAction ?? (() => navigation.goBack())}>
-                <HeaderIcon as={Feather} name={'chevron-left'} />
+                onPress={() => {
+                  navigation.dispatch(DrawerActions.openDrawer());
+                  return true;
+                }}>
+                <HeaderIcon as={SimpleLineIcons} name={'menu'} />
               </TouchableOpacity>
-            )
-          )}
+            ) : (
+              backArrow && (
+                <TouchableOpacity
+                  style={style.leftIconContainer}
+                  onPress={backAction ?? (() => navigation.goBack())}>
+                  <HeaderIcon as={Feather} name={'chevron-left'} />
+                </TouchableOpacity>
+              )
+            )}
+          </View>
+          <View style={style.titleContainer}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
+              {title}
+            </Text>
+            <Text numberOfLines={1} style={style.subTitle}>
+              {subTitle}
+            </Text>
+          </View>
+          <View style={style.actionsContainer}>
+            {actions?.map((action, index) => (
+              <TouchableOpacity delayPressIn={0} style={style.action} key={index} onPress={action.onPress}>
+                {action.renderAction?.()}
+              </TouchableOpacity>
+            ))}
+            {this.modalFilters && this.modalFilters.canFilter() && (
+              <TouchableOpacity
+                style={style.rightIcon}
+                onPress={() => {
+                  this.modalFilters?.openModal();
+                }}>
+                <HeaderIcon
+                  as={MaterialCommunityIcons}
+                  name={this.modalFilters?.areModalFiltersActive() ? 'filter' : 'filter-outline'}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
-        <View style={style.titleContainer}>
-          <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.title}>
-            {title}
-          </Text>
-          <Text numberOfLines={1} style={style.subTitle}>
-            {subTitle}
-          </Text>
-        </View>
-        <View style={style.actionsContainer}>
-          {actions?.map((action, index) => (
-            <TouchableOpacity delayPressIn={0} style={style.action} key={index} onPress={action.onPress}>
-              {action.renderAction?.()}
-            </TouchableOpacity>
-          ))}
-          {this.modalFilters && this.modalFilters.canFilter() && (
-            <TouchableOpacity
-              style={style.rightIcon}
-              onPress={() => {
-                this.modalFilters?.openModal();
-              }}>
-              <HeaderIcon
-                as={MaterialCommunityIcons}
-                name={this.modalFilters?.areModalFiltersActive() ? 'filter' : 'filter-outline'}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
+      </SafeAreaView>
     );
   };
 }

@@ -17,11 +17,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     modalContent: {
       width: '100%',
       height: '100%',
-      padding: '5@s',
       paddingHorizontal: '10@s',
-      paddingTop: getStatusBarHeight() + scale(10),
+      paddingTop: getStatusBarHeight(),
       alignItems: 'center',
       backgroundColor: commonColor.containerBgColor
+    },
+    safeArea: {
+      width: '100%',
+      height: '100%'
     },
     closeIcon: {
       color: commonColor.textColor
@@ -30,18 +33,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       width: '100%',
       justifyContent: 'space-between',
-      marginTop: '20@s'
+      flex: 1,
+      alignItems: 'flex-end',
+      paddingBottom: '10@s'
     },
     buttonContainer: {
       width: '48%',
-      borderRadius: '8@s'
+      borderRadius: '18@s'
     },
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%',
-      marginBottom: '40@s'
+      marginBottom: '20@s'
     },
     title: {
       color: commonColor.textColor,

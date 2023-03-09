@@ -40,7 +40,7 @@ export default class Settings extends BaseScreen<Props, State> {
     const { distanceUnit } = this.state;
     return (
       <View style={style.container}>
-        <HeaderComponent containerStyle={style.headerContainer} navigation={this.props.navigation} title={I18n.t('sidebar.settings')} backArrow={true} />
+        <HeaderComponent containerStyle={style.headerContainer} navigation={this.props.navigation} title={I18n.t('sidebar.settings')} sideBar={this.canOpenDrawer} />
         <View style={style.content}>
           <View style={style.settingSection}>
             <Text style={style.settingLabel}>{I18n.t('settingsDistanceUnit.distanceUnit')}</Text>

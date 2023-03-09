@@ -1,8 +1,14 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, Checkbox, FormControl, Icon, Stack, Spinner } from 'native-base';
+import {Icon, Spinner} from 'native-base';
 import React from 'react';
-import { BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity, Text, View } from 'react-native';
+import {
+  BackHandler,
+  Keyboard,
+  TouchableOpacity,
+  Text,
+  View, TextInput,
+} from 'react-native';
 
 import DialogModal from '../../../components/modal/DialogModal';
 import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
@@ -14,12 +20,17 @@ import Message from '../../../utils/Message';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
-import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { scale } from 'react-native-size-matters';
 import {AuthContext, AuthService} from '../../../context/AuthContext';
+import {Button, CheckBox, Input} from 'react-native-elements';
+import {getVersion} from 'react-native-device-info';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import AuthHeader from '../AuthHeader';
 
 export interface Props extends BaseProps {}
 
@@ -31,15 +42,9 @@ interface State {
   tenantName?: string;
   tenantSubDomain?: string;
   tenantLogo?: string;
+  loggingIn?: boolean;
   loading?: boolean;
-  initialLoading?: boolean;
   hidePassword?: boolean;
-  errorEula?: Record<string, unknown>[];
-  errorPassword?: Record<string, unknown>[];
-  errorTenantSubDomain?: Record<string, unknown>[];
-  errorEmail?: Record<string, unknown>[];
-  errorNewTenantName?: Record<string, unknown>[];
-  errorNewTenantSubDomain?: Record<string, unknown>[];
   showNoTenantFoundDialog: boolean;
 }
 
@@ -49,39 +54,6 @@ export default class Login extends BaseScreen<Props, State> {
   private tenants: TenantConnection[] = [];
   private passwordInput: TextInput;
   private authService: AuthService;
-  private formValidationDef = {
-    tenantSubDomain: {
-      presence: {
-        allowEmpty: false,
-        message: '^' + I18n.t('authentication.mandatoryTenant')
-      }
-    },
-    email: {
-      presence: {
-        allowEmpty: false,
-        message: '^' + I18n.t('authentication.mandatoryEmail')
-      },
-      email: {
-        message: '^' + I18n.t('authentication.invalidEmail')
-      }
-    },
-    password: {
-      presence: {
-        allowEmpty: false,
-        message: '^' + I18n.t('authentication.mandatoryPassword')
-      }
-    },
-    eula: {
-      equality: {
-        attribute: 'ghost',
-        message: '^' + I18n.t('authentication.eulaNotAccepted'),
-        comparator(v1: boolean, v2: boolean) {
-          // True if EULA is checked
-          return v1;
-        }
-      }
-    }
-  };
 
   public constructor(props: Props) {
     super(props);
@@ -92,8 +64,8 @@ export default class Login extends BaseScreen<Props, State> {
       email: Utils.getParamFromNavigation(this.props.route, 'email', '') as string,
       tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
       tenantName: I18n.t('authentication.tenant'),
-      loading: false,
-      initialLoading: true,
+      loggingIn: false,
+      loading: true,
       hidePassword: true,
       showNoTenantFoundDialog: false
     };
@@ -146,7 +118,7 @@ export default class Login extends BaseScreen<Props, State> {
         password,
         tenantName: tenant?.endpoint?.name ? tenant.name : I18n.t('authentication.tenant'),
         tenantSubDomain: tenant?.endpoint?.name ? tenant.subdomain : null,
-        initialLoading: false
+        loading: false
       }
     );
   }
@@ -178,50 +150,51 @@ export default class Login extends BaseScreen<Props, State> {
 
   public async componentDidFocus(): Promise<void> {
     super.componentDidFocus();
-    const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain);
-    // Check if current Tenant selection is still valid (handle delete tenant use case)
-    if (tenantSubDomain) {
-      // Get the current Tenant
-      const tenant = await this.centralServerProvider.getTenant(tenantSubDomain.toString());
-      if (!tenant || !tenant?.endpoint?.name) {
-        // Refresh
-        this.tenants = await this.centralServerProvider.getTenants();
-        this.setState({
-          tenantSubDomain: null,
-          tenantLogo: null,
-          tenantName: I18n.t('authentication.tenant'),
-          email: null,
-          password: null
-        });
-      } else {
-        // Set logo
-        await this.setTenantLogo(tenant);
-        this.setState({
-          tenantSubDomain,
-          tenantName: tenant.name
-        });
+    const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain) as string;
+    if (tenantSubDomain !== this.state.tenantSubDomain) {
+      // Check if current Tenant selection is still valid (handle delete tenant use case)
+      if (tenantSubDomain) {
+        // Get the current Tenant
+        const tenant = await this.centralServerProvider.getTenant(tenantSubDomain);
+        if (!tenant?.endpoint?.name) {
+          // Refresh
+          this.tenants = await this.centralServerProvider.getTenants();
+          this.setState({
+            tenantSubDomain: null,
+            tenantLogo: null,
+            tenantName: I18n.t('authentication.tenant'),
+            email: null,
+            password: null
+          });
+        } else {
+          // Set logo
+          await this.setTenantLogo(tenant);
+          this.setState({
+            tenantSubDomain,
+            tenantName: tenant.name
+          });
+        }
       }
     }
   }
 
   public login = async () => {
     // Check field
-    const formIsValid = Utils.validateInput(this, this.formValidationDef);
-    if (formIsValid) {
+    if (this.isFormValid()) {
       const { password, email, eula, tenantSubDomain } = this.state;
       try {
         // Loading
-        this.setState({ loading: true } as State);
+        this.setState({ loggingIn: true } as State);
         // Login
         await this.centralServerProvider.login(email, password, eula, tenantSubDomain);
         // Login Success
-        this.setState({ loading: false });
+        this.setState({ loggingIn: false });
         // Navigate
         this.authService?.handleSignIn();
       } catch (error) {
         console.log(error);
         // Login failed
-        this.setState({ loading: false });
+        this.setState({ loggingIn: false });
         // Check request?
         if (error.request) {
           // Show error
@@ -264,12 +237,7 @@ export default class Login extends BaseScreen<Props, State> {
     return true;
   }
 
-  public navigateToApp() {
-    // Navigate to App
-    this.props.navigation.navigate('AppDrawerNavigator', { screen: 'ChargingStationsNavigator', key: `${Utils.randomNumber()}` });
-  }
-
-  public newUser = () => {
+  public register(): void {
     const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenantSubDomain) {
@@ -282,9 +250,9 @@ export default class Login extends BaseScreen<Props, State> {
     } else {
       Message.showError(I18n.t('authentication.mustSelectTenant'));
     }
-  };
+  }
 
-  public forgotPassword = () => {
+  public forgotPassword(): void {
     const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenantSubDomain) {
@@ -298,132 +266,122 @@ export default class Login extends BaseScreen<Props, State> {
       // Error
       Message.showError(I18n.t('authentication.mustSelectTenant'));
     }
-  };
+  }
 
   public render(): React.ReactElement {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { tenantLogo, eula, loading, initialLoading, hidePassword, showNoTenantFoundDialog } = this.state;
+    const {tenantLogo, eula, loggingIn, loading, hidePassword, showNoTenantFoundDialog, tenantName, password, email, tenantSubDomain } = this.state;
     // Render
-    return initialLoading ? (
+    return loading ? (
       <Spinner style={formStyle.spinner} color="grey" />
     ) : (
       <AuthContext.Consumer>
         {authService => {
           this.authService = authService;
           return (
-            <View style={style.container}>
+            <SafeAreaView style={style.container}>
               {showNoTenantFoundDialog && this.renderNoTenantFoundDialog()}
-              <ScrollView keyboardShouldPersistTaps={'always'} contentContainerStyle={style.scrollContainer}>
-                <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
-                  <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
-                  <TouchableOpacity style={[style.linksButton]} onPress={() => this.newUser()}>
-                    <Text style={style.linksTextButton}>
-                      {I18n.t('authentication.newUser')}
+              <Text style={style.applicationTitle}>open e-mobility</Text>
+              <TouchableOpacity onPress={() => this.goToTenants()} style={style.tenantSelectionContainer}>
+                <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
+                <Icon style={style.dropdownIcon} size={scale(25)} as={MaterialIcons} name={'arrow-drop-down'} />
+              </TouchableOpacity>
+              <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} bounces={false} persistentScrollbar={true} style={style.scrollView} contentContainerStyle={style.scrollViewContentContainer}>
+                <Input
+                  leftIcon={<Icon size={scale(20)} name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+                  containerStyle={formStyle.inputContainer}
+                  inputStyle={formStyle.inputText}
+                  inputContainerStyle={formStyle.inputTextContainer}
+                  value={email}
+                  placeholder={I18n.t('authentication.email')}
+                  placeholderTextColor={commonColor.placeholderTextColor}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType={'email-address'}
+                  textContentType={'emailAddress'}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  renderErrorMessage={false}
+                  onChangeText={(newEmail: string) => this.setState({email: newEmail})}
+                />
+                <Input
+                  ref={(ref: TextInput) => (this.passwordInput = ref)}
+                  leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+                  rightIcon={<Icon
+                    name={hidePassword ? 'eye' : 'eye-off'}
+                    size={scale(20)}
+                    as={Ionicons}
+                    onPress={() => this.setState({ hidePassword: !hidePassword })}
+                    style={formStyle.inputIcon}
+                  />}
+                  containerStyle={formStyle.inputContainer}
+                  inputStyle={formStyle.inputText}
+                  inputContainerStyle={formStyle.inputTextContainer}
+                  value={password}
+                  placeholder={I18n.t('authentication.password')}
+                  placeholderTextColor={commonColor.placeholderTextColor}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry={hidePassword}
+                  textContentType={'password'}
+                  keyboardType={'default'}
+                  returnKeyType={'done'}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                  renderErrorMessage={false}
+                  onChangeText={(newPassword: string) => this.setState({password: newPassword})}
+                />
+                <CheckBox
+                  containerStyle={formStyle.checkboxContainer}
+                  textStyle={{backgroundColor: 'transparent'}}
+                  checked={eula}
+                  onPress={() => this.setState({ eula: !eula })}
+                  title={
+                    <Text style={formStyle.checkboxText}>
+                      {I18n.t('authentication.acceptEula')}
+                      <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
+                        {I18n.t('authentication.eula')}
+                      </Text>
                     </Text>
-                  </TouchableOpacity>
-                  <FormControl style={formStyle.form}>
-                    <TouchableOpacity style={formStyle.button} onPress={() => this.goToTenants()}>
-                      <Text style={formStyle.buttonText} >
-                        {this.state?.tenantName}
-                      </Text>
-                    </TouchableOpacity>
-                    {this.state.errorTenantSubDomain &&
-                    this.state.errorTenantSubDomain.map((errorMessage, index) => (
-                      <Text style={formStyle.formErrorText} key={index}>
-                        {errorMessage}
-                      </Text>
-                    ))}
-                    <Stack style={formStyle.inputGroup}>
-                      <Icon size={scale(20)} name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
-                      <TextInput
-                        returnKeyType="next"
-                        placeholder={I18n.t('authentication.email')}
-                        placeholderTextColor={commonColor.placeholderTextColor}
-                        onSubmitEditing={() => this.passwordInput.focus()}
-                        style={formStyle.inputField}
-                        autoCapitalize="none"
-                        blurOnSubmit={false}
-                        autoCorrect={false}
-                        keyboardType={'email-address'}
-                        caretHidden={false}
-                        secureTextEntry={false}
-                        onChangeText={(text) => this.setState({ email: text })}
-                        value={this.state.email}
-                      />
-                    </Stack>
-                    {this.state.errorEmail &&
-                    this.state.errorEmail.map((errorMessage, index) => (
-                      <Text style={formStyle.formErrorText} key={index}>
-                        {errorMessage}
-                      </Text>
-                    ))}
-                    <Stack style={formStyle.inputGroup}>
-                      <Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />
-                      <TextInput
-                        returnKeyType="go"
-                        ref={(ref: TextInput) => (this.passwordInput = ref)}
-                        onSubmitEditing={() => Keyboard.dismiss()}
-                        placeholder={I18n.t('authentication.password')}
-                        placeholderTextColor={commonColor.placeholderTextColor}
-                        style={formStyle.inputField}
-                        autoCapitalize="none"
-                        blurOnSubmit={false}
-                        autoCorrect={false}
-                        keyboardType={'default'}
-                        secureTextEntry={hidePassword}
-                        onChangeText={(text) => this.setState({ password: text })}
-                        value={this.state.password}
-                      />
-                      <Icon
-                        name={hidePassword ? 'eye' : 'eye-off'}
-                        size={scale(20)}
-                        as={Ionicons}
-                        onPress={() => this.setState({ hidePassword: !hidePassword })}
-                        style={formStyle.inputIcon}
-                      />
-                    </Stack>
-                    {this.state.errorPassword &&
-                    this.state.errorPassword.map((errorMessage, index) => (
-                      <Text style={formStyle.formErrorText} key={index}>
-                        {errorMessage}
-                      </Text>
-                    ))}
-                    <TouchableOpacity style={[style.linksButton]} onPress={() => this.forgotPassword()}>
-                      <Text style={[style.linksTextButton, style.linksTextButton]}>
-                        {I18n.t('authentication.forgotYourPassword')}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ eula: !eula })} style={formStyle.formCheckboxContainer}>
-                      <Checkbox _icon={{color: commonColor.textColor}} accessibilityLabel={'accept EULA'} onChange={() => this.setState({ eula: !eula })} style={formStyle.checkbox} value={'checkbox'} isChecked={eula} />
-                      <Text style={formStyle.checkboxText}>
-                        {I18n.t('authentication.acceptEula')}
-                        <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
-                          {I18n.t('authentication.eula')}
-                        </Text>
-                      </Text>
-                    </TouchableOpacity>
-                    {this.state.errorEula &&
-                    this.state.errorEula.map((errorMessage, index) => (
-                      <Text style={[formStyle.formErrorText, style.formErrorTextEula]} key={index}>
-                        {errorMessage}
-                      </Text>
-                    ))}
-                    {loading ? (
-                      <Spinner style={formStyle.spinner} color="grey" />
-                    ) : (
-                      <Button style={formStyle.button} onPress={() => void this.login()}>
-                        <Text style={formStyle.buttonText}>
-                          {I18n.t('authentication.login')}
-                        </Text>
-                      </Button>
-                    )}
-                  </FormControl>
-                </KeyboardAvoidingView>
-              </ScrollView>
-            </View>
+                  }
+                  uncheckedIcon={<Icon size={scale(25)} name="checkbox-blank-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+                  checkedIcon={<Icon size={scale(25)} name="checkbox-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+                />
+                <Button
+                  title={I18n.t('authentication.signIn')}
+                  titleStyle={formStyle.buttonText}
+                  disabled={!this.isFormValid()}
+                  disabledStyle={formStyle.buttonDisabled}
+                  disabledTitleStyle={formStyle.buttonTextDisabled}
+                  containerStyle={formStyle.buttonContainer}
+                  buttonStyle={formStyle.button}
+                  loading={loggingIn}
+                  loadingProps={{color: commonColor.light}}
+                  onPress={() => void this.login()}
+                />
+                <TouchableOpacity style={style.forgotPasswordContainer} onPress={() => this.forgotPassword()}>
+                  <Text style={style.forgotPasswordText}>
+                    {I18n.t('authentication.forgotYourPassword')}
+                  </Text>
+                </TouchableOpacity>
+                <View style={style.buttonSeparatorLine} />
+                <Button
+                  title={I18n.t('authentication.signUp')}
+                  titleStyle={formStyle.buttonText}
+                  disabled={!tenantSubDomain}
+                  disabledStyle={formStyle.buttonDisabled}
+                  disabledTitleStyle={formStyle.buttonTextDisabled}
+                  containerStyle={formStyle.buttonContainer}
+                  buttonStyle={{...formStyle.button, ...formStyle.secondaryButton}}
+                  onPress={() => this.register()}
+                />
+                <View style={style.appVersionTextContainer}>
+                  <Text style={style.appVersionText}>v{getVersion()}</Text>
+                </View>
+              </KeyboardAwareScrollView>
+            </SafeAreaView>
           );
         }}
       </AuthContext.Consumer>
@@ -435,6 +393,11 @@ export default class Login extends BaseScreen<Props, State> {
       key: `${Utils.randomNumber()}`,
       openQRCode
     });
+  }
+
+  private isFormValid(): boolean {
+    const {tenantSubDomain, email, password, eula} = this.state;
+    return !!tenantSubDomain && !!email && !!password && eula;
   }
 
   private renderNoTenantFoundDialog() {

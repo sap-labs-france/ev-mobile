@@ -167,7 +167,7 @@ export default class Cars extends SelectableList<Car> {
             title={this.buildHeaderTitle()}
             subTitle={this.buildHeaderSubtitle()}
             modalized={isModal}
-            backArrow={!isModal}
+            sideBar={!isModal && this.canOpenDrawer}
             navigation={this.props.navigation}
             containerStyle={style.headerContainer}
           />
