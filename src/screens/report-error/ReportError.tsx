@@ -100,7 +100,7 @@ export default class ReportError extends BaseScreen<Props, State> {
     ) : (
       <SafeAreaView edges={['bottom']} style={style.container}>
         <HeaderComponent
-      //    sideBar={true}
+          sideBar={this.canOpenDrawer}
           navigation={this.props.navigation}
           title={I18n.t('sidebar.reportError')}
           containerStyle={style.headerContainer}

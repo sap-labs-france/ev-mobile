@@ -22,6 +22,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       height: '100%'
     },
+    drawerItem: {
+      width: '100%',
+      paddingVertical: '2@s'
+    },
+    drawerLabel: {
+      color: commonColor.textColor,
+      fontSize: '13@s'
+    },
+    drawerSeparation: {
+      width: '80%',
+      borderTopWidth: 0.7,
+      borderTopColor: Color(commonColor.disabledDark).alpha(0.38).toString(),
+      alignSelf: 'flex-end'
+    },
     header: {
       alignItems: 'center',
       justifyContent: 'flex-start',
@@ -39,23 +53,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.listItemBackground,
       width: '100%'
     },
-    sidebarSection: {
-      borderColor,
-      borderBottomWidth: 0.8,
-      paddingVertical: '2@s',
-      width: '100%'
-    },
     tenantContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start'
     },
-    safeArea:{
-      width: '100%'
-    },
     scrollviewInnerContainer: {
-      width: '100%',
-      height: 'auto'
+      width: '100%'
     },
     scrollview: {
       width: '100%',
@@ -104,25 +108,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '10@s',
       textAlign: 'right',
       paddingHorizontal: '5@s'
-    },
-    links: {
-      borderBottomWidth: 0,
-      paddingTop: '13@s',
-      paddingBottom: '13@s',
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingLeft: '20@s',
-    },
-    focused: {
-      opacity: 0.7,
-      borderTopEndRadius: '8@s',
-      borderBottomEndRadius: '8@s'
-    },
-    linkText: {
-      color: commonColor.textColor,
-      fontSize: '14@s',
-      marginLeft: '22@s',
-      opacity: 1
     },
     rightContainer: {
       flexDirection: 'column',

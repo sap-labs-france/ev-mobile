@@ -145,7 +145,7 @@ export default class Users extends SelectableList<User> {
             title={this.buildHeaderTitle()}
             subTitle={this.buildHeaderSubtitle()}
             modalized={isModal}
-            backArrow={!isModal}
+            sideBar={!isModal && this.canOpenDrawer}
             navigation={this.props.navigation}
             displayTenantLogo={false}
             containerStyle={style.headerContainer}

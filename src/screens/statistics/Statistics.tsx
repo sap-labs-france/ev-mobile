@@ -179,6 +179,7 @@ export default class Statistics extends BaseScreen<Props, State> {
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
+          sideBar={this.canOpenDrawer}
           title={I18n.t('home.statistics')}
           containerStyle={style.headerContainer}
         />

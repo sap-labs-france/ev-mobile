@@ -141,6 +141,7 @@ export default class Invoices extends BaseScreen<Props, State> {
           title={i18n.t('sidebar.invoices')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
           navigation={this.props.navigation}
+          sideBar={this.canOpenDrawer}
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           containerStyle={style.headerContainer}
         />

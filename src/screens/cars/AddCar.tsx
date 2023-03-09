@@ -105,6 +105,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         <HeaderComponent
           title={I18n.t('cars.addCarTitle')}
           navigation={navigation}
+          backArrow={true}
           containerStyle={style.headerContainer}
         />
         <ScrollView keyboardShouldPersistTaps={'always'} style={style.scrollview} contentContainerStyle={style.content}>
