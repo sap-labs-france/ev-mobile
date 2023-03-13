@@ -1,6 +1,6 @@
-import { StatusCodes } from 'http-status-codes';
+import {StatusCodes} from 'http-status-codes';
 import I18n from 'i18n-js';
-import { HStack, Icon, Spinner } from 'native-base';
+import {HStack, Icon, Spinner} from 'native-base';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import React from 'react';
 import {
@@ -8,7 +8,7 @@ import {
   Alert,
   Dimensions,
   ImageBackground,
-  ImageStyle, KeyboardAvoidingView,
+  ImageStyle,
   RefreshControl,
   ScrollView,
   Text,
@@ -26,7 +26,7 @@ import ChargingStationConnectorComponent
   from '../../../components/charging-station/connector/ChargingStationConnectorComponent';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import { ItemSelectionMode } from '../../../components/list/ItemsList';
+import {ItemSelectionMode} from '../../../components/list/ItemsList';
 import computeListItemCommonStyle from '../../../components/list/ListItemCommonStyle';
 import DialogModal from '../../../components/modal/DialogModal';
 import computeModalCommonStyle from '../../../components/modal/ModalCommonStyle';
@@ -37,15 +37,11 @@ import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import Car from '../../../types/Car';
-import ChargingStation, {
-  ChargePointStatus,
-  Connector,
-  OCPPGeneralResponse
-} from '../../../types/ChargingStation';
-import { HTTPAuthError } from '../../../types/HTTPError';
+import ChargingStation, {ChargePointStatus, Connector, OCPPGeneralResponse} from '../../../types/ChargingStation';
+import {HTTPAuthError} from '../../../types/HTTPError';
 import Tag from '../../../types/Tag';
 import Transaction, {StartTransactionErrorCode, UserSessionContext} from '../../../types/Transaction';
-import User, { UserDefaultTagCar, UserStatus } from '../../../types/User';
+import User, {UserStatus} from '../../../types/User';
 import UserToken from '../../../types/UserToken';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -54,13 +50,14 @@ import Cars from '../../cars/Cars';
 import Tags from '../../tags/Tags';
 import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
-import { scale } from 'react-native-size-matters';
+import {scale} from 'react-native-size-matters';
 import computeActivityIndicatorCommonStyles from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 function SocInput(props: { inputProps: TextInputProps; leftText: string; containerStyle?: ViewStyle }) {
   const style = computeStyleSheet();
@@ -113,10 +110,8 @@ export interface State {
   totalInactivitySecs?: number;
   inactivityFormatted?: string;
   startTransactionNbTrial?: number;
-  isPricingActive?: boolean;
   buttonDisabled?: boolean;
   refreshing?: boolean;
-  userDefaultTagCar?: UserDefaultTagCar;
   showStartTransactionDialog: boolean;
   showStopTransactionDialog: boolean;
   selectedUser?: User;
@@ -148,7 +143,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     this.state = {
       loading: true,
       chargingStation: null,
-      userDefaultTagCar: null,
       connector: null,
       transaction: null,
       isAdmin: false,
@@ -162,7 +156,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       totalInactivitySecs: 0,
       inactivityFormatted: '-',
       startTransactionNbTrial: 0,
-      isPricingActive: false,
       refreshing: false,
       showStartTransactionDialog: undefined,
       showStopTransactionDialog: false,
@@ -228,8 +221,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public getSiteImage = async (siteID: string): Promise<string> => {
     try {
       // Get Site
-      const siteImage = await this.centralServerProvider.getSiteImage(siteID);
-      return siteImage;
+      return await this.centralServerProvider.getSiteImage(siteID);
     } catch (error) {
       if (error.request.status !== StatusCodes.NOT_FOUND) {
         // Other common Error
@@ -400,7 +392,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         isSiteAdmin: this.securityProvider?.isSiteAdmin(chargingStation?.siteArea?.siteID) ?? false,
         canStartTransaction: chargingStation ? this.canStartTransaction(chargingStation, connector) : false,
         canStopTransaction: chargingStation ? this.canStopTransaction(chargingStation, connector) : false,
-        isPricingActive: this.securityProvider?.isComponentPricingActive(),
         ...durationInfos,
         loading: false
       },() => callback?.()) ;
@@ -818,7 +809,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public render() {
-    const { showChargingSettings } = this.state;
     const style = computeStyleSheet();
     const {
       connector,
@@ -827,7 +817,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       chargingStation,
       loading,
       siteImage,
-      isPricingActive,
       showStartTransactionDialog,
       showStopTransactionDialog,
       refreshing,
@@ -869,7 +858,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             </ImageBackground>
             {/* Details */}
             {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
-              <KeyboardAvoidingView style={style.connectorInfoSettingsContainer}>
+              <View  style={style.connectorInfoSettingsContainer}>
                 {refreshing && <ActivityIndicator
                   size={scale(18)}
                   color={commonColors.textColor}
@@ -880,8 +869,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 {this.renderAccordion(style)}
 */}
 
-                <ScrollView
-                  automaticallyAdjustContentInsets={true}
+                <KeyboardAwareScrollView
                   persistentScrollbar={true}
                   style={style.scrollviewContainer}
                   contentContainerStyle={style.chargingSettingsContainer}
@@ -893,13 +881,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
                   {this.state.selectedCar && (
                     <>
-                      {!sessionContextLoading && !!sessionContext?.smartChargingSessionParameters?.departureTime && this.renderDepartureTime()}
+                      {!sessionContextLoading && sessionContext?.smartChargingSessionParameters?.departureTime && this.renderDepartureTime()}
                       {!sessionContextLoading && sessionContext?.smartChargingSessionParameters?.carStateOfCharge && this.renderSoCInputs()}
                     </>
                   )}
 
-                </ScrollView>
-              </KeyboardAvoidingView>
+                </KeyboardAwareScrollView>
+              </View>
             ) : (
               <ScrollView
                 contentContainerStyle={style.scrollViewContainer}
@@ -968,8 +956,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private renderSoCInputs() {
     const { departureSoC, currentSoC, tagCarLoading } = this.state;
     const style = computeStyleSheet();
-    const currentSoCText = currentSoC?.toString(10) ?? '';
-    const departureSoCText = departureSoC?.toString(10) ?? '';
+    const currentSoCText = (currentSoC ?? '').toString(10);
+    const departureSoCText = (departureSoC ?? '').toString(10);
     const settingsErrors = this.computeSettingsErrors();
     const showCurrentSoCInput = this.showCurrentSoCInput();
     return (
@@ -1045,7 +1033,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return SoCNumeric >= 0 ? SoCNumeric : null;
   }
 
-  private ƒrAccordion(style: any) {
+  private renderAccordion(style: any) {
     const { showChargingSettings, settingsErrors } = this.state;
     return (
       <TouchableOpacity onPress={() => this.setState({ showChargingSettings: !showChargingSettings })} style={style.accordion}>
@@ -1148,12 +1136,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           openable={true}
           renderNoItem={this.renderNoCar.bind(this)}
           clearable={true}
-          renderItem={() => <CarComponent car={selectedCar} navigation={navigation} />}
+          renderItem={(car) => <CarComponent car={car} navigation={navigation} />}
           ref={this.carModalRef}
           defaultItems={[selectedCar]}
           renderItemPlaceholder={this.renderCarPlaceholder.bind(this)}
           defaultItemLoading={sessionContextLoading}
-          onItemsSelected={(selectedCars: Car[]) => this.setState({selectedCar: selectedCars?.[0]})}
+          onItemsSelected={(selectedCars: Car[]) => this.setState({selectedCar: selectedCars?.[0]}, () => void this.loadUserSessionContext())}
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
           <Cars userIDs={[selectedUser?.id as string]} navigation={navigation} />
@@ -1214,7 +1202,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           ref={this.tagModalRef}
           defaultItems={[selectedTag]}
           defaultItemLoading={sessionContextLoading}
-          onItemsSelected={(selectedTags: Tag[]) => this.setState({ selectedTag: selectedTags?.[0] })}
+          onItemsSelected={(selectedTags: Tag[]) => this.setState({ selectedTag: selectedTags?.[0] }, () => void this.loadUserSessionContext())}
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
           <Tags disableInactive={true} sorting={'-active'} userIDs={[selectedUser?.id as string]} navigation={navigation} />
@@ -1240,39 +1228,42 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private onUserSelected(selectedUsers: User[]): void {
     const selectedUser = selectedUsers?.[0];
     // Reset errors and selected fields when new user selected
+    this.tagModalRef?.current?.resetInput();
+    this.carModalRef?.current?.resetInput();
     this.setState(
       {
         selectedUser,
         selectedCar: null,
         selectedTag: null,
-        userDefaultTagCar: null,
         sessionContext: null
       },
-      async () => {
-        await this.loadUserSessionContext();
+      () => {
+        void this.loadUserSessionContext();
       }
     );
   }
 
   private async loadUserSessionContext(): Promise<void> {
     const { selectedUser, chargingStation, connector } = this.state;
+    let { selectedCar, selectedTag }  = this.state;
     this.setState({sessionContextLoading: true}, async () => {
-      this.carModalRef.current?.resetInput();
-      this.tagModalRef.current?.resetInput();
       const userSessionContext = await this.getUserSessionContext(
         selectedUser?.id as string,
         chargingStation?.id,
-        connector?.connectorId
+        connector?.connectorId,
+        selectedCar?.id,
+        selectedTag?.id
       );
-      const selectedCar = userSessionContext?.car ? {...userSessionContext.car, user: selectedUser} : null;
+      selectedCar = userSessionContext?.car ? {...userSessionContext.car, user: selectedUser} : null;
+      selectedTag = userSessionContext?.tag;
       this.setState({
         selectedCar,
-        selectedTag: userSessionContext?.tag,
+        selectedTag,
         sessionContextLoading: false,
         sessionContext: userSessionContext,
         currentSoC: userSessionContext?.smartChargingSessionParameters?.carStateOfCharge,
         departureSoC: userSessionContext?.smartChargingSessionParameters?.targetStateOfCharge,
-        departureTime: new Date(userSessionContext.smartChargingSessionParameters?.departureTime ?? null)
+        departureTime: new Date(userSessionContext?.smartChargingSessionParameters?.departureTime ?? null)
       });
     });
   }
@@ -1334,12 +1325,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return new Date().getTime() + MIN_SESSION_DURATION_MILLISECS;
   }
 
-  private async getUserSessionContext(userID: string, chargingStationID: string, connectorID: number): Promise<UserSessionContext> {
+  private async getUserSessionContext(userID: string, chargingStationID: string, connectorID: number, carID: string, tagID: string): Promise<UserSessionContext> {
     try {
       return this.centralServerProvider.getUserSessionContext(
         userID,
         chargingStationID,
-        connectorID
+        connectorID,
+        carID,
+        tagID
       );
     } catch (error) {
       await Utils.handleHttpUnexpectedError(

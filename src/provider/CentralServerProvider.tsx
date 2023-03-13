@@ -1083,14 +1083,16 @@ export default class CentralServerProvider {
     }
   }
 
-  public async getUserSessionContext(userID: string, chargingStationID: string, connectorID: number): Promise<UserSessionContext> {
+  public async getUserSessionContext(userID: string, chargingStationID: string, connectorID: number, carID: string, tagID: string): Promise<UserSessionContext> {
     this.debugMethod('getUserSessionContext');
     const result = await this.axiosInstance.get(this.buildRestEndpointUrl(RESTServerRoute.REST_USER_SESSION_CONTEXT, {userID}),
       {
         headers: this.buildSecuredHeaders(),
         params: {
           ChargingStationID: chargingStationID,
-          ConnectorID: connectorID
+          ConnectorID: connectorID,
+          CarID: carID,
+          TagID: tagID
         }
       });
     return result.data;
