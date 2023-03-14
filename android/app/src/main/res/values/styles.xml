@@ -1,10 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!-- Base application theme. -->
   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-      <item name="android:datePickerDialogTheme">@style/DialogDatePicker.Theme</item>
+      <item name="android:datePickerDialogTheme">@style/DialogPicker.Theme</item>
+      <item name="android:timePickerDialogTheme">@style/DialogPicker.Theme</item>
   </style>
 
-  <style name="DialogDatePicker.Theme" parent="Theme.AppCompat.Light.Dialog">
+  <style name="DialogPicker.Theme" parent="Theme.AppCompat.Light.Dialog">
       <item name="android:windowBackground">@color/white</item>
       <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
       <!-- Buttons color -->

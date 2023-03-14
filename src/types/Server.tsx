@@ -522,6 +522,8 @@ export enum RESTServerRoute {
   REST_CHARGING_STATION_CHECK_SMART_CHARGING_CONNECTION = 'charging-stations/smartcharging/connection/check',
   REST_CHARGING_STATION_TRIGGER_SMART_CHARGING = 'charging-stations/smartcharging/trigger',
 
+  REST_USER_SESSION_CONTEXT = 'users/:userID/session-context',
+
   REST_CHARGING_PROFILES = 'charging-profiles',
   REST_CHARGING_PROFILE = 'charging-profiles/:id',
 

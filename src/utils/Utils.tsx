@@ -359,6 +359,16 @@ export default class Utils {
     return Voltage.VOLTAGE_230;
   }
 
+  public static getConnectorCurrentType(chargingStation: ChargingStation, connectorId: number): CurrentType {
+    const connectorChargePoint = chargingStation?.chargePoints?.find(chargePoint => chargePoint?.connectorIDs?.includes(connectorId));
+    const chargePointCurrentType = connectorChargePoint?.currentType;
+    if (chargePointCurrentType) {
+      return chargePointCurrentType;
+    }
+    const connector = chargingStation?.connectors?.find(c => c?.connectorId === connectorId);
+    return connector?.currentType;
+  }
+
   public static getChargingStationCurrentType(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorId = 0): CurrentType {
     if (chargingStation) {
       // Check at charge point level

@@ -23,6 +23,7 @@
     "clear": "Effacer",
     "close": "Fermer",
     "cancel": "Annuler",
+    "confirm": "Confirmer",
     "send": "Envoyer",
     "apply": "Appliquer",
     "version": "Version",
@@ -86,7 +87,9 @@
     "showLess": "Voir moins",
     "newEntry": "Nouveau",
     "userOrTenantUpdated": "Vous avez été déconnecté suite à une modification de votre profil ou des paramètres de votre organisation",
-    "tenantRedirectionInvalidDomain": "Le domaine de redirection de l'organisation est invalide"
+    "tenantRedirectionInvalidDomain": "Le domaine de redirection de l'organisation est invalide",
+    "from": "De",
+    "to": "À"
   },
   "sidebar": {
     "home": "Home",
@@ -330,7 +333,11 @@
     "selectChargeCard": "Sélectionnez la carte de recharge",
     "chargingSettings": "Paramètres de charge",
     "adviceMessage": "Assurez-vous que le câble est branché",
-    "sessionAlreadyInProgressError": "Une sessions est déjà en cours sur ce connecteur"
+    "sessionAlreadyInProgressError": "Une session est déjà en cours sur ce connecteur",
+    "departureTime": "Heure de départ",
+    "departureStateOfCharge": "Niveau de batterie souhaité",
+    "currentStateOfCharge": "Niveau de batterie actuel",
+    "stateOfCharge": "Niv. batterie"
   },
   "home": {
     "browseSites": "Sites",

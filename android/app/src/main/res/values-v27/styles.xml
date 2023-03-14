@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="android:datePickerDialogTheme">@style/DialogDatePicker.Theme</item>
+    <item name="android:datePickerDialogTheme">@style/DialogPicker.Theme</item>
+    <item name="android:timePickerDialogTheme">@style/DialogPicker.Theme</item>
     <item name="android:forceDarkAllowed" tools:targetApi="Q">false</item>
     <item name="android:navigationBarColor">@color/navigationBarBackground</item>
     <item name="android:windowLightNavigationBar">true</item>

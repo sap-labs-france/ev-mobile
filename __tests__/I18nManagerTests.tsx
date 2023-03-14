@@ -29,11 +29,11 @@ test('getNumberFormatPartValue', () => {
     {type: 'currency', value: 'EUR'},
     {type: 'compact', value: 'million'},
     {type: 'integer', 'value': '756000000'}
-  ];
-  expect(I18nManager.getNumberFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'currency')).toEqual('EUR');
-  expect(I18nManager.getNumberFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'compact')).toEqual('million');
-  expect(I18nManager.getNumberFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'integer')).toEqual('756000000');
-  expect(I18nManager.getNumberFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'group')).toEqual(undefined);
+  ]
+  expect(I18nManager.getFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'currency')).toEqual('EUR');
+  expect(I18nManager.getFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'compact')).toEqual('million');
+  expect(I18nManager.getFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'integer')).toEqual('756000000');
+  expect(I18nManager.getFormatPartValue(numberFormatParts as Intl.NumberFormatPart[], 'group')).toEqual(undefined);
 });
 
 test('concatenateNumberFormatParts', () => {

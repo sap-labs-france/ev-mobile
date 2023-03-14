@@ -23,6 +23,7 @@
     "clear": "Pulisci",
     "close": "Chiudi",
     "apply": "Applica",
+    "confirm": "Confirm",
     "cancel": "Cancella",
     "send": "Invio",
     "version": "Versione",
@@ -86,7 +87,9 @@
     "showLess": "Show less",
     "newEntry": "New entry",
     "userOrTenantUpdated": "Sei stato disconnesso perchè le impostazioni del tuo profilo o della tua organizzazione sono state aggiornate",
-    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain"
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain",
+    "from": "Da",
+    "to": "A"
   },
   "sidebar": {
     "home": "Home",
@@ -330,7 +333,11 @@
     "selectChargeCard": "Select Charge Card",
     "chargingSettings": "Charging settings",
     "adviceMessage": "Ensure that the cable is connected",
-    "sessionAlreadyInProgressError": "A session is already in progress on this connector"
+    "sessionAlreadyInProgressError": "A session is already in progress on this connector",
+    "departureTime": "Departure time",
+    "departureStateOfCharge": "Departure state of charge",
+    "currentStateOfCharge": "Current state of charge",
+    "stateOfCharge": "State of charge"
   },
   "home": {
     "browseSites": "Siti",

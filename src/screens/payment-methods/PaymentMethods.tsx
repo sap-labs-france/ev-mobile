@@ -178,8 +178,8 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
                 </Swipeable>
               )}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
-              onEndReached={this.onEndScroll}
+              manualRefresh={() => void this.manualRefresh()}
+              onEndReached={() => void this.onEndScroll()}
               emptyTitle={I18n.t('paymentMethods.noPaymentMethod')}
             />
           </View>

@@ -1,33 +1,33 @@
-import { Buffer } from 'buffer';
+import {Buffer} from 'buffer';
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { NavigationContainerRef, StackActions } from '@react-navigation/native';
-import { AxiosInstance } from 'axios';
+import {NavigationContainerRef, StackActions} from '@react-navigation/native';
+import {AxiosInstance} from 'axios';
 import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import Notifications from '../notification/Notifications';
-import { PLATFORM } from '../theme/variables/commonColor';
-import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
-import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
-import Car, { CarCatalog } from '../types/Car';
+import {PLATFORM} from '../theme/variables/commonColor';
+import {ActionResponse, BillingOperationResult} from '../types/ActionResponse';
+import {BillingInvoice, BillingPaymentMethod} from '../types/Billing';
+import Car, {CarCatalog} from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
-import { DataResult, TransactionDataResult } from '../types/DataResult';
-import Eula, { EulaAccepted } from '../types/Eula';
-import { KeyValue } from '../types/Global';
-import QueryParams, { PagingParams } from '../types/QueryParams';
-import { HttpChargingStationRequest } from '../types/requests/HTTPChargingStationRequests';
-import { RESTServerRoute, ServerAction } from '../types/Server';
-import { BillingSettings } from '../types/Setting';
+import {DataResult, TransactionDataResult} from '../types/DataResult';
+import Eula, {EulaAccepted} from '../types/Eula';
+import {KeyValue} from '../types/Global';
+import QueryParams, {PagingParams} from '../types/QueryParams';
+import {HttpChargingStationRequest} from '../types/requests/HTTPChargingStationRequests';
+import {RESTServerRoute, ServerAction} from '../types/Server';
+import {BillingSettings} from '../types/Setting';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
 import Tag from '../types/Tag';
-import { TenantConnection } from '../types/Tenant';
-import Transaction from '../types/Transaction';
+import {TenantConnection} from '../types/Tenant';
+import Transaction, {UserSessionContext} from '../types/Transaction';
 import User, {UserDefaultTagCar, UserMobileData} from '../types/User';
 import UserToken from '../types/UserToken';
 import AxiosFactory from '../utils/AxiosFactory';
@@ -35,7 +35,7 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import { getApplicationName, getBundleId, getVersion } from 'react-native-device-info';
+import {getApplicationName, getBundleId, getVersion} from 'react-native-device-info';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -571,7 +571,7 @@ export default class CentralServerProvider {
   }
 
   // eslint-disable-next-line max-len
-  public async startTransaction(chargingStationID: string, connectorId: number, visualTagID: string, carID: string, userID: string): Promise<ActionResponse> {
+  public async startTransaction(chargingStationID: string, connectorId: number, visualTagID: string, carID: string, userID: string, carStateOfCharge: number, targetStateOfCharge: number, departureTime: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
     // Call
     const result = await this.axiosInstance.put<any>(
@@ -580,6 +580,9 @@ export default class CentralServerProvider {
         chargingStationID,
         carID,
         userID,
+        carStateOfCharge,
+        targetStateOfCharge,
+        departureTime,
         args: {
           visualTagID,
           connectorId
@@ -971,6 +974,7 @@ export default class CentralServerProvider {
   }
 
   public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResult> {
+    this.debugMethod('setUpPaymentMethod');
     const result = await this.axiosInstance.post<any>(
       this.buildRestEndpointUrl(RESTServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP, { userID: params.userID }),
       { userID: params.userID },
@@ -982,6 +986,7 @@ export default class CentralServerProvider {
   }
 
   public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResult> {
+    this.debugMethod('attachPaymentMethod');
     const result = await this.axiosInstance.post<any>(
       this.buildRestEndpointUrl(RESTServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH, { userID: params.userID, paymentMethodID: params.paymentMethodId }),
       { params },
@@ -993,6 +998,7 @@ export default class CentralServerProvider {
   }
 
   public async deletePaymentMethod(userID: string, paymentMethodID: string): Promise<BillingOperationResult> {
+    this.debugMethod('deletePaymentMethod');
     const res = await this.axiosInstance.delete(
       this.buildRestEndpointUrl(RESTServerRoute.REST_BILLING_PAYMENT_METHOD, { userID, paymentMethodID }),
       {
@@ -1022,6 +1028,7 @@ export default class CentralServerProvider {
   }
 
   public async getBillingSettings(): Promise<BillingSettings> {
+    this.debugMethod('getBillingSettings');
     // Execute the REST Service
     try {
       const result = await this.axiosInstance.get<BillingSettings>(
@@ -1038,6 +1045,7 @@ export default class CentralServerProvider {
 
   /* eslint-disable @typescript-eslint/indent */
   public async downloadInvoice(invoice: BillingInvoice): Promise<void> {
+    this.debugMethod('downloadInvoice');
     const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
     let config;
     if (Platform.OS === PLATFORM.IOS) {
@@ -1073,6 +1081,21 @@ export default class CentralServerProvider {
           }
         });
     }
+  }
+
+  public async getUserSessionContext(userID: string, chargingStationID: string, connectorID: number, carID: string, tagID: string): Promise<UserSessionContext> {
+    this.debugMethod('getUserSessionContext');
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(RESTServerRoute.REST_USER_SESSION_CONTEXT, {userID}),
+      {
+        headers: this.buildSecuredHeaders(),
+        params: {
+          ChargingStationID: chargingStationID,
+          ConnectorID: connectorID,
+          CarID: carID,
+          TagID: tagID
+        }
+      });
+    return result.data;
   }
 
   public getSecurityProvider(): SecurityProvider {

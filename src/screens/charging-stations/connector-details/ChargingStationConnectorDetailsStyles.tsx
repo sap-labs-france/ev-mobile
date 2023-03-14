@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { ScaledSheet } from 'react-native-size-matters';
+import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
@@ -25,7 +25,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     backgroundImage: {
       width: '100%',
-      height: '135@s',
+      height: '100@s',
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -45,7 +45,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '50@s',
       borderRadius: '25@s',
       borderStyle: 'solid',
-      borderWidth: '4@s',
+      borderWidth: '2@s',
       borderColor: commonColor.textColor,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
@@ -61,7 +61,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '50@s',
       borderRadius: '25@s',
       borderStyle: 'solid',
-      borderWidth: '4@s',
+      borderWidth: '2@s',
       borderColor: commonColor.danger,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
@@ -77,7 +77,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '90@s',
       borderRadius: '45@s',
       borderStyle: 'solid',
-      borderWidth: '4@s',
+      borderWidth: '2@s',
       borderColor: commonColor.textColor,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
@@ -122,19 +122,62 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     connectorInfoSettingsContainer: {
-      flex: 1
+      flex: 1,
+      width: '100%'
     },
     scrollViewContainer: {
-      width: '100%',
-      height: 'auto'
+      width: '100%'
     },
     chargingSettingsContainer: {
-      marginHorizontal: '2.5%',
-      justifyContent: 'center',
       alignItems: 'center',
+      marginHorizontal: '10@s',
       height: 'auto',
       paddingTop: '10@s',
       paddingBottom: '20@s'
+    },
+    settingLabel: {
+      fontSize: '13@s',
+      color: commonColor.textColor,
+      marginRight: '10@s',
+      maxWidth: '40%'
+    },
+    departureTimeContainer: {
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: '20@s'
+    },
+    departureTimeInput: {
+      backgroundColor: commonColor.listItemBackground,
+      borderRadius: '8@s',
+      padding: '11@s',
+      flexDirection: 'row',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    departureTimeText: {
+      fontSize: '13@s',
+      color: commonColor.textColor,
+      marginRight: '5@s'
+    },
+    currentSoCContainer: {
+      marginBottom: '13@s',
+    },
+    socInputsContainer: {
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: '20@s'
+    },
+    socContainer: {
+      width: '100%',
+      alignItems: 'center'
+    },
+    slider: {
+      width: '100%'
     },
     rowContainer: {
       flexDirection: 'row',
@@ -223,7 +266,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     messageText: {
       textAlign: 'left',
-      fontSize: '13@s'
+      fontSize: '13@s',
+      color: commonColor.textColor
     },
     errorMessage: {
       color: commonColor.dangerLight,
@@ -363,7 +407,79 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '10@s',
       backgroundColor: commonColor.containerBgColor,
       zIndex: 2
+    },
+    percentSign: {
+      paddingRight: scale(3),
+      color: commonColor.textColor,
+      fontSize: '14@s'
+    },
+    socInput: {
+      color: commonColor.textColor,
+      fontWeight: 'bold',
+      textAlign: 'right',
+      paddingHorizontal: scale(5),
+      fontSize: scale(14),
+      backgroundColor: commonColor.listItemBackground,
+      paddingVertical: 0
+    },
+    currentSocInputContainer: {
+      marginRight: '8@s'
+    },
+    socInputContainer: {
+      flex: 1,
+      paddingHorizontal: scale(10),
+      backgroundColor: commonColor.listItemBackground,
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      borderRadius: scale(8),
+      paddingVertical: '13@s'
+    },
+    socInputContainerError: {
+      borderColor: commonColor.danger,
+      borderWidth: 0.7
+    },
+    socInputText: {
+      fontSize: '11@s',
+      color: commonColor.textColor
+    },
+    socInputLabelText: {
+      fontStyle: 'italic',
+      color: commonColor.disabledDark,
+      flex: 1
+    },
+    sliderMarker: {
+      width: scale(28),
+      height: scale(28),
+      borderRadius: scale(28),
+      backgroundColor: commonColor.disabled,
+      elevation: 6,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 3,
+      },
+      shadowOpacity: 0.27,
+      shadowRadius: 4.65
+    },
+    sliderTrack: {
+      width: '100%',
+      height: scale(7),
+      borderRadius: scale(8)
+    },
+    sliderLeftTrack: {
+      backgroundColor: commonColor.primary
+    },
+    sliderMiddleTrack: {
+      backgroundColor: commonColor.primary,
+      borderStyle: 'dashed',
+      borderWidth: 0.6,
+      borderColor: commonColor.textColor
+    },
+    sliderRightTrack: {
+      backgroundColor: commonColor.disabledDark,
+      opacity: 0.2
     }
+
   });
   const portraitStyles = {};
   const landscapeStyles = {
