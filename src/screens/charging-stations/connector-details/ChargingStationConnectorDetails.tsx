@@ -82,9 +82,6 @@ const MAX_SESSION_DURATION_MILLISECS = 20 * 60 * 60 * 1000;
 // Min session
 const MIN_SESSION_DURATION_MILLISECS = 60000;
 
-const DEFAULT_DEPARTURE_SOC = 85;
-const DEFAULT_CURRENT_SOC = 20;
-
 export interface Props extends BaseProps {}
 
 export interface SettingsErrors {
@@ -110,6 +107,7 @@ export interface State {
   totalInactivitySecs?: number;
   inactivityFormatted?: string;
   startTransactionNbTrial?: number;
+  isPricingActive?: boolean;
   buttonDisabled?: boolean;
   refreshing?: boolean;
   showStartTransactionDialog: boolean;
@@ -156,6 +154,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       totalInactivitySecs: 0,
       inactivityFormatted: '-',
       startTransactionNbTrial: 0,
+      isPricingActive: false,
       refreshing: false,
       showStartTransactionDialog: undefined,
       showStopTransactionDialog: false,
@@ -393,6 +392,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         canStartTransaction: chargingStation ? this.canStartTransaction(chargingStation, connector) : false,
         canStopTransaction: chargingStation ? this.canStopTransaction(chargingStation, connector) : false,
         ...durationInfos,
+        isPricingActive: this.securityProvider?.isComponentPricingActive(),
         loading: false
       },() => callback?.()) ;
     });
@@ -817,6 +817,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       chargingStation,
       loading,
       siteImage,
+      isPricingActive,
       showStartTransactionDialog,
       showStopTransactionDialog,
       refreshing,
