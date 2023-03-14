@@ -333,7 +333,7 @@
     "selectChargeCard": "Sélectionnez la carte de recharge",
     "chargingSettings": "Paramètres de charge",
     "adviceMessage": "Assurez-vous que le câble est branché",
-    "sessionAlreadyInProgressError": "Une sessions est déjà en cours sur ce connecteur",
+    "sessionAlreadyInProgressError": "Une session est déjà en cours sur ce connecteur",
     "departureTime": "Heure de départ",
     "departureStateOfCharge": "Niveau de batterie souhaité",
     "currentStateOfCharge": "Niveau de batterie actuel",

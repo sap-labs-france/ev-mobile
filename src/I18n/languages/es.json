@@ -88,8 +88,8 @@
     "newEntry": "New entry",
     "userOrTenantUpdated": "Se cerró la sesión porque se actualizó su perfil o la configuración de su organización",
     "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain",
-    "from": "De",
-    "to": "A"
+    "from": "From",
+    "to": "To"
   },
   "sidebar": {
     "home": "Menú principal",

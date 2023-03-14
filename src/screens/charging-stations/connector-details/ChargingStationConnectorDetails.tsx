@@ -883,7 +883,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   {this.state.selectedCar && (
                     <>
                       {!sessionContextLoading && sessionContext?.smartChargingSessionParameters?.departureTime && this.renderDepartureTime()}
-                      {!sessionContextLoading && sessionContext?.smartChargingSessionParameters?.carStateOfCharge && this.renderSoCInputs()}
+                      {!sessionContextLoading && sessionContext?.smartChargingSessionParameters?.targetStateOfCharge && this.renderSoCInputs()}
                     </>
                   )}
 
