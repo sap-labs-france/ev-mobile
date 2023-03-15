@@ -169,9 +169,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       transactionPendingTimesUp: false,
       showChargingSettings: undefined,
       showTimePicker: false,
-      departureTime: null,//new Date(this.getMinimumDateMillisecs()),
-      departureSoC: 0,//DEFAULT_DEPARTURE_SOC,
-      currentSoC: 0,//DEFAULT_CURRENT_SOC,
+      departureTime: null,
+      departureSoC: null,
+      currentSoC: null,
       sessionContext: null
     };
   }
@@ -1136,7 +1136,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           disabled={disabled}
           openable={true}
           renderNoItem={this.renderNoCar.bind(this)}
-          clearable={true}
           renderItem={(car) => <CarComponent car={car} navigation={navigation} />}
           ref={this.carModalRef}
           defaultItems={[selectedCar]}
