@@ -246,7 +246,7 @@ export default class AddCar extends BaseScreen<Props, State> {
             disabledStyle={style.buttonDisabled}
             containerStyle={style.buttonContainer}
             buttonStyle={modalCommonStyles.primaryButton}
-            onPress={this.addCar.bind(this)}
+            onPress={() => void this.addCar()}
             loading={addCarPending}
             title={I18n.t('cars.addCarButton')}
           />
