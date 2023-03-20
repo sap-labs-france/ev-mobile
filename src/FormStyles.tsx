@@ -19,7 +19,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     buttonContainer: {
-      width: '90%'
+      width: '90%',
+      borderRadius: '18@s'
     },
     buttonDisabled: {
       backgroundColor: commonColor.disabledDark
@@ -28,7 +29,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'center',
       justifyContent: 'center',
       backgroundColor: commonColor.primary,
-      borderRadius: '18@s',
       padding: '7@s',
       width: '100%'
     },
