@@ -20,6 +20,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 export interface Props extends BaseProps, DialogCommonProps {
+  testID?: string;
   tenants: TenantConnection[];
   mode: TenantDialogMode;
   tenantIndex?: number;
@@ -122,9 +123,10 @@ export default class AddEditTenantDialog extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const modalCommonStyle = computeModalCommonStyle();
     const { newTenantSubDomain, newTenantName, newTenantEndpointCloud } = this.state;
-    const { back, mode, withCancel } = this.props;
+    const { back, mode, withCancel, testID } = this.props;
     return (
       <DialogModal
+        testID={testID}
         renderIcon={(iconStyle) =>
           mode === TenantDialogMode.ADD ? (
             <Icon style={iconStyle} size={scale(iconStyle.fontSize)} as={MaterialIcons} name={'add-business'} />

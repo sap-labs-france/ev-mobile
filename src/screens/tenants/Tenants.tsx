@@ -121,12 +121,13 @@ export default class Tenants extends BaseScreen<Props, State> {
         {tenantToBeEditedIndex !== null && this.renderEditTenantDialog(style)}
         <View style={style.container}>
           <SafeAreaView style={fabStyles.fabContainer}>
-            <TouchableOpacity delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={fabStyles.fab}>
+            <TouchableOpacity testID={'TenantsAddButton'} delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={fabStyles.fab}>
               <Icon size={scale(18)} as={MaterialCommunityIcons} name={'plus'} style={fabStyles.fabIcon} />
             </TouchableOpacity>
           </SafeAreaView>
           {showAddTenantManuallyDialog && (
             <AddEditTenantDialog
+              testID={'TenantsAddTenantDialog'}
               mode={TenantDialogMode.ADD}
               navigation={navigation}
               tenants={Utils.cloneObject(this.state.tenants)}

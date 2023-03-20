@@ -6,7 +6,7 @@ import I18n from 'i18n-js';
 import computeStyleSheet from './DialogModalStyle';
 import computeModalCommonStyles from '../modal/ModalCommonStyle';
 import { Animation } from 'react-native-animatable';
-import {Button, Input} from 'react-native-elements';
+import {Button} from 'react-native-elements';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { scale } from 'react-native-size-matters';
@@ -22,6 +22,7 @@ export interface DialogModalButton {
 }
 
 export interface Props {
+  testID?: string;
   renderControls?: () => React.ReactElement;
   renderIcon?: (style: any) => React.ReactElement;
   buttons?: DialogModalButton[];
@@ -71,7 +72,8 @@ export default class DialogModal extends React.Component<Props, State> {
       animationOut,
       onBackButtonPressed,
       cancelButtonText,
-      onBackDropPress
+      onBackDropPress,
+      testID
     } = this.props;
     const style = computeStyleSheet();
     const modalCommonStyles = computeModalCommonStyles();
@@ -92,7 +94,7 @@ export default class DialogModal extends React.Component<Props, State> {
         onBackButtonPress={() => (onBackButtonPressed ? onBackButtonPressed() : close?.())}
       >
         <RootSiblingParent>
-          <View style={style.modalContainer}>
+          <View testID={testID} style={style.modalContainer}>
             {withCloseButton && (
               <TouchableOpacity onPress={() => close?.()} style={style.closeButtonContainer}>
                 <Icon size={scale(35)} style={style.closeButton} name={'close'} as={EvilIcons} />
@@ -106,6 +108,7 @@ export default class DialogModal extends React.Component<Props, State> {
               <View style={[style.buttonsContainer, buttonsContainerStyle]}>
                 {buttons?.filter((b) => b).map((button: DialogModalButton, index) => (
                   <Button
+                    testID={`${testID}.customButton.${index}`}
                     key={index}
                     title={button.text?.toUpperCase()}
                     containerStyle={buttonContainerCommonStyle}
@@ -116,6 +119,7 @@ export default class DialogModal extends React.Component<Props, State> {
                 ))}
                 {withCancel && (
                   <Button
+                    testID={`${testID}.cancelButton`}
                     title={(cancelButtonText ?? I18n.t('general.cancel')).toUpperCase()}
                     containerStyle={buttonContainerCommonStyle}
                     buttonStyle={[modalCommonStyles.primaryButton, style.cancelButton, style.button]}

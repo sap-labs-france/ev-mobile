@@ -284,13 +284,16 @@ export default class Login extends BaseScreen<Props, State> {
           return (
             <SafeAreaView style={style.container}>
               {showNoTenantFoundDialog && this.renderNoTenantFoundDialog()}
-              <Text style={style.applicationTitle}>open e-mobility</Text>
-              <TouchableOpacity onPress={() => this.goToTenants()} style={style.tenantSelectionContainer}>
+              <TouchableOpacity
+                testID={'LoginTenantSelection'}
+                onPress={() => this.goToTenants()} style={style.tenantSelectionContainer}
+              >
                 <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
                 <Icon style={style.dropdownIcon} size={scale(25)} as={MaterialIcons} name={'arrow-drop-down'} />
               </TouchableOpacity>
               <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} bounces={false} persistentScrollbar={true} style={style.scrollView} contentContainerStyle={style.scrollViewContentContainer}>
                 <Input
+                  testID={'LoginEmailInput'}
                   leftIcon={<Icon size={scale(20)} name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
                   containerStyle={formStyle.inputContainer}
                   inputStyle={formStyle.inputText}
@@ -308,9 +311,11 @@ export default class Login extends BaseScreen<Props, State> {
                   onChangeText={(newEmail: string) => this.setState({email: newEmail})}
                 />
                 <Input
+                  testID={'LoginPasswordInput'}
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
                   rightIcon={<Icon
+                    testID={'LoginPasswordInputRightIcon'}
                     name={hidePassword ? 'eye' : 'eye-off'}
                     size={scale(20)}
                     as={Ionicons}
@@ -334,6 +339,7 @@ export default class Login extends BaseScreen<Props, State> {
                   onChangeText={(newPassword: string) => this.setState({password: newPassword})}
                 />
                 <CheckBox
+                  testID={'LoginEULACheckbox'}
                   containerStyle={formStyle.checkboxContainer}
                   textStyle={{backgroundColor: 'transparent'}}
                   checked={eula}
@@ -350,6 +356,7 @@ export default class Login extends BaseScreen<Props, State> {
                   checkedIcon={<Icon size={scale(25)} name="checkbox-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
                 />
                 <Button
+                  testID={'LoginButton'}
                   title={I18n.t('authentication.signIn')}
                   titleStyle={formStyle.buttonText}
                   disabled={!this.isFormValid()}
@@ -368,6 +375,7 @@ export default class Login extends BaseScreen<Props, State> {
                 </TouchableOpacity>
                 <View style={style.buttonSeparatorLine} />
                 <Button
+                  testID={'LoginSignUpButton'}
                   title={I18n.t('authentication.signUp')}
                   titleStyle={formStyle.buttonText}
                   disabled={!tenantSubDomain}
@@ -404,6 +412,7 @@ export default class Login extends BaseScreen<Props, State> {
     const modalCommonStyle = computeModalCommonStyle();
     return (
       <DialogModal
+        testID={'LoginNoTenantFoundDialog'}
         title={I18n.t('authentication.noTenantFoundTitle')}
         description={I18n.t('authentication.noTenantFoundMessage')}
         withCancel={true}
