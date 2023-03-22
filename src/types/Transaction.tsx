@@ -88,6 +88,9 @@ export default interface Transaction extends ListItem {
   uniqueId?: string;
   errorCode?: number;
   values?: Consumption[];
+  carStateOfCharge?: number;
+  targetStateOfCharge?: number;
+  departureTime?: string;
 }
 
 export enum StartTransactionErrorCode {

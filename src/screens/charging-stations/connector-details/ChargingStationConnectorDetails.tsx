@@ -841,7 +841,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         ) :
           <View style={style.container}>
             {/* Site Image */}
-            <ImageBackground source={siteImage ? { uri: siteImage } : noSite} style={style.backgroundImage as ImageStyle}>
+            <ImageBackground source={siteImage ? { uri: siteImage } : noSite} imageStyle={style.backgroundImage} style={style.backgroundImageContainer as ImageStyle}>
               <View style={style.imageInnerContainer}>
                 {/* Show Last Transaction */}
                 {this.renderShowLastTransactionButton(style)}
@@ -891,29 +891,54 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               </View>
             ) : (
               <ScrollView
-                contentContainerStyle={style.scrollViewContainer}
-                refreshControl={<RefreshControl  progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]}  refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-                <View style={style.rowContainer}>
-                  {this.renderConnectorStatus(style)}
-                  {this.renderUserInfo(style)}
-                </View>
-                <View style={style.rowContainer}>
-                  {this.renderInstantPower(style)}
-                  {this.renderTotalConsumption(style)}
-                </View>
-                <View style={style.rowContainer}>
-                  {this.renderElapsedTime(style)}
-                  {this.renderInactivity(style)}
-                </View>
-                <View style={style.rowContainer}>
-                  {this.renderBatteryLevel(style)}
-                  {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-                </View>
+                style={style.scrollViewContainer}
+                contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
+                refreshControl={<RefreshControl  progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]}  refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}
+              >
+                {this.renderConnectorStatus(style)}
+                {this.renderUserInfo(style)}
+                {this.renderInstantPower(style)}
+                {this.renderTotalConsumption(style)}
+                {this.renderElapsedTime(style)}
+                {this.renderInactivity(style)}
+                {this.renderBatteryLevel(style)}
+                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+                {this.renderSmartChargingParameters(style)}
               </ScrollView>
             )}
           </View>
         }
       </View>
+    );
+  }
+
+  private renderSmartChargingParameters(style: any) {
+    const { transaction } = this.state;
+    const departureTimeFormatted = I18nManager.formatDateTime(transaction?.departureTime, {dateStyle: 'short', timeStyle: 'short'});
+    return (
+      <>
+        {!!transaction?.carStateOfCharge && (
+          <View style={style.columnContainer}>
+            <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={style.icon} />
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.initialStateOfCharge')}</Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{transaction.carStateOfCharge}%</Text>
+          </View>
+        )}
+        {!!transaction?.targetStateOfCharge && (
+          <View style={style.columnContainer}>
+            <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={style.icon} />
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.targetStateOfCharge')}</Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{transaction.targetStateOfCharge}%</Text>
+          </View>
+        )}
+        {!!transaction?.departureTime && (
+          <View style={style.columnContainer}>
+            <Icon size={scale(25)} as={MaterialCommunityIcons} name="clock-end" style={style.icon} />
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.departureTime')}</Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{departureTimeFormatted}</Text>
+          </View>
+        )}
+      </>
     );
   }
 

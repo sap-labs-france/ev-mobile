@@ -213,7 +213,7 @@ export default class I18nManager {
     }
   }
 
-  public static formatDateTime(value: Date, options?: Intl.DateTimeFormatOptions ): string {
+  public static formatDateTime(value: Date | string, options?: Intl.DateTimeFormatOptions ): string {
     if (I18nManager.isValidDate(value)) {
       return Intl.DateTimeFormat(i18n.locale, options).format(new Date(value));
     }
@@ -231,7 +231,7 @@ export default class I18nManager {
     return formatter.format(durationSecs);
   }
 
-  private static isValidDate(date: Date): boolean {
+  private static isValidDate(date: Date | string): boolean {
     return !isNaN(new Date(date).getTime());
   }
 
