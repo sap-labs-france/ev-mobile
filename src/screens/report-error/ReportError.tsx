@@ -195,5 +195,10 @@ export default class ReportError extends BaseScreen<Props, State> {
     this.phoneInput?.clear();
     this.subjectInput?.clear();
     this.descriptionInput?.clear();
+    this.setState({
+      phoneNumber: null,
+      description: null,
+      title: null
+    });
   }
 }
