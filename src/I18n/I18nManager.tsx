@@ -231,7 +231,7 @@ export default class I18nManager {
     return formatter.format(durationSecs);
   }
 
-  private static isValidDate(date: Date | string): boolean {
+  public static isValidDate(date: Date | string): boolean {
     return !isNaN(new Date(date).getTime());
   }
 
