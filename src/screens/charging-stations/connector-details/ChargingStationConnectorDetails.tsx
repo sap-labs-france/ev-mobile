@@ -1300,7 +1300,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       inactiveBadgeError: !selectedTag?.active,
       noBadgeError: !selectedTag,
       billingError: !Utils.isEmptyArray(sessionContext?.errorCodes),
-      departureSoCError: !this.showCurrentSoCInput() ? departureSoC === 0 : departureSoC <= currentSoC
+      // null <= 0 return true
+      departureSoCError: !this.showCurrentSoCInput() ? departureSoC <= 0 : departureSoC <= currentSoC
     };
   }
 
