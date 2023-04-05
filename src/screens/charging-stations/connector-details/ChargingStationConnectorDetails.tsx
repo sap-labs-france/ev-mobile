@@ -385,7 +385,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         transaction,
         siteImage,
         ...(!transactionStillPending && {transactionPending: false, didPreparing: false}),
-        departureTime: new Date(Math.max(this.getMinimumDateMillisecs(), this.state.departureTime?.getTime())),
+        ...(!!this.state.departureTime && {departureTime: new Date(Math.max(this.getMinimumDateMillisecs(), this.state.departureTime?.getTime()))}),
         refreshing: false,
         isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
         isSiteAdmin: this.securityProvider?.isSiteAdmin(chargingStation?.siteArea?.siteID) ?? false,
@@ -431,7 +431,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public async startTransaction(): Promise<void> {
     await this.refresh();
-    const { chargingStation, connector, selectedTag, selectedCar, selectedUser, canStartTransaction, currentSoC, departureSoC } = this.state;
+    const { chargingStation, connector, selectedTag, selectedCar, selectedUser, canStartTransaction, currentSoC, departureSoC, departureTime } = this.state;
     try {
       if (this.isButtonDisabled() || !canStartTransaction) {
         Message.showError(I18n.t('general.notAuthorized'));
@@ -444,7 +444,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
       // Disable the button
       this.setState({ buttonDisabled: true });
-      const departureTime = new Date(Math.max(this.getMinimumDateMillisecs(), this.state.departureTime.getTime()));
+      const departureTimeAsString = !departureTime ? departureTime : new Date(Math.max(this.getMinimumDateMillisecs(), departureTime.getTime())).toISOString();
       // Start the Transaction
       const response = await this.centralServerProvider.startTransaction(
         chargingStation.id,
@@ -454,7 +454,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         selectedUser?.id as string,
         currentSoC,
         departureSoC,
-        departureTime?.toISOString()
+        departureTimeAsString as string
       );
       if (response?.status === OCPPGeneralResponse.ACCEPTED) {
         // Show success message
@@ -917,7 +917,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const departureTimeFormatted = I18nManager.formatDateTime(transaction?.departureTime, {dateStyle: 'short', timeStyle: 'short'});
     return (
       <>
-        {!!transaction?.carStateOfCharge && (
+        {!Utils.isNullOrUndefined(transaction?.carStateOfCharge) && (
           <View style={style.columnContainer}>
             <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={style.icon} />
             <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.initialStateOfCharge')}</Text>
@@ -1281,6 +1281,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       );
       selectedCar = userSessionContext?.car ? {...userSessionContext.car, user: selectedUser} : null;
       selectedTag = userSessionContext?.tag;
+      const defaultDepartureTime = userSessionContext?.smartChargingSessionParameters?.departureTime;
       this.setState({
         selectedCar,
         selectedTag,
@@ -1288,7 +1289,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         sessionContext: userSessionContext,
         currentSoC: userSessionContext?.smartChargingSessionParameters?.carStateOfCharge,
         departureSoC: userSessionContext?.smartChargingSessionParameters?.targetStateOfCharge,
-        departureTime: new Date(userSessionContext?.smartChargingSessionParameters?.departureTime ?? null)
+        departureTime: defaultDepartureTime && I18nManager.isValidDate(defaultDepartureTime) ? new Date(defaultDepartureTime) : null
       });
     });
   }
