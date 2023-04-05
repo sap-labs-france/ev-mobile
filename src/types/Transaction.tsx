@@ -108,7 +108,7 @@ export interface UserSessionContext {
 }
 
 export interface SmartChargingSessionParameters {
-  departureTime: number;
+  departureTime: string;
   carStateOfCharge: number;
   targetStateOfCharge: number;
 }
