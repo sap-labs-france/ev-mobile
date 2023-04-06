@@ -70,8 +70,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     scrollViewContainer: {
       flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
       paddingTop: '10@s'
     },
     rowContainer: {
@@ -83,7 +81,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      width: '50%'
+      width: '50%',
+      height: '100@s',
+      paddingHorizontal: '5@s'
     },
     connectorLetter: {
       marginTop: '5@s',

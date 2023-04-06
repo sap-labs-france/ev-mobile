@@ -23,17 +23,22 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    backgroundImage: {
-      width: '100%',
+    backgroundImageContainer: {
+      width: '95%',
       height: '100@s',
-      alignItems: 'center',
-      justifyContent: 'center'
+      alignSelf: 'center'
+    },
+    backgroundImage: {
+      borderRadius: scale(18),
+      width: '100%'
     },
     imageInnerContainer: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       alignItems: 'center',
-      width: '100%'
+      width: '100%',
+      height: '100%',
+      borderRadius: '18@s'
     },
     lastTransactionContainer: {
       width: '50@s',
@@ -195,7 +200,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      width: '50%'
+      width: '50%',
+      height: '100@s',
+      paddingHorizontal: '5@s'
     },
     connectorLetter: {
       marginTop: '5@s',
