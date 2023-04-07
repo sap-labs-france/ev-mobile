@@ -56,7 +56,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.backHandler?.remove();
   }
 
-  private setDrawerStatus(): void {
+  protected setDrawerStatus(): void {
     const drawer = this.props?.navigation?.getParent('drawer');
     drawer?.setOptions({
       swipeEnabled: this.canOpenDrawer

@@ -145,7 +145,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
     const { connector, navigation, chargingStation, onNavigate, listed } = this.props;
     return (
       <TouchableOpacity
-        style={[style.container, listed && style.borderedTopContainer]}
+        style={[style.container, listed && style.borderedBottomContainer]}
         disabled={chargingStation.inactive || !listed}
         onPress={() => {
           if (onNavigate) {
