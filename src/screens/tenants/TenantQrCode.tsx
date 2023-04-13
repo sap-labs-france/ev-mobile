@@ -96,7 +96,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
   public render() {
     const commonColor = Utils.getCurrentCommonColor();
     return (
-      <View>
+      <View style={{backgroundColor: commonColor.containerBgColor}}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanTenantQrCodeTitle')}

@@ -192,7 +192,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     const { activateQrCode } = this.state;
     const commonColor = Utils.getCurrentCommonColor();
     return (
-      <View>
+      <View style={{backgroundColor: commonColor.containerBgColor}}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanChargingStationQrCodeTitle')}
