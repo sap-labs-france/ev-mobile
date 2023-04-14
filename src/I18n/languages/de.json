@@ -273,7 +273,7 @@
     "addCarButton": "Fahrzeug hinzufügen",
     "evse_phase": "Phase",
     "evse_phases": "Phasen",
-    "invalidVIN": "Ungültige VIN",
+    "invalidVIN": "Must be 17 char. long including digits and capital letters",
     "invalidLicensePlate": "Ungültiges Kennzeichen",
     "licensePlate": "Kennzeichen",
     "converter": "Converter",
