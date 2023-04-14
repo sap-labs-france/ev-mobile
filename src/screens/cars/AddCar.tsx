@@ -1,31 +1,33 @@
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {Keyboard, Text, TextInput, View} from 'react-native';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './AddCarStyle';
+import computeFormStyleSheet from '../../FormStyles';
 import ModalSelect from '../../components/modal/ModalSelect';
-import Car, { CarCatalog, CarConverter, CarConverterType, CarType } from '../../types/Car';
-import { ItemSelectionMode } from '../../components/list/ItemsList';
-import { Icon, Switch } from 'native-base';
-import { Button, Input } from 'react-native-elements';
+import Car, {CarCatalog, CarConverter, CarConverterType, CarType} from '../../types/Car';
+import {ItemSelectionMode} from '../../components/list/ItemsList';
+import {Icon} from 'native-base';
+import {Button, CheckBox, Input, Switch} from 'react-native-elements';
 import Utils from '../../utils/Utils';
 import SelectDropdown from 'react-native-select-dropdown';
 import CarCatalogComponent from '../../components/car/CarCatalogComponent';
 import CarCatalogs from './CarCatalogs';
-import User, { UserStatus } from '../../types/User';
+import User, {UserStatus} from '../../types/User';
 import UserComponent from '../../components/user/UserComponent';
 import Users from '../users/list/Users';
-import computeModalCommonStyle from '../../components/modal/ModalCommonStyle';
 import Orientation from 'react-native-orientation-locker';
 import Message from '../../utils/Message';
-import { HTTPError } from '../../types/HTTPError';
+import {HTTPError} from '../../types/HTTPError';
 import I18n from 'i18n-js';
 import Constants from '../../utils/Constants';
-import { RestResponse } from '../../types/ActionResponse';
+import {RestResponse} from '../../types/ActionResponse';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { scale } from 'react-native-size-matters';
-import {RadioButton} from "react-native-paper";
+import {scale} from 'react-native-size-matters';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface State {
   selectedCarCatalog: CarCatalog;
@@ -45,6 +47,7 @@ export default class AddCar extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private user: User;
+  private licensePlateInput: TextInput;
 
   public constructor(props: Props) {
     super(props);
@@ -98,21 +101,23 @@ export default class AddCar extends BaseScreen<Props, State> {
       addCarPending
     } = this.state;
     const commonColors = Utils.getCurrentCommonColor();
-    const modalCommonStyles = computeModalCommonStyle();
     const style = computeStyleSheet();
+    const formStyle = computeFormStyleSheet();
     return (
-      <View style={style.container}>
+      <SafeAreaView edges={['bottom']} style={style.container}>
         <HeaderComponent
           title={I18n.t('cars.addCarTitle')}
           navigation={navigation}
           backArrow={true}
           containerStyle={style.headerContainer}
         />
-        <ScrollView keyboardShouldPersistTaps={'always'} style={style.scrollview} contentContainerStyle={style.content}>
+        <KeyboardAwareScrollView bounces={false} persistentScrollbar={true} contentContainerStyle={formStyle.scrollViewContentContainer} keyboardShouldPersistTaps={'handled'} style={formStyle.scrollView}>
           <Input
-            label={`${I18n.t('cars.model')}*`}
+            containerStyle={formStyle.inputContainer}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={[formStyle.inputTextContainer, selectedCarCatalog && {paddingLeft: 0}]}
             labelStyle={style.inputLabel}
-            inputContainerStyle={style.inputContainer}
+            renderErrorMessage={false}
             InputComponent={() => (
               <ModalSelect<CarCatalog>
                 openable={true}
@@ -127,10 +132,11 @@ export default class AddCar extends BaseScreen<Props, State> {
             )}
           />
           <Input
-            label={`${I18n.t('cars.converter')}*`}
+            containerStyle={formStyle.inputContainer}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={formStyle.inputTextContainer}
             labelStyle={[style.inputLabel, !selectedCarCatalog && style.disabledInputLabel]}
-            inputStyle={{color: commonColors.textColor, width: '100%'}}
-            inputContainerStyle={[style.inputContainer, !selectedCarCatalog && style.inputContainerDisabled]}
+            renderErrorMessage={false}
             InputComponent={() => (
               <SelectDropdown
                 disabled={!selectedCarCatalog}
@@ -151,36 +157,45 @@ export default class AddCar extends BaseScreen<Props, State> {
             )}
           />
           <Input
+            containerStyle={formStyle.inputContainer}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={[formStyle.inputTextContainer, !this.checkVIN() && formStyle.inputTextContainerError]}
             placeholder={Constants.VIN_FULL}
             placeholderTextColor={commonColors.disabledDark}
-            inputContainerStyle={style.inputContainer}
             labelStyle={style.inputLabel}
-            autoCapitalize={'none'}
+            autoCapitalize={'characters'}
             autoCorrect={false}
-            label={`${Constants.VIN}*`}
+            renderErrorMessage={!this.checkVIN()}
             errorMessage={!this.checkVIN() ? vin && I18n.t('cars.invalidVIN'): null}
-            errorStyle={style.errorText}
-            inputStyle={style.selectDropdownRowText}
+            errorStyle={formStyle.inputError}
+            returnKeyType={'next'}
+            onSubmitEditing={() => this.licensePlateInput?.focus()}
             onChangeText={(newVin: string) => this.setState({ vin: newVin })}
           />
           <Input
+            ref={(ref) => this.licensePlateInput = ref}
+            containerStyle={formStyle.inputContainer}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={[formStyle.inputTextContainer, !this.checkLicensePlate() && formStyle.inputTextContainerError]}
             placeholder={I18n.t('cars.licensePlate')}
             placeholderTextColor={commonColors.disabledDark}
-            inputContainerStyle={style.inputContainer}
-            label={`${I18n.t('cars.licensePlate')}*`}
             labelStyle={style.inputLabel}
-            autoCapitalize={'none'}
+            autoCapitalize={'characters'}
             autoCorrect={false}
-            errorStyle={style.errorText}
+            renderErrorMessage={!this.checkLicensePlate()}
             errorMessage={!this.checkLicensePlate() ? licensePlate && I18n.t('cars.invalidLicensePlate') : null}
-            inputStyle={style.selectDropdownRowText}
+            errorStyle={style.inputError}
+            returnKeyType={'done'}
+            onSubmitEditing={() => Keyboard.dismiss()}
             onChangeText={(newLicensePlate: string) => this.setState({ licensePlate: newLicensePlate })}
           />
           {this.securityProvider?.canListUsers() && (
             <Input
-              label={`${I18n.t('users.user')}*`}
+              containerStyle={formStyle.inputContainer}
+              inputStyle={formStyle.inputText}
+              inputContainerStyle={[formStyle.inputTextContainer, selectedUser && {paddingLeft: 0}]}
               labelStyle={style.inputLabel}
-              inputContainerStyle={style.inputContainer}
+              renderErrorMessage={false}
               InputComponent={() => (
                 <ModalSelect<User>
                   openable={true}
@@ -206,70 +221,66 @@ export default class AddCar extends BaseScreen<Props, State> {
             <Text style={style.text}>{I18n.t('cars.defaultCar')}</Text>
           </View>
           <View style={style.carTypeContainer}>
-            <TouchableOpacity onPress={() => this.setState({ type: CarType.COMPANY })} style={style.typeContainer}>
-              <RadioButton.Android
-                color={commonColors.textColor}
-                uncheckedColor={commonColors.textColor}
-                onPress={() => this.setState({ type: CarType.COMPANY })}
-                value={'Company'}
-                style={style.radioButton}
-                status={type === CarType.COMPANY ? 'checked' : 'unchecked'}
-              />
-              <Text style={style.text}>{I18n.t('carTypes.companyCar')}</Text>
-            </TouchableOpacity>
-            {this.securityProvider?.isAdmin() && (
-              <TouchableOpacity onPress={() => this.setState({ type: CarType.POOL_CAR })} style={style.typeContainer}>
-                <RadioButton.Android
-                  color={commonColors.textColor}
-                  uncheckedColor={commonColors.textColor}
-                  onPress={() => this.setState({ type: CarType.POOL_CAR })}
-                  value={'Pool'}
-                  status={type === CarType.POOL_CAR ? 'checked' : 'unchecked'}
-                />
-                <Text style={style.text}>{I18n.t('carTypes.poolCar')}</Text>
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity onPress={() => this.setState({ type: CarType.PRIVATE })} style={style.typeContainer}>
-              <RadioButton.Android
-                color={commonColors.textColor}
-                onPress={() => this.setState({ type: CarType.PRIVATE })}
-                uncheckedColor={commonColors.textColor}
-                value={'Private'}
-                status={type === CarType.PRIVATE ? 'checked' : 'unchecked'}
-              />
-              <Text style={style.text}>{I18n.t('carTypes.privateCar')}</Text>
-            </TouchableOpacity>
+            <CheckBox
+              containerStyle={formStyle.checkboxContainer}
+              textStyle={formStyle.checkboxText}
+              checked={type === CarType.COMPANY}
+              checkedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-marked" as={MaterialCommunityIcons}/>}
+              uncheckedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-blank" as={MaterialCommunityIcons} />}
+              onPress={() => this.setState({ type: CarType.COMPANY })}
+              title={I18n.t('carTypes.companyCar')}
+            />
+            <CheckBox
+              containerStyle={formStyle.checkboxContainer}
+              textStyle={formStyle.checkboxText}
+              checked={type === CarType.POOL_CAR}
+              checkedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-marked" as={MaterialCommunityIcons}/>}
+              uncheckedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-blank" as={MaterialCommunityIcons} />}
+              onPress={() => this.setState({ type: CarType.POOL_CAR })}
+              title={I18n.t('carTypes.poolCar')}
+            />
+            <CheckBox
+              containerStyle={formStyle.checkboxContainer}
+              textStyle={formStyle.checkboxText}
+              checked={type === CarType.PRIVATE}
+              checkedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-marked" as={MaterialCommunityIcons}/>}
+              uncheckedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-blank" as={MaterialCommunityIcons} />}
+              onPress={() => this.setState({ type: CarType.PRIVATE })}
+              title={I18n.t('carTypes.privateCar')}
+            />
           </View>
           <Button
-            disabled={!this.checkForm()}
-            titleStyle={style.buttonText}
-            disabledStyle={style.buttonDisabled}
-            containerStyle={style.buttonContainer}
-            buttonStyle={modalCommonStyles.primaryButton}
-            onPress={() => void this.addCar()}
-            loading={addCarPending}
             title={I18n.t('cars.addCarButton')}
+            titleStyle={formStyle.buttonTitle}
+            disabled={!this.checkForm()}
+            disabledStyle={formStyle.buttonDisabled}
+            disabledTitleStyle={formStyle.buttonTextDisabled}
+            containerStyle={formStyle.buttonContainer}
+            buttonStyle={formStyle.button}
+            loading={addCarPending}
+            loadingProps={{color: commonColors.light}}
+            onPress={() => void this.addCar()}
           />
-        </ScrollView>
-      </View>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 
   private checkVIN(): boolean {
     const { vin } = this.state;
     const vinPattern = new RegExp('^[A-Z\\d]{17}$');
-    return vin && vinPattern.test(vin);
+    return !vin || vinPattern.test(vin);
   }
 
   private checkLicensePlate(): boolean {
     const { licensePlate } = this.state;
     const licensePlatePattern = new RegExp('^[A-Z0-9- ]*$');
-    return licensePlate && licensePlatePattern.test(licensePlate);
+    return !licensePlate || licensePlatePattern.test(licensePlate);
   }
 
   private checkForm(): boolean {
-    const { selectedCarCatalog, selectedConverter, selectedUser, type } = this.state;
-    return this.checkVIN() && this.checkLicensePlate() && !!selectedCarCatalog && !!selectedConverter && !!selectedUser && !!type;
+    const { selectedCarCatalog, selectedConverter, selectedUser, type, vin, licensePlate } = this.state;
+    return this.checkVIN() && this.checkLicensePlate() && !!selectedCarCatalog && !!selectedConverter && !!selectedUser && !!type && !!vin && !!licensePlate;
   }
 
   private onCarCatalogSelected(selectedCarCatalog: CarCatalog) {
@@ -339,7 +350,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         data={[]}
         statusBarTranslucent={true}
         defaultValue={null}
-        renderCustomizedButtonChild={() => <CarCatalogComponent containerStyle={[style.itemComponentContainer]} carCatalog={carCatalog} navigation={null} />}
+        renderCustomizedButtonChild={() => <CarCatalogComponent  carCatalog={carCatalog} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
         renderDropdownIcon={() => <Icon style={style.dropdownIcon} size={scale(25)} as={MaterialIcons} name={'arrow-drop-down'} />}
@@ -353,7 +364,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         disabled={true}
         data={[]}
         defaultValue={null}
-        renderCustomizedButtonChild={() => <UserComponent containerStyle={[style.itemComponentContainer]} user={user} navigation={null} />}
+        renderCustomizedButtonChild={() => <UserComponent user={user} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
         renderDropdownIcon={() => <Icon size={scale(25)} as={MaterialIcons} style={style.dropdownIcon} name={'arrow-drop-down'} />}
@@ -379,7 +390,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         const response = await this.centralServerProvider.createCar(car, forced);
         if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
-          this.props.navigation.goBack();
+          this.props.navigation.navigate('Cars', {refresh: true});
           return;
         } else {
           Message.showError(I18n.t('cars.addError'));

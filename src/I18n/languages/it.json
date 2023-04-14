@@ -273,7 +273,7 @@
     "addCarButton": "Ajouter",
     "evse_phase": "Fase",
     "evse_phases": "Fasi",
-    "invalidVIN": "Invalid VIN",
+    "invalidVIN": "Must be 17 char. long including digits and capital letters",
     "invalidLicensePlate": "Invalid License Plate",
     "licensePlate": "Targa",
     "converter": "Converter",

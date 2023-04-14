@@ -273,7 +273,7 @@
     "addCarButton": "Add car",
     "evse_phase": "Fáze",
     "evse_phases": "Phases",
-    "invalidVIN": "Invalid VIN",
+    "invalidVIN": "Must be 17 char. long including digits and capital letters",
     "invalidLicensePlate": "Invalid License Plate",
     "licensePlate": "Registrační značka",
     "converter": "Měnič",

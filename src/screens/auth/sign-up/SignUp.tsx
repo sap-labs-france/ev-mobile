@@ -333,7 +333,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             onChangeText={(text) => this.setState({ repeatPassword: text })}
           />
           <CheckBox
-            containerStyle={formStyle.checkboxContainer}
+            containerStyle={[formStyle.checkboxContainer, style.checkboxContainer]}
             textStyle={{backgroundColor: 'transparent'}}
             checked={eula}
             onPress={() => this.setState({ eula: !eula })}

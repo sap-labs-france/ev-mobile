@@ -93,6 +93,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '13@s',
       color: commonColor.textColor,
       textDecorationLine: 'underline'
+    },
+    checkboxContainer: {
+      justifyContent: 'center',
+      marginBottom: '15@s'
     }
   });
   const portraitStyles = {};
