@@ -68,14 +68,14 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     await super.componentDidMount();
     const billingSettings: BillingSettings = await this.centralServerProvider.getBillingSettings();
     if (billingSettings) {
-      this.setState({ billingSettings }, this.refresh);
+      this.setState({ billingSettings }, () => void this.refresh());
     }
   }
 
-  public async componentDidFocus() {
-    super.componentDidFocus();
-    this.setState({ refreshing: true });
-    await this.refresh();
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
+    if (!!Utils.getParamFromNavigation(this.props.route, 'refresh', false, true)) {
+      this.setState({ refreshing: true }, () => void this.refresh());
+    }
   }
 
   public async getPaymentMethods(skip: number, limit: number): Promise<DataResult<BillingPaymentMethod>> {
