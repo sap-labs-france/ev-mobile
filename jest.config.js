@@ -2,6 +2,7 @@ module.exports = {
   preset: 'react-native',
   reporters: [ "default", "jest-junit" ],
   testResultsProcessor: "jest-junit",
+  setupFiles: ["./jest.setup.js"],
   globals: {
     'ts-jest': {
       // Tell ts-jest about our typescript config.
@@ -13,8 +14,6 @@ module.exports = {
   // .ts and .tsx files.  You *can* just use babel-jest for both, if
   // you already have babel set up to compile typescript files.
   transform: {
-    "^.+\\.jsx?$": "babel-jest",
-    "^.+\\.js?$": "babel-jest",
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.ts?$': 'ts-jest'
   },

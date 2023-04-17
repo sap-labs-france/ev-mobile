@@ -1,6 +1,7 @@
 import { CommonActions, NavigationContainerRef } from '@react-navigation/native';
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Linking } from 'react-native';
+import { EmitterSubscription, Linking } from 'react-native';
 import DeepLinking from 'react-native-deep-linking';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
@@ -11,11 +12,24 @@ import Utils from '../utils/Utils';
 
 export default class DeepLinkingManager {
   private static instance: DeepLinkingManager;
-  private navigator: NavigationContainerRef;
+  private navigator: NavigationContainerRef<ReactNavigation.RootParamList>;
   private centralServerProvider: CentralServerProvider;
+  private linkingSubscription: EmitterSubscription;
 
   // eslint-disable-next-line no-useless-constructor
   private constructor() {}
+
+  public static getAuthorizedURLs(): string[] {
+    return [
+      ...((__DEV__ && ['http://*.localhost:45000']) || []),
+      'https://*.e-mobility-group.org',
+      'https://*.e-mobility-group.com',
+      'https://*.e-mobility-group.eu',
+      'https://*.e-mobility-labs.com',
+      'https://*.e-mobility-labs.org',
+      'https://*.qa-e-mobility-group.com',
+    ];
+  }
 
   public static getInstance(): DeepLinkingManager {
     if (!DeepLinkingManager.instance) {
@@ -24,7 +38,7 @@ export default class DeepLinkingManager {
     return DeepLinkingManager.instance;
   }
 
-  public initialize(navigator: NavigationContainerRef, centralServerProvider: CentralServerProvider) {
+  public initialize(navigator: NavigationContainerRef<ReactNavigation.RootParamList>, centralServerProvider: CentralServerProvider) {
     // Keep
     this.navigator = navigator;
     this.centralServerProvider = centralServerProvider;
@@ -47,11 +61,11 @@ export default class DeepLinkingManager {
   }
 
   public startListening() {
-    Linking.addEventListener('url', this.handleUrl);
+    this.linkingSubscription = Linking.addEventListener('url', this.handleUrl);
   }
 
   public stopListening() {
-    Linking.removeEventListener('url', this.handleUrl);
+    this.linkingSubscription?.remove();
   }
 
   public handleUrl = ({ url }: { url: string }) => {
@@ -81,12 +95,10 @@ export default class DeepLinkingManager {
       // Disable
       this.centralServerProvider.setAutoLoginDisabled(true);
       // Navigate
-      this.navigator.dispatch(
-        CommonActions.navigate({
-          name: 'ResetPassword',
-          key: `${Utils.randomNumber()}`,
-          params: { tenantSubDomain: response.tenant, hash: response.hash }
-        })
+      this.navigator.navigate('ResetPassword', {
+        key: `${Utils.randomNumber()}`,
+        params: { tenantSubDomain: response.tenant, hash: response.hash }
+      }
       );
     });
   };
@@ -155,7 +167,7 @@ export default class DeepLinkingManager {
                 Message.showError(I18n.t('authentication.activationTokenNotValid'));
                 break;
               // Email does not exist
-              case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+              case StatusCodes.NOT_FOUND:
                 Message.showError(I18n.t('authentication.activationEmailNotValid'));
                 break;
               // Other common Error

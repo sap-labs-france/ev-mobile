@@ -1,9 +1,8 @@
 import { StackActions } from '@react-navigation/native';
 import base64 from 'base-64';
 import I18n from 'i18n-js';
-import { Container } from 'native-base';
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
@@ -77,10 +76,11 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       name: chargingStationQRCode.tenantName,
       endpoint: newTenantEndpointCloud.endpoint
     };
+    const tenants = await this.centralServerProvider?.getTenants();
     // Add to existing list
-    this.props.tenants.push(newTenant);
+    tenants.push(newTenant);
     // Save
-    await SecuredStorage.saveTenants(this.props.tenants);
+    await SecuredStorage.saveTenants(tenants);
     // Navigate to login
     await this.logoffAndNavigateToLogin(newTenant);
   }
@@ -93,7 +93,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       const chargingStationQrCode = JSON.parse(decodedQrCodeData) as ChargingStationQRCode;
       // Check mandatory props
       if (
-        !chargingStationQrCode.tenantSubDomain ||
+        !chargingStationQrCode. tenantSubDomain ||
         !chargingStationQrCode.tenantName ||
         !chargingStationQrCode.endpoint ||
         !chargingStationQrCode.chargingStationID ||
@@ -117,8 +117,6 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         // User in wrong tenant!
         // Check if the tenant already exists
         if (tenant) {
-          console.log(tenant);
-          console.log(chargingStationQrCode?.tenantSubDomain);
           // Tenant exists: Propose the user to switch to the existing one and log off
           this.setState(
             {
@@ -174,8 +172,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         return;
       }
       // Ok: Navigate to connector
-      this.props.navigation.navigate('ChargingStationsNavigator', {
-        screen: 'ChargingStationConnectorDetailsTabs',
+      this.props.navigation.navigate('ChargingStationConnectorDetailsTabs', {
         key: `${Utils.randomNumber()}`,
         params: {
           params: {
@@ -195,7 +192,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     const { activateQrCode } = this.state;
     const commonColor = Utils.getCurrentCommonColor();
     return (
-      <Container>
+      <View style={{backgroundColor: commonColor.containerBgColor}}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanChargingStationQrCodeTitle')}
@@ -206,12 +203,13 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
             cameraProps={{ captureAudio: false }}
             markerStyle={{borderColor: commonColor.primaryLight}}
             showMarker
+            containerStyle={{height: '100%', alignItems: 'center', justifyContent: 'center'}}
             reactivate
             reactivateTimeout={1000}
             onRead={async (qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}
           />
         )}
-      </Container>
+      </View>
     );
   }
 

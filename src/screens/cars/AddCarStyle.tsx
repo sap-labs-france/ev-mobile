@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { ScaledSheet } from 'react-native-size-matters';
+import { moderateScale, ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 import { PLATFORM } from '../../theme/variables/commonColor';
@@ -12,6 +12,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       height: '100%',
       backgroundColor: commonColor.containerBgColor
+    },
+    headerContainer: {
+      marginBottom: '10@s'
     },
     content: {
       width: '100%',
@@ -36,14 +39,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       marginHorizontal: '10@s'
     },
-    selectField: {
-      width: '100%',
-      height: 'auto',
-      minHeight: '40@s',
-      marginHorizontal: 0,
-      paddingHorizontal: 0,
-      backgroundColor: commonColor.containerBgColor
-    },
     inputContainer: {
       borderBottomColor: commonColor.textColor,
       borderBottomWidth: 0.7,
@@ -53,6 +48,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     inputContainerDisabled: {
       borderBottomWidth: 1,
       borderBottomColor: commonColor.disabledDark
+    },
+    selectField: {
+      width: '100%',
+      height: 'auto',
+      minHeight: '40@s',
+      marginHorizontal: 0,
+      paddingHorizontal: 0,
+      backgroundColor: commonColor.containerBgColor,
     },
     selectFieldDisabled: {
       opacity: 0.4
@@ -144,7 +147,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     switch: {
       marginRight: '15@s',
       color: 'red',
-      transform: Platform.OS === PLATFORM.IOS ? [{ scaleX: 0.8 }, { scaleY: 0.8 }] : []
+      transform: Platform.OS === PLATFORM.IOS ? [] : [{ scaleX:  moderateScale(1, 3.5) }, { scaleY: moderateScale(1, 3.5) }]
+    },
+    itemComponentContainer: {
+      marginBottom: '5@s'
+    },
+    dropdownIcon: {
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

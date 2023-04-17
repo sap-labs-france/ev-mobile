@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Card, CardItem, Icon, Text, View } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, ViewStyle, Text, View } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import SiteArea from '../../types/SiteArea';
@@ -9,10 +9,16 @@ import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import ConnectorStatusesContainerComponent from '../connector-status/ConnectorStatusesContainerComponent';
 import computeStyleSheet from './SiteAreaComponentStyles';
+import computeListItemCommonStyle from '../list/ListItemCommonStyle';
+import I18nManager from '../../I18n/I18nManager';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
   siteArea: SiteArea;
   onNavigate?: () => void;
+  containerStyle?: ViewStyle[];
 }
 
 interface State {}
@@ -35,64 +41,57 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { siteArea, navigation, onNavigate } = this.props;
+    const { siteArea, navigation, onNavigate, containerStyle } = this.props;
     const validGPSCoordinates = Utils.containsAddressGPSCoordinates(siteArea.address);
+    const listItemCommonStyle = computeListItemCommonStyle();
     return (
-      <Card style={style.container}>
-        <CardItem style={[style.siteAreaContent]}>
-          <View style={[Utils.getOrganizationConnectorStatusesStyle(siteArea.connectorStats, style), style.statusIndicator]} />
-          <TouchableOpacity
-            style={style.siteAreaContainer}
-            onPress={() => {
-              if (onNavigate) {
-                onNavigate();
-              }
-              if (siteArea.connectorStats.totalConnectors > 0) {
-                navigation.navigate('ChargingStations', {
-                  params: {
-                    siteArea
-                  },
-                  key: `${Utils.randomNumber()}`
-                });
-              } else {
-                Message.showError(I18n.t('siteAreas.noChargers'));
-              }
-            }}>
-            <View style={style.leftContainer}>
-              <View style={style.titleContainer}>
-                <TouchableOpacity
-                  disabled={!validGPSCoordinates}
-                  onPress={() => Utils.jumpToMapWithAddress(siteArea.name, siteArea.address)}>
-                  {validGPSCoordinates ? (
-                    <Icon style={[style.icon, style.iconLeft]} type="MaterialIcons" name="place" />
-                  ) : (
-                    <Icon style={[style.icon, style.iconLeft]} type="MaterialCommunityIcons" name="map-marker-off" />
-                  )}
-                </TouchableOpacity>
-                <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>
-                  {siteArea.name}
-                </Text>
-              </View>
-              <View style={style.subTitleContainer}>
-                <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>
-                  {Utils.formatAddress(siteArea.address)} {Utils.formatAddress2(siteArea.address)}
-                </Text>
-                {siteArea.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(siteArea.distanceMeters)}</Text>}
-              </View>
-              <View style={style.connectorContent}>
-                <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />
-              </View>
+      <View style={[style.siteAreaContainer, listItemCommonStyle.container, ...(containerStyle || [])]}>
+        <View style={[Utils.getOrganizationConnectorStatusesStyle(siteArea.connectorStats, style), style.statusIndicator]} />
+        <TouchableOpacity
+          style={style.siteAreaContent}
+          onPress={() => {
+            if (onNavigate) {
+              onNavigate();
+            }
+            if (siteArea.connectorStats?.totalConnectors > 0) {
+              navigation.navigate('ChargingStations', {
+                params: {
+                  siteArea
+                },
+                key: `${Utils.randomNumber()}`
+              });
+            } else {
+              Message.showError(I18n.t('siteAreas.noChargers'));
+            }
+          }}>
+          <View style={style.titleContainer}>
+            <View style={style.leftHeader}>
+              <TouchableOpacity
+                disabled={!validGPSCoordinates}
+                onPress={() => Utils.jumpToMapWithAddress(siteArea.name, siteArea.address)}>
+                {validGPSCoordinates ? (
+                  <Icon size={scale(30)} style={style.icon} as={MaterialIcons} name="place" />
+                ) : (
+                  <Icon size={scale(30)} style={style.icon} as={MaterialCommunityIcons} name="map-marker-off" />
+                )}
+              </TouchableOpacity>
+              <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>
+                {siteArea.name}
+              </Text>
             </View>
-            <View style={style.rightContainer}>
-              <Icon
-                style={siteArea.connectorStats.totalConnectors > 0 ? [style.icon, style.arrowIcon] : style.iconHidden}
-                type="MaterialIcons"
-                name="navigate-next"
-              />
-            </View>
-          </TouchableOpacity>
-        </CardItem>
-      </Card>
+            <Icon size={scale(18)} style={style.arrowIcon} as={MaterialCommunityIcons} name="arrow-right-circle-outline" />
+          </View>
+          <View style={style.subTitleContainer}>
+            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>
+              {Utils.formatAddress(siteArea.address)} {Utils.formatAddress2(siteArea.address)}
+            </Text>
+            {siteArea.distanceMeters > 0 && <Text style={style.distance}>{I18nManager.formatDistance(siteArea.distanceMeters)}</Text>}
+          </View>
+          <View style={style.connectorContent}>
+            <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   }
 }

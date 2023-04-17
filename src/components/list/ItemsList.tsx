@@ -80,32 +80,38 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
     const style = computeStyleSheet();
     const listItemCommonStyles = computeListItemCommonStyle();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
-      <FlatList
-        data={data}
-        onStartShouldSetResponder={() => true}
-        renderItem={({ item }) => {
-          const isItemDisabled = !!disableItem?.(item);
-          return (
-            <View>
-              <TouchableOpacity
-                style={[style.container, isItemDisabled && selectionEnabled && listItemCommonStyles.disabled]}
-                disabled={!selectionEnabled}
-                onPress={selectionEnabled && !isItemDisabled ? () => this.onSelectItem(item) : () => {}}>
-                {this.props.renderItem(item, selectedItems.has(item.id))}
-              </TouchableOpacity>
-              {this.renderItemsSeparator(itemsSeparator, style)}
-            </View>
-          );
-        }}
-        keyExtractor={(item, index) => Utils.concatenateStrings(item?.id?.toString(), index?.toString())}
-        removeClippedSubviews={true}
-        onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-        refreshControl={<RefreshControl onRefresh={manualRefresh} refreshing={refreshing} />}
-        ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-        onEndReached={onEndReached}
-        ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={emptyTitle} />}
-      />
+      <View style={style.container}>
+        <FlatList
+          data={data}
+          style={style.flatList}
+          keyboardShouldPersistTaps={'always'}
+          onStartShouldSetResponder={() => true}
+          renderItem={({ item }) => {
+            const isItemDisabled = !!disableItem?.(item);
+            return (
+              <View style={style.rowContainer}>
+                <TouchableOpacity
+                  style={[style.rowItem, isItemDisabled && selectionEnabled && listItemCommonStyles.disabled]}
+                  disabled={!selectionEnabled}
+                  onPress={selectionEnabled && !isItemDisabled ? () => this.onSelectItem(item) : () => {}}>
+                  {this.props.renderItem(item, selectedItems.has(item.id))}
+                </TouchableOpacity>
+                {this.renderItemsSeparator(itemsSeparator, style)}
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) => Utils.concatenateStrings(item?.id?.toString(), index?.toString())}
+          removeClippedSubviews={true}
+          onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+          refreshControl={<RefreshControl progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]} onRefresh={manualRefresh} refreshing={refreshing} />}
+          ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+          onEndReached={onEndReached}
+          ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={emptyTitle} />}
+        />
+      </View>
+
     );
   }
 
@@ -137,7 +143,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       case ItemsSeparatorType.DEFAULT:
         return <View style={style.rowSeparator} />;
       default:
-        return null;
+        return <></>;
     }
   }
 }

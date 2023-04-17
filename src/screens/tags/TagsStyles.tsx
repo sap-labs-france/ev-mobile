@@ -10,7 +10,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
+      alignItems: 'center',
       backgroundColor: commonColor.containerBgColor
+    },
+    headerContainer: {
+      marginBottom: '10@s'
     },
     searchBar: {
       marginVertical: '10@s'
@@ -21,7 +25,37 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     content: {
       flex: 1,
-      marginHorizontal: '2.5%'
+      width: '100%'
+    },
+    filtersContainer: {
+      flexDirection: 'row',
+      zIndex: 1,
+      marginBottom: '10@s',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '95%'
+    },
+    filterButton: {
+      borderRadius: '8@s',
+      width: '50@s',
+      height: '50@s',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginLeft: '10@s',
+      backgroundColor: commonColor.listHeaderBgColor,
+    },
+    filterButtonIcon: {
+      color: commonColor.textColor
+    },
+    searchBarComponent: {
+      backgroundColor: commonColor.listHeaderBgColor,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    tagComponentContainer: {
+      marginBottom: '11@s',
+      width: '95%'
     }
   });
   const portraitStyles = {};

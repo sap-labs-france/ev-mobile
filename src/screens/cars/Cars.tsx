@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -18,6 +18,9 @@ import computeTransactionStyles from '../transactions/TransactionsStyles'
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import Orientation from 'react-native-orientation-locker';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
+import CarsFilters, { CarsFiltersDef } from './CarsFilters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];
@@ -25,6 +28,7 @@ interface State extends SelectableState<Car> {
   limit?: number;
   refreshing?: boolean;
   loading?: boolean;
+  filters?: CarsFiltersDef;
 }
 
 export interface Props extends SelectableProps<Car> {
@@ -60,11 +64,6 @@ export default class Cars extends SelectableList<Car> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-  }
-
   public componentWillUnmount() {
     super.componentWillUnmount();
     Orientation.unlockAllOrientations();
@@ -73,16 +72,17 @@ export default class Cars extends SelectableList<Car> {
   public async componentDidFocus() {
     super.componentDidFocus();
     Orientation.lockToPortrait();
-    this.setState({ refreshing: true });
-    await this.refresh();
+    await this.refresh(true);
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
+    const { isModal } = this.props;
     try {
+      const userID = isModal ? this.props.userIDs?.join('|') : this.state.filters?.users?.map(user => user.id).join('|');
       const params = {
         Search: searchText,
         WithUser: true,
-        UserID: this.props.userIDs?.join('|')
+        UserID: userID
       };
       const cars = await this.centralServerProvider.getCars(params, { skip, limit }, ['-createdOn']);
       // Get total number of records
@@ -121,26 +121,29 @@ export default class Cars extends SelectableList<Car> {
     }
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner:boolean = false): Promise<void> {
     if (this.isMounted()) {
-      const { skip, limit } = this.state;
-      // Refresh All
-      const cars = await this.getCars(this.searchText, 0, skip + limit);
-      const carsResult = cars ? cars.result : [];
-      // Set
-      this.setState({
-        loading: false,
-        cars: carsResult,
-        count: cars ? cars.count : 0,
-        refreshing: false
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.cars) ? {loading: true} : {refreshing: true})  : this.state;
+      this.setState(newState, async () => {
+        const { skip, limit } = this.state;
+        const { isModal, onContentUpdated } = this.props;
+        // Refresh All
+        const cars = await this.getCars(this.searchText, 0, skip + limit);
+        const carsResult = cars ? cars.result : [];
+        // Set
+        this.setState({
+          loading: false,
+          cars: carsResult,
+          count: cars ? cars.count : 0,
+          refreshing: false
+        }, isModal ? () => onContentUpdated() : () => null);
       });
     }
   }
 
-  public search = async (searchText: string): Promise<void> => {
-    this.setState({ refreshing: true });
+  public async search(searchText: string): Promise<void> {
     this.searchText = searchText;
-    await this.refresh();
+    this.refresh(true);
   };
 
   public render() {
@@ -150,26 +153,27 @@ export default class Cars extends SelectableList<Car> {
     const { navigation, selectionMode, isModal } = this.props;
     const fabStyles = computeFabStyles();
     return (
-      <Container style={transactionStyles.container}>
+      <View style={style.container}>
         {!isModal && (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={[fabStyles.fab, fabStyles.placedFab]}>
-            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={'plus'} />
-          </TouchableOpacity>
+          <SafeAreaView style={fabStyles.fabContainer}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={fabStyles.fab}>
+              <Icon style={fabStyles.fabIcon} size={scale((18))} as={MaterialCommunityIcons} name={'plus'} />
+            </TouchableOpacity>
+          </SafeAreaView>
         )}
-        <HeaderComponent
-          title={this.buildHeaderTitle()}
-          subTitle={this.buildHeaderSubtitle()}
-          modalized={isModal}
-          backArrow={!isModal}
-          navigation={this.props.navigation}
-        />
-        <View style={transactionStyles.searchBar}>
-          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
-        </View>
-        {loading ? (
-          <Spinner style={transactionStyles.spinner} color="grey" />
-        ) : (
+        {!isModal && (
+          <HeaderComponent
+            title={this.buildHeaderTitle()}
+            subTitle={this.buildHeaderSubtitle()}
+            modalized={isModal}
+            sideBar={!isModal && this.canOpenDrawer}
+            navigation={this.props.navigation}
+            containerStyle={style.headerContainer}
+          />
+        )}
+        {this.renderFilters()}
+        {loading ? <Spinner size={scale(30)} style={transactionStyles.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<Car>
               data={cars}
@@ -182,19 +186,46 @@ export default class Cars extends SelectableList<Car> {
               selectionMode={selectionMode}
               renderItem={(item: Car, selected: boolean) => (
                 <CarComponent
+                  containerStyle={[style.carComponentContainer]}
                   navigation={navigation}
                   selected={selected}
                   car={item}
                 />
               )}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={this.manualRefresh.bind(this)}
               onEndReached={this.onEndScroll}
               emptyTitle={I18n.t('cars.noCars')}
             />
           </View>
         )}
-      </Container>
+      </View>
+    );
+  }
+
+  private onFilterChanged(newFilters: CarsFiltersDef) : void {
+    this.setState({filters: newFilters}, () => this.refresh(true));
+  }
+
+  private renderFilters() {
+    const style = computeStyleSheet();
+    const { isModal } = this.props;
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    return (
+      <View style={style.filtersContainer}>
+        {!isModal && (
+          <CarsFilters
+            onFilterChanged={(newFilters: CarsFiltersDef) => this.onFilterChanged(newFilters)}
+            ref={(chargingStationsFilters: CarsFilters) => this.setScreenFilters(chargingStationsFilters)}
+          />
+        )}
+        <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        {!isModal && this.screenFilters?.canFilter() && (
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
+            <Icon size={scale(25)} style={style.filterButtonIcon} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          </TouchableOpacity>
+        )}
+      </View>
     );
   }
 }

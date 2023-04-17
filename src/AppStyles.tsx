@@ -16,6 +16,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     barStyle: {
       color: commonColor.textColor
+    },
+    bottomTabsIcon: {
+      fontSize: '10@s'
     }
   });
   const portraitStyles = {};

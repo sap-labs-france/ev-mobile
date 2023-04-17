@@ -9,12 +9,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      width: '100%',
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: '8@s',
-      marginBottom: '11@s',
       borderWidth: 0,
       backgroundColor: commonColor.listItemBackground
     },
@@ -30,6 +28,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     outlinedError: {
       borderColor: commonColor.dangerLight,
       borderWidth: 1
+    },
+    outlinedSelected: {
+      borderWidth: 0.8,
+      borderColor: commonColor.textColor
     }
   });
   const portraitStyles = {};

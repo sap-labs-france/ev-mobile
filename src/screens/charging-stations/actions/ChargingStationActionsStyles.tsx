@@ -12,6 +12,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
+    headerContainer: {
+      marginBottom: '10@s'
+    },
     scrollViewContainer: {
       flex: 1,
       flexDirection: 'column',
@@ -19,7 +22,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     viewContainer: {
       flex: 1,
-      marginTop: '5@s',
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'center'
@@ -38,10 +40,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     actionButtonIcon: {
-      fontSize: '20@s'
+      color: commonColor.light
     },
     actionButtonText: {
-      fontSize: '18@s'
+      fontSize: '18@s',
+      color: commonColor.light
     },
     resetButton: {
       backgroundColor: commonColor.danger

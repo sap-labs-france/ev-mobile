@@ -23,6 +23,7 @@
     "clear": "Limpar",
     "close": "Fechar",
     "apply": "Aplicar",
+    "confirm": "Confirm",
     "cancel": "Cancelar",
     "send": "Snviar",
     "version": "Versão",
@@ -37,6 +38,8 @@
     "restoreTenantsConfirm": "Voce quer mesmo restaurar a lista inicial de organização?",
     "restoreTenantsSuccess": "Organization list has been restored",
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "createEndpointSuccess": "Endpoint '{{endpointName}}' created successfully",
+    "deleteEndpointSuccess": "Endpoint '{{endpointName}}' deleted successfully",
     "editTenantSuccess": "Organization updated successfully",
     "registerToNewTenantTitle": "Sign up",
     "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
@@ -58,6 +61,8 @@
     "tenantMissing": "The organization is missing",
     "tenantExists": "A Organização '{{tenantName}}' já existe",
     "subdomainAlreadyUsed": "This subdomain is already used in the organization '{{tenantName}}'",
+    "endpointNameAlreadyExist": "Endpoint name already used",
+    "endpointURLAlreadyExist": "Endpoint URL already used in endpoint '{{endpointName}}'",
     "createdOn": "Creado em",
     "createdBy": "Creado por",
     "lastChangedOn": "Ultima mudnaça efetuada em",
@@ -79,7 +84,12 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "newEntry": "New entry",
+    "userOrTenantUpdated": "Você foi descontactado porque o seu perfil ou as configurações da sua organização foram atualizadas",
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain",
+    "from": "De",
+    "to": "A"
   },
   "sidebar": {
     "home": "Home",
@@ -93,8 +103,9 @@
     "badges": "Badges",
     "cars": "Cars",
     "invoices": "Invoices",
-    "paymentMethods": "Payment Methods",
-    "qrCodeScanner": "QR-Code Scanner"
+    "paymentMethods": "Payment methods",
+    "qrCodeScanner": "QR-Code Scanner",
+    "settings": "Configurações"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -103,6 +114,8 @@
     "mandatoryTenantSubDomain": "O subdominio da organização é obrigatório",
     "mandatoryTenantName": "O nome da organização é obrigatório",
     "mandatoryTenant": "A organização é obrigatório",
+    "mandatoryEndpointName": "Endpoint Name is mandatory",
+    "mandatoryEndpointURL": "Endpoint URL is mandatory",
     "unknownTenant": "Organização Desconhecida!",
     "mandatoryName": "O nome é obrigatório",
     "mandatoryFirstName": "O primeiro nome é obrigatório",
@@ -166,13 +179,20 @@
     "tenantName": "Nome",
     "tenantNamePlaceholder": "Organization name",
     "tenantEndpoint": "Cloud Endpoint",
+    "addEndpoint": "Add endpoint",
+    "endpointName": "Endpoint Name",
+    "endpointURL": "Endpoint URL",
+    "noEndpoint": "No endpoint",
     "phone": "Telefone",
     "mandatoryPhone": "O número de telefone é obrigatório",
     "mandatoryErrorTitle": "O título é obrigatório",
     "mandatoryErrorSubject": "O assunto é obrigatório",
     "mandatoryErrorDescription": "A descrição é obrigatória",
     "reportErrorSuccess": "O erro foi relatado com sucesso",
-    "reportErrorFailed": "Não é possível comunicar o erro"
+    "reportErrorFailed": "Não é possível comunicar o erro",
+    "createEndpoint": "Créer endpoint",
+    "wrongOrganization": "Wrong organization",
+    "createAccount": "Create Account"
   },
   "qrCode": {
     "qrCode": "QR Code",
@@ -191,7 +211,8 @@
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
     "scanTenantQrCodeTitle": "Scan Organization",
     "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has saved",
-    "scanChargingStationQrCodeTitle": "Scan Charging Station"
+    "scanChargingStationQrCodeTitle": "Scan Charging Station",
+    "saveOrganizationError": "Error while saving the organization"
   },
   "users": {
     "userUnexpectedError": "Não posso ler os utilizadores",
@@ -199,7 +220,8 @@
     "users": "Users",
     "user": "User",
     "selectUser": "Select User",
-    "selectUsers": "Select Users"
+    "selectUsers": "Select Users",
+    "selectOneOrSeveralUsers": "Select one or several user(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
@@ -309,9 +331,14 @@
     "selectUser": "Select User",
     "selectEV": "Select EV",
     "selectChargeCard": "Select Charge Card",
-    "chargingSettings": "Charging Settings",
+    "chargingSettings": "Charging settings",
     "adviceMessage": "Ensure that the cable is connected",
-    "sessionAlreadyInProgressError": "A session is already in progress on this connector"
+    "sessionAlreadyInProgressError": "A session is already in progress on this connector",
+    "departureTime": "Departure time",
+    "targetStateOfCharge": "Target state of charge",
+    "currentStateOfCharge": "Current state of charge",
+    "initialStateOfCharge": "Initial state of charge",
+    "stateOfCharge": "State of charge"
   },
   "home": {
     "browseSites": "Sites",
@@ -462,6 +489,7 @@
     "gridLimitChartLabel": "Grid Limit (kW)",
     "cumulatedConsumptionLabel": "Energy Delivered (kW.h)",
     "connectorMax": "Maximo poder de conexão (kW)",
+    "priceLabel": "Price",
     "noData": "Sem dados",
     "noSessionInProgress": "Nenhuma sessão em progresso",
     "noConsumptionData": "No consumption data",
@@ -512,8 +540,23 @@
     }
   },
   "appUpdate": {
-    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogTitle": "Update available",
     "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
     "noUpdateAvailable": "You have the latest version"
+  },
+  "filters": {
+    "myUser": "My user",
+    "clearUser": "Clear user",
+    "chargingStationsRoamingFilterLabel": "Show roaming charging stations",
+    "sitesRoamingFilterLabel": "Show roaming sites",
+    "siteAreasRoamingFilterLabel": "Show roaming site areas",
+    "transactionsRoamingFilterLabel": "Show roaming sessions",
+    "usersRoamingFilterLabel": "Show roaming users"
+  },
+  "settingsDistanceUnit": {
+    "distanceUnit": "Distance unit",
+    "kilometers": "Kilometers",
+    "miles": "Miles",
+    "automatic": "Automatic"
   }
 }

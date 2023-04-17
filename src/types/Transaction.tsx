@@ -2,6 +2,8 @@ import ChargingStation from '../types/ChargingStation';
 import Consumption from './Consumption';
 import ListItem from './ListItem';
 import User from './User';
+import Car from './Car';
+import Tag from './Tag';
 
 export enum InactivityStatus {
   INFO = 'I',
@@ -86,6 +88,9 @@ export default interface Transaction extends ListItem {
   uniqueId?: string;
   errorCode?: number;
   values?: Consumption[];
+  carStateOfCharge?: number;
+  targetStateOfCharge?: number;
+  departureTime?: string;
 }
 
 export enum StartTransactionErrorCode {
@@ -94,3 +99,17 @@ export enum StartTransactionErrorCode {
   BILLING_NO_SETTINGS = 'billing_no_settings', // start transaction not possible - billing settings are not set (or partially set)
   BILLING_INCONSISTENT_SETTINGS = 'billing_inconsistent_settings' // start transaction not possible - billing settings are inconsistent
 }
+
+export interface UserSessionContext {
+  car?: Car;
+  tag?: Tag;
+  errorCodes?: StartTransactionErrorCode[];
+  smartChargingSessionParameters: SmartChargingSessionParameters;
+}
+
+export interface SmartChargingSessionParameters {
+  departureTime: string;
+  carStateOfCharge: number;
+  targetStateOfCharge: number;
+}
+

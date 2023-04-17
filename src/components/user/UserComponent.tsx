@@ -1,6 +1,4 @@
-import { Text, View } from 'native-base';
 import React from 'react';
-import { ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
@@ -9,11 +7,12 @@ import computeChipStyleSheet from '../chip/ChipStyle';
 import UserAvatar from './avatar/UserAvatar';
 import computeStyleSheet from './UserComponentStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
+import { ViewStyle, Text, View } from 'react-native';
 
 export interface Props extends BaseProps {
   user: User;
   selected?: boolean;
-  outlinedInactive?: boolean;
+  containerStyle?: ViewStyle[];
 }
 
 interface State {}
@@ -38,13 +37,13 @@ export default class UserComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const listItemCommonStyle = computeListItemCommonStyle();
     const chipStyle = computeChipStyleSheet();
-    const { user, navigation, selected, outlinedInactive } = this.props;
+    const { user, navigation, selected, containerStyle } = this.props;
     const userFullName = Utils.buildUserName(user);
     const userRole = user ? user.role : '';
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, chipStyle);
     return (
-      <View style={[listItemCommonStyle.container, style.container, outlinedInactive && userStatus !== UserStatus.ACTIVE && listItemCommonStyle.outlinedError]}>
+      <View style={[listItemCommonStyle.container, ...(containerStyle || [])]}>
         <View style={style.userContent}>
           <View style={style.avatarContainer}>
             {selected ? <UserAvatar isSelected={true} navigation={navigation} /> : <UserAvatar user={user} navigation={navigation} />}
@@ -74,18 +73,6 @@ export default class UserComponent extends React.Component<Props, State> {
         </View>
       </View>
     );
-  }
-
-  private buildStatusIndicatorStyle(userStatus: UserStatus, style: any): ViewStyle {
-    switch (userStatus) {
-      case UserStatus.ACTIVE:
-        return style.statusActive;
-      case UserStatus.BLOCKED:
-      case UserStatus.INACTIVE:
-      case UserStatus.LOCKED:
-      case UserStatus.PENDING:
-        return style.statusInactive;
-    }
   }
 
   private computeStatusStyle(status: string, style: any) {

@@ -1,11 +1,9 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, View } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, Platform, TouchableOpacity } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { Image, ImageStyle, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
-import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -19,7 +17,7 @@ import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import { SitesFiltersDef } from './SitesFilters';
+import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
 import ClusterMap from '../../components/map/ClusterMap';
 import standardDarkLayout from '../../../assets/map/standard-dark.png';
@@ -27,6 +25,11 @@ import standardLightLayout from '../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../assets/map/satellite.png';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
+import { ChargingStationsFiltersDef } from '../charging-stations/list/ChargingStationsFilters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import { scale } from 'react-native-size-matters';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export interface Props extends BaseProps {}
 
@@ -35,12 +38,10 @@ interface State {
   loading?: boolean;
   refreshing?: boolean;
   skip?: number;
-  initialFilters?: SitesFiltersDef;
   filters?: SitesFiltersDef;
   count?: number;
   showMap?: boolean;
-  visible?: boolean;
-  siteSelected?: Site;
+  selectedSite?: Site;
   satelliteMap?: boolean;
 }
 
@@ -59,12 +60,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       loading: true,
       refreshing: false,
       skip: 0,
-      initialFilters: {},
       count: 0,
       showMap: false,
-      visible: false,
-      siteSelected: null,
-      satelliteMap: false
+      selectedSite: null,
+      satelliteMap: false,
+      filters: {}
     };
   }
 
@@ -82,7 +82,10 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     if (this.securityProvider && !this.securityProvider.isComponentOrganizationActive()) {
       this.props.navigation.navigate('ChargingStations', { key: `${Utils.randomNumber()}` });
     }
-    this.refresh(true);
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
   }
 
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
@@ -91,7 +94,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     try {
       const params = {
         Search: searchText,
-        Issuer: true,
+        Issuer: !this.state.filters.issuer,
         WithAvailableChargers: true,
         LocLatitude: showMap ? this.currentRegion?.latitude : currentLocation?.latitude,
         LocLongitude: showMap ? this.currentRegion?.longitude : currentLocation?.longitude,
@@ -121,7 +124,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public onBack () {
     // Back mobile button: Force navigation
     if (this.state.showMap) {
-      this.setState({ showMap: false, refreshing: true }, () => this.refresh());
+      this.setState({ showMap: false, sites: [] }, () => this.refresh(true));
       return true;
     } else {
       this.props.navigation.goBack();
@@ -138,7 +141,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         latitude: currentLocation.latitude,
         longitudeDelta: 0.01,
         latitudeDelta: 0.01
-      }
+      };
     }
     // Else, use coordinates of the first site
     if (!Utils.isEmptyArray(sites)) {
@@ -156,26 +159,26 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     return this.currentRegion;
   }
 
-  public refresh = async (showRefreshing = false) => {
+  public refresh = async (showSpinner = false) => {
     // Component Mounted?
     if (this.isMounted()) {
-      const { skip, showMap } = this.state;
-      if (showRefreshing) {
-        this.setState({ refreshing: true});
-      }
-      // Refresh All
-      const limit = showMap ? this.mapLimit : this.listLimit;
-      const sites = await this.getSites(this.searchText, 0, skip + limit);
-      // Refresh region
-      if (!this.currentRegion) {
-        this.currentRegion = await this.computeRegion(sites?.result);
-      }
-      // Add sites
-      this.setState({
-        loading: false,
-        refreshing: false,
-        sites: sites ? sites.result : [],
-        count: sites ? sites.count : 0
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.sites) ? { loading: true } : { refreshing: true }) : this.state;
+      this.setState(newState, async () => {
+        const { skip, showMap } = this.state;
+        // Refresh All
+        const limit = showMap ? this.mapLimit : this.listLimit;
+        const sites = await this.getSites(this.searchText, 0, skip + limit);
+        // Refresh region
+        if (!this.currentRegion) {
+          this.currentRegion = await this.computeRegion(sites?.result);
+        }
+        // Add sites
+        this.setState({
+          loading: false,
+          refreshing: false,
+          sites: sites ? sites.result : [],
+          count: sites ? sites.count : 0
+        });
       });
     }
   };
@@ -206,48 +209,54 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public search = async (searchText: string) => {
-    this.setState({ refreshing: true });
     this.searchText = searchText;
     delete this.currentRegion;
     await this.refresh(true);
   };
 
-  public onMapRegionChange = (region: Region) => {
-    this.currentRegion = region;
-  };
-
   public filterChanged(newFilters: SitesFiltersDef) {
-    delete this.currentRegion;
-    this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh(true));
+    this.setState({ filters: newFilters }, async () => this.refresh(!Utils.isEmptyArray(this.state.sites)));
   }
 
   public showMapSiteDetail = (site: Site) => {
     this.setState({
-      visible: true,
-      siteSelected: site
+      selectedSite: site
     });
   };
 
   public buildModal(navigation: any, siteSelected: Site, modalStyle: any) {
-    if (Platform.OS === 'ios') {
-      return (
-        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <Modalize alwaysOpen={175} modalStyle={modalStyle.modalContainer}>
-            <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
-          </Modalize>
-        </Modal>
-      );
-    } else {
-      return (
-        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <View style={modalStyle.modalContainer}>
-            <ScrollView>
-              <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
-            </ScrollView>
+    const style = computeStyleSheet();
+    return (
+      <Modal
+        useNativeDriverForBackdrop={true}
+        statusBarTranslucent={true}
+        animationInTiming={500}
+        animationOutTiming={500}
+        swipeDirection={['down']}
+        hideModalContentWhileAnimating={true}
+        onSwipeComplete={() => this.setState({ selectedSite: null })}
+        style={modalStyle.modalBottomHalf}
+        isVisible={true}
+        propagateSwipe={true}
+        onBackButtonPress={() => this.setState({ selectedSite: null })}
+      >
+        <SafeAreaView style={style.siteDetailsModalContainer}>
+          <View style={style.siteDetailsModalHeader}>
+            <TouchableOpacity onPress={() => this.setState({ selectedSite: null })}>
+              <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
+            </TouchableOpacity>
           </View>
-        </Modal>
-      );
-    }
+          <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
+            <SiteComponent
+              site={siteSelected}
+              navigation={navigation}
+              onNavigate={() => this.setState({ selectedSite: null })}
+              containerStyle={[{width: '95%'}]}
+            />
+          </View>
+        </SafeAreaView>
+      </Modal>
+    );
   }
 
   public onMapRegionChangeComplete = (region: Region) => {
@@ -262,68 +271,71 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, showMap, siteSelected, refreshing, sites, satelliteMap } = this.state;
-    const fabStyles = computeFabStyles();
-    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    const { loading, skip, count, showMap, selectedSite, refreshing, sites } = this.state;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
+          sideBar={this.canOpenDrawer}
           navigation={navigation}
           title={I18n.t('sidebar.sites')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
         />
-        <View style={style.fabContainer}>
-          {showMap && (
-            <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
-              <Image
-                source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
-                style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
-              />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={fabStyles.fab}
-            onPress={() => this.setState({ showMap: ! showMap}, () => this.refresh(true)) }
-          >
-            <Icon style={fabStyles.fabIcon} type={'MaterialCommunityIcons'} name={showMap ? 'format-list-bulleted' : 'map'} />
-          </TouchableOpacity>
-        </View>
-        {loading ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
-          <View style={style.content}>
-            <View style={style.searchBar}>
-              <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        <View style={style.content}>
+          {this.renderFilters()}
+          {this.renderFabs()}
+          {selectedSite && this.buildModal(navigation, selectedSite, modalStyle)}
+          {showMap ? this.renderMap() : (
+            <View style={style.sitesContainer}>
+              {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+                <ItemsList<Site>
+                  skip={skip}
+                  count={count}
+                  onEndReached={this.onEndScroll}
+                  renderItem={(site: Site) => <SiteComponent containerStyle={[style.siteComponentContainer]} site={site} navigation={navigation}/>}
+                  data={sites}
+                  manualRefresh={this.manualRefresh}
+                  refreshing={refreshing}
+                  emptyTitle={I18n.t('sites.noSites')}
+                  navigation={navigation}
+                  limit={this.listLimit}
+                />
+              )}
             </View>
-            {showMap ? (
-              <View style={style.map}>
-                {this.renderMap()}
-                {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
-              </View>
-            ) : (
-              <ItemsList<Site>
-                skip={skip}
-                count={count}
-                onEndReached={this.onEndScroll}
-                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation}/>}
-                data={sites}
-                manualRefresh={this.manualRefresh}
-                refreshing={refreshing}
-                emptyTitle={I18n.t('sites.noSites')}
-                navigation={navigation}
-                limit={this.listLimit}
-              />
-            )}
-          </View>
-        )}
-      </Container>
+          )}
+        </View>
+      </View>
     );
   }
 
+  private renderFabs() {
+    const style = computeStyleSheet();
+    const fabStyles = computeFabStyles();
+    const { showMap, satelliteMap } = this.state;
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    return (
+      <SafeAreaView style={style.fabContainer}>
+        {showMap && (
+          <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
+            <Image
+              source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
+              style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
+            />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          delayPressIn={0}
+          style={[fabStyles.fab, style.fab]}
+          onPress={() => this.setState({ showMap: !showMap, sites: []}, () => this.refresh(true)) }
+        >
+          <Icon size={scale(18)} style={fabStyles.fabIcon} as={MaterialCommunityIcons} name={showMap ? 'format-list-bulleted' : 'map'} />
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
 
   private renderMap() {
     const style = computeStyleSheet();
-    const { sites, satelliteMap } = this.state
+    const { sites, satelliteMap } = this.state;
     const sitesWithGPSCoordinates = sites.filter((site) =>
       Utils.containsGPSCoordinates(site.address.coordinates)
     );
@@ -340,15 +352,35 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
               title={site.name}
               onPress={() => this.showMapSiteDetail(site)}
             >
-              <Icon type={'MaterialIcons'} name={'location-pin'} style={[style.siteMarker, Utils.computeSiteMarkerStyle(site?.connectorStats)]} />
+              <Icon size={scale(40)} as={MaterialIcons} name={'location-pin'} style={Utils.computeSiteMarkerStyle(site?.connectorStats)} />
             </Marker>
           )}
           initialRegion={this.currentRegion}
           onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
         />
       </View>
-    )
+    );
   }
 
-
+  private renderFilters() {
+    const { showMap } = this.state;
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    const style = computeStyleSheet();
+    const fabStyles = computeFabStyles();
+    const commonColors = Utils.getCurrentCommonColor();
+    return (
+      <View style={[style.filtersContainer, showMap && style.mapFiltersContainer]}>
+        <SitesFilters
+          onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
+          ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
+        />
+        <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        {this.screenFilters?.canFilter() && (
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
+            <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
 }

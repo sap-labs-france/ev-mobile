@@ -1,8 +1,7 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
+import { Button, HStack, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { Alert, ScrollView, Text, View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
@@ -11,6 +10,8 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargingStationActionsStyles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -227,7 +228,6 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
   };
 
   public render() {
-    const { navigation } = this.props;
     const style = computeStyleSheet();
     const { loading, chargingStation, spinnerResetHard, spinnerResetSoft, spinnerConnectors, spinnerClearCache, connectorsInactive } =
       this.state;
@@ -235,83 +235,84 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       ? chargingStation.inactive || spinnerResetHard || spinnerResetSoft || spinnerClearCache || connectorsInactive
       : false;
     return loading ? (
-      <Spinner style={style.spinner} color="grey" />
+      <Spinner size={scale(30)} style={style.spinner} color="grey" />
     ) : (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
+          containerStyle={style.headerContainer}
         />
         <ScrollView contentContainerStyle={style.scrollViewContainer}>
           <View style={style.viewContainer}>
             <View style={style.actionContainer}>
               <Button
-                disabled={chargingStationIsDisabled}
-                block
-                iconLeft
+                isDisabled={chargingStationIsDisabled}
                 style={[style.actionButton, chargingStationIsDisabled ? null : style.resetButton]}
                 onPress={() => this.resetHardConfirm()}>
-                {spinnerResetHard ? <Spinner color="grey" /> : <Icon style={style.actionButtonIcon} type="MaterialIcons" name="repeat" />}
-                <Text uppercase={false} style={style.actionButtonText}>
-                  {I18n.t('chargers.resetHard')}
-                </Text>
+                <HStack alignItems={'center'}>
+                  {spinnerResetHard ? <Spinner color="grey" /> : <Icon size={scale(20)} style={style.actionButtonIcon} as={MaterialIcons} name="repeat" />}
+                  <Text style={style.actionButtonText}>
+                    {I18n.t('chargers.resetHard')}
+                  </Text>
+                </HStack>
               </Button>
             </View>
             {chargingStation &&
               chargingStation.connectors.map((connector) => (
                 <View key={connector.connectorId} style={style.actionContainer}>
                   <Button
-                    disabled={chargingStationIsDisabled || connector.status === ChargePointStatus.AVAILABLE}
+                    isDisabled={chargingStationIsDisabled || connector.status === ChargePointStatus.AVAILABLE}
                     warning={!chargingStationIsDisabled && connector.status !== ChargePointStatus.AVAILABLE}
-                    block
-                    iconLeft
                     style={style.actionButton}
                     onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
-                    {spinnerConnectors.get(connector.connectorId) ? (
-                      <Spinner color="grey" />
-                    ) : (
-                      <Icon style={style.actionButtonIcon} type="MaterialIcons" name="lock-open" />
-                    )}
-                    <Text uppercase={false} style={style.actionButtonText}>
-                      {I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connector.connectorId) })}
-                    </Text>
+                    <HStack alignItems={'center'}>
+                      {spinnerConnectors.get(connector.connectorId) ? (
+                        <Spinner color="grey" />
+                      ) : (
+                        <Icon size={scale(20)} style={style.actionButtonIcon} as={MaterialIcons} name="lock-open" />
+                      )}
+                      <Text style={style.actionButtonText}>
+                        {I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connector.connectorId) })}
+                      </Text>
+                    </HStack>
                   </Button>
                 </View>
               ))}
             <View style={style.actionContainer}>
               <Button
-                disabled={chargingStationIsDisabled}
-                block
-                iconLeft
+                isDisabled={chargingStationIsDisabled}
                 style={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
                 onPress={() => this.resetSoftConfirm()}>
-                {spinnerResetSoft ? (
-                  <Spinner color="grey" />
-                ) : (
-                  <Icon style={style.actionButtonIcon} type="MaterialIcons" name="layers-clear" />
-                )}
-                <Text uppercase={false} style={style.actionButtonText}>
-                  {I18n.t('chargers.resetSoft')}
-                </Text>
+                <HStack alignItems={'center'}>
+                  {spinnerResetSoft ? (
+                    <Spinner color="grey" />
+                  ) : (
+                    <Icon size={scale(20)} style={style.actionButtonIcon} as={MaterialIcons} name="layers-clear" />
+                  )}
+                  <Text style={style.actionButtonText}>
+                    {I18n.t('chargers.resetSoft')}
+                  </Text>
+                </HStack>
               </Button>
             </View>
             <View style={style.actionContainer}>
               <Button
-                disabled={chargingStationIsDisabled}
-                block
-                iconLeft
+                isDisabled={chargingStationIsDisabled}
                 style={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
                 onPress={() => this.clearCacheConfirm()}>
-                {spinnerClearCache ? <Spinner color="grey" /> : <Icon style={style.actionButtonIcon} type="MaterialIcons" name="refresh" />}
-                <Text uppercase={false} style={style.actionButtonText}>
-                  {I18n.t('chargers.clearCache')}
-                </Text>
+                <HStack alignItems={'center'}>
+                  {spinnerClearCache ? <Spinner color="grey" /> : <Icon size={scale(20)} style={style.actionButtonIcon} as={MaterialIcons} name="refresh" />}
+                  <Text style={style.actionButtonText}>
+                    {I18n.t('chargers.clearCache')}
+                  </Text>
+                </HStack>
               </Button>
             </View>
           </View>
         </ScrollView>
-      </Container>
+      </View>
     );
   }
 }

@@ -25,8 +25,7 @@ module.exports = defineConfig({
     "plugin:jsdoc/recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "@react-native-community"
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -212,7 +211,7 @@ module.exports = defineConfig({
         "ignoreRegExpLiterals": true,
         "ignoreStrings": true,
         "ignorePattern": "(^(import|export)|(public|private))\\s.+;",
-        "code": 140
+        "code": 170
       }
     ],
     "new-parens": "error",

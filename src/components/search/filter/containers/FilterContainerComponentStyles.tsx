@@ -9,11 +9,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     visibleContainer: {
-      paddingLeft: '10@s',
-      paddingRight: '10@s',
       justifyContent: 'flex-start',
-      borderBottomWidth: '1@s',
-      borderColor: commonColor.listBorderColor,
       backgroundColor: commonColor.containerBgColor
     },
     visibleExpandedContainer: {

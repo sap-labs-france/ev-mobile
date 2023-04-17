@@ -23,6 +23,7 @@
     "clear": "Effacer",
     "close": "Fermer",
     "cancel": "Annuler",
+    "confirm": "Confirmer",
     "send": "Envoyer",
     "apply": "Appliquer",
     "version": "Version",
@@ -37,6 +38,8 @@
     "restoreTenantsConfirm": "Voulez-vous vraiment restaurer la liste initiale des organisations ?",
     "restoreTenantsSuccess": "La liste des organisations list a été restaurée",
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "createEndpointSuccess": "L'endpoint '{{endpointName}}' a été crée",
+    "deleteEndpointSuccess": "L'endpoint '{{endpointName}}' a été supprimé",
     "editTenantSuccess": "Organization updated successfully",
     "registerToNewTenantTitle": "S'enregistrer",
     "registerToNewTenant": "Voulez-vous vous enregistrer dans la nouvelle organisation '{{tenantName}}' ?",
@@ -58,6 +61,8 @@
     "tenantMissing": "L'organisation est manquante",
     "tenantExists": "L'organisation '{{tenantName}}' existe déjà.",
     "subdomainAlreadyUsed": "Ce sous-domain est déjà utilisé dans l'organisation '{{tenantName}}'",
+    "endpointNameAlreadyExist": "Nom déjà utilisé",
+    "endpointURLAlreadyExist": "URL déjà utilisée dans l'endpoint '{{endpointName}}'",
     "createdOn": "Créé le",
     "createdBy": "Créé par",
     "lastChangedOn": "Modifié le",
@@ -79,22 +84,28 @@
     "defaultSettings": "Paramètres par défaut",
     "notApplicable": "N/A",
     "showMore": "Voir plus",
-    "showLess": "Voir moins"
+    "showLess": "Voir moins",
+    "newEntry": "Nouveau",
+    "userOrTenantUpdated": "Vous avez été déconnecté suite à une modification de votre profil ou des paramètres de votre organisation",
+    "tenantRedirectionInvalidDomain": "Le domaine de redirection de l'organisation est invalide",
+    "from": "De",
+    "to": "À"
   },
   "sidebar": {
     "home": "Home",
     "sites": "Sites",
     "chargers": "Bornes",
-    "transactionsHistory": "Historique Sessions",
-    "transactionsInProgress": "Sessions En Cours",
+    "transactionsHistory": "Historique sessions",
+    "transactionsInProgress": "Sessions en cours",
     "statistics": "Statistiques",
-    "reportError": "Signaler Erreur",
+    "reportError": "Signaler erreur",
     "users": "Utilisateurs",
     "badges": "Badges",
     "cars": "Voitures",
     "invoices": "Factures",
     "paymentMethods": "Moyens de paiement",
-    "qrCodeScanner": "Scanneur QR-Code"
+    "qrCodeScanner": "Scanneur QR-Code",
+    "settings": "Paramètres"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -103,14 +114,16 @@
     "mandatoryTenantSubDomain": "Le sous-domaine de l'organization est obligatoire",
     "mandatoryTenantName": "Le nom de l'organization est obligatoire",
     "mandatoryTenant": "L'organisation est obligatoire",
+    "mandatoryEndpointName": "Le nom est obligatoire",
+    "mandatoryEndpointURL": "L'URL est obligatoire",
     "unknownTenant": "Organisation inconnue!",
     "mandatoryName": "Le Nom est obligatoire",
     "mandatoryFirstName": "Le Prénom est obligatoire",
     "mandatoryEmail": "L'Email est obligatoire",
     "invalidEmail": "L'Email est invalide",
-    "invalidMobile": "Le mobile est invalide",
+    "invalidMobile": "Le numéro est invalide",
     "mandatoryPassword": "Le Mot de Passe est obligatoire",
-    "logOut": "Se déconnecter",
+    "logOut": "Déconnexion",
     "mustSelectTenant": "Selectionnez une Organisation",
     "wrongEmailOrPassword": "Mauvais email ou mot de passe",
     "authenticationFailed": "Authentification Echouée",
@@ -132,7 +145,7 @@
     "eulaNotAccepted": "Vous devez accepter les conditions d'utilisation",
     "newUser": "Nouvel Utilisateur ?",
     "forgotYourPassword": "Mot de passe oublié?",
-    "retrievePassword": "Récupérez Mot de Passe",
+    "retrievePassword": "Récupérer Mot de Passe",
     "resetPassword": "Réinitialiser Mot de Passe",
     "backLogin": "Se Connecter",
     "required": "Obligatoire",
@@ -150,10 +163,10 @@
     "email": "Email",
     "password": "Mot de passe",
     "repeatPassword": "Répétez mot de passe",
-    "signUp": "S'enregistrer",
+    "signUp": "Inscription",
     "signIn": "Se connecter",
-    "passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur minimum de 8",
-    "passwordNotMatch": "Les mots de passes ne correspondent pas",
+    "passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 chiffre, 1 char. spécial et au moins 8 char.",
+    "passwordNotMatch": "Les mots de passe ne correspondent pas",
     "tenant": "Organisation",
     "createTenantTitle": "Créer une organisation",
     "addTenantTitle": "Ajouter une organisation",
@@ -166,13 +179,20 @@
     "tenantName": "Nom",
     "tenantNamePlaceholder": "Nom de l'organisation",
     "tenantEndpoint": "Endpoint Cloud",
-    "phone": "Phone",
+    "addEndpoint": "Ajouter endpoint",
+    "endpointName": "Nom",
+    "endpointURL": "URL",
+    "noEndpoint": "Endpoint manquant",
+    "phone": "Téléphone",
     "mandatoryPhone": "Le numéro de téléphone est obligatoire",
     "mandatoryErrorTitle": "Le titre est obligatoire",
     "mandatoryErrorSubject": "Le sujet est obligatoire",
     "mandatoryErrorDescription": "La description est obligatoire",
     "reportErrorSuccess": "L'erreur a été envoyée avec succès",
-    "reportErrorFailed": "Impossible d'envoyer l'erreur"
+    "reportErrorFailed": "Impossible d'envoyer l'erreur",
+    "createEndpoint": "Créer endpoint",
+    "wrongOrganization": "L'organisation actuelle ne correspond pas",
+    "createAccount": "Créer Mon Compte"
   },
   "qrCode": {
     "qrCode": "QR Code",
@@ -183,15 +203,16 @@
     "invalidQRCode": "QR Code invalide",
     "unknownQRCode": "QR Code non reconnu",
     "unknownEndpoint": "Le cloud '{{endpoint}}' n'existe pas",
-    "unknownOrganizationTitle": "Organisation inconnu",
-    "unknownOrganizationMessage": "Vous avez scannez une organisation inconnu '{{tenantName}}', voulez vous la créer et vous y connecter ?",
+    "unknownOrganizationTitle": "Organisation inconnue",
+    "unknownOrganizationMessage": "Vous avez scanné une organisation inconnue '{{tenantName}}', voulez-vous la créer et vous y connecter ?",
     "newOrganizationTitle": "Nouvelle Organisation",
     "newOrganizationMessage": "Voulez vous sauvegarder la nouvelle organisation '{{tenantName}}'?",
     "unknownChargingStation": "La borne '{{chargingStationID}}' est inconnue",
     "unknownConnector": "Le connecteur '{{connectorID}}' est inconnu",
     "scanTenantQrCodeTitle": "Scanner Organisation",
     "scanTenantQrCodeSuccess": "L'organisation '{{tenantName}}' a été sauvegardée",
-    "scanChargingStationQrCodeTitle": "Scanner Borne"
+    "scanChargingStationQrCodeTitle": "Scanner Borne",
+    "saveOrganizationError": "Erreur en sauvegardant l'organisation"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur",
@@ -199,7 +220,8 @@
     "users": "Utilisateurs",
     "user": "Utilisateur",
     "selectUser" : "Sélectionnez un utilisateur",
-    "selectUsers" : "Sélectionnez des utilisateurs"
+    "selectUsers" : "Sélectionnez des utilisateurs",
+    "selectOneOrSeveralUsers": "Sélectionnez un ou plusieurs utilisateur(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Une erreur est survenue",
@@ -311,7 +333,12 @@
     "selectChargeCard": "Sélectionnez la carte de recharge",
     "chargingSettings": "Paramètres de charge",
     "adviceMessage": "Assurez-vous que le câble est branché",
-    "sessionAlreadyInProgressError": "Une sessions est déjà en cours sur ce connecteur"
+    "sessionAlreadyInProgressError": "Une session est déjà en cours sur ce connecteur",
+    "departureTime": "Heure de départ",
+    "targetStateOfCharge": "Niveau de batterie souhaité",
+    "currentStateOfCharge": "Niveau de batterie actuel",
+    "initialStateOfCharge": "Niveau de batterie initial",
+    "stateOfCharge": "Niv. batterie"
   },
   "home": {
     "browseSites": "Sites",
@@ -462,6 +489,7 @@
     "gridLimitChartLabel": "Limitation Réseau (kW)",
     "cumulatedConsumptionLabel": "Energie délivrée (kW.h)",
     "connectorMax": "Puissance max connecteur (kW)",
+    "priceLabel": "Prix",
     "noData": "Pas de données",
     "noSessionInProgress": "Pas de session en cours",
     "noConsumptionData": "No consumption data",
@@ -512,8 +540,23 @@
     }
   },
   "appUpdate": {
-    "appUpdateDialogTitle": "Nouvelle version disponible",
+    "appUpdateDialogTitle": "Mise à jour disponible",
     "appUpdateDialogDescription": "Voulez-vous mettre à jour votre application avec la dernière version disponible?",
     "noUpdateAvailable": "Vous avez la dernière version"
+  },
+  "filters": {
+    "myUser": "Mon utilisateur",
+    "clearUser": "Supprimer",
+    "chargingStationsRoamingFilterLabel": "Afficher les bornes en itinérance",
+    "sitesRoamingFilterLabel": "Afficher les sites en itinérance",
+    "siteAreasRoamingFilterLabel": "Afficher les zones en itinérance",
+    "transactionsRoamingFilterLabel": "Afficher les sessions en itinérance",
+    "usersRoamingFilterLabel": "Afficher les utilisateurs en itinérance"
+  },
+  "settingsDistanceUnit": {
+    "distanceUnit": "Unité de distance",
+    "kilometers": "Kilomètres",
+    "miles": "Miles",
+    "automatic": "Automatique"
   }
 }

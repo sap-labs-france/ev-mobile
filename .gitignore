@@ -20,6 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+ios/.xcode.env.local
 
 # Android/IntelliJ
 #
@@ -29,6 +30,7 @@ build/
 android/release.gradle
 local.properties
 *.iml
+*.hprof
 
 # node.js
 #
@@ -41,6 +43,8 @@ buck-out/
 \.buckd/
 android/app/*.keystore
 !android/app/debug.keystore
+android/app/release/
+android/keystore.properties
 
 # fastlane
 #
@@ -52,12 +56,14 @@ android/app/*.keystore
 */fastlane/report.xml
 */fastlane/Preview.html
 */fastlane/screenshots
+**/fastlane/test_output
 
 # Bundle artifact
 *.jsbundle
 
-# CocoaPods
+# Ruby / CocoaPods
 /ios/Pods/
+/vendor/bundle/
 
 # Jest
 .jest/

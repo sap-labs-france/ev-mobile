@@ -10,7 +10,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
+      backgroundColor: commonColor.containerBgColor,
+      alignItems: 'center'
+    },
+    content: {
+      flex: 1,
       width: '100%'
+    },
+    headerContainer: {
+      marginBottom: '10@s'
     },
     fab: {
       position: 'absolute',
@@ -26,11 +34,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       },
       shadowOpacity: 0.23,
       shadowRadius: 3.62
-    },
-    content: {
-      flex: 1,
-      marginHorizontal: '2.5%',
-      marginTop: '10@s'
     },
     spinner: {
       flex: 1,
@@ -59,17 +62,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontSize: '27@s'
     },
-    toolBar: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginVertical: '10@s',
-      borderRadius: 1,
-      height: '40@s'
-    },
     trashIconButton: {
-      height: '85%',
       width: '80@s',
+      height: '100%',
       borderRadius: '8@s',
       marginLeft: '2.5%',
       backgroundColor: commonColor.danger,
@@ -80,14 +75,18 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: 'white',
       fontSize: '20@s'
     },
-    swiperContainer: {
-      width: '100%',
-      alignItems: 'center'
+    paymentMethodContainer: {
+      width: '95%',
+      alignSelf: 'center',
+      marginBottom: '11@s'
     },
-    swiperChildrenContainer: {
+    paymentMethodItemContainer: {
       backgroundColor: commonColor.containerBgColor,
       width: '100%',
       alignItems: 'center'
+    },
+    paymentMethodComponentContainer: {
+      marginBottom: '11@s'
     }
   });
   const portraitStyles = {};

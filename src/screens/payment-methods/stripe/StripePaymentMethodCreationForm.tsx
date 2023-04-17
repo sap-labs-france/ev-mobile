@@ -1,8 +1,8 @@
 import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
-import { Button, CheckBox, Spinner, View } from 'native-base';
+import { Button, Checkbox, Spinner } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { BackHandler, Text, TouchableOpacity } from 'react-native';
+import { BackHandler, Text, TouchableOpacity, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -27,14 +27,23 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   const [isBillingSetUp, setIsBillingSetUp] = useState<boolean>(undefined);
   const style = computeStyleSheet();
   const commonColors = Utils.getCurrentCommonColor();
+  const canOpenDrawer = props?.route?.params?.canOpenDrawer ?? true;
 
   useEffect(() => {
     setUp().catch((error) => {
       console.error(I18n.t('paymentMethods.paymentMethodUnexpectedError'), error);
     });
+    // This screen does not extend from BaseScreen (functional component) so we need to add the logic
+    props.navigation.getParent()?.setOptions({
+      swipeEnabled: canOpenDrawer
+    });
   });
 
   useFocusEffect(React.useCallback(() => {
+    // This screen does not extend from BaseScreen (functional component) so we need to add the logic
+    props.navigation.getParent()?.setOptions({
+      swipeEnabled: canOpenDrawer
+    });
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => onBack());
     return () => backHandler.remove();
   }, [])
@@ -74,7 +83,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
           if (clientSecret) {
             // STEP 2 - Call Stripe API to confirm intent
             const { error, setupIntent } = await confirmSetupIntent(clientSecret, {
-              type: 'Card'
+              paymentMethodType: 'Card'
             });
             if (error) {
               // TODO: Display the error
@@ -134,6 +143,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       <HeaderComponent
         title={I18n.t('paymentMethods.addPaymentMethod')}
         navigation={props.navigation}
+        containerStyle={style.headerContainer}
       />
       {isBillingSetUp === false && renderBillingErrorMessage()}
       <CardField
@@ -145,7 +155,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       <View style={style.eulaContainer}>
         <Text style={[style.text, style.eulaText]}>{I18n.t('paymentMethods.paymentMethodCreationRules')}</Text>
         <TouchableOpacity onPress={() => setEulaChecked(!eulaChecked)} style={style.checkboxContainer}>
-          <CheckBox disabled={true} style={style.checkbox} checked={eulaChecked} />
+          <Checkbox value={'checkbox'} onChange={() => setEulaChecked(!eulaChecked)} _icon={{color: commonColors.textColor}} style={style.checkbox} isChecked={eulaChecked} />
           <Text style={[style.text, style.checkboxText]}>{I18n.t('paymentMethods.paymentMethodsCreationCheckboxText')}</Text>
         </TouchableOpacity>
       </View>
@@ -161,8 +171,6 @@ export default function StripePaymentMethodCreationForm(props: Props) {
               style.button,
               cardDetails?.complete && eulaChecked && isBillingSetUp === true ? style.buttonEnabled : style.buttonDisabled
             ]}
-            light
-            block
             onPress={async () => addPaymentMethod()}>
             <Text style={style.buttonText}>{I18n.t('general.save')}</Text>
           </Button>

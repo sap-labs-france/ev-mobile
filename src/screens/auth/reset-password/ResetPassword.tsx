@@ -1,28 +1,34 @@
 import { CommonActions } from '@react-navigation/native';
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
+import {Icon, Spinner} from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
+import {Keyboard, TextInput} from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
-import { HTTPError } from '../../../types/HTTPError';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import { TenantConnection } from '../../../types/Tenant';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Button, Input} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
 interface State {
   tenantSubDomain?: string;
   tenantName?: string;
+  tenantLogo?: string;
   hash?: string;
   password?: string;
   repeatPassword?: string;
-  errorPassword?: Record<string, unknown>[];
-  errorRepeatPassword?: Record<string, unknown>[];
+  resettingPassword?: boolean;
   loading?: boolean;
   hideRepeatPassword?: boolean;
   hidePassword?: boolean;
@@ -32,42 +38,18 @@ export default class ResetPassword extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private repeatPasswordInput: TextInput;
-  private formValidationDef = {
-    password: {
-      presence: {
-        allowEmpty: false,
-        message: '^' + I18n.t('authentication.mandatoryPassword')
-      },
-      equality: {
-        attribute: 'ghost',
-        message: '^' + I18n.t('authentication.passwordRule'),
-        comparator(password: string, ghost: string) {
-          // True if EULA is checked
-          return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
-        }
-      }
-    },
-    repeatPassword: {
-      presence: {
-        allowEmpty: false,
-        message: '^' + I18n.t('authentication.mandatoryPassword')
-      },
-      equality: {
-        attribute: 'password',
-        message: '^' + I18n.t('authentication.passwordNotMatch')
-      }
-    }
-  };
 
   public constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', '') as string,
-      hash: Utils.getParamFromNavigation(this.props.navigation, 'hash', null) as string,
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
+      hash: Utils.getParamFromNavigation(this.props.route, 'hash', null) as string,
       tenantName: '',
+      tenantLogo: null,
       password: '',
       repeatPassword: '',
-      loading: false,
+      resettingPassword: false,
+      loading: true,
       hidePassword: true,
       hideRepeatPassword: true
     };
@@ -80,32 +62,64 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount() {
+  public async setTenantLogo(tenant: TenantConnection): Promise<void> {
+    try {
+      if (tenant) {
+        const tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+        this.setState({tenantLogo});
+      }
+    } catch (error) {
+      switch ( error?.request?.status ) {
+        case StatusCodes.NOT_FOUND:
+          return null;
+        default:
+          await Utils.handleHttpUnexpectedError(
+            this.centralServerProvider,
+            error,
+            null,
+            null,
+            null,
+            async (redirectedTenant: TenantConnection) => this.setTenantLogo(redirectedTenant)
+          );
+          break;
+      }
+    }
+    return null;
+  }
+
+  public async componentDidMount(): Promise<void> {
     // Call parent
     await super.componentDidMount();
     // Init
     const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+    await this.setTenantLogo(tenant);
     this.setState({
-      tenantName: tenant ? tenant.name : ''
+      tenantName: tenant ? tenant.name : '',
+      loading: false
     });
-    // Disable Auto Login
-    this.centralServerProvider.setAutoLoginDisabled(true);
+  }
+
+  public async componentDidFocus(): Promise<void> {
+    super.componentDidFocus();
+    const tenantSubdomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain) as string;
+    const tenant = await this.centralServerProvider.getTenant(tenantSubdomain);
+    await this.setTenantLogo(tenant);
   }
 
   public resetPassword = async () => {
     // Check field
-    const formIsValid = Utils.validateInput(this, this.formValidationDef);
+    const formIsValid = this.isFormValid();
     if (formIsValid) {
       const { tenantSubDomain, password, hash } = this.state;
       try {
         // Loading
-        this.setState({ loading: true });
+        this.setState({ resettingPassword: true });
         // Register
         await this.centralServerProvider.resetPassword(tenantSubDomain, hash, password);
         // Clear user's credentials
-        await this.centralServerProvider.clearUserPassword();
+        await this.centralServerProvider.clearUserPassword(tenantSubDomain);
         // Reset
-        this.setState({ loading: false });
+        this.setState({ resettingPassword: false });
         // Show
         Message.showSuccess(I18n.t('authentication.resetPasswordSuccess'));
         // Navigate
@@ -124,18 +138,18 @@ export default class ResetPassword extends BaseScreen<Props, State> {
         );
       } catch (error) {
         // Reset
-        this.setState({ loading: false });
+        this.setState({ resettingPassword: false });
         // Check request?
         if (error.request) {
           // Show error
           switch (error.request.status) {
             // Invalid Hash
-            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+            case StatusCodes.NOT_FOUND:
               Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
               break;
             default:
               // Other common Error
-              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError');
+              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError', null, null, async () => this.resetPassword());
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));
@@ -148,100 +162,97 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
-    // Get logo
-    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
-    return (
-      <View style={style.container}>
-        <ScrollView contentContainerStyle={style.scrollContainer}>
-          <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
-            <Form style={formStyle.form}>
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
-                <TextInput
-                  selectionColor={commonColor.textColor}
-                  onSubmitEditing={() => this.repeatPasswordInput.focus()}
-                  returnKeyType={'next'}
-                  placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
-                  style={formStyle.inputField}
-                  autoCapitalize="none"
-                  blurOnSubmit={false}
-                  autoCorrect={false}
-                  keyboardType={'default'}
-                  onChangeText={(text) => this.setState({ password: text })}
-                  secureTextEntry={hidePassword}
-                />
-                <Icon
-                  active
-                  name={hidePassword ? 'eye' : 'eye-off'}
-                  onPress={() => this.setState({ hidePassword: !hidePassword })}
-                  style={formStyle.inputIcon}
-                />
-              </Item>
-              {this.state.errorPassword &&
-                this.state.errorPassword.map((errorMessage, index) => (
-                  <Text style={formStyle.formErrorText} key={index}>
-                    {errorMessage}
-                  </Text>
-                ))}
-              <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
-                <TextInput
-                  ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={commonColor.textColor}
-                  onSubmitEditing={() => Keyboard.dismiss()}
-                  returnKeyType={'next'}
-                  placeholder={I18n.t('authentication.repeatPassword')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
-                  style={formStyle.inputField}
-                  autoCapitalize="none"
-                  blurOnSubmit={false}
-                  autoCorrect={false}
-                  keyboardType={'default'}
-                  onChangeText={(text) => this.setState({ repeatPassword: text })}
-                  secureTextEntry={hideRepeatPassword}
-                />
-                <Icon
-                  active
-                  name={hideRepeatPassword ? 'eye' : 'eye-off'}
-                  onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
-                  style={formStyle.inputIcon}
-                />
-              </Item>
-              {this.state.errorRepeatPassword &&
-                this.state.errorRepeatPassword.map((errorMessage, index) => (
-                  <Text style={formStyle.formErrorText} key={index}>
-                    {errorMessage}
-                  </Text>
-                ))}
-              {loading ? (
-                <Spinner style={formStyle.spinner} color="grey" />
-              ) : (
-                <Button primary block style={formStyle.button} onPress={async () => this.resetPassword()}>
-                  <Text style={formStyle.buttonText} uppercase={false}>
-                    {I18n.t('authentication.resetPassword')}
-                  </Text>
-                </Button>
-              )}
-            </Form>
-          </KeyboardAvoidingView>
-        </ScrollView>
-        <Footer style={style.footer}>
-          <Left>
-            <Button
-              small
-              transparent
-              style={[style.linksButton, style.linksButtonLeft]}
-              onPress={() => this.props.navigation.navigate('Login')}>
-              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>
-                {I18n.t('authentication.backLogin')}
-              </Text>
-            </Button>
-          </Left>
-        </Footer>
-      </View>
+    const { tenantName, resettingPassword, loading, hidePassword, hideRepeatPassword, tenantLogo, password, repeatPassword } = this.state;
+    return loading ? (
+      <Spinner style={formStyle.spinner} color="grey" />
+    ) : (
+      <SafeAreaView edges={['bottom', 'top']} style={style.container}>
+        <AuthHeader containerStyle={{marginHorizontal: '5%', marginVertical: scale(10)}} navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo}/>
+        <KeyboardAwareScrollView bounces={false} persistentScrollbar={true} contentContainerStyle={style.scrollViewContentContainer} style={style.scrollView}>
+          <Input
+            leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon}/>}
+            rightIcon={<Icon
+              name={hidePassword ? 'eye' : 'eye-off'}
+              size={scale(20)}
+              as={MaterialCommunityIcons}
+              onPress={() => this.setState({hidePassword: !hidePassword})}
+              style={formStyle.inputIcon}
+            />}
+            containerStyle={formStyle.inputContainer}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={[formStyle.inputTextContainer, !Utils.validatePassword(password) && formStyle.inputTextContainerError]}
+            value={password}
+            placeholder={I18n.t('authentication.password')}
+            placeholderTextColor={commonColor.placeholderTextColor}
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry={hidePassword}
+            keyboardType={'default'}
+            returnKeyType={'next'}
+            onSubmitEditing={() => this.repeatPasswordInput.focus()}
+            renderErrorMessage={!Utils.validatePassword(password)}
+            errorMessage={!Utils.validatePassword(password) ? I18n.t('authentication.passwordRule') : null}
+            errorStyle={formStyle.inputError}
+            onChangeText={(newPassword) => this.setState({password: newPassword})}
+          />
+          <Input
+            ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
+            leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon}/>}
+            rightIcon={<Icon
+              as={MaterialCommunityIcons}
+              size={scale(20)}
+              name={hideRepeatPassword ? 'eye' : 'eye-off'}
+              onPress={() => this.setState({hideRepeatPassword: !hideRepeatPassword})}
+              style={formStyle.inputIcon}
+            />}
+            containerStyle={formStyle.inputContainer}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={[formStyle.inputTextContainer, !this.checkPasswords() && formStyle.inputTextContainerError]}
+            value={repeatPassword}
+            placeholder={I18n.t('authentication.repeatPassword')}
+            placeholderTextColor={commonColor.placeholderTextColor}
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry={hideRepeatPassword}
+            keyboardType={'default'}
+            returnKeyType={'done'}
+            onSubmitEditing={() => Keyboard.dismiss()}
+            renderErrorMessage={!this.checkPasswords()}
+            errorMessage={!this.checkPasswords() ? I18n.t('authentication.passwordNotMatch') : null}
+            errorStyle={formStyle.inputError}
+            onChangeText={(text) => this.setState({repeatPassword: text})}
+          />
+          <Button
+            title={I18n.t('authentication.resetPassword')}
+            titleStyle={formStyle.buttonTitle}
+            disabled={!this.isFormValid()}
+            disabledStyle={formStyle.buttonDisabled}
+            disabledTitleStyle={formStyle.disabledButton}
+            containerStyle={[formStyle.buttonContainer, {marginBottom: scale(20)}]}
+            buttonStyle={formStyle.button}
+            loading={resettingPassword}
+            loadingProps={{color: commonColor.light}}
+            onPress={() => void this.resetPassword()}
+          />
+          <Button
+            title={I18n.t('authentication.backLogin')}
+            titleStyle={formStyle.buttonTitle}
+            containerStyle={formStyle.buttonContainer}
+            buttonStyle={{...formStyle.button, ...formStyle.secondaryButton}}
+            onPress={() => this.props.navigation.navigate('Login')}
+          />
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
+  }
+
+  private checkPasswords(): boolean {
+    const { password, repeatPassword } = this.state;
+    return !repeatPassword || repeatPassword === password;
+  }
+
+  private isFormValid(): boolean {
+    const { password, repeatPassword } = this.state;
+    return password && repeatPassword && this.checkPasswords() && Utils.validatePassword(password);
   }
 }

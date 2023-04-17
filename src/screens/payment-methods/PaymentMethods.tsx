@@ -1,8 +1,7 @@
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { ActivityIndicator, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -21,6 +20,8 @@ import SelectableList, { SelectableState } from '../base-screen/SelectableList';
 import DialogModal from '../../components/modal/DialogModal';
 import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export interface Props extends BaseProps {}
 
@@ -140,20 +141,24 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     const { navigation } = this.props;
     const fabStyles = computeFabStyles();
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         {billingSettings?.stripe?.publicKey && (
-          <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })} style={[fabStyles.fab, fabStyles.placedFab]}>
-            <Icon type={'MaterialCommunityIcons'} name={'plus'} style={fabStyles.fabIcon} />
-          </TouchableOpacity>
+          <SafeAreaView style={fabStyles.fabContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })} style={fabStyles.fab}>
+              <Icon as={MaterialCommunityIcons} size={scale(18)} name={'plus'} style={fabStyles.fabIcon} />
+            </TouchableOpacity>
+          </SafeAreaView>
         )}
         <HeaderComponent
           title={this.buildHeaderTitle()}
           subTitle={this.buildHeaderSubtitle()}
+          sideBar={this.canOpenDrawer}
           navigation={this.props.navigation}
+          containerStyle={style.headerContainer}
         />
         {paymentMethodToBeDeleted && this.renderDeletePaymentMethodDialog(paymentMethodToBeDeleted)}
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
             <ItemsList<BillingPaymentMethod>
@@ -166,20 +171,20 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
                 <Swipeable
                   overshootRight={false}
                   overshootLeft={false}
-                  containerStyle={style.swiperContainer}
-                  childrenContainerStyle={style.swiperChildrenContainer}
+                  containerStyle={style.paymentMethodContainer}
+                  childrenContainerStyle={style.paymentMethodItemContainer}
                   renderRightActions={() => this.renderPaymentMethodRightActions(paymentMethod, style)}>
                   <PaymentMethodComponent paymentMethod={paymentMethod} navigation={navigation} />
                 </Swipeable>
               )}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
-              onEndReached={this.onEndScroll}
+              manualRefresh={() => void this.manualRefresh()}
+              onEndReached={() => void this.onEndScroll()}
               emptyTitle={I18n.t('paymentMethods.noPaymentMethod')}
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   };
 
@@ -197,7 +202,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
           {deleteInProgress ? (
             <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
           ) : (
-            <Icon style={style.trashIcon} name="trash" />
+            <Icon size={scale(23)} as={MaterialCommunityIcons} style={style.trashIcon} name="trash-can" />
           )}
         </TouchableOpacity>
       )
@@ -220,7 +225,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
         buttons={[
           {
             text: I18n.t('general.yes'),
-            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButtonText,
             buttonStyle: modalCommonStyle.primaryButton,
             action: async () => this.deletePaymentMethod(paymentMethod.id as string)
           }

@@ -1,5 +1,4 @@
 import i18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -14,7 +13,10 @@ import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import computeStyleSheet from '../transactions/TransactionsStyles';
+import computeStyleSheet from './InvoicesStyles';
+import InvoicesFilters, { InvoicesFiltersDef } from './InvoicesFilters';
+import { Spinner } from 'native-base';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -25,6 +27,7 @@ interface State {
   skip?: number;
   limit?: number;
   count?: number;
+  filters?: InvoicesFiltersDef;
 }
 
 export default class Invoices extends BaseScreen<Props, State> {
@@ -39,13 +42,17 @@ export default class Invoices extends BaseScreen<Props, State> {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
+      filters: {}
     };
   }
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
-    await this.refresh();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
   }
 
   public setState = (
@@ -57,8 +64,11 @@ export default class Invoices extends BaseScreen<Props, State> {
 
   public async getInvoices(skip: number, limit: number): Promise<DataResult<BillingInvoice>> {
     try {
+      const params = {
+        UserID: this.state.filters?.users?.map(user => user.id).join('|')
+      }
       // Get the invoices
-      const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit }, ['-createdOn']);
+      const invoices = await this.centralServerProvider.getInvoices(params, { skip, limit }, ['-createdOn']);
       // Get total number of records
       if (invoices?.count === -1) {
         const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);
@@ -95,18 +105,30 @@ export default class Invoices extends BaseScreen<Props, State> {
     }
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
-      const { skip, limit } = this.state;
-      // Refresh All
-      const invoices = await this.getInvoices(0, skip + limit);
-      // Set
-      this.setState({
-        loading: false,
-        invoices: invoices ? invoices.result : [],
-        count: invoices ? invoices.count : 0
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.invoices) ? {loading: true} : {refreshing: true}) : this.state;
+      this.setState(newState, async () => {
+        const { skip, limit } = this.state;
+        // Refresh All
+        const invoices = await this.getInvoices(0, skip + limit);
+        // Set
+        this.setState({
+          loading: false,
+          refreshing: false,
+          invoices: invoices ? invoices.result : [],
+          count: invoices ? invoices.count : 0
+        });
       });
     }
+  }
+
+  private onFilterChanged(newFilters: InvoicesFiltersDef): void {
+    this.setState({ filters: newFilters }, () => this.refresh(true));
+  }
+
+  private manualRefresh() {
+    this.refresh(true);
   }
 
   public render() {
@@ -114,15 +136,20 @@ export default class Invoices extends BaseScreen<Props, State> {
     const { navigation } = this.props;
     const style = computeStyleSheet();
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           title={i18n.t('sidebar.invoices')}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
           navigation={this.props.navigation}
+          sideBar={this.canOpenDrawer}
+          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
+          containerStyle={style.headerContainer}
         />
-        {loading ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
+        <InvoicesFilters
+          onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}
+          ref={(invoicesFilters: InvoicesFilters) => this.setScreenFilters(invoicesFilters, true)}
+        />
+          {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<BillingInvoice>
               data={invoices}
@@ -130,15 +157,15 @@ export default class Invoices extends BaseScreen<Props, State> {
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(invoice: BillingInvoice) => <InvoiceComponent navigation={navigation} invoice={invoice} />}
+              renderItem={(invoice: BillingInvoice) => <InvoiceComponent containerStyle={[style.invoiceComponentContainer]} navigation={navigation} invoice={invoice} />}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={this.manualRefresh.bind(this)}
               onEndReached={this.onEndScroll}
               emptyTitle={i18n.t('invoices.noInvoices')}
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   }
 }

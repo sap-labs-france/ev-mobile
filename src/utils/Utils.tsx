@@ -1,4 +1,4 @@
-import { NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
@@ -10,7 +10,6 @@ import validate from 'validate.js';
 import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ThemeManager from '../custom-theme/ThemeManager';
-import I18nManager from '../I18n/I18nManager';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Address from '../types/Address';
 import { BillingPaymentMethod, BillingPaymentMethodStatus } from '../types/Billing';
@@ -18,8 +17,7 @@ import Car, { CarCatalog, CarConverter } from '../types/Car';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
 import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
-import { RequestError } from '../types/RequestError';
-import { EndpointCloud } from '../types/Tenant';
+import { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
@@ -28,10 +26,27 @@ import { Region } from 'react-native-maps';
 import LocationManager from '../location/LocationManager';
 import computeConnectorStatusStyles
   from '../components/connector-status/ConnectorStatusComponentStyles';
+import Chademo from '../../assets/connectorType/chademo.svg';
+import Type2 from '../../assets/connectorType/type2.svg';
+import ComboCCS from '../../assets/connectorType/combo-ccs.svg';
+import Domestic from '../../assets/connectorType/domestic-ue.svg';
+import Type1 from '../../assets/connectorType/type1.svg';
+import Type1CCS from '../../assets/connectorType/type1-ccs.svg';
+import Type3C from '../../assets/connectorType/type3c.svg';
+import NoConnector from '../../assets/connectorType/no-connector.svg';
+import React from 'react';
+import { scale } from 'react-native-size-matters';
+import SecuredStorage from './SecuredStorage';
+import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
+import ProviderFactory from '../provider/ProviderFactory';
+import { Buffer } from 'buffer';
+import { AxiosError } from 'axios';
 
 export default class Utils {
-  public static getEndpointCloud(): EndpointCloud[] {
-    return Configuration.ENDPOINT_CLOUDS;
+  public static async getEndpointClouds(): Promise<EndpointCloud[]> {
+    const staticEndpoints =  Configuration.getEndpoints();
+    const userEndpoints = await SecuredStorage.getEndpoints() ?? [];
+    return [...staticEndpoints, ...userEndpoints];
   }
 
   public static objectHasProperty(object: any, key: string): boolean {
@@ -119,20 +134,6 @@ export default class Utils {
       return new Date(value);
     }
     return value;
-  }
-
-  public static formatDistance(distanceMeters: number): string {
-    let distance = distanceMeters;
-    // Convert to Yard
-    if (I18nManager.isMetricsSystem()) {
-      distance *= 1.09361;
-    }
-    if (distance < 1000) {
-      return I18nManager.isMetricsSystem() ? Math.round(distance).toString() + ' m' : Math.round(distance).toString() + ' yd';
-    }
-    return I18nManager.isMetricsSystem()
-      ? I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km'
-      : I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
   }
 
   public static getValuesFromEnum(enumType: any): number[] {
@@ -358,6 +359,16 @@ export default class Utils {
     return Voltage.VOLTAGE_230;
   }
 
+  public static getConnectorCurrentType(chargingStation: ChargingStation, connectorId: number): CurrentType {
+    const connectorChargePoint = chargingStation?.chargePoints?.find(chargePoint => chargePoint?.connectorIDs?.includes(connectorId));
+    const chargePointCurrentType = connectorChargePoint?.currentType;
+    if (chargePointCurrentType) {
+      return chargePointCurrentType;
+    }
+    const connector = chargingStation?.connectors?.find(c => c?.connectorId === connectorId);
+    return connector?.currentType;
+  }
+
   public static getChargingStationCurrentType(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorId = 0): CurrentType {
     if (chargingStation) {
       // Check at charge point level
@@ -524,6 +535,10 @@ export default class Utils {
     return false;
   }
 
+  public static isNullOrUndefined(value: any) {
+    return value == null;
+  }
+
   public static async sleep(millis: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
@@ -575,34 +590,6 @@ export default class Utils {
       return deviceLanguage;
     }
     return Constants.DEFAULT_LANGUAGE;
-  }
-
-  public static formatDuration(durationSecs: number): string {
-    let result = '';
-    if (durationSecs === 0) {
-      return `0 ${I18n.t('general.second')}`;
-    }
-    const days = Math.floor(durationSecs / (3600 * 24));
-    durationSecs -= days * 3600 * 24;
-    const hours = Math.floor(durationSecs / 3600);
-    durationSecs -= hours * 3600;
-    const minutes = Math.floor(durationSecs / 60);
-    const seconds = Math.floor(durationSecs - minutes * 60);
-    if (days !== 0) {
-      result += `${days}${I18n.t('general.day')} `;
-    }
-    if ((hours !== 0 || days !== 0) && (hours !== 0 || (minutes !== 0 && days === 0))) {
-      result += `${hours}${I18n.t('general.hour')} `;
-    }
-    if (days === 0) {
-      if (minutes !== 0 || (hours !== 0 && (minutes !== 0 || (seconds !== 0 && hours === 0)))) {
-        result += `${minutes}${I18n.t('general.minute')} `;
-      }
-      if (hours === 0 && seconds !== 0) {
-        result += `${seconds}${I18n.t('general.second')}`;
-      }
-    }
-    return result;
   }
 
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): Record<string, unknown> {
@@ -687,10 +674,11 @@ export default class Utils {
 
   public static async handleHttpUnexpectedError(
     centralServerProvider: CentralServerProvider,
-    error: RequestError,
+    error: AxiosError,
     defaultErrorMessage: string,
     navigation?: NavigationContainerRef<any>,
-    fctRefresh?: () => void
+    fctRefresh?: () => void,
+    redirectCallback?: (...args: any[]) => any
   ): Promise<void> {
     console.error('HTTP request error', error);
     // Check if HTTP?
@@ -711,9 +699,48 @@ export default class Utils {
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
+        case StatusCodes.MOVED_TEMPORARILY:
+          try {
+            let errorDetailedMessage: {redirectDomain: string; subdomain: string};
+            if (error.request.responseType === 'arraybuffer') {
+              const errorData = await (error?.response?.data as Promise<ArrayBuffer>);
+              const decodedData = Buffer.from(errorData)?.toString();
+              const parsedData = JSON.parse(decodedData) as {errorDetailedMessage: {subdomain: string; redirectDomain: string}};
+              errorDetailedMessage = parsedData?.errorDetailedMessage;
+            } else {
+              const data = error?.response?.data as {errorDetailedMessage: {redirectDomain: string; subdomain: string}};
+              errorDetailedMessage = data?.errorDetailedMessage;
+            }
+            const newURLDomain = errorDetailedMessage?.redirectDomain;
+            const subdomain = errorDetailedMessage?.subdomain;
+            const redirectTenant = await this.redirectTenant(newURLDomain, subdomain);
+            try {
+              redirectCallback?.(redirectTenant);
+            } catch ( error ) {
+              Message.showWarning('This organisation has just been moved to a new server, please try again');
+            }
+            if (centralServerProvider.isUserConnected()) {
+              const tenantSubDomain = centralServerProvider.getUserTenant()?.subdomain;
+              Message.showWarning(I18n.t('general.userOrTenantUpdated'));
+              await centralServerProvider.logoff();
+              navigation.dispatch(
+                StackActions.replace('AuthNavigator', {
+                  name: 'Login',
+                  key: `${Utils.randomNumber()}`,
+                  params: {
+                    tenantSubDomain
+                  }
+                })
+              );
+            }
+          } catch ( redirectError ) {
+            Message.showError('Unexpected situation, tenant redirection failed ' + redirectError?.message);
+            console.log(redirectError);
+          }
+          break;
         // Other errors
         default:
-          Message.showError(I18n.t(defaultErrorMessage ? defaultErrorMessage : 'general.unexpectedErrorBackend'));
+          Message.showError(I18n.t(defaultErrorMessage || 'general.unexpectedErrorBackend'));
           break;
       }
     } else if (error.name === 'InvalidTokenError') {
@@ -721,8 +748,54 @@ export default class Utils {
       await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
     } else {
       // Error in code
-      centralServerProvider.sendErrorReport(null,  error.message, error.stack);
+      if (!__DEV__) {
+        centralServerProvider.sendErrorReport(null,  error.message, error.stack);
+      }
       Message.showError(I18n.t('general.unexpectedError'));
+    }
+  }
+
+  /**
+   * @param redirectDomain The domain to redirect to
+   * @param tenantSubdomain The tenant to redirect. If not provided, use the current tenant
+   */
+  public static async redirectTenant(redirectDomain: string, tenantSubdomain?: string): Promise<TenantConnection> {
+    console.log('Redirect start');
+    const centralServerProvider = await ProviderFactory.getProvider();
+    // Do not redirect if redirect domain is undefined, null or empty string
+    if (redirectDomain) {
+      const tenants = await SecuredStorage.getTenants();
+      const redirectedTenant = tenantSubdomain ?
+        tenants?.find(tenant => tenant.subdomain === tenantSubdomain)
+        :
+        (centralServerProvider.getUserTenant() || {} as TenantConnection);
+      if (redirectedTenant) {
+        const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === tenantSubdomain);
+        const endpoints = await this.getAllEndpoints();
+        let newEndpoint = endpoints.find(
+          endpoint =>
+            (endpoint.endpoint === Configuration.URL_PREFIX + redirectDomain)
+            ||
+            (endpoint.endpoint === Configuration.SERVER_URL_PREFIX + redirectDomain));
+        // If endpoint no yet created, create it
+        if (!newEndpoint) {
+          newEndpoint = {name: redirectDomain, endpoint: Configuration.URL_PREFIX + redirectDomain};
+          const userEndpoints = await SecuredStorage.getEndpoints();
+          userEndpoints.push(newEndpoint);
+          await SecuredStorage.saveEndpoints(userEndpoints);
+        }
+        redirectedTenant.endpoint = newEndpoint;
+        tenants.splice(currentTenantIndex, 1, redirectedTenant);
+        await SecuredStorage.saveTenants(tenants);
+        console.log('Redirect succeeded');
+        return redirectedTenant;
+      } else {
+        console.error(`Redirect tenant - tenant with subdomain ${tenantSubdomain} not found`);
+        throw new Error('Tenant not found');
+      }
+    } else {
+      console.error(`Redirect tenant - redirection domain '${redirectDomain}' is invalid`);
+      throw new Error('Invalid redirection domain');
     }
   }
 
@@ -750,6 +823,10 @@ export default class Utils {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
+  public static validatePassword(password: string): boolean {
+    return !password || /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
+  }
+
   public static validateInput(screen: React.Component, constraints: Record<string, unknown>): boolean {
     let formValid = true;
     const errorState: any = {};
@@ -760,8 +837,8 @@ export default class Utils {
         if (key.startsWith('error')) {
           // Clear
           const clearError: any = {};
-          clearError[key] = null;
-          screen.setState(clearError);
+          clearError[key] = [];
+          screen.state =  {...screen.state , ...clearError};
         }
       }
     }
@@ -778,8 +855,9 @@ export default class Utils {
       formValid = false;
     }
     // Set
-    screen.setState(errorState);
+    screen.state = {...screen.state,  ...errorState};
     // Return
+    screen.setState(screen.state);
     return formValid;
   }
 
@@ -830,9 +908,9 @@ export default class Utils {
 
   public static getOrganizationConnectorStatusesStyle(connectorStats: ConnectorStats, style: any): ViewStyle {
     // No Connector available
-    if (connectorStats.availableConnectors === 0) {
+    if (connectorStats?.availableConnectors === 0) {
       // Some connectors will be soon available
-      if (connectorStats.finishingConnectors > 0 || connectorStats.suspendedConnectors > 0) {
+      if (connectorStats?.finishingConnectors > 0 || connectorStats?.suspendedConnectors > 0) {
         return style.statusAvailableSoon;
       } else {
         return style.statusNotAvailable;
@@ -921,30 +999,7 @@ export default class Utils {
     return null;
   }
 
-  public static formatDurationHHMMSS = (durationSecs: number, withSecs: boolean = true): string => {
-    if (durationSecs <= 0) {
-      return withSecs ? Constants.DEFAULT_DURATION_WITH_SECS : Constants.DEFAULT_DURATION;
-    }
-    // Set Hours
-    const hours = Math.trunc(durationSecs / 3600);
-    durationSecs -= hours * 3600;
-    // Set Mins
-    let minutes = 0;
-    if (durationSecs > 0) {
-      minutes = Math.trunc(durationSecs / 60);
-      durationSecs -= minutes * 60;
-    }
-    // Set Secs
-    if (withSecs) {
-      const seconds = Math.trunc(durationSecs);
-      // Format
-      return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}:${Utils.formatTimer(seconds)}`;
-    }
-    // Format
-    return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
-  };
-
-  public static computeSiteMarkerStyle(connectorStats: ConnectorStats) {
+  public static computeSiteMarkerStyle(connectorStats: ConnectorStats = {}) {
     const connectorStatusStyles = computeConnectorStatusStyles();
     if (connectorStats.availableConnectors > 0) {
       return connectorStatusStyles.availableConnectorDescription;
@@ -961,16 +1016,6 @@ export default class Utils {
     return args.join('');
   }
 
-  private static formatTimer = (value: number): string => {
-    // Put 0 next to the digit if lower than 10
-    const valueStr = value.toString();
-    if (valueStr.length < 2) {
-      return '0' + valueStr;
-    }
-    // Return new digit
-    return valueStr;
-  };
-
   private static getDeviceLocale(): string {
     return Platform.OS === 'ios' ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
   }
@@ -982,7 +1027,7 @@ export default class Utils {
   public static computeMaxBoundaryDistanceKm(region: Region) {
     if (region) {
       const height = region.latitudeDelta * 111;
-      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360
+      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360;
       return Math.sqrt(height**2 + width**2)/2 * 1000;
     }
     return null;
@@ -991,5 +1036,53 @@ export default class Utils {
   public static async getUserCurrentLocation() {
     const location = await LocationManager.getInstance();
     return location?.getLocation();
+  }
+
+  public static buildConnectorTypeSVG = (connectorType: ConnectorType, color?: any, size: number = 40): Element => {
+    const commonColor = Utils.getCurrentCommonColor();
+    color = color ?? commonColor.textColor;
+    switch (connectorType) {
+      case ConnectorType.CHADEMO:
+        return (
+          <Chademo width={scale(size)} height={scale(size)} stroke={color} strokeWidth="25%" />
+        );
+      case ConnectorType.TYPE_2:
+        return (
+          <Type2 width={scale(size)} height={scale(size)} stroke={color} strokeWidth="8%" />
+        );
+      case ConnectorType.COMBO_CCS:
+        return (
+          <ComboCCS width={scale(size)} height={scale(size)} stroke={color} strokeWidth="20%" />
+        );
+      case ConnectorType.DOMESTIC:
+        return <Domestic width={scale(size)} height={scale(size)} fill={color} strokeWidth="2%" />;
+      case ConnectorType.TYPE_1:
+        return (
+          <Type1 width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />
+        );
+      case ConnectorType.TYPE_1_CCS:
+        return (
+          <Type1CCS width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />
+        );
+      case ConnectorType.TYPE_3C:
+        return (
+          <Type3C width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />
+        );
+    }
+    return <NoConnector width={scale(size)} height={scale(size)} fill={color} />;
+  };
+
+  public static async checkForUpdate(): Promise<CheckVersionResponse | null> {
+    try {
+      return await checkVersion();
+    } catch ( error ) {
+      return null;
+    }
+  }
+
+  public static async getAllEndpoints(): Promise<EndpointCloud[]> {
+    const userEndpoints = (await SecuredStorage.getEndpoints()) || [];
+    const staticEndpoints = Configuration.getEndpoints() || [];
+    return [...userEndpoints, ...staticEndpoints];
   }
 }

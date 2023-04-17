@@ -1,21 +1,23 @@
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import moment from 'moment';
-import { Container, Icon, Spinner, Text, View } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, ScrollView } from 'react-native';
+import { Image, ImageStyle, ScrollView, Text, View } from 'react-native';
 
 import noSite from '../../../../assets/no-site.png';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
-import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
-import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
+import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export interface Props extends BaseProps {}
 
@@ -94,7 +96,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       return transaction;
     } catch (error) {
       switch (error.request.status) {
-        case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+        case StatusCodes.NOT_FOUND:
           Message.showError(I18n.t('transactions.transactionDoesNotExist'));
           break;
         default:
@@ -114,22 +116,22 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       const siteImage = await this.centralServerProvider.getSiteImage(siteID);
       return siteImage;
     } catch (error) {
-      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation);
+      if (error.request.status !== StatusCodes.NOT_FOUND) {
+        await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation);
+      }
     }
     return null;
   };
 
   public computeDurationInfos = (transaction: Transaction) => {
+    const durationFormatOptions = {style: DurationUnitFormat.styles.NARROW, format: '{hour} {minutes}'};
     if (transaction?.stop) {
       // Compute duration
-      const elapsedTimeFormatted = Utils.formatDurationHHMMSS(
-        (new Date(transaction.stop.timestamp).getTime() - new Date(transaction.timestamp).getTime()) / 1000,
-        false
-      );
+      const elapsedTimeFormatted = I18nManager.formatDuration(transaction.stop.totalDurationSecs, durationFormatOptions);
       // Compute inactivity
       const totalInactivitySecs =
         transaction.stop.totalInactivitySecs + (transaction.stop.extraInactivitySecs ? transaction.stop.extraInactivitySecs : 0);
-      const inactivityFormatted = Utils.formatDurationHHMMSS(totalInactivitySecs, false);
+      const inactivityFormatted = I18nManager.formatDuration(transaction.stop.totalInactivitySecs + transaction.stop.extraInactivitySecs, durationFormatOptions);
       // Set
       this.setState({
         totalInactivitySecs,
@@ -137,11 +139,12 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         inactivityFormatted
       });
     } else {
+      const defaultDuration = I18nManager.formatDuration(0, durationFormatOptions);
       // Set
       this.setState({
         totalInactivitySecs: 0,
-        elapsedTimeFormatted: Constants.DEFAULT_DURATION,
-        inactivityFormatted: Constants.DEFAULT_DURATION
+        elapsedTimeFormatted: defaultDuration,
+        inactivityFormatted: defaultDuration
       });
     }
   };
@@ -167,11 +170,10 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>
+        <Icon size={scale(25)} as={MaterialIcons} name="money" style={[style.icon, style.info]} />
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
           {transaction?.stop ? I18nManager.formatCurrency(transaction.stop.price, transaction.stop.priceUnit) : '-'}
         </Text>
-        <Text style={[style.subLabel, style.info]}>({transaction?.stop ? transaction.stop.priceUnit : '-'})</Text>
       </View>
     );
   };
@@ -180,9 +182,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { elapsedTimeFormatted } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t('details.duration')}</Text>
+        <Icon size={scale(25)} as={MaterialIcons} name="timer" style={[style.icon, style.info]} />
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
       </View>
     );
   };
@@ -193,9 +194,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const inactivityStyle = Utils.computeInactivityStyle(transaction?.stop ? transaction.stop.inactivityStatus : null);
     return (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
-        <Text style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
-        <Text style={[style.subLabel, inactivityStyle]}>{I18n.t('details.duration')}</Text>
+        <Icon size={scale(25)} as={MaterialIcons} name="timer-off" style={[style.icon, inactivityStyle]} />
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
       </View>
     );
   };
@@ -204,11 +204,10 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
-        <Text style={[style.label, style.labelValue, style.info]}>
-          {transaction?.stop ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumptionWh / 10) / 100) : '-'}
+        <Icon size={scale(25)} style={[style.icon, style.info]} as={MaterialIcons} name="ev-station" />
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
+          {transaction?.stop ? `${I18nManager.formatNumber(transaction.stop.totalConsumptionWh / 1000, {maximumFractionDigits: 2})} kW.h` : '-'}
         </Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
   };
@@ -217,15 +216,14 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return transaction && transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>
-          {transaction.stateOfCharge} {'>'} {transaction.stop.stateOfCharge}
+        <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={[style.icon, style.info]} />
+        <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue, style.info]}>
+          {transaction.stateOfCharge}% {'>'} {transaction.stop.stateOfCharge}%
         </Text>
-        <Text style={[style.subLabel, style.info]}>(%)</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.disabled]} />
+        <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -237,20 +235,21 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { loading, siteImage, isPricingActive } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(transaction ? transaction.connectorId : null);
     return loading ? (
-      <Spinner style={style.spinner} color="grey" />
+      <Spinner size={scale(30)} style={style.spinner} color="grey" />
     ) : (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
           subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+          containerStyle={style.headerContainer}
         />
         {/* Site Image */}
         <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
         <View style={style.headerContent}>
           <View style={style.headerRowContainer}>
-            <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-            <Text style={style.subHeaderName}>({transaction?.stop ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
+            <Text style={style.headerName}>{transaction ? I18nManager.formatDateTime(transaction.timestamp, {dateStyle: 'medium', timeStyle: 'short'}) : ''}</Text>
+            <Text style={style.subHeaderName}>({transaction?.stop ? I18nManager.formatDateTime(transaction.stop.timestamp, {dateStyle: 'medium', timeStyle: 'short'}) : ''})</Text>
             {transaction?.userID !== transaction?.stop?.userID && (
               <Text style={style.subSubHeaderName}>
                 ({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction?.stop?.user)})
@@ -258,21 +257,46 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
             )}
           </View>
         </View>
-        <ScrollView contentContainerStyle={style.scrollViewContainer}>
-          <View style={style.rowContainer}>
-            {this.renderUserInfo(style)}
-            {this.renderTotalConsumption(style)}
-          </View>
-          <View style={style.rowContainer}>
-            {this.renderElapsedTime(style)}
-            {this.renderInactivity(style)}
-          </View>
-          <View style={style.rowContainer}>
-            {this.renderBatteryLevel(style)}
-            {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-          </View>
+        <ScrollView style={style.scrollViewContainer} contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          {this.renderUserInfo(style)}
+          {this.renderTotalConsumption(style)}
+          {this.renderElapsedTime(style)}
+          {this.renderInactivity(style)}
+          {this.renderBatteryLevel(style)}
+          {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+          {this.renderSmartChargingParameters(style)}
         </ScrollView>
-      </Container>
+      </View>
+    );
+  }
+
+  private renderSmartChargingParameters(style: any) {
+    const { transaction } = this.state;
+    const departureTimeFormatted = I18nManager.formatDateTime(transaction?.departureTime, {dateStyle: 'short', timeStyle: 'short'});
+    return (
+      <>
+        {!Utils.isNullOrUndefined(transaction?.carStateOfCharge) && (
+          <View style={style.columnContainer}>
+            <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={style.icon} />
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.initialStateOfCharge')}</Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{transaction.carStateOfCharge}%</Text>
+          </View>
+        )}
+        {!!transaction?.targetStateOfCharge && (
+          <View style={style.columnContainer}>
+            <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={style.icon} />
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.targetStateOfCharge')}</Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{transaction.targetStateOfCharge}%</Text>
+          </View>
+        )}
+        {!!transaction?.departureTime && (
+          <View style={style.columnContainer}>
+            <Icon size={scale(25)} as={MaterialCommunityIcons} name="clock-end" style={style.icon} />
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.departureTime')}</Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{departureTimeFormatted}</Text>
+          </View>
+        )}
+      </>
     );
   }
 }

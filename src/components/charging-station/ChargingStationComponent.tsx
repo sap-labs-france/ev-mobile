@@ -1,8 +1,8 @@
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Icon, Text, View } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity, Text, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import BaseProps from '../../types/BaseProps';
@@ -12,6 +12,11 @@ import computeStyleSheet from './ChargingStationComponentStyles';
 import ChargingStationConnectorComponent from './connector/ChargingStationConnectorComponent';
 import DialogModal from '../modal/DialogModal';
 import computeModalCommonStyle from '../modal/ModalCommonStyle';
+import I18nManager from '../../I18n/I18nManager';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
   chargingStation: ChargingStation;
@@ -57,9 +62,9 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
               disabled={!validGPSCoordinates}
               onPress={() => Utils.jumpToMapWithCoordinates(chargingStation.id, chargingStation.coordinates)}>
               {validGPSCoordinates ? (
-                <Icon style={[style.icon, style.iconLeft]} type="MaterialCommunityIcons" name="directions" />
+                <Icon size={scale(30)} style={[style.icon, style.iconLeft]} as={MaterialCommunityIcons} name="directions" />
               ) : (
-                <Icon style={[style.icon, style.iconLeft]} type="MaterialCommunityIcons" name="map-marker-off" />
+                <Icon size={scale(30)} style={[style.icon, style.iconLeft]} as={MaterialCommunityIcons} name="map-marker-off" />
               )}
             </TouchableOpacity>
             <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>
@@ -80,7 +85,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                     key: `${Utils.randomNumber()}`
                   });
                 }}>
-                <Icon style={[style.icon, style.iconRight, style.settingsIcon]} type="MaterialIcons" name="tune" />
+                <Icon size={scale(30)} style={[style.icon, style.iconRight, style.settingsIcon]} as={MaterialIcons} name="tune" />
               </TouchableOpacity>
             )}
             <TouchableOpacity
@@ -89,11 +94,11 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
               }}>
               {chargingStation.inactive ? (
                 <Animatable.Text animation="fadeIn" easing="ease-in-out" iterationCount="infinite" direction="alternate-reverse">
-                  <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
+                  <Icon size={scale(30)} style={style.deadHeartbeatIcon} as={FontAwesome} name="heartbeat" />
                 </Animatable.Text>
               ) : (
                 <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>
-                  <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
+                  <Icon size={scale(30)} style={style.heartbeatIcon} as={FontAwesome} name="heartbeat" />
                 </Animatable.Text>
               )}
             </TouchableOpacity>
@@ -102,12 +107,12 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
         <View style={style.subHeaderContent}>
           {chargingStation.siteArea && (
             <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
-              {Utils.formatAddress(chargingStation.siteArea.address)}
+              {Utils.formatAddress(chargingStation.siteArea?.address)}
             </Text>
           )}
-          {chargingStation.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>}
+          {chargingStation.distanceMeters > 0 && <Text style={style.distance}>{I18nManager.formatDistance(chargingStation.distanceMeters)}</Text>}
         </View>
-        <View style={style.connectorsContainer}>
+        <ScrollView contentContainerStyle={style.connectorsContent} style={style.connectorsContainer}>
           {chargingStation.connectors.map(
             (connector) =>
               connector && (
@@ -121,7 +126,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                 />
               )
           )}
-        </View>
+        </ScrollView>
       </View>
     );
   }
@@ -146,7 +151,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
           {
             text: I18n.t('general.ok'),
             buttonStyle: modalCommonStyle.primaryButton,
-            buttonTextStyle: modalCommonStyle.primaryButton,
+            buttonTextStyle: modalCommonStyle.primaryButtonText,
             action: () => this.setState({ showHeartbeatDialog: false })
           }
         ]}

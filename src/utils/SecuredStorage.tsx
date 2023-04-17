@@ -2,10 +2,10 @@ import { NavigationState } from '@react-navigation/native';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 
 import { SecuredStorageKey } from '../types/SecuredStorageKeys';
-import Tenant, { TenantConnection } from '../types/Tenant';
+import Tenant, { EndpointCloud, TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
 import UserToken from '../types/UserToken';
-import Utils from './Utils';
+import { Settings } from '../types/Settings';
 
 // Generate a new Id for persisting the navigation each time the app is launched for the first time
 let navigationID: string = new Date().getTime().toString();
@@ -28,25 +28,7 @@ export default class SecuredStorage {
       key: string;
       navigationState: NavigationState;
     };
-    // Check the key
-    if (navigationState) {
-      if (navigationState.key === navigationID) {
-        const routeNames: string[] = [];
-        // Clear dups
-        if (__DEV__ && !Utils.isEmptyArray(navigationState.navigationState?.routes)) {
-          // FIXME: 'routes' is a read-only property.
-          navigationState.navigationState.routes = navigationState.navigationState?.routes.filter((route) => {
-            if (!routeNames.includes(route.name)) {
-              routeNames.push(route.name);
-              return true;
-            }
-            return false;
-          });
-        }
-        return navigationState.navigationState;
-      }
-    }
-    return null;
+    return navigationState?.navigationState;
   }
 
   public static async saveNavigationState(navigationState: NavigationState): Promise<void> {
@@ -97,7 +79,7 @@ export default class SecuredStorage {
     });
   }
 
-  public static async saveFilterValue(user: UserToken, filterInternalID: string, filterValue: string): Promise<void> {
+  public static async saveFilterValue(user: UserToken, filterInternalID: string, filterValue: string | boolean): Promise<void> {
     // Ensure string
     if (typeof filterValue !== 'string') {
       filterValue = String(filterValue);
@@ -124,11 +106,17 @@ export default class SecuredStorage {
     return false;
   }
 
-  public static async loadFilterValue(user: UserToken, filterInternalID: string): Promise<string> {
+  public static async loadFilterValue(user: UserToken, filterInternalID: string): Promise<string | boolean> {
     // Get
-    const value = await SecuredStorage.getString(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
+    const value = await SecuredStorage.getString(`${user?.tenantID}~${user?.id}~filter~${filterInternalID}`);
     if (value === 'null' || value === 'undefined' ) {
       return null;
+    }
+    if ((/true/i).test(value)) {
+      return true;
+    }
+    if ((/false/i).test(value)) {
+      return false;
     }
     return value;
   }
@@ -147,11 +135,35 @@ export default class SecuredStorage {
   }
 
   public static async getTenants(): Promise<TenantConnection[]> {
-    const tenants = await SecuredStorage.getJson(SecuredStorageKey.TENANTS);
+    const tenants = (await SecuredStorage.getJson(SecuredStorageKey.TENANTS)) || [];
     return tenants as TenantConnection[];
   }
 
-  private static async getJson(key: string): Promise<any> {
+  public static async saveEndpoints(endpoints: EndpointCloud[]): Promise<void> {
+    await RNSecureStorage.set(SecuredStorageKey.ENDPOINTS, JSON.stringify(endpoints), { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+  }
+
+  public static async getEndpoints(): Promise<EndpointCloud[]> {
+    const endpoints = (await SecuredStorage.getJson(SecuredStorageKey.ENDPOINTS)) || [];
+    return endpoints as EndpointCloud[];
+  }
+
+  /**
+   * Overrides only the given settings values
+   * @param settings
+   */
+  public static async saveSettingsValues(settings: Settings): Promise<void> {
+    const savedSettings = await SecuredStorage.getSettings();
+    const newSettings = {...(savedSettings || {}), ...(settings || {})};
+    await RNSecureStorage.set(SecuredStorageKey.SETTINGS, JSON.stringify(newSettings), { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+  }
+
+  public static async getSettings(): Promise<Settings> {
+    const settings = (await SecuredStorage.getJson(SecuredStorageKey.SETTINGS)) || {};
+    return settings as Settings;
+  }
+
+  private static async getJson(key: string): Promise<any | null> {
     try {
       const data = await RNSecureStorage.get(key);
       if (data) {

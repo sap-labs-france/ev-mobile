@@ -1,0 +1,7 @@
+<resources>
+  <color name="primary_dark">#00376C</color>
+  <color name="primary">#0a6ed1</color>
+  <color name="modalBackground">#262626</color>
+  <color name="navigationBarBackground">#f2f2f2</color>
+  <color name="white">#FFF</color>
+</resources>

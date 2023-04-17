@@ -23,6 +23,7 @@
     "clear": "Clear",
     "close": "Close",
     "apply": "Apply",
+    "confirm": "Confirm",
     "cancel": "Cancel",
     "send": "Send",
     "version": "Version",
@@ -37,6 +38,8 @@
     "restoreTenantsConfirm": "Do you really want to restore the initial list of organizations?",
     "restoreTenantsSuccess": "Organization list has been restored",
     "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "createEndpointSuccess": "Endpoint '{{endpointName}}' created successfully",
+    "deleteEndpointSuccess": "Endpoint '{{endpointName}}' deleted successfully",
     "editTenantSuccess": "Organization updated successfully",
     "registerToNewTenantTitle": "Sign up",
     "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
@@ -58,6 +61,8 @@
     "tenantMissing": "The organization is missing",
     "tenantExists": "The organization '{{tenantName}}' already exists",
     "subdomainAlreadyUsed": "This subdomain is already used in the organization '{{tenantName}}'",
+    "endpointNameAlreadyExist": "Endpoint name already used",
+    "endpointURLAlreadyExist": "Endpoint URL already used in endpoint '{{endpointName}}'",
     "createdOn": "Created On",
     "createdBy": "Created By",
     "lastChangedOn": "Last Changed On",
@@ -79,22 +84,28 @@
     "defaultSettings": "Default Settings",
     "notApplicable": "N/A",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "newEntry": "New entry",
+    "userOrTenantUpdated": "You have been logged off because either your profile or your organization's settings have been updated",
+    "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain",
+    "from": "From",
+    "to": "To"
   },
   "sidebar": {
     "home": "Home",
     "sites": "Sites",
-    "chargers": "Charging Stations",
-    "transactionsHistory": "Sessions History",
-    "transactionsInProgress": "Sessions In Progress",
+    "chargers": "Charging stations",
+    "transactionsHistory": "Sessions history",
+    "transactionsInProgress": "Sessions in progress",
     "statistics": "Statistics",
-    "reportError": "Report Error",
+    "reportError": "Report error",
     "users": "Users",
-    "badges": "RFID Cards",
+    "badges": "RFID cards",
     "cars": "Cars",
     "invoices": "Invoices",
-    "paymentMethods": "Payment Methods",
-    "qrCodeScanner": "QR-Code Scanner"
+    "paymentMethods": "Payment methods",
+    "qrCodeScanner": "QR-Code scanner",
+    "settings": "Settings"
   },
   "authentication": {
     "noTenantFoundTitle": "No organization found",
@@ -103,14 +114,16 @@
     "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
     "mandatoryTenantName": "The Organization name is mandatory",
     "mandatoryTenant": "The Organization is mandatory",
+    "mandatoryEndpointName": "Endpoint Name is mandatory",
+    "mandatoryEndpointURL": "Endpoint URL is mandatory",
     "unknownTenant": "Unknown Organization!",
     "mandatoryName": "The name is mandatory",
     "mandatoryFirstName": "The First Name is mandatory",
     "mandatoryEmail": "The email is mandatory",
     "invalidEmail": "The email is invalid",
-    "invalidMobile": "The mobile is invalid",
+    "invalidMobile": "Invalid phone number",
     "mandatoryPassword": "The Password is mandatory",
-    "logOut": "Log Out",
+    "logOut": "Log out",
     "mustSelectTenant": "Select an Organization",
     "wrongEmailOrPassword": "Wrong email or password",
     "authenticationFailed": "Authentication Failed",
@@ -123,12 +136,12 @@
     "technicalUserCannotLoginToUI": "API user and cannot login using the application",
     "accountAlreadyActive": "Your account is already active",
     "accountVerifiedSuccess": "Your account has been activated with success!",
-    "accountPending": "Your account is pending! Check your e-mail",
+    "accountPending": "Your account is pending! Check your emails",
     "activationTokenNotValid": "Your account's activation link is no longer valid",
     "activationEmailNotValid": "This Email does not exist",
     "activationUnexpectedError": "Cannot activate account",
     "loginUnexpectedError": "Cannot login",
-    "resetSuccess": "Request accepted! Check your e-mail",
+    "resetSuccess": "Request accepted! Check your emails",
     "eulaNotAccepted": "You must accept the End-User License Agreement",
     "newUser": "New User?",
     "forgotYourPassword": "Forgot Password?",
@@ -139,7 +152,7 @@
     "acceptEula": "I accept the ",
     "eula": "End-User License Agreement",
     "login": "Login",
-    "registerSuccess": "Account created with success! Check your email",
+    "registerSuccess": "Account created with success! Check your emails",
     "resetPasswordSuccess": "Password updated with success!",
     "resetPasswordUnexpectedError": "Cannot reset password",
     "resetPasswordHashNotValid": "Request no longer valid, request a new password again",
@@ -153,7 +166,7 @@
     "signUp": "Sign Up",
     "signIn": "Sign In",
     "passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
-    "passwordNotMatch": "Password does not match",
+    "passwordNotMatch": "Passwords do not match",
     "tenant": "Organization",
     "createTenantTitle": "Create Organization",
     "addTenantTitle": "Add an organization",
@@ -166,13 +179,20 @@
     "tenantName": "Name",
     "tenantNamePlaceholder": "Organization name",
     "tenantEndpoint": "Cloud Endpoint",
-    "phone": "Phone",
+    "addEndpoint": "Add endpoint",
+    "endpointName": "Endpoint Name",
+    "endpointURL": "Endpoint URL",
+    "noEndpoint": "No endpoint",
+    "phone": "Phone Number",
     "mandatoryPhone": "The phone number is mandatory",
     "mandatoryErrorTitle": "The title is mandatory",
     "mandatoryErrorSubject": "The subject is mandatory",
     "mandatoryErrorDescription": "The description is mandatory",
     "reportErrorSuccess": "The error has been reported successfully",
-    "reportErrorFailed": "Cannot report the error"
+    "reportErrorFailed": "Cannot report the error",
+    "createEndpoint": "Create endpoint",
+    "wrongOrganization": "Wrong organization",
+    "createAccount": "Create Account"
   },
   "qrCode": {
     "qrCode": "QR Code",
@@ -191,7 +211,8 @@
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
     "scanTenantQrCodeTitle": "Scan Organization",
     "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has been saved successfully",
-    "scanChargingStationQrCodeTitle": "Scan Charging Station"
+    "scanChargingStationQrCodeTitle": "Scan Charging Station",
+    "saveOrganizationError": "Error while saving the organization"
   },
   "users": {
     "userUnexpectedError": "Cannot read the users",
@@ -199,7 +220,8 @@
     "users": "Users",
     "user": "User",
     "selectUser": "Select User",
-    "selectUsers": "Select Users"
+    "selectUsers": "Select Users",
+    "selectOneOrSeveralUsers": "Select one or several user(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
@@ -309,9 +331,14 @@
     "selectUser": "Select User",
     "selectEV": "Select EV",
     "selectChargeCard": "Select Charge Card",
-    "chargingSettings": "Charging Settings",
+    "chargingSettings": "Charging settings",
     "adviceMessage": "Ensure that the cable is connected",
-    "sessionAlreadyInProgressError": "A session is already in progress on this connector"
+    "sessionAlreadyInProgressError": "A session is already in progress on this connector",
+    "departureTime": "Departure time",
+    "targetStateOfCharge": "Target state of charge",
+    "currentStateOfCharge": "Current state of charge",
+    "initialStateOfCharge": "Initial state of charge",
+    "stateOfCharge": "State of charge"
   },
   "home": {
     "browseSites": "Sites",
@@ -462,6 +489,7 @@
     "gridLimitChartLabel": "Grid Limit (kW)",
     "cumulatedConsumptionLabel": "Energy Delivered (kW.h)",
     "connectorMax": "Connector Max Power (kW)",
+    "priceLabel": "Price",
     "noData": "No Data",
     "noSessionInProgress": "No Session in progress",
     "noConsumptionData": "No consumption data",
@@ -512,8 +540,23 @@
     }
   },
   "appUpdate": {
-    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogTitle": "Update available",
     "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
     "noUpdateAvailable": "You have the latest version"
+  },
+  "filters": {
+    "myUser": "My user",
+    "clearUser": "Clear user",
+    "chargingStationsRoamingFilterLabel": "Show roaming charging stations",
+    "sitesRoamingFilterLabel": "Show roaming sites",
+    "siteAreasRoamingFilterLabel": "Show roaming site areas",
+    "transactionsRoamingFilterLabel": "Show roaming sessions",
+    "usersRoamingFilterLabel": "Show roaming users"
+  },
+  "settingsDistanceUnit": {
+    "distanceUnit": "Distance unit",
+    "kilometers": "Kilometers",
+    "miles": "Miles",
+    "automatic": "Automatic"
   }
 }

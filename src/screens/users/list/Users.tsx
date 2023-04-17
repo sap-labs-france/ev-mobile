@@ -1,7 +1,7 @@
 import { default as I18n } from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList, { ItemSelectionMode } from '../../../components/list/ItemsList';
@@ -13,15 +13,22 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UsersStyle';
 import SelectableList, { SelectableProps, SelectableState } from '../../base-screen/SelectableList';
+import computeListItemCommonStyles from '../../../components/list/ListItemCommonStyle';
+import UsersFilters, { UsersFiltersDef } from './UsersFilters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale } from 'react-native-size-matters';
 
-export interface Props extends SelectableProps<User> {}
+export interface Props extends SelectableProps<User> {
+  filters?: UsersFiltersDef
+}
 
-export interface State extends SelectableState<Users> {
+export interface State extends SelectableState<User> {
   users?: User[];
   skip?: number;
   limit?: number;
   refreshing?: boolean;
   loading?: boolean;
+  filters?: UsersFiltersDef;
 }
 
 export default class Users extends SelectableList<User> {
@@ -29,15 +36,12 @@ export default class Users extends SelectableList<User> {
     selectionMode: ItemSelectionMode.NONE,
     isModal: false
   };
-
   public state: State;
   public props: Props;
   private searchText: string;
-  private userIDs: string[];
 
   public constructor(props: Props) {
     super(props);
-    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
     this.singleItemTitle = I18n.t('users.user');
     this.multiItemsTitle = I18n.t('users.users');
     this.selectMultipleTitle = 'users.selectUsers';
@@ -53,16 +57,12 @@ export default class Users extends SelectableList<User> {
     };
   }
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-    await this.refresh();
-  }
-
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     try {
+      const issuer = this.props?.filters?.hasOwnProperty('issuer') ? this.props.filters.issuer : !this.state.filters?.issuer;
       const params = {
         Search: searchText,
-        UserID: this.userIDs?.join('|')
+        Issuer: issuer
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
       // Get total number of records
@@ -82,8 +82,8 @@ export default class Users extends SelectableList<User> {
           this.refresh.bind(this)
         );
       }
+      return null;
     }
-    return null;
   }
 
   public onEndScroll = async () => {
@@ -108,48 +108,51 @@ export default class Users extends SelectableList<User> {
     super.setState(state, callback);
   };
 
-  public async refresh(): Promise<void> {
+  public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
-      const { skip, limit } = this.state;
-      // Refresh All
-      this.setState({ refreshing: true });
-      const users = await this.getUsers(this.searchText, 0, skip + limit);
-      const usersResult = users ? users.result : [];
-      // Set
-      this.setState({
-        loading: false,
-        refreshing: false,
-        users: usersResult,
-        count: users.count
+      const newState = showSpinner ? {...(Utils.isEmptyArray(this.state.users) ? {loading: true} : {refreshing: true})} : this.state;
+      this.setState(newState, async () => {
+        const { skip, limit } = this.state;
+        const { isModal, onContentUpdated } = this.props;
+        // Refresh All
+        const users = await this.getUsers(this.searchText, 0, skip + limit);
+        const usersResult = users ? users.result : [];
+        // Set
+        this.setState({
+          loading: false,
+          refreshing: false,
+          users: usersResult,
+          count: users?.count ?? 0
+        }, isModal ? () => onContentUpdated() : () => null);
       });
     }
   }
 
-  public search = async (searchText: string) => {
+  public async search (searchText: string): Promise<void> {
     this.searchText = searchText;
-    await this.refresh();
+    await this.refresh(true);
   };
 
   public render(): React.ReactElement {
     const style = computeStyleSheet();
+    const listItemCommonStyles = computeListItemCommonStyles();
     const { users, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, isModal, selectionMode } = this.props;
     return (
-      <Container style={style.container}>
-        <HeaderComponent
-          title={this.buildHeaderTitle()}
-          subTitle={this.buildHeaderSubtitle()}
-          modalized={isModal}
-          backArrow={!isModal}
-          navigation={this.props.navigation}
-          displayTenantLogo={false}
-        />
-        <View style={style.searchBar}>
-          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
-        </View>
-        {loading ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
+      <View style={style.container}>
+        {!isModal && (
+          <HeaderComponent
+            title={this.buildHeaderTitle()}
+            subTitle={this.buildHeaderSubtitle()}
+            modalized={isModal}
+            sideBar={!isModal && this.canOpenDrawer}
+            navigation={this.props.navigation}
+            displayTenantLogo={false}
+            containerStyle={style.headerContainer}
+          />
+        )}
+        {this.renderFilters()}
+        {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<User>
               ref={this.itemsListRef}
@@ -160,15 +163,43 @@ export default class Users extends SelectableList<User> {
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(item: User, selected: boolean) => <UserComponent user={item} selected={selected} navigation={this.props.navigation} />}
+              renderItem={(item: User, selected: boolean) =>
+                <UserComponent containerStyle={[style.userComponentContainer, selected && listItemCommonStyles.outlinedSelected]} user={item} selected={selected} navigation={this.props.navigation} />}
               refreshing={refreshing}
-              manualRefresh={isModal ? null : this.manualRefresh}
+              manualRefresh={isModal ? null : this.manualRefresh.bind(this)}
               onEndReached={this.onEndScroll}
               emptyTitle={I18n.t('users.noUsers')}
             />
           </View>
         )}
-      </Container>
+      </View>
+    );
+  }
+
+  private onFiltersChanged(newFilters: UsersFiltersDef): void {
+    this.setState({ filters: newFilters }, () => this.refresh(true));
+  }
+
+  private renderFilters(): React.ReactElement {
+    const areModalFiltersActive = this.screenFilters?.areModalFiltersActive();
+    const { isModal } = this.props;
+    const style = computeStyleSheet();
+    const commonColors = Utils.getCurrentCommonColor();
+    return (
+      <View style={style.filtersContainer}>
+        {!isModal && (
+          <UsersFilters
+            onFilterChanged={(newFilters: UsersFiltersDef) => this.onFiltersChanged(newFilters)}
+            ref={(usersFilters: UsersFilters) => this.setScreenFilters(usersFilters, false)}
+          />
+        )}
+        <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        {!isModal && this.screenFilters?.canFilter() && (
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
+            <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          </TouchableOpacity>
+        )}
+      </View>
     );
   }
 }

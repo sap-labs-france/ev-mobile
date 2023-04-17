@@ -1,13 +1,12 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { Text } from 'native-base';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './TenantComponentStyle';
 import { TenantConnection } from '../../types/Tenant';
 import BaseProps from '../../types/BaseProps';
+import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import I18n from 'i18n-js';
-import Configuration from '../../config/Configuration';
 
 interface State {}
 
@@ -21,11 +20,13 @@ export default class TenantComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const listItemCommonStyle = computeListItemCommonStyle();
     const { tenant } = this.props;
-    const tenantEndpointName = Configuration.getEndpoints().find((e) => e.endpoint === tenant?.endpoint)?.name;
+    const tenantEndpointName = tenant?.endpoint?.name;
     return (
       <TouchableOpacity
-        style={style.container}
+        style={[listItemCommonStyle.container, style.container]}
+        disabled={!tenantEndpointName}
         onPress={() => {
           this.props.navigation.dispatch(
             StackActions.replace('AuthNavigator', {
@@ -41,7 +42,11 @@ export default class TenantComponent extends React.Component<Props, State> {
           <Text style={[style.text, style.tenantName]}>
             {tenant?.name} ({tenant?.subdomain})
           </Text>
-          <Text style={style.text}>{tenantEndpointName}</Text>
+          {tenantEndpointName ? (
+            <Text style={style.text}>{tenantEndpointName}</Text>
+          ) : (
+            <Text style={[style.text, style.errorText]}>{I18n.t('authentication.noEndpoint')}</Text>
+          )}
         </View>
       </TouchableOpacity>
     );

@@ -1,14 +1,15 @@
 import I18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
-import { ScrollView } from 'react-native';
-import HTMLView from 'react-native-htmlview';
+import {Dimensions, ScrollView, View} from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './EulaStyles';
+import { scale } from 'react-native-size-matters';
+import RenderHtml from 'react-native-render-html';
 
 export interface Props extends BaseProps {}
 
@@ -45,10 +46,8 @@ export default class Eula extends BaseScreen<Props, State> {
 
   public loadEndUserLicenseAgreement = async () => {
     const { i18nLanguage: i18nLanguage } = this.state;
-    // Get the first tenant for the EULA (same in all tenants)
-    const tenants = await this.centralServerProvider.getTenants();
     try {
-      const result: any = await this.centralServerProvider.getEndUserLicenseAgreement(tenants[0].subdomain, {
+      const result: any = await this.centralServerProvider.getEndUserLicenseAgreement({
         Language: i18nLanguage
       });
       this.setState({
@@ -56,8 +55,7 @@ export default class Eula extends BaseScreen<Props, State> {
         eulaTextHtml: result.text
       });
     } catch (error) {
-      // Other common Error
-      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'general.eulaUnexpectedError', this.props.navigation);
+      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'general.eulaUnexpectedError', this.props.navigation, null, async () => this.loadEndUserLicenseAgreement());
     }
   };
 
@@ -65,19 +63,22 @@ export default class Eula extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const { eulaTextHtml, loading } = this.state;
     return (
-      <Container>
+      <View style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('authentication.eula')}
         />
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
-          <ScrollView style={style.container}>
-            <HTMLView textComponentProps={{style: {color: Utils.getCurrentCommonColor().textColor}}} value={eulaTextHtml} />
+          <ScrollView style={style.HTMLViewContainer}>
+            <RenderHtml
+                contentWidth={Dimensions.get('window').width}
+                source={{html: eulaTextHtml}}
+            />
           </ScrollView>
         )}
-      </Container>
+      </View>
     );
   }
 }

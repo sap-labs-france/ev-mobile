@@ -10,22 +10,32 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     modalContainer: {
       backgroundColor: commonColor.modalBackgroundColor,
-      paddingTop: '5@s',
       padding: '10@s',
-      paddingVertical: '20@s',
-      borderRadius: '3@s',
-      alignItems: 'center'
+      paddingBottom: '20@s',
+      borderRadius: '8@s',
+      maxHeight: '90%',
+      alignItems: 'center',
+      width: '100%'
+    },
+    controlsContent: {
+      alignItems: 'center',
+      flexGrow: 1,
+      width: '100%',
+      paddingHorizontal: '5@s'
+    },
+    controlsContainer: {
+      width: '100%'
     },
     closeButtonContainer: {
       width: '100%'
     },
     closeButton: {
       alignSelf: 'flex-end',
-      fontSize: '25@s'
+      color: commonColor.textColor
     },
     title: {
       marginTop: '10@s',
-      fontSize: '14@s',
+      fontSize: '13@s',
       color: commonColor.textColor
     },
     text: {
@@ -48,9 +58,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       marginTop: '30@s'
     },
+    buttonContainer: {
+      borderRadius: '8@s'
+    },
     button: {
       padding: '5@s',
-      paddingVertical: '10@s',
+      paddingVertical: '8@s',
+      borderRadius: '8@s',
       borderWidth: 0.8
     },
     buttonText: {
@@ -58,7 +72,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       textAlign: 'center'
     },
     cancelButton: {
-      borderColor: commonColor.textColor
+      borderColor: commonColor.textColor,
+      borderWidth: 0.8,
+      backgroundColor: 'transparent'
     },
     horizontalButton: {
       width: '49%'
@@ -71,7 +87,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     icon: {
-      fontSize: '65@s',
+      fontSize: 60,
+      color: commonColor.textColor,
       alignSelf: 'center'
     }
   });

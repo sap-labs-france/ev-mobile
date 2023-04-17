@@ -8,60 +8,21 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    container: {
-      flex: 1,
-      width: '97%',
-      alignSelf: 'center',
-      borderColor: 'transparent',
-      backgroundColor: commonColor.listHeaderBgColor,
-      shadowColor: commonColor.cardShadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62,
-      elevation: 11,
-      marginBottom: '8@s'
+    siteAreaContainer: {
+      justifyContent: 'space-between',
+      flexDirection: 'row'
     },
     siteAreaContent: {
-      width: '100%',
-      height: '100%',
-      justifyContent: 'space-between',
-      backgroundColor: commonColor.listHeaderBgColor,
-      flexDirection: 'row',
-      margin: 0,
-      flex: 1,
-      paddingLeft: 0,
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingRight: 0
-    },
-    siteAreaContainer: {
-      flexDirection: 'row',
       flex: 1,
       justifyContent: 'space-between',
-      padding: '5@s',
+      padding: '10@s',
       alignItems: 'center',
-      height: '100%'
-    },
-    leftContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      height: '100%',
-      flex: 1
-    },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-      width: '20@s',
-      height: '100%'
     },
     statusIndicator: {
       height: '100%',
-      width: '5@s'
+      width: '5@s',
+      borderTopLeftRadius: '8@s',
+      borderBottomLeftRadius: '8@s'
     },
     statusNotAvailable: {
       backgroundColor: commonColor.brandDanger
@@ -84,13 +45,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'flex-start',
       flexWrap: 'wrap',
       width: '100%',
-      paddingRight: '5@s',
-      paddingLeft: '5@s'
+      paddingVertical: '3@s'
     },
     address: {
       color: commonColor.headerTextColor,
       fontSize: '13@s',
-      width: '85%'
+      flex: 1,
+      marginRight: '10@s'
     },
     distance: {
       color: commonColor.textColor,
@@ -99,28 +60,26 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     headerName: {
       marginLeft: '5@s',
       width: '90%',
-      fontSize: '20@s',
+      fontSize: '16@s',
       fontWeight: 'bold',
       color: commonColor.headerTextColor
+    },
+    leftHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1
     },
     connectorContent: {
       flexDirection: 'row',
       justifyContent: 'center',
-      paddingTop: '12@s',
-      paddingBottom: '12@s'
+      paddingTop: '12@s'
     },
     icon: {
-      fontSize: '30@s',
       color: commonColor.headerTextColor
     },
     arrowIcon: {
-      fontSize: '30@s'
-    },
-    iconLeft: {
-      fontSize: '30@s'
-    },
-    iconRight: {
-      marginRight: '10@s'
+      color: commonColor.disabledDark,
+      marginLeft: '20@s'
     },
     iconHidden: {
       opacity: 0

@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Spinner } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -7,17 +7,16 @@ import ItemsList from '../../../components/list/ItemsList';
 import TransactionInProgressComponent
   from '../../../components/transaction/in-progress/TransactionInProgressComponent';
 import I18nManager from '../../../I18n/I18nManager';
-import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
-import { GlobalFilters } from '../../../types/Filter';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
-import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsInProgressFilters, { TransactionsInProgressFiltersDef } from './TransactionsInProgressFilters';
+import { View } from 'react-native';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -31,7 +30,6 @@ interface State {
   isPricingActive: boolean;
   isAdmin?: boolean;
   hasSiteAdmin: boolean;
-  initialFilters?: TransactionsInProgressFiltersDef;
   filters?: TransactionsInProgressFiltersDef;
 }
 
@@ -53,9 +51,43 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       isPricingActive: false,
       isAdmin: false,
       hasSiteAdmin: false,
-      initialFilters: {},
       filters: {}
     };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      await this.refresh(true);
+    }
+    this.handleNavigationParameters();
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    const prevNavParams = JSON.stringify(prevProps.route?.params);
+    const currentNavParams = JSON.stringify(this.props.route?.params);
+    if (currentNavParams &&  currentNavParams !== prevNavParams) {
+      this.handleNavigationParameters();
+    }
+  }
+
+  private async handleNavigationParameters(): Promise<void> {
+    const transactionID = Utils.getParamFromNavigation(this.props.route, 'TransactionID', null, true) as number;
+    if (transactionID) {
+      try {
+        const transaction = await this.centralServerProvider.getTransaction(transactionID);
+        this.props.navigation.navigate('ChargingStationConnectorDetailsTabs', {
+          params: {
+            chargingStationID: transaction?.chargeBoxID,
+            connectorID: transaction?.connectorId
+          },
+          key: `${Utils.randomNumber()}`
+        });
+      } catch (e) {
+
+      }
+    }
   }
 
   public setState = (
@@ -65,26 +97,13 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     super.setState(state, callback);
   };
 
-  public async loadInitialFilters() {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const userID = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
-    this.setState({
-      initialFilters: { userID },
-      filters: { userID }
-    });
-  }
-
-  public async componentDidMount() {
-    // Get initial filters
-    await this.loadInitialFilters();
-    await super.componentDidMount();
-  }
-
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     try {
+      const { users, issuer } = this.state.filters;
       const params = {
-        UserID: this.state.filters.userID,
-        Search: searchText
+        UserID: users?.map(user => user.id).join('|'),
+        Search: searchText,
+        Issuer: !issuer
       };
       // Get the Transactions
       const transactions = await this.centralServerProvider.getTransactionsActive(params, { skip, limit }, ['-timestamp']);
@@ -107,21 +126,24 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     return null;
   };
 
-  public refresh = async () => {
+  public async refresh(showSpinner = false) {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
-      // Get transactions
-      const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
-      // Set
-      this.setState({
-        loading: false,
-        refreshing: false,
-        transactions: transactions ? transactions.result : [],
-        count: transactions ? transactions.count : 0,
-        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
-        hasSiteAdmin: this.securityProvider ? this.securityProvider.hasSiteAdmin() : false,
-        isPricingActive: this.securityProvider ? this.securityProvider.isComponentPricingActive() : false
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.transactions) ? {loading: true} : {refreshing: true}) : this.state;
+      this.setState(newState, async () => {
+        // Get transactions
+        const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
+        // Set
+        this.setState({
+          loading: false,
+          refreshing: false,
+          transactions: transactions ? transactions.result : [],
+          count: transactions ? transactions.count : 0,
+          isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
+          hasSiteAdmin: this.securityProvider ? this.securityProvider.hasSiteAdmin() : false,
+          isPricingActive: this.securityProvider ? this.securityProvider.isComponentPricingActive() : false
+        });
       });
     }
   };
@@ -141,37 +163,37 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     }
   };
 
-  public search = async (searchText: string) => {
+  public async search(searchText: string) {
     this.searchText = searchText;
-    await this.refresh();
+    await this.refresh(true);
   };
+
+  private onFiltersChanged(newFilters: TransactionsInProgressFiltersDef): void {
+    this.setState({filters: newFilters}, () => this.refresh(true));
+  }
 
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive, skip, count, limit, initialFilters, filters, refreshing } =
-      this.state;
+    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit, refreshing, filters } = this.state;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
+          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
+          sideBar={this.canOpenDrawer}
           subTitle={count > 0 ? `(${I18nManager.formatNumber(count)})` : null}
+          containerStyle={style.headerContainer}
         />
-        {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+        <TransactionsInProgressFilters
+          onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.onFiltersChanged(newFilters)}
+          ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => this.setScreenFilters(transactionsInProgressFilters, true)}
+        />
+        {(loading || !filters) ? (
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            {(isAdmin || hasSiteAdmin) && (
-              <TransactionsInProgressFilters
-                initialFilters={initialFilters}
-                onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) =>
-                  this.setState({ filters: newFilters, refreshing: true }, async () => this.refresh())
-                }
-                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => this.setScreenFilters(transactionsInProgressFilters)}
-              />
-            )}
             <ItemsList<Transaction>
               skip={skip}
               count={count}
@@ -181,12 +203,13 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
                   transaction={transaction}
                   navigation={navigation}
                   isAdmin={isAdmin}
+                  containerStyle={[style.transactionComponentContainer]}
                   isSiteAdmin={this.securityProvider?.isSiteAdmin(transaction.siteID)}
                   isPricingActive={isPricingActive}
                 />
               )}
               data={transactions}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={this.manualRefresh.bind(this)}
               refreshing={refreshing}
               emptyTitle={I18n.t('transactions.noTransactionsInProgress')}
               navigation={navigation}
@@ -194,7 +217,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
             />
           </View>
         )}
-      </Container>
+      </View>
     );
   };
 }

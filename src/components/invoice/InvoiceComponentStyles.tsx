@@ -8,46 +8,23 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    container: {
-      flex: 1,
-      width: '97%',
-      alignSelf: 'center',
-      borderColor: 'transparent',
-      backgroundColor: commonColor.listHeaderBgColor,
-      shadowColor: commonColor.cardShadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 3.62,
-      elevation: 11,
-      marginBottom: '8@s'
+    invoiceContainer: {
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      flex: 1
     },
     invoiceContent: {
-      width: '100%',
-      height: '100%',
-      justifyContent: 'space-between',
-      backgroundColor: commonColor.listHeaderBgColor,
-      flexDirection: 'row',
-      margin: 0,
-      flex: 1,
-      paddingLeft: 0,
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingRight: 0
-    },
-    invoiceContainer: {
       flexDirection: 'row',
       flex: 1,
       justifyContent: 'space-between',
       padding: '5@s',
-      alignItems: 'center',
-      height: '100%'
+      alignItems: 'center'
     },
     statusIndicator: {
+      width: '5@s',
       height: '100%',
-      width: '5@s'
+      borderTopLeftRadius: '8@s',
+      borderBottomLeftRadius: '8@s'
     },
     statusOpenOrUncollectible: {
       backgroundColor: commonColor.danger
@@ -121,8 +98,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '30@s'
     },
     downloadIcon: {
-      color: commonColor.textColor,
-      fontSize: '26@s'
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

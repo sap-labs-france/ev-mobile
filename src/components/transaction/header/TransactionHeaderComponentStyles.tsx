@@ -12,20 +12,29 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       flexDirection: 'column'
     },
+    firstLine: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
     transactionTimestamp: {
       color: commonColor.headerTextColor,
-      fontSize: '18@s',
-      fontWeight: 'bold'
+      fontSize: '16@s',
+      fontWeight: 'bold',
+      flex: 1
     },
     subHeaderName: {
       paddingTop: '2@s',
       color: commonColor.headerTextColor
     },
     chargingStationName: {
-      fontSize: '16@s'
+      fontSize: '14@s'
     },
     userFullName: {
       fontSize: '13@s'
+    },
+    arrowIcon: {
+      color: commonColor.disabledDark,
+      marginLeft: '20@s'
     }
   });
   const portraitStyles = {};

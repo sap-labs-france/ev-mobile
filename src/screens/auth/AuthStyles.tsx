@@ -4,122 +4,99 @@ import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    noDisplay: {
-      flex: 1,
-      backgroundColor: commonColor.containerBgColor
-    },
     container: {
-      flex: 1,
+      height: '100%',
       backgroundColor: commonColor.containerBgColor,
-      paddingTop: getStatusBarHeight() + scale(10)
-    },
-    keyboardContainer: {
-      flex: 1
-    },
-    scrollContainer: {
-      minHeight: '90%'
-    },
-    header: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'space-evenly',
       alignItems: 'center'
     },
-    logo: {
-      width: '90%',
-      height: '100@s',
-      resizeMode: 'contain'
+    scrollView: {
+      width: '100%',
+      flex: 1
     },
-    appText: {
+    scrollViewContentContainer: {
+      flexGrow: 1,
+      width: '100%',
+      alignItems: 'center',
+      paddingVertical: '5@s'
+    },
+    headerContainer: {
+      marginBottom: '10@s'
+    },
+    applicationTitle: {
+      fontSize: scale(35),
       color: commonColor.textColor,
-      fontSize: '30@s',
       fontWeight: 'bold'
     },
+    tenantSelectionContainer: {
+      maxWidth: '90%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginVertical: scale(20)
+    },
+    tenantName: {
+      fontSize: scale(15),
+      color: commonColor.textColor,
+      textAlign: 'left',
+      flexShrink: 1
+    },
+    dropdownIcon: {
+      color: commonColor.textColor,
+      width: '30@s'
+    },
+    forgotPasswordContainer: {
+      alignItems: 'flex-end',
+      marginTop: scale(5),
+      height: '30@s',
+      marginRight: '5%',
+      alignSelf: 'flex-end'
+    },
+    forgotPasswordText: {
+      fontSize: scale(12),
+      color: commonColor.textColor
+    },
+    buttonSeparatorLine: {
+      width: '50%',
+      borderTopWidth: 0.5,
+      borderTopColor: commonColor.disabledDark,
+      marginVertical: scale(20)
+    },
+    appVersionTextContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      width: '100%'
+    },
     appVersionText: {
+      fontSize: scale(10),
       color: commonColor.textColor,
-      alignSelf: 'center',
-      fontSize: '15@s'
+      width: '95%',
+      textAlign: 'right',
+      paddingVertical: scale(5)
     },
-    appTenant: {
-      color: commonColor.textColor,
-      marginTop: '20@s',
-      fontSize: '15@s',
-      alignSelf: 'center'
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexShrink: 1
     },
-    appTenantName: {
-      color: commonColor.textColor,
-      marginTop: '5@s',
-      marginBottom: '5@s',
-      fontSize: '15@s',
-      fontWeight: 'bold',
-      alignSelf: 'center'
-    },
-    formErrorTextEula: {
-      alignSelf: 'center',
-      marginLeft: 0,
-      textDecorationLine: 'none'
+    tenantLogo: {
+      height: scale(50),
+      width: scale(100),
+      resizeMode: 'contain'
     },
     eulaLink: {
       fontSize: '13@s',
       color: commonColor.textColor,
       textDecorationLine: 'underline'
-    },
-    linksButton: {
-      alignSelf: 'center',
-      marginBottom: '15@s'
-    },
-    linksTextButton: {
-      fontSize: '13@s',
-      fontWeight: 'bold',
-      color: commonColor.textColor
-    },
-    createOrgButton: {
-      backgroundColor: commonColor.brandSuccess
-    },
-    restoreOrgButton: {
-      backgroundColor: commonColor.brandWarning
-    },
-    deleteOrgButton: {
-      backgroundColor: commonColor.brandDanger
-    },
-    fab: {
-      backgroundColor: commonColor.buttonBg
-    },
-    fabIcon: {
-      color: commonColor.textColor
-    },
-    footer: {
-      backgroundColor: commonColor.containerBgColor
-    },
-    qrCodeContainer: {
-      marginBottom: '15@s',
-      marginLeft: '15@s',
-      width: '50@s'
-    },
-    qrCodeButton: {
-      width: '50@s',
-      height: '50@s',
-      borderRadius: '35@s',
-      backgroundColor: commonColor.buttonBg,
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    qrCodeIcon: {
-      fontSize: '25@s',
-      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
-  const landscapeStyles = {
-    qrCodeContainer: {
-      marginTop: '5%'
-    }
-  };
+  const landscapeStyles = {};
   return ResponsiveStylesSheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
     portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>

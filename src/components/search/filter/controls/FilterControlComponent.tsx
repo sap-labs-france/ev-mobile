@@ -1,14 +1,16 @@
 import React from 'react';
 import { ImageStyle, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import CentralServerProvider from '../../../../provider/CentralServerProvider';
+import ProviderFactory from '../../../../provider/ProviderFactory';
 
 export interface FilterControlComponentProps<T> {
-  internalFilterID: string;
+  internalFilterID?: string;
   filterID: string;
-  label: string;
+  label?: string;
   locale?: string;
   initialValue?: T;
   style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
-  onFilterChanged: (id: string, value: T) => void;
+  onFilterChanged?: (id: string, value: T) => Promise<void> | void;
 }
 
 export interface FilterControlComponentState<T> {
@@ -21,12 +23,25 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   };
   public state: FilterControlComponentState<T>;
   public props: FilterControlComponentProps<T>;
+  protected centralServerProvider: CentralServerProvider;
 
   public constructor(props: FilterControlComponentProps<T>) {
     super(props);
     this.state = {
       value: this.props.initialValue
     };
+  }
+
+  public async componentDidMount() {
+    this.centralServerProvider = await ProviderFactory.getProvider();
+  }
+
+  public componentDidUpdate(prevProps: Readonly<FilterControlComponentProps<T>>, prevState: Readonly<FilterControlComponentState<T>>, snapshot?: any) {
+    const { initialValue } = this.props;
+    // If filter is not aware of initialValue change, set new initialValue to state
+    if ( (initialValue !== prevProps.initialValue) && (this.state.value !== initialValue) ) {
+      this.setState({value: initialValue });
+    }
   }
 
   public setState = (
@@ -55,7 +70,8 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   }
 
   public clearValue(callback?: () => unknown) {
-    this.setState({ value: null }, callback);
+    // Prevent callers to setState when component not mounted.
+    this.setState({value: null}, () => callback?.());
   }
 
   public getID(): string {

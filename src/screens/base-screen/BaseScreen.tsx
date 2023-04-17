@@ -13,14 +13,15 @@ export interface Props extends BaseProps {}
 interface State {}
 
 export default class BaseScreen<P, S> extends React.Component<Props, State> {
+  backHandler: NativeEventSubscription;
   protected mounted: boolean;
   protected centralServerProvider: CentralServerProvider;
   protected securityProvider: SecurityProvider;
+  protected screenFilters: ScreenFilters<any>;
+  protected canOpenDrawer = this.props?.route?.params?.canOpenDrawer ?? true;
   private headerComponent: HeaderComponent;
-  private screenFilters: ScreenFilters;
   private componentFocusUnsubscribe: () => void;
   private componentBlurUnsubscribe: () => void;
-  backHandler: NativeEventSubscription;
 
   public constructor(props: Props) {
     super(props);
@@ -43,6 +44,8 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
     // Ok
     this.mounted = true;
+    await this.screenFilters?.loadInitialFilters();
+    this.setDrawerStatus();
   }
 
   public componentWillUnmount() {
@@ -50,15 +53,22 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.componentFocusUnsubscribe?.();
     this.componentBlurUnsubscribe?.();
     // Unbind the back button and reset its default behavior (Android)
-    this.backHandler.remove();
+    this.backHandler?.remove();
   }
 
-  public setHeaderComponent(headerComponent: HeaderComponent) {
+  protected setDrawerStatus(): void {
+    const drawer = this.props?.navigation?.getParent('drawer');
+    drawer?.setOptions({
+      swipeEnabled: this.canOpenDrawer
+    });
+  }
+
+  public setHeaderComponent(headerComponent: HeaderComponent, headerDisplay?: boolean) {
     if (headerComponent) {
       this.headerComponent = headerComponent;
       // Set modal filter component
-      if (this.headerComponent && this.screenFilters && this.screenFilters.getFilterModalContainerComponent()) {
-        this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
+      if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent() && headerDisplay) {
+        this.headerComponent.setFilterModalContainerComponent(this.screenFilters);
       }
     }
   }
@@ -67,17 +77,17 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     return this.headerComponent;
   }
 
-  public setScreenFilters(screenFilters: ScreenFilters) {
-    if (screenFilters) {
+  public setScreenFilters(screenFilters: ScreenFilters<any>, headerDisplay?: boolean) {
+    if (screenFilters && !this.screenFilters) {
       this.screenFilters = screenFilters;
-      // Set modal filter component
-      if (this.headerComponent && this.screenFilters.getFilterModalContainerComponent()) {
-        this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
+      // Bind filters modal container to header
+      if (this.headerComponent && this.screenFilters?.getFilterModalContainerComponent() && headerDisplay) {
+        this.headerComponent.setFilterModalContainerComponent(this.screenFilters);
       }
     }
   }
 
-  public getScreenFilters(): ScreenFilters {
+  public getScreenFilters(): ScreenFilters<any> {
     return this.screenFilters;
   }
 
@@ -89,6 +99,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   public componentDidFocus(): void {
     // Bind the back button to the onBack method (Android)
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => this.onBack());
+    this.setDrawerStatus();
   }
 
   public componentDidBlur(): void {

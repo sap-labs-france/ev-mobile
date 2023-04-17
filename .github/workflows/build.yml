@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [16.13.0]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,6 +27,8 @@ jobs:
       run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;22.1.7171670"
     - name: npm install
       run: npm ci
+    - name: Create properties file
+      run: echo GOOGLE_API_KEY="GOOGLE_API_KEY" > android/local.properties
     - name: npm run android:assembleDebug
       run: |
         npm run build:prepare
@@ -37,7 +39,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [16.13.0]
 
     steps:
     - uses: actions/checkout@v2
@@ -46,7 +48,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install
-      run: npm ci
+      run: npm clean-install
     - name: npm run pod:install
       run: npm run pod:install
     - name: xcodebuild
@@ -59,7 +61,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 14.x ]
+        node-version: [16.13.0]
 
     steps:
       - uses: actions/checkout@v2
@@ -70,7 +72,7 @@ jobs:
       - name: NDK install
         run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;22.1.7171670"
       - name: npm install
-        run: npm ci
+        run: npm clean-install
       - name: npm test
         run: npm test
       - name: Publish Unit Test Results

@@ -1,82 +1,67 @@
-import I18n from 'i18n-js';
-import { View } from 'native-base';
 import React from 'react';
 
-import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
-import MyUserSwitchFilterControlComponent from '../../../components/search/filter/controls/my-user-switch/MyUserSwitchFilterControlComponent';
-import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
+import ScreenFilters, { ScreenFiltersProps, ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
+import FilterModalContainerComponent
+  from '../../../components/search/filter/containers/FilterModalContainerComponent';
+import UserFilterComponent
+  from '../../../components/search/filter/controls/user/UserFilterComponent';
+import User from '../../../types/User';
+import SwitchFilterComponent
+  from '../../../components/search/filter/controls/switch/SwitchFilterComponent';
 import { GlobalFilters } from '../../../types/Filter';
-
-export interface Props {
-  onFilterChanged?: (filters: TransactionsInProgressFiltersDef) => void;
-  initialFilters?: TransactionsInProgressFiltersDef;
-}
+import I18n from 'i18n-js';
+import computeStyleSheet from './TransactionsInProgressFiltersStyles';
+import SecuredStorage from '../../../utils/SecuredStorage';
+import { View } from 'react-native';
 
 export interface TransactionsInProgressFiltersDef {
-  userID?: string;
+  users?: User[];
+  issuer?: boolean;
 }
 
-interface State extends ScreenFiltersState {
-  filters?: TransactionsInProgressFiltersDef;
-}
+export default class TransactionsInProgressFilters extends ScreenFilters<TransactionsInProgressFiltersDef> {
 
-export default class TransactionsInProgressFilters extends ScreenFilters {
-  public state: State;
-  public props: Props;
-
-  public constructor(props: Props) {
-    super(props);
-    this.state = {
-      filters: {}
-    };
+  protected async getInitialFilters(): Promise<{visibleFilters: TransactionsInProgressFiltersDef, modalFilters: TransactionsInProgressFiltersDef}> {
+    const issuer = await SecuredStorage.loadFilterValue(this.centralServerProvider.getUserInfo(), GlobalFilters.ROAMING);
+    const initialFilters = { issuer: !!issuer };
+    return {visibleFilters: null, modalFilters: initialFilters};
   }
 
-  public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
-    callback?: () => void
-  ) => {
+  public setState<K extends keyof ScreenFiltersState<TransactionsInProgressFiltersDef>>(state: ((prevState: Readonly<ScreenFiltersState<TransactionsInProgressFiltersDef>>, props: Readonly<ScreenFiltersProps<TransactionsInProgressFiltersDef>>) => (Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null)) | Pick<ScreenFiltersState<TransactionsInProgressFiltersDef>, K> | ScreenFiltersState<TransactionsInProgressFiltersDef> | null, callback?: () => void) {
     super.setState(state, callback);
-  };
-
-  public onFilterChanged = (newFilters: TransactionsInProgressFiltersDef, applyFilters: boolean) => {
-    const { onFilterChanged } = this.props;
-    if (applyFilters) {
-      this.setState(
-        {
-          filters: { ...this.state.filters, ...newFilters }
-        },
-        () => onFilterChanged(newFilters)
-      );
-    } else {
-      this.setState({
-        filters: { ...this.state.filters, ...newFilters }
-      });
-    }
-  };
+  }
 
   public render = () => {
-    const { initialFilters } = this.props;
-    const { filters, isAdmin, hasSiteAdmin } = this.state;
+    const { filters } = this.state;
+    const style = computeStyleSheet();
     return (
       <View>
-        {(isAdmin || hasSiteAdmin) && (
-          <FilterVisibleContainerComponent
-            onFilterChanged={this.onFilterChanged}
-            ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
-              this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)
-            }>
-            <MyUserSwitchFilterControlComponent
-              filterID={'userID'}
-              internalFilterID={GlobalFilters.MY_USER_FILTER}
-              initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
-              label={I18n.t('general.onlyMyTransactions')}
-              onFilterChanged={async (id: string, value: string) => this.getFilterVisibleContainerComponent().setFilter(id, value)}
-              ref={async (myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) =>
-                this.addVisibleFilter(myUserSwitchFilterControlComponent)
-              }
+        <FilterModalContainerComponent
+          onFilterChanged={(newFilters) => this.onFiltersChanged(null, newFilters, true)}
+          ref={(filterModalContainerComponent: FilterModalContainerComponent) =>
+            this.setFilterModalContainerComponent(filterModalContainerComponent)
+          }>
+          {this.securityProvider?.isComponentOrganizationActive() && (
+            <SwitchFilterComponent<boolean>
+              filterID={'issuer'}
+              internalFilterID={GlobalFilters.ROAMING}
+              enabledValue={true}
+              style={style.switchFilterControlComponentContainer}
+              label={I18n.t('filters.transactionsRoamingFilterLabel')}
+              initialValue={filters?.issuer}
+              ref={async (
+                roamingFilterControlComponent : SwitchFilterComponent<boolean>
+              ) => this.addModalFilter(roamingFilterControlComponent)}
             />
-          </FilterVisibleContainerComponent>
-        )}
+          )}
+          {this.securityProvider?.canListUsers() && (
+            <UserFilterComponent
+              filterID={'users'}
+              initialValue={filters.users}
+              ref={async (userFilterControlComponent: UserFilterComponent) => this.addModalFilter(userFilterControlComponent)}
+            />
+          )}
+        </FilterModalContainerComponent>
       </View>
     );
   };

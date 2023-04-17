@@ -10,6 +10,8 @@ export interface SelectableProps<T> extends BaseProps {
   selectionMode?: ItemSelectionMode;
   isModal?: boolean;
   onItemsSelected?: (selectedItems: T[]) => void;
+  filters?: {};
+  onContentUpdated?: () => void;
 }
 
 export interface SelectableState<T> {
@@ -31,31 +33,45 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
   protected singleItemTitle: string;
   protected multiItemsTitle: string;
 
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
+  }
+
   public clearSelectedItems(): void {
     this.itemsListRef.current?.clearSelectedItems();
   }
 
-  protected onItemsSelected(selectedItems: T[]): void {
-    this.setState({ selectedItems });
-    const { onItemsSelected } = this.props;
-    if (onItemsSelected) {
-      onItemsSelected(selectedItems);
-    }
+  public getSelectedItems(): T[] {
+    return this.state.selectedItems;
   }
 
-  protected buildHeaderTitle(): string {
-    const { selectionMode } = this.props;
-    switch (selectionMode) {
-      case ItemSelectionMode.SINGLE:
-        return I18n.t(this.selectSingleTitle);
-      case ItemSelectionMode.MULTI:
-        return I18n.t(this.selectMultipleTitle);
-      default:
-        return this.multiItemsTitle;
-    }
+  protected onItemsSelected(selectedItems: T[]): void {
+    this.setState({ selectedItems }, () => this.props.onItemsSelected?.(selectedItems));
+  }
+
+  public buildHeaderTitle(): string {
+    return this.multiItemsTitle;
   }
 
   protected buildHeaderSubtitle(): string {
+    const { count } = this.state;
+    return count > 0 && `(${I18nManager.formatNumber(count)})`;
+  }
+
+  public buildModalHeaderTitle(): string {
+    switch (this.props.selectionMode) {
+      case ItemSelectionMode.SINGLE:
+        return I18n.t(this.selectSingleTitle);
+      default:
+        return I18n.t(this.selectMultipleTitle);
+    }
+  }
+
+  public buildModalHeaderSubtitle(): string {
     const { selectionMode } = this.props;
     const { selectedItems, count } = this.state;
     switch (selectionMode) {
@@ -64,20 +80,26 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
       case ItemSelectionMode.SINGLE:
         return `(${I18nManager.formatNumber(count)})`;
       default:
-        return count > 0 && `(${I18nManager.formatNumber(count)})`;
+        return '';
     }
   }
 
-  protected async refresh() {
+  protected async refresh(showSpinner = false, callback: () => void = () => null) {
     console.warn('BaseAutoRefreshScreen: Refresh not implemented!!!');
   }
 
-  protected manualRefresh = async () => {
+  protected async manualRefresh() {
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  };
+  }
+
+  protected setDrawerStatus() {
+    if (!this.props.isModal) {
+      super.setDrawerStatus();
+    }
+  }
 }

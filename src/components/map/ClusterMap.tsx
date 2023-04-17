@@ -8,14 +8,14 @@ import SiteArea from '../../types/SiteArea';
 import Utils from '../../utils/Utils';
 import ThemeManager from '../../custom-theme/ThemeManager';
 import computeStyleSheet from './ClusterMapStyle';
-import { View } from 'native-base';
+import { View } from 'react-native';
 
 interface State {}
 
 type Localizable = ChargingStation | Site | SiteArea;
 
 export interface Props<T> {
-  items: T[]
+  items: T[];
   renderMarker: (item: T, index: number) => React.ReactElement;
   initialRegion: Region;
   onMapRegionChangeComplete: (region: Region) => void;
@@ -47,7 +47,6 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
             customMapStyle={isDarkModeEnabled ? this.darkMapTheme : null}
             style={style.map}
             showsCompass={false}
-            showsUserLocation={true}
             zoomControlEnabled={false}
             radius={this.computeRadius(initialRegion.latitudeDelta)}
             toolbarEnabled={false}
@@ -65,7 +64,7 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
           </MapView>
         )}
       </View>
-    )
+    );
   }
 
   private computeRadius(latitudeDelta: number): number {

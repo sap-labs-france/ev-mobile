@@ -1,41 +1,42 @@
 import I18n from 'i18n-js';
-import { Container, Content, Icon, Spinner } from 'native-base';
+import { Icon, Spinner } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager, { NumberFormatCompactStyleEnum, NumberFormatNotationEnum, NumberFormatStyleEnum } from '../../I18n/I18nManager';
-import ProviderFactory from '../../provider/ProviderFactory';
 import BaseScreen from '../../screens/base-screen/BaseScreen';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
 import { TransactionDataResult } from '../../types/DataResult';
-import { GlobalFilters } from '../../types/Filter';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
-import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './StatisticsStyles';
 import { View } from 'react-native';
 import StatisticsComponent from '../../components/statistics/StatisticsComponent';
 import computeActivityIndicatorCommonStyles from '../../components/activity-indicator/ActivityIndicatorCommonStyle';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export interface Props extends BaseProps {}
 
 interface State {
   loading?: boolean;
+  refreshing?: boolean;
   totalNumberOfSession?: number;
   totalConsumptionWattHours?: number;
   totalDurationSecs?: number;
   totalInactivitySecs?: number;
-  filterLoading?: boolean;
   totalPrice?: number;
   priceCurrency?: string;
   isPricingActive?: boolean;
   showFilter?: boolean;
-  initialFilters?: TransactionsHistoryFiltersDef;
   filters?: TransactionsHistoryFiltersDef;
+  maxTransactionDate?: Date;
+  minTransactionDate?: Date;
 }
 
 export default class Statistics extends BaseScreen<Props, State> {
@@ -54,17 +55,16 @@ export default class Statistics extends BaseScreen<Props, State> {
       totalPrice: 0,
       isPricingActive: false,
       showFilter: false,
-      initialFilters: {},
-      filters: {},
-      filterLoading: false
+      filters: {}
     };
   }
 
-  public async componentDidMount() {
-    // Get initial filters
-    await this.loadInitialFilters();
+  public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
-    await this.refresh();
+    // When filters are enabled, first refresh is triggered via onFiltersChanged
+    if (!this.screenFilters) {
+      this.refresh(true);
+    }
   }
 
   public setState = (
@@ -74,67 +74,45 @@ export default class Statistics extends BaseScreen<Props, State> {
     super.setState(state, callback);
   };
 
-  public async loadInitialFilters() {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const userID = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
-    const startDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(),
-      GlobalFilters.TRANSACTIONS_START_DATE_FILTER
-    );
-    const endDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(),
-      GlobalFilters.TRANSACTIONS_END_DATE_FILTER
-    );
-    const startDateTime = startDateTimeString ? new Date(startDateTimeString) : null;
-    const endDateTime = endDateTimeString ? new Date(endDateTimeString) : null;
-    const initialFilters = {
-      userID,
-      startDateTime,
-      endDateTime
-    };
-    this.setState({
-      initialFilters,
-      filters: initialFilters
-    });
-  }
-
-  public refresh = async () => {
-    const { filters } = this.state;
-    // Get the ongoing Transaction stats
-    const transactionsStats = await this.getTransactionsStats(filters.startDateTime, filters.endDateTime);
-    // Retrieve all the transactions for the current userID
-    const allTransactions = await this.getTransactionsStats(null, null);
-    const allTransactionsStats = allTransactions.stats;
-    const minTransactionDate = allTransactionsStats.firstTimestamp ? new Date(allTransactions.stats.firstTimestamp) : new Date();
-    const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(allTransactions.stats.lastTimestamp) : new Date();
-    // Set
-    this.setState({
-      initialFilters: { ...this.state.initialFilters, minTransactionDate, maxTransactionDate },
-      totalNumberOfSession: transactionsStats.stats.count,
-      totalConsumptionWattHours: transactionsStats.stats.totalConsumptionWattHours,
-      totalDurationSecs: transactionsStats.stats.totalDurationSecs,
-      totalInactivitySecs: transactionsStats.stats.totalInactivitySecs,
-      totalPrice: transactionsStats.stats.totalPrice,
-      isPricingActive: this.securityProvider?.isComponentPricingActive(),
-      priceCurrency: transactionsStats.stats.currency,
-      loading: false,
-      filterLoading: false
+  public async refresh (showSpinner: boolean) {
+    const newState = showSpinner ? (Utils.isNullOrUndefined(this.state.totalConsumptionWattHours) ? { loading: true } : { refreshing: true }) : this.state
+    this.setState(newState, async () => {
+      // Get the ongoing Transaction stats
+      const transactionsStats = await this.getTransactionsStats();
+      // Retrieve all the transactions for the current userID
+      const allTransactions = await this.getTransactionsStats({ Statistics: 'history' });
+      const allTransactionsStats = allTransactions?.stats;
+      const minTransactionDate = allTransactionsStats?.firstTimestamp ? new Date(allTransactionsStats.firstTimestamp) : new Date();
+      const maxTransactionDate = allTransactionsStats?.lastTimestamp ? new Date(allTransactionsStats.lastTimestamp) : new Date();
+      // Set
+      this.setState({
+        totalNumberOfSession: transactionsStats?.stats?.count,
+        totalConsumptionWattHours: transactionsStats?.stats?.totalConsumptionWattHours,
+        totalDurationSecs: transactionsStats?.stats?.totalDurationSecs,
+        totalInactivitySecs: transactionsStats?.stats?.totalInactivitySecs,
+        maxTransactionDate,
+        minTransactionDate,
+        totalPrice: transactionsStats?.stats?.totalPrice,
+        isPricingActive: this.securityProvider?.isComponentPricingActive(),
+        priceCurrency: transactionsStats?.stats?.currency,
+        loading: false,
+        refreshing: false
+      });
     });
   };
 
-  public getTransactionsStats = async (startDateTime: Date, endDateTime: Date): Promise<TransactionDataResult> => {
+  public getTransactionsStats = async (params?: {}): Promise<TransactionDataResult> => {
     try {
       // Get active transaction
-      const transactions = await this.centralServerProvider.getTransactions(
-        {
-          Statistics: 'history',
-          UserID: this.state.filters.userID,
-          StartDateTime: startDateTime ? startDateTime.toISOString() : null,
-          EndDateTime: endDateTime ? endDateTime.toISOString() : null
-        },
-        Constants.ONLY_RECORD_COUNT
-      );
-      return transactions;
+      const { startDateTime, endDateTime, users, issuer } = this.state.filters;
+      params = params ?? {
+        Statistics: 'history',
+        UserID: users?.map(user => user?.id).join('|'),
+        StartDateTime: startDateTime ? startDateTime.toISOString() : null,
+        EndDateTime: endDateTime ? endDateTime.toISOString() : null,
+        Issuer: !issuer
+      }
+      return this.centralServerProvider?.getTransactions(params, Constants.ONLY_RECORD_COUNT);
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
@@ -150,6 +128,10 @@ export default class Statistics extends BaseScreen<Props, State> {
     return null;
   };
 
+  private onFilterChanged(newFilters: TransactionsHistoryFiltersDef) : void {
+    this.setState( {filters: newFilters }, () => this.refresh(true));
+  }
+
   public render = () => {
     const style = computeStyleSheet();
     const activityIndicatorCommonStyles = computeActivityIndicatorCommonStyles();
@@ -157,15 +139,16 @@ export default class Statistics extends BaseScreen<Props, State> {
     const commonColors = Utils.getCurrentCommonColor();
     const {
       loading,
+      refreshing,
       totalNumberOfSession,
       totalConsumptionWattHours,
-      initialFilters,
       totalDurationSecs,
       totalInactivitySecs,
       priceCurrency,
       totalPrice,
       isPricingActive,
-      filterLoading
+      minTransactionDate,
+      maxTransactionDate,
     } = this.state;
     const totalConsumption = I18nManager.formatNumberWithCompacts(totalConsumptionWattHours, {
       notation: NumberFormatNotationEnum.COMPACT,
@@ -190,32 +173,37 @@ export default class Statistics extends BaseScreen<Props, State> {
       minimumFractionDigits: 1,
       maximumFractionDigits: 2
     });
+    const durationFormatOptions = {style: DurationUnitFormat.styles.SHORT, format: '{day} {hour}'};
     return (
-      <Container style={style.container}>
-        {filterLoading && <ActivityIndicator color={'black'} size={scale(20)} style={activityIndicatorCommonStyles.activityIndicator} animating={filterLoading} />}
+      <View style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
+          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent, true)}
           navigation={navigation}
+          sideBar={this.canOpenDrawer}
           title={I18n.t('home.statistics')}
+          containerStyle={style.headerContainer}
         />
-        {loading ? (
-          <Spinner style={style.spinner} color="grey" />
-        ) : (
-          <Content style={style.content}>
-            <TransactionsHistoryFilters
-              initialFilters={initialFilters}
-              onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>
-                this.setState({ filters: newFilters, filterLoading: true }, async () => this.refresh())
-              }
-              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters)}
-            />
+        <TransactionsHistoryFilters
+          minTransactionDate={minTransactionDate}
+          maxTransactionDate={maxTransactionDate}
+          onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}
+          ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => this.setScreenFilters(transactionsHistoryFilters, true)}
+        />
+        <View style={style.content}>
+          {loading ? <Spinner size={scale(30)} style={style.spinner} color={commonColors.disabledDark} /> : (
             <View style={style.boxContainer}>
+              {refreshing && <ActivityIndicator
+                size={scale(18)}
+                color={commonColors.textColor}
+                style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]}
+                animating={true}
+              /> }
               <StatisticsComponent
                 backgroundColor={style.sessions.backgroundColor.toString()}
                 textColor={commonColors.light}
                 value={totalSessions?.value}
                 secondLine={I18n.t('transactions.transactions')}
-                renderIcon={(iconStyle) => <Icon style={iconStyle} type="MaterialIcons" name="history" />}
+                renderIcon={(iconStyle) => <Icon size={scale(iconStyle.fontSize)} style={iconStyle} as={MaterialIcons} name="history" />}
                 description={I18n.t('home.numberOfSessionsNote')}
                 prefix={totalSessions?.compact}
               />
@@ -224,7 +212,7 @@ export default class Statistics extends BaseScreen<Props, State> {
                 textColor={commonColors.light}
                 value={totalConsumption?.value}
                 secondLine={'W.h'}
-                renderIcon={(iconStyle) => <Icon name={'bolt'} type={'FontAwesome'} style={iconStyle} />}
+                renderIcon={(iconStyle) => <Icon size={scale(iconStyle.fontSize)} name={'bolt'} as={FontAwesome} style={iconStyle} />}
                 description={I18n.t('home.totalConsumptionNote')}
                 prefix={totalConsumption?.compact}
                 prefixWithSecondLine={true}
@@ -232,16 +220,16 @@ export default class Statistics extends BaseScreen<Props, State> {
               <StatisticsComponent
                 backgroundColor={style.duration.backgroundColor.toString()}
                 textColor={commonColors.light}
-                value={Utils.formatDuration(totalDurationSecs)}
-                renderIcon={(iconStyle) => <Icon style={iconStyle} type="MaterialIcons" name="timer" />}
+                value={I18nManager.formatDuration(totalDurationSecs, durationFormatOptions)}
+                renderIcon={(iconStyle) => <Icon size={scale(iconStyle.fontSize)} style={iconStyle} as={MaterialIcons} name="timer" />}
                 description={I18n.t('home.totalDurationNote')}
               />
               <StatisticsComponent
                 backgroundColor={style.inactivity.backgroundColor.toString()}
                 textColor={commonColors.light}
                 secondLine={I18nManager.formatPercentage(totalInactivitySecs / totalDurationSecs)}
-                value={Utils.formatDuration(totalInactivitySecs)}
-                renderIcon={(iconStyle) => <Icon style={iconStyle} type="MaterialIcons" name="timer-off" />}
+                value={I18nManager.formatDuration(totalInactivitySecs, durationFormatOptions)}
+                renderIcon={(iconStyle) => <Icon size={scale(iconStyle.fontSize)} style={iconStyle} as={MaterialIcons} name="timer-off" />}
                 description={I18n.t('home.totalInactivityNote')}
               />
               {isPricingActive && (
@@ -252,14 +240,14 @@ export default class Statistics extends BaseScreen<Props, State> {
                   value={totalCost?.value}
                   prefix={totalCost?.compact}
                   prefixWithSecondLine={true}
-                  renderIcon={(iconStyle) => <Icon style={iconStyle} type="FontAwesome" name="money" />}
+                  renderIcon={(iconStyle) => <Icon size={scale(iconStyle.fontSize)} style={iconStyle} as={FontAwesome} name="money" />}
                   description={I18n.t('home.totalPriceNote')}
                 />
               )}
             </View>
-          </Content>
-        )}
-      </Container>
+          )}
+        </View>
+      </View>
     );
   };
 }

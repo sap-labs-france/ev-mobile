@@ -1,6 +1,5 @@
 import base64 from 'base-64';
 import I18n from 'i18n-js';
-import { Container } from 'native-base';
 import React from 'react';
 import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -13,26 +12,23 @@ import Message from '../../utils/Message';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
+import { View } from 'react-native';
 
-export interface Props extends BaseProps {
-  tenants: TenantConnection[];
-  close: (newTenant?: TenantConnection) => boolean;
-}
+export interface Props extends BaseProps {}
 
 interface State {}
 
 export default class TenantQrCode extends BaseScreen<State, Props> {
   public state: State;
   public props: Props;
-  public tenantEndpointClouds: EndpointCloud[];
+  private tenantEndpointClouds: EndpointCloud[];
+  private tenants: TenantConnection[];
 
-  public constructor(props: Props) {
-    super(props);
-    this.tenantEndpointClouds = Utils.getEndpointCloud();
-  }
 
   public async componentDidMount() {
     await super.componentDidMount();
+    this.tenantEndpointClouds = await Utils.getEndpointClouds();
+    this.tenants = await SecuredStorage.getTenants();
     Orientation.lockToPortrait();
   }
 
@@ -43,8 +39,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     super.setState(state, callback);
   };
 
-  public async createTenantAndClose(tenantQrCode: TenantQRCode) {
-    const { tenants } = this.props;
+  public async createTenant(tenantQrCode: TenantQRCode) {
     // Get Endpoint
     const newTenantEndpointCloud = this.tenantEndpointClouds.find(
       (tenantEndpointCloud) => tenantEndpointCloud.id === tenantQrCode.endpoint
@@ -53,14 +48,18 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     const newTenant: TenantConnection = {
       subdomain: tenantQrCode.tenantSubDomain,
       name: tenantQrCode.tenantName,
-      endpoint: newTenantEndpointCloud?.endpoint
+      endpoint: newTenantEndpointCloud
     };
     // Add
-    tenants.push(newTenant);
-    // Save
-    await SecuredStorage.saveTenants(tenants);
-    // Close
-    this.close(newTenant);
+    this.tenants.push(newTenant);
+    try {
+      // Save
+      await SecuredStorage.saveTenants(this.tenants);
+      Message.showSuccess(I18n.t('qrCode.scanTenantQrCodeSuccess', {tenantName: newTenant.name}));
+      this.props.navigation.navigate('Tenants', {newTenantSubdomain: newTenant.subdomain });
+    } catch ( e ) {
+      Message.showError(I18n.t('qrCode.saveOrganizationError'));
+    }
   }
 
   public async checkQrCodeDataAndNavigate(qrCodeData: string) {
@@ -85,9 +84,9 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
       // Check QR Code
       const tenant = await this.centralServerProvider.getTenant(tenantQrCode.tenantSubDomain);
       if (!tenant) {
-        this.createTenantAndClose(tenantQrCode);
+        this.createTenant(tenantQrCode);
       } else {
-        this.close(tenant);
+        Message.showError(I18n.t('general.subdomainAlreadyUsed', {tenantName: tenant.name}));
       }
     } catch (error) {
       // Do not display message until we get the right QR Code
@@ -95,28 +94,23 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
   }
 
   public render() {
+    const commonColor = Utils.getCurrentCommonColor();
     return (
-      <Container>
+      <View style={{backgroundColor: commonColor.containerBgColor}}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanTenantQrCodeTitle')}
-          leftAction={() => this.props.close()}
-          leftActionIcon={'navigate-before'}
-          hideHomeAction
         />
         <QRCodeScanner
           cameraProps={{ captureAudio: false }}
+          markerStyle={{borderColor: commonColor.primaryLight}}
           showMarker
           reactivate
+          containerStyle={{height: '100%', alignItems: 'center', justifyContent: 'center'}}
           reactivateTimeout={1000}
           onRead={async (qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}
         />
-      </Container>
+      </View>
     );
-  }
-
-  private close(tenant?: TenantConnection) {
-    Orientation.unlockAllOrientations();
-    this.props.close(tenant);
   }
 }

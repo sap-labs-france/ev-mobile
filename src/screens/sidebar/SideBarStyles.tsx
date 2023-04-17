@@ -1,60 +1,94 @@
 import deepmerge from 'deepmerge';
 import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
-import { ScaledSheet } from 'react-native-size-matters';
+import { scale, ScaledSheet } from 'react-native-size-matters';
 
 import { PLATFORM } from '../../theme/variables/commonColor';
 import Utils from '../../utils/Utils';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import Color from 'color';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
+  const borderColor = Color(commonColor.disabledDark).alpha(0.38).toString();
   const commonStyles = ScaledSheet.create({
     container: {
-      flex: 1,
+      paddingTop : Platform.OS === PLATFORM.IOS ? '5@s' : getStatusBarHeight() + scale(5),
       backgroundColor: commonColor.containerBgColor,
-      padding: '10@s'
+      height: '100%'
     },
-    background: {
-      flex: 1
+    sidebar: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%'
     },
-    drawerContent: {
-      flex: 1
+    drawerItem: {
+      width: '100%',
+      paddingVertical: '2@s'
+    },
+    drawerLabel: {
+      color: commonColor.textColor,
+      fontSize: '13@s'
+    },
+    drawerSeparation: {
+      width: '80%',
+      borderTopWidth: 0.7,
+      borderTopColor: Color(commonColor.disabledDark).alpha(0.38).toString(),
+      alignSelf: 'flex-end'
     },
     header: {
-      flexDirection: 'column',
-      backgroundColor: commonColor.containerBgColor,
-      height: '150@s',
-      marginTop: Platform.OS === 'ios' ? '-5@s' : '5@s'
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      paddingHorizontal: '10@s',
+      paddingBottom: '5@s',
+      width: '100%',
+      borderBottomWidth: 0.8,
+      borderColor
     },
-    linkContainer: {
-      paddingTop: '10@s'
+    bottomContainer: {
+      paddingHorizontal: '10@s',
+      flexDirection: 'row',
+      paddingTop: '15@s',
+      paddingBottom: Platform.OS === PLATFORM.IOS ? 0 : '15@s',
+      backgroundColor: commonColor.listItemBackground,
+      width: '100%'
+    },
+    tenantContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start'
+    },
+    scrollviewInnerContainer: {
+      width: '100%',
+      paddingTop: 0
+    },
+    scrollview: {
+      width: '100%',
+      backgroundColor: commonColor.containerBgColor,
+      flex: 1
     },
     logo: {
       resizeMode: 'contain',
-      width: '90%',
-      height: '50@s',
-      alignSelf: 'center',
-      margin: '5@s',
-      marginBottom: '10@s'
+      width: '30%',
+      height: '60@s',
+      marginLeft: '8@s'
     },
     tenantName: {
       color: commonColor.textColor,
-      fontSize: '14@s',
-      margin: '2@s',
-      alignSelf: 'center',
-      textAlign: 'center',
-      width: '90%'
+      fontSize: '13@s',
+      marginLeft: '10@s',
+      flex: 1
     },
     versionContainer: {
-      justifyContent: 'center',
+      justifyContent: 'flex-end',
       alignItems: 'center',
+      width: '100%',
+      flexDirection: 'row',
+      marginTop: '5@s'
     },
     newVersionContainer: {
-      height: '25@s',
-      padding: '5@s',
-      paddingLeft: '10@s',
-      paddingRight: '10@s',
-      margin: '5@s',
+      paddingLeft: '5@s',
+      paddingRight: '5@s',
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: commonColor.primary,
@@ -62,91 +96,46 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '3@s',
     },
     newVersionText: {
-      fontSize: '12@s',
+      fontSize: '9@s',
       color: commonColor.light
     },
     newVersionIcon: {
-      fontSize: '15@s',
+      fontSize: '10@s',
       paddingRight: '5@s',
       color: commonColor.light
     },
     versionText: {
       color: commonColor.textColor,
-      fontSize: '14@s',
-      margin: '2@s',
-      alignSelf: 'center',
-      fontWeight: 'bold',
+      fontSize: '10@s',
+      textAlign: 'right',
+      paddingHorizontal: '5@s'
     },
-    versionDate: {
-      color: commonColor.textColor,
-      fontSize: '14@s',
-      alignSelf: 'center',
-      marginTop: '-5@s',
-      marginBottom: '2@s'
+    rightContainer: {
+      flexDirection: 'column',
+      flex: 1,
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      marginLeft: '20@s'
     },
-    links: {
-      borderBottomWidth: 0,
-      paddingTop: '13@s',
-      paddingBottom: '13@s'
-    },
-    focused: {
-      opacity: 0.7,
-      borderTopEndRadius: '8@s',
-      borderBottomEndRadius: '8@s'
-    },
-    linkIcon: {
-      fontSize: '22@s',
-      color: commonColor.textColor
-    },
-    linkText: {
-      color: commonColor.textColor,
-      fontSize: '16@s',
-      paddingLeft: '15@s'
+    settingsContainer: {
+      maxWidth: '40%'
     },
     logoutContainer: {
-      paddingBottom: Platform.OS === 'ios' ? '25@s' : '10@s',
-      paddingLeft: '10@s',
-      paddingRight: '10@s',
-      paddingTop: 0
-    },
-    logoutButton: {
-      paddingTop: '10@s',
-      flexDirection: 'row'
-    },
-    gridLogoutContainer: {
-      flex: 1,
-      flexDirection: 'row'
-    },
-    columnAccount: {
-      flexDirection: 'column',
-      flexGrow: 2,
       flex: 1
     },
-    buttonLogout: {
-      alignSelf: 'flex-start',
-      backgroundColor: 'transparent'
-    },
     logoutText: {
-      fontWeight: 'bold',
-      fontSize: '14@s',
-      color: commonColor.textColor
+      fontSize: '13@s',
+      color: commonColor.primary,
+      paddingVertical: '3@s'
     },
     userName: {
       paddingTop: '5@s',
-      fontSize: '14@s',
+      fontSize: '13@s',
       color: commonColor.textColor
     },
-    columnThumbnail: {
-      flex: 1,
-      flexDirection: 'column'
-    },
-    buttonThumbnail: {
-      alignSelf: 'flex-end'
-    },
-    profilePic: {
-      width: '40@s',
-      height: '40@s',
-      borderRadius: '20@s'
+    avatarContainer: {
+      alignItems: 'center',
+      justifyContent: 'center'
     }
   });
   const portraitStyles = {};

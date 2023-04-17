@@ -1,20 +1,24 @@
-<resources>
-    <!-- Base application theme. -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!-- Base application theme. -->
   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="android:datePickerDialogTheme">@style/DialogDatePicker.Theme</item>
+      <item name="android:datePickerDialogTheme">@style/DialogPicker.Theme</item>
+      <item name="android:timePickerDialogTheme">@style/DialogPicker.Theme</item>
   </style>
 
-  <style name="DialogDatePicker.Theme" parent="Theme.AppCompat.Light.Dialog">
-
-    <item name="android:windowBackground">@color/white</item>
-    <item name="android:textColor">@color/primary</item>
-
-    <!-- Buttons color -->
-    <item name="colorAccent">@color/primary</item>
+  <style name="DialogPicker.Theme" parent="Theme.AppCompat.Light.Dialog">
+      <item name="android:windowBackground">@color/white</item>
+      <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+      <!-- Buttons color -->
+      <item name="colorAccent">@color/primary</item>
   </style>
 
-  <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
-      <item name="colorPrimaryDark">@color/status_bar_color</item>
-  </style>
-
+    <!-- BootTheme should inherit from Theme.SplashScreen -->
+    <style name="BootTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/bootsplash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/bootsplash_logo</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/bootsplash_background</item>
+        <item name="android:navigationBarColor">@color/bootsplash_background</item>
+    </style>
 </resources>

@@ -8,9 +8,6 @@ export default class Constants {
   public static readonly DEFAULT_LOCALE = 'en_US';
   public static readonly DEFAULT_LANGUAGE = 'en';
 
-  public static readonly DEFAULT_DURATION = '00:00';
-  public static readonly DEFAULT_DURATION_WITH_SECS = '00:00:00';
-
   public static readonly ANONYMIZED_VALUE = '####';
   public static readonly HYPHEN = '-';
 

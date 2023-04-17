@@ -12,12 +12,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       justifyContent: 'center',
       alignItems: 'stretch',
-      borderStyle: 'solid',
-      borderWidth: 1,
-      borderColor: 'transparent'
+      borderStyle: 'solid'
     },
-    borderedTopContainer: {
-      borderTopColor: commonColor.listBorderColor
+    borderedBottomContainer: {
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.listBorderColor
     },
     connectorContainer: {
       flexDirection: 'row',
@@ -77,6 +76,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     iconContainer: {
       width: '30@s'
+    },
+    arrowIcon: {
+      color: commonColor.disabledDark
     }
   });
   const portraitStyles = {};

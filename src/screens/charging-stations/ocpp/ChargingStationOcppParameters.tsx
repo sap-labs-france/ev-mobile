@@ -1,8 +1,7 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
+import { Button, HStack, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Alert, FlatList, RefreshControl, ScrollView } from 'react-native';
+import { Alert, FlatList, RefreshControl, ScrollView, Text, View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
@@ -14,6 +13,8 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationOcppParametersStyles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -154,26 +155,26 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
     const style = computeStyleSheet();
     const { loading, chargingStation, chargingStationConfigurationKeyValues } = this.state;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
           title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
+          containerStyle={style.headerContainer}
         />
         <Button
           disabled={chargingStation ? chargingStation.inactive : true}
-          block
-          iconLeft
-          info
           style={style.actionButton}
           onPress={() => this.requestChargingStationOcppParametersConfirm()}>
-          <Icon style={style.actionButtonIcon} type="MaterialIcons" name="get-app" />
-          <Text uppercase={false} style={style.actionButtonText}>
-            {I18n.t('chargers.requestConfiguration')}
-          </Text>
+          <HStack alignItems={'center'}>
+            <Icon size={scale(20)}  style={style.actionButtonIcon} as={MaterialIcons} name="get-app" />
+            <Text style={style.actionButtonText}>
+              {I18n.t('chargers.requestConfiguration')}
+            </Text>
+          </HStack>
         </Button>
         {loading ? (
-          <Spinner style={style.spinner} color="grey" />
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <FlatList
             data={chargingStationConfigurationKeyValues}
@@ -190,7 +191,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
             ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noOCPPParameters')} />}
           />
         )}
-      </Container>
+      </View>
     );
   }
 }
