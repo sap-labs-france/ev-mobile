@@ -102,7 +102,8 @@ export default function StripePaymentMethodCreationForm(props: Props) {
               });
               if (attachResponse?.succeeded) {
                 setLoading(false);
-                props.navigation.navigate('PaymentMethods', {refresh: true});
+                const routes = props.navigation.getState().routes;
+                props.navigation.navigate(routes[Math.max(0, routes.length-2)]?.name, {refresh: true});
                 Message.showSuccess(I18n.t('paymentMethods.addPaymentMethodSuccess'));
                 // Return to prevent showError from triggering
                 return;
