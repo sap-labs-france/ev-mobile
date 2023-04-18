@@ -390,7 +390,8 @@ export default class AddCar extends BaseScreen<Props, State> {
         const response = await this.centralServerProvider.createCar(car, forced);
         if (response?.status === RestResponse.SUCCESS) {
           Message.showSuccess(I18n.t('cars.addCarSuccessfully'));
-          this.props.navigation.navigate('Cars', {refresh: true});
+          const routes = this.props.navigation.getState().routes;
+          this.props.navigation.navigate(routes[Math.min(0, routes.length-2)].name, {refresh: true});
           return;
         } else {
           Message.showError(I18n.t('cars.addError'));
