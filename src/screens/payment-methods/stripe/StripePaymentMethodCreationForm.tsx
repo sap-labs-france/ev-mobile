@@ -1,8 +1,8 @@
 import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
-import { Button, Checkbox, Spinner } from 'native-base';
+import {Icon} from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { BackHandler, Text, TouchableOpacity, View } from 'react-native';
+import { BackHandler, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -15,6 +15,10 @@ import { BillingSettings } from '../../../types/Setting';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './StripePaymentMethodCreationFormStyles';
+import computeFormStyles from '../../../FormStyles';
+import {Button, CheckBox} from 'react-native-elements';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface Props extends BaseProps {}
 
@@ -26,6 +30,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   const [cardDetails, setCardDetails] = useState<CardFieldInput.Details>(null);
   const [isBillingSetUp, setIsBillingSetUp] = useState<boolean>(undefined);
   const style = computeStyleSheet();
+  const formStyle = computeFormStyles();
   const commonColors = Utils.getCurrentCommonColor();
   const canOpenDrawer = props?.route?.params?.canOpenDrawer ?? true;
 
@@ -97,7 +102,8 @@ export default function StripePaymentMethodCreationForm(props: Props) {
               });
               if (attachResponse?.succeeded) {
                 setLoading(false);
-                props.navigation.goBack();
+                const routes = props.navigation.getState().routes;
+                props.navigation.navigate(routes[Math.max(0, routes.length-2)]?.name, {refresh: true});
                 Message.showSuccess(I18n.t('paymentMethods.addPaymentMethodSuccess'));
                 // Return to prevent showError from triggering
                 return;
@@ -111,10 +117,10 @@ export default function StripePaymentMethodCreationForm(props: Props) {
         // Handle HTTP errors
       } catch (error) {
         await Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
+          provider,
           error,
           'paymentMethods.paymentMethodUnexpectedError',
-          this.props.navigation
+          props.navigation
         );
       }
     }
@@ -130,16 +136,22 @@ export default function StripePaymentMethodCreationForm(props: Props) {
 
   function buildCardFieldStyle() {
     return {
-      backgroundColor: commonColors.buttonBg,
+      backgroundColor: commonColors.listItemBackground,
       textColor: commonColors.textColor,
       placeholderColor: commonColors.disabledDark,
-      cursorColor: commonColors.textColor,
-      fontSize: Math.round(scale(15))
+      fontSize: Math.round(scale(15)),
+      borderRadius: scale(18)
     };
   }
 
   return (
-    <View style={style.container}>
+    <KeyboardAwareScrollView
+      bounces={false}
+      persistentScrollbar={true}
+      contentContainerStyle={formStyle.scrollViewContentContainer}
+      style={style.container}
+      keyboardShouldPersistTaps={'handled'}
+    >
       <HeaderComponent
         title={I18n.t('paymentMethods.addPaymentMethod')}
         navigation={props.navigation}
@@ -154,28 +166,28 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       />
       <View style={style.eulaContainer}>
         <Text style={[style.text, style.eulaText]}>{I18n.t('paymentMethods.paymentMethodCreationRules')}</Text>
-        <TouchableOpacity onPress={() => setEulaChecked(!eulaChecked)} style={style.checkboxContainer}>
-          <Checkbox value={'checkbox'} onChange={() => setEulaChecked(!eulaChecked)} _icon={{color: commonColors.textColor}} style={style.checkbox} isChecked={eulaChecked} />
-          <Text style={[style.text, style.checkboxText]}>{I18n.t('paymentMethods.paymentMethodsCreationCheckboxText')}</Text>
-        </TouchableOpacity>
+        <CheckBox
+          containerStyle={[formStyle.checkboxContainer, style.checkboxContainer]}
+          checked={eulaChecked}
+          onPress={() => setEulaChecked(!eulaChecked)}
+          title={I18n.t('paymentMethods.paymentMethodsCreationCheckboxText')}
+          textStyle={formStyle.checkboxText}
+          uncheckedIcon={<Icon size={scale(25)} name="checkbox-blank-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+          checkedIcon={<Icon size={scale(25)} name="checkbox-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+        />
       </View>
-      <View style={style.buttonContainer}>
-        {loading ? (
-          <View style={style.spinner}>
-            <Spinner color={commonColors.disabledDark} />
-          </View>
-        ) : (
-          <Button
-            disabled={!(cardDetails?.complete && eulaChecked && isBillingSetUp === true)}
-            style={[
-              style.button,
-              cardDetails?.complete && eulaChecked && isBillingSetUp === true ? style.buttonEnabled : style.buttonDisabled
-            ]}
-            onPress={async () => addPaymentMethod()}>
-            <Text style={style.buttonText}>{I18n.t('general.save')}</Text>
-          </Button>
-        )}
-      </View>
-    </View>
+      <Button
+        title={I18n.t('general.save')}
+        titleStyle={formStyle.buttonText}
+        disabled={!(cardDetails?.complete && eulaChecked && isBillingSetUp === true)}
+        disabledStyle={formStyle.buttonDisabled}
+        disabledTitleStyle={formStyle.buttonTextDisabled}
+        containerStyle={formStyle.buttonContainer}
+        buttonStyle={formStyle.button}
+        loading={loading}
+        loadingProps={{color: commonColors.light}}
+        onPress={() => void addPaymentMethod()}
+      />
+    </KeyboardAwareScrollView>
   );
 }
