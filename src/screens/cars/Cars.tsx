@@ -72,7 +72,7 @@ export default class Cars extends SelectableList<Car> {
   public async componentDidFocus() {
     super.componentDidFocus();
     Orientation.lockToPortrait();
-    await this.refresh(true);
+    await this.refresh(Utils.getParamFromNavigation(this.props.route, 'refresh', false, true) as boolean);
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
