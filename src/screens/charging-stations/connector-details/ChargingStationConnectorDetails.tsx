@@ -204,6 +204,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public componentDidFocus(): void {
     super.componentDidFocus();
+    void this.loadUserSessionContext();
     Orientation.lockToPortrait();
   }
 
