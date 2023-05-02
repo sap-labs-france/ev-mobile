@@ -822,7 +822,7 @@ export default class App extends React.Component<Props, State> {
           screens: {
             AuthNavigator: {
               screens: {
-                Login: 'login'
+                Login: DeepLinkingManager.PATH_LOGIN
               }
             },
             AppDrawerNavigator: {
@@ -831,18 +831,18 @@ export default class App extends React.Component<Props, State> {
                 ChargingStationsNavigator: {
                   initialRouteName: 'ChargingStations',
                   screens: {
-                    ChargingStations: 'charging-stations/all'
+                    ChargingStations:  `${DeepLinkingManager.PATH_CHARGING_STATIONS}/${DeepLinkingManager.FRAGMENT_ALL}`
                   }
                 },
-                InvoicesNavigator: 'invoices',
+                InvoicesNavigator: DeepLinkingManager.PATH_INVOICES,
                 TransactionInProgressNavigator: {
                   screens: {
-                    TransactionsInProgress: 'transactions/inprogress'
+                    TransactionsInProgress: `${DeepLinkingManager.PATH_TRANSACTIONS}/${DeepLinkingManager.FRAGMENT_IN_PROGRESS}`
                   }
                 },
                 TransactionHistoryNavigator: {
                   screens: {
-                    TransactionsHistory: 'transactions/history'
+                    TransactionsHistory: `${DeepLinkingManager.PATH_TRANSACTIONS}/${DeepLinkingManager.FRAGMENT_HISTORY}`
                   }
                 }
               }
@@ -852,7 +852,10 @@ export default class App extends React.Component<Props, State> {
         getStateFromPath:  (url, options) => {
           const path = url.split('/')?.[1].split('#')?.[0].split('?')?.[0];
           const query = url.split('?')?.[1]?.split('#')?.[0];
-          const fragment = url.split('#')?.[1];
+          let fragment = url.split('#')?.[1];
+          if (path === DeepLinkingManager.PATH_CHARGING_STATIONS && fragment === DeepLinkingManager.FRAGMENT_IN_ERROR) {
+            fragment = DeepLinkingManager.FRAGMENT_ALL;
+          }
           const newURL = path + (fragment ? '/' + fragment : '') + (query ? '?' + query : '');
           return getStateFromPath(newURL, options);
         }
