@@ -4,11 +4,11 @@ import messaging from '@react-native-firebase/messaging';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import {Notification} from '../types/UserNotifications';
 import {getApplicationName, getBundleId, getVersion} from 'react-native-device-info';
-import {PLATFORM} from '../theme/variables/commonColor';
 import Message from '../utils/Message';
 import I18n from 'i18n-js';
 import SecuredStorage from '../utils/SecuredStorage';
 import ProviderFactory from '../provider/ProviderFactory';
+import {requestNotifications} from 'react-native-permissions';
 
 export default class Notifications {
   private static centralServerProvider: CentralServerProvider;
@@ -17,29 +17,16 @@ export default class Notifications {
   public static async initialize(): Promise<void> {
     // Setup central provider
     this.centralServerProvider = await ProviderFactory.getProvider();
-    // Check if app has permission
-    let authorizationStatus = await messaging().hasPermission();
-    if (Platform.OS === PLATFORM.IOS &&
-        authorizationStatus !== messaging.AuthorizationStatus.PROVISIONAL &&
-        authorizationStatus !== messaging.AuthorizationStatus.AUTHORIZED
-    ) {
-      try {
-        // requesting permission from user is required for iOS
-        authorizationStatus = await messaging().requestPermission();
-      } catch ( error ) {
-        console.error(error);
-      }
-    }
-    if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED || messaging.AuthorizationStatus.PROVISIONAL) {
-      try {
-        // Retrieve mobile token
+    try {
+      const response = await requestNotifications(['alert', 'sound']);
+      if (response?.status === 'granted' ) {
         const fcmToken = await messaging().getToken();
-        if ( fcmToken ) {
+        if (fcmToken) {
           this.token = fcmToken;
         }
-      } catch ( error ) {
-        console.error(error);
       }
+    } catch ( error ) {
+      console.error(error);
     }
   }
 
