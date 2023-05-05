@@ -438,12 +438,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         Message.showError(I18n.t('general.notAuthorized'));
         return;
       }
-      // Check already in use
-      if (connector?.status !== ChargePointStatus.AVAILABLE && connector?.status !== ChargePointStatus.PREPARING) {
-        Message.showError(I18n.t('transactions.connectorNotAvailable'));
-        return;
-      }
-      // Disable the button
       this.setState({ buttonDisabled: true });
       const departureTimeAsString = !departureTime ? departureTime : new Date(Math.max(this.getMinimumDateMillisecs(), departureTime.getTime())).toISOString();
       // Start the Transaction
@@ -813,20 +807,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const style = computeStyleSheet();
     const {
       connector,
-      canStopTransaction,
-      canStartTransaction,
       chargingStation,
       loading,
-      siteImage,
       isPricingActive,
       showStartTransactionDialog,
-      showStopTransactionDialog,
-      refreshing,
-      sessionContext,
-      sessionContextLoading
+      showStopTransactionDialog
     } = this.state;
     const commonColors = Utils.getCurrentCommonColor();
-    const activityIndicatorCommonStyles = computeActivityIndicatorCommonStyles();
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector?.connectorId);
     return (
       <View style={style.container}>
@@ -842,54 +829,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         ) :
           <View style={style.container}>
             {/* Site Image */}
-            <ImageBackground source={siteImage ? { uri: siteImage } : noSite} imageStyle={style.backgroundImage} style={style.backgroundImageContainer as ImageStyle}>
-              <View style={style.imageInnerContainer}>
-                {/* Show Last Transaction */}
-                {this.renderShowLastTransactionButton(style)}
-                {/* Start/Stop Transaction */}
-                {canStartTransaction && connector?.currentTransactionID === 0 ? (
-                  <View style={style.transactionContainer}>{this.renderStartTransactionButton(style)}</View>
-                ) : canStopTransaction && connector?.currentTransactionID > 0 ? (
-                  <View style={style.transactionContainer}>{this.renderStopTransactionButton(style)}</View>
-                ) : (
-                  <View style={style.noButtonStopTransaction} />
-                )}
-                {/* Report Error */}
-                {this.renderReportErrorButton(style)}
-              </View>
-            </ImageBackground>
+            {this.renderBackGroundImage(style)}
             {/* Details */}
-            {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING ? (
-              <View  style={style.connectorInfoSettingsContainer}>
-                {refreshing && <ActivityIndicator
-                  size={scale(18)}
-                  color={commonColors.textColor}
-                  style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]}
-                  animating={true}
-                /> }
-{/*
-                {this.renderAccordion(style)}
-*/}
-
-                <KeyboardAwareScrollView
-                  persistentScrollbar={true}
-                  style={style.scrollviewContainer}
-                  contentContainerStyle={style.chargingSettingsContainer}
-                  keyboardShouldPersistTaps={'always'}
-                >
-                  {this.renderConnectorInfo(style)}
-                  {this.renderUserSelection(style)}
-                  {this.renderTagSelection(style)}
-                  {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
-                  {this.state.selectedCar && (
-                    <>
-                      {!sessionContextLoading && sessionContext?.smartChargingSessionParameters?.departureTime && this.renderDepartureTime()}
-                      {!sessionContextLoading && sessionContext?.smartChargingSessionParameters?.targetStateOfCharge && this.renderSoCInputs()}
-                    </>
-                  )}
-
-                </KeyboardAwareScrollView>
-              </View>
+            {connector?.status === ChargePointStatus.AVAILABLE || connector?.status === ChargePointStatus.PREPARING || connector?.status === ChargePointStatus.FINISHING ? (
+              this.renderChargingStationParameters(style)
             ) : (
               <ScrollView
                 style={style.scrollViewContainer}
@@ -909,6 +852,62 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             )}
           </View>
         }
+      </View>
+    );
+  }
+
+  private renderBackGroundImage(style: any) {
+    const { canStopTransaction, canStartTransaction, siteImage, connector} = this.state;
+    return (
+      <ImageBackground source={siteImage ? { uri: siteImage } : noSite} imageStyle={style.backgroundImage} style={style.backgroundImageContainer as ImageStyle}>
+        <View style={style.imageInnerContainer}>
+          {/* Show Last Transaction */}
+          {this.renderShowLastTransactionButton(style)}
+          {/* Start/Stop Transaction */}
+          {canStartTransaction && connector?.currentTransactionID === 0 ? (
+            <View style={style.transactionContainer}>{this.renderStartTransactionButton(style)}</View>
+          ) : canStopTransaction && connector?.currentTransactionID > 0 ? (
+            <View style={style.transactionContainer}>{this.renderStopTransactionButton(style)}</View>
+          ) : (
+            <View style={style.noButtonStopTransaction} />
+          )}
+          {/* Report Error */}
+          {this.renderReportErrorButton(style)}
+        </View>
+      </ImageBackground>
+    );
+  }
+
+  private renderChargingStationParameters(style: any) {
+    const activityIndicatorCommonStyles = computeActivityIndicatorCommonStyles();
+    const commonColors = Utils.getCurrentCommonColor();
+    const {refreshing, sessionContext, sessionContextLoading} = this.state;
+    return (
+      <View  style={style.connectorInfoSettingsContainer}>
+        {refreshing && <ActivityIndicator
+          size={scale(18)}
+          color={commonColors.textColor}
+          style={[activityIndicatorCommonStyles.activityIndicator, style.activityIndicator]}
+          animating={true}
+        /> }
+        <KeyboardAwareScrollView
+          persistentScrollbar={true}
+          style={style.scrollviewContainer}
+          contentContainerStyle={style.chargingSettingsContainer}
+          keyboardShouldPersistTaps={'always'}
+        >
+          {this.renderConnectorInfo(style)}
+          {this.renderUserSelection(style)}
+          {this.renderTagSelection(style)}
+          {this.securityProvider?.isComponentCarActive() && this.renderCarSelection(style)}
+          {this.state.selectedCar && (
+            <>
+              {!sessionContextLoading && sessionContext?.smartChargingSessionParameters?.departureTime && this.renderDepartureTime()}
+              {!sessionContextLoading && sessionContext?.smartChargingSessionParameters?.targetStateOfCharge && this.renderSoCInputs()}
+            </>
+          )}
+
+        </KeyboardAwareScrollView>
       </View>
     );
   }
@@ -1345,7 +1344,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         || Object.values(this.computeSettingsErrors()).some(error => error)
         || transactionPending
         || connector?.status === ChargePointStatus.FAULTED
-        || connector?.status === ChargePointStatus.FINISHING
         || connector?.status === ChargePointStatus.UNAVAILABLE;
   }
 
