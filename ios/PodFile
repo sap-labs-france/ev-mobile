@@ -47,6 +47,7 @@ target 'eMobility' do
   # Camera Permission
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
 
   pod 'RNSecureStorage', :path => '../node_modules/rn-secure-storage/ios/RNSecureStorage.podspec'
 
