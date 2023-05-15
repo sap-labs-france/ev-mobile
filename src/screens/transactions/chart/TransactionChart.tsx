@@ -10,7 +10,6 @@ import TransactionHeaderComponent from '../../../components/transaction/header/T
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
-import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
@@ -19,6 +18,7 @@ import computeStyleSheet from './TransactionChartStyles';
 import { HttpChargingStationRequest } from '../../../types/requests/HTTPChargingStationRequests';
 import I18nManager, { NumberFormatStyleEnum } from '../../../I18n/I18nManager';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import {StatusCodes} from 'http-status-codes';
 
 export interface Props extends BaseProps {}
 
@@ -90,7 +90,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         if (chargingStation) {
           connector = chargingStation ? chargingStation.connectors[Utils.convertToInt(connectorID) - 1] : null;
           // Refresh Consumption
-          if (connector?.currentTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
+          if (connector?.currentTransactionID && (!this.state.transaction || !this.state.transaction.stop) && connector?.canReadTransaction) {
             transactionWithConsumptions = await this.getTransactionWithConsumptions(connector?.currentTransactionID);
           }
         }
@@ -155,7 +155,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       }
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+      if (!error.request || error.request.status !== StatusCodes.FORBIDDEN) {
         // Other common Error
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
