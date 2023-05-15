@@ -262,7 +262,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return transaction;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || (error.request.status !== StatusCodes.FORBIDDEN && error.request.status !== StatusCodes.NOT_FOUND)) {
+      if (!error.request || error.request.status !== StatusCodes.FORBIDDEN) {
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
@@ -282,7 +282,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return transaction;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || (error.request.status !== StatusCodes.FORBIDDEN && error.request.status !== StatusCodes.NOT_FOUND)) {
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
@@ -367,7 +367,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         siteImage = await this.getSiteImage(chargingStation?.siteArea?.siteID);
       }
       // Get Current Transaction
-      if (connector?.currentTransactionID) {
+      if (connector?.currentTransactionID && connector?.canReadTransaction) {
         transaction = await this.getTransaction(connector.currentTransactionID);
       }
       // // Compute Duration

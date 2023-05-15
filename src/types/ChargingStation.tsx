@@ -98,6 +98,7 @@ export interface Connector {
   numberOfConnectedPhase?: number;
   currentType?: CurrentType;
   chargePointID?: number;
+  canReadTransaction?: boolean;
 }
 
 export enum ChargePointStatus {
