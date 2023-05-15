@@ -10,7 +10,6 @@ import TransactionHeaderComponent from '../../../components/transaction/header/T
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
-import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
@@ -19,6 +18,7 @@ import computeStyleSheet from './TransactionChartStyles';
 import { HttpChargingStationRequest } from '../../../types/requests/HTTPChargingStationRequests';
 import I18nManager, { NumberFormatStyleEnum } from '../../../I18n/I18nManager';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
+import {StatusCodes} from 'http-status-codes';
 
 export interface Props extends BaseProps {}
 
@@ -155,7 +155,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       }
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+      if (!error.request || (error.request.status !== StatusCodes.FORBIDDEN && error.request.status !== StatusCodes.NOT_FOUND)) {
         // Other common Error
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,

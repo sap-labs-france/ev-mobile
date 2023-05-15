@@ -262,7 +262,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return transaction;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+      if (!error.request || (error.request.status !== StatusCodes.FORBIDDEN && error.request.status !== StatusCodes.NOT_FOUND)) {
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
@@ -282,7 +282,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return transaction;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+      if (!error.request || (error.request.status !== StatusCodes.FORBIDDEN && error.request.status !== StatusCodes.NOT_FOUND)) {
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
@@ -1150,7 +1150,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  // TODO reload session context when changing car (at least to check again the availability of car connector)
   private renderCarSelection(style: any) {
     const { navigation } = this.props;
     const { sessionContextLoading, selectedUser, selectedCar, connector } = this.state;
