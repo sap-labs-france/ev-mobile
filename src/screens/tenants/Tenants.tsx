@@ -174,10 +174,10 @@ export default class Tenants extends BaseScreen<Props, State> {
           onPress={() => {
             this.deleteTenant(index, tenant.subdomain);
           }}>
-          <Icon color={commonColors.textColor} size={scale(20)} type={'material-community'} style={style.actionIcon} name="trash-can" />
+          <Icon color={commonColors.textColor} size={scale(20)} type={'material-community'} iconStyle={style.actionIcon} name="trash-can" />
         </TouchableOpacity>
         <TouchableOpacity style={style.editIconButton} onPress={() => this.setState({ tenantToBeEditedIndex: index })}>
-          <Icon color={commonColors.textColor} size={scale(20)} style={style.actionIcon} name="edit" type={'material'}/>
+          <Icon color={commonColors.textColor} size={scale(20)} iconStyle={style.actionIcon} name="edit" type={'material'}/>
         </TouchableOpacity>
       </View>
     );

@@ -169,7 +169,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           style={style.actionButton}
           onPress={() => this.requestChargingStationOcppParametersConfirm()}
           iconPosition={'left'}
-          icon={<Icon name={'get-app'} type={'material'} style={style.actionButtonIcon} size={scale(20)} color={commonColors.textColor}/>}
+          icon={<Icon name={'get-app'} type={'material'} iconStyle={style.actionButtonIcon} size={scale(20)} color={commonColors.textColor}/>}
         />
         {loading ? (
           <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" />

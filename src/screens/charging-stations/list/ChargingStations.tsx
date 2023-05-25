@@ -319,7 +319,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <SafeAreaView style={style.chargingStationDetailsModalContainer}>
           <View style={style.chargingStationDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ visible: false })}>
-              <Icon color={commonColors.textColor} size={scale(37)} style={style.closeIcon} type={'evilicon'} name={'close'} />
+              <Icon color={commonColors.textColor} size={scale(37)} iconStyle={style.closeIcon} type={'evilicon'} name={'close'} />
             </TouchableOpacity>
           </View>
           {this.state.loadingChargingStationDetails ? (
@@ -458,7 +458,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           style={[fabStyles.fab, style.fab]}
           onPress={() => this.setState({ showMap: !showMap, chargingStations: [], count: 0}, () => this.refresh(true)) }
         >
-          <Icon color={commonColors.textColor} size={scale(18)} style={fabStyles.fabIcon} type={'material-community'} name={showMap ? 'format-list-bulleted' : 'map'} />
+          <Icon color={commonColors.textColor} size={scale(18)} iconStyle={fabStyles.fabIcon} type={'material-community'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
     );

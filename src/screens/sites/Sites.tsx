@@ -240,7 +240,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <SafeAreaView style={style.siteDetailsModalContainer}>
           <View style={style.siteDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ selectedSite: null })}>
-              <Icon size={scale(37)} containerStyle={{margin: scale(8)}} style={style.closeIcon} type={'evilicon'} name={'close'} />
+              <Icon size={scale(37)} containerStyle={{margin: scale(8)}} iconStyle={style.closeIcon} type={'evilicon'} name={'close'} />
             </TouchableOpacity>
           </View>
           <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
@@ -325,7 +325,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           style={[fabStyles.fab, style.fab]}
           onPress={() => this.setState({ showMap: !showMap, sites: []}, () => this.refresh(true)) }
         >
-          <Icon size={scale(18)} style={fabStyles.fabIcon} color={commonColors.textColor} type={'material-community'} name={showMap ? 'format-list-bulleted' : 'map'} />
+          <Icon size={scale(18)} iconStyle={fabStyles.fabIcon} color={commonColors.textColor} type={'material-community'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
     );

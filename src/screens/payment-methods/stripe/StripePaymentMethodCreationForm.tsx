@@ -171,8 +171,8 @@ export default function StripePaymentMethodCreationForm(props: Props) {
           onPress={() => setEulaChecked(!eulaChecked)}
           title={I18n.t('paymentMethods.paymentMethodsCreationCheckboxText')}
           textStyle={formStyle.checkboxText}
-          uncheckedIcon={<Icon color={commonColors.textColor} size={scale(25)} name="checkbox-blank-outline" type={'material-community'} style={formStyle.inputIcon} />}
-          checkedIcon={<Icon color={commonColors.textColor} size={scale(25)} name="checkbox-outline" type={'material-community'} style={formStyle.inputIcon} />}
+          uncheckedIcon={<Icon color={commonColors.textColor} size={scale(25)} name="checkbox-blank-outline" type={'material-community'} iconStyle={formStyle.inputIcon} />}
+          checkedIcon={<Icon color={commonColors.textColor} size={scale(25)} name="checkbox-outline" type={'material-community'} iconStyle={formStyle.inputIcon} />}
         />
       </View>
       <Button

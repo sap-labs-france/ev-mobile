@@ -203,7 +203,7 @@ export default class Statistics extends BaseScreen<Props, State> {
                 textColor={commonColors.light}
                 value={totalSessions?.value}
                 secondLine={I18n.t('transactions.transactions')}
-                renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} style={iconStyle} type={'material'} name="history" />}
+                renderIcon={( iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} iconStyle={iconStyle} type={'material'} name="history" />}
                 description={I18n.t('home.numberOfSessionsNote')}
                 prefix={totalSessions?.compact}
               />
@@ -212,7 +212,7 @@ export default class Statistics extends BaseScreen<Props, State> {
                 textColor={commonColors.light}
                 value={totalConsumption?.value}
                 secondLine={'W.h'}
-                renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} name={'bolt'} type={'font-awesome'} style={iconStyle} />}
+                renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} name={'bolt'} type={'font-awesome'} iconStyle={iconStyle} />}
                 description={I18n.t('home.totalConsumptionNote')}
                 prefix={totalConsumption?.compact}
                 prefixWithSecondLine={true}
@@ -221,7 +221,7 @@ export default class Statistics extends BaseScreen<Props, State> {
                 backgroundColor={style.duration.backgroundColor.toString()}
                 textColor={commonColors.light}
                 value={I18nManager.formatDuration(totalDurationSecs, durationFormatOptions)}
-                renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} style={iconStyle} type={'material'} name="timer" />}
+                renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} iconStyle={iconStyle} type={'material'} name="timer" />}
                 description={I18n.t('home.totalDurationNote')}
               />
               <StatisticsComponent
@@ -229,7 +229,7 @@ export default class Statistics extends BaseScreen<Props, State> {
                 textColor={commonColors.light}
                 secondLine={I18nManager.formatPercentage(totalInactivitySecs / totalDurationSecs)}
                 value={I18nManager.formatDuration(totalInactivitySecs, durationFormatOptions)}
-                renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} style={iconStyle} type={'material'} name="timer-off" />}
+                renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} iconStyle={iconStyle} type={'material'} name="timer-off" />}
                 description={I18n.t('home.totalInactivityNote')}
               />
               {isPricingActive && (
@@ -240,7 +240,7 @@ export default class Statistics extends BaseScreen<Props, State> {
                   value={totalCost?.value}
                   prefix={totalCost?.compact}
                   prefixWithSecondLine={true}
-                  renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} style={iconStyle} type={'font-awesome'} name="money" />}
+                  renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} iconStyle={iconStyle} type={'font-awesome'} name="money" />}
                   description={I18n.t('home.totalPriceNote')}
                 />
               )}

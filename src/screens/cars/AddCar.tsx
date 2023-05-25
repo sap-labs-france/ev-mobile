@@ -364,7 +364,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         renderCustomizedButtonChild={() => <UserComponent user={user} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
-        renderDropdownIcon={() => <Icon size={scale(25)} type={'material'} style={style.dropdownIcon} name={'arrow-drop-down'} />}
+        renderDropdownIcon={() => <Icon size={scale(25)} type={'material'} iconStyle={style.dropdownIcon} name={'arrow-drop-down'} />}
       />
     );
   }

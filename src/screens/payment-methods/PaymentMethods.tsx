@@ -146,7 +146,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
         {billingSettings?.stripe?.publicKey && (
           <SafeAreaView style={fabStyles.fabContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })} style={fabStyles.fab}>
-              <Icon color={commonColors.textColor} type={'material-community'} size={scale(18)} name={'plus'} style={fabStyles.fabIcon} />
+              <Icon color={commonColors.textColor} type={'material-community'} size={scale(18)} name={'plus'} iconStyle={fabStyles.fabIcon} />
             </TouchableOpacity>
           </SafeAreaView>
         )}
@@ -203,7 +203,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
           {deleteInProgress ? (
             <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
           ) : (
-            <Icon color={commonColors.textColor} size={scale(23)} type={'material-community'} style={style.trashIcon} name="trash-can" />
+            <Icon color={commonColors.textColor} size={scale(23)} type={'material-community'} iconStyle={style.trashIcon} name="trash-can" />
           )}
         </TouchableOpacity>
       )
