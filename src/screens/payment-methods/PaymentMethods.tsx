@@ -20,7 +20,6 @@ import DialogModal from '../../components/modal/DialogModal';
 import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {}

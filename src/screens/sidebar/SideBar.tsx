@@ -21,7 +21,6 @@ import computeStyleSheet from './SideBarStyles';
 import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import SecurityProvider from '../../provider/SecurityProvider';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
 import {AuthContext} from '../../context/AuthContext';
 import {CommonActions, DrawerActions} from '@react-navigation/native';

@@ -249,15 +249,15 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
           <View style={style.viewContainer}>
             <View style={style.actionContainer}>
               <Button
+                title={I18n.t('chargers.resetHard')}
                 disabled={chargingStationIsDisabled}
                 disabledStyle={formStyle.buttonDisabled}
                 disabledTitleStyle={formStyle.buttonTextDisabled}
-                title={I18n.t('chargers.resetHard')}
+                loading={spinnerResetHard}
+                buttonStyle={[style.actionButton, chargingStationIsDisabled ? null : style.resetButton]}
                 icon={<Icon size={scale(20)} iconStyle={style.actionButtonIcon} type={'material'} name="repeat" />}
                 iconPosition={'left'}
-                buttonStyle={[style.actionButton, chargingStationIsDisabled ? null : style.resetButton]}
                 onPress={() => this.resetHardConfirm()}
-                loading={spinnerResetHard}
               />
             </View>
             {chargingStation &&
@@ -268,10 +268,10 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                     disabled={chargingStationIsDisabled || connector.status === ChargePointStatus.AVAILABLE}
                     disabledStyle={formStyle.buttonDisabled}
                     disabledTitleStyle={formStyle.buttonTextDisabled}
-                    icon={<Icon size={scale(20)} iconStyle={style.actionButtonIcon} type={'material'} name="lock-open" />}
-                    iconPosition={'left'}
                     loading={spinnerConnectors.get(connector.connectorId)}
                     buttonStyle={[style.actionButton, (!chargingStationIsDisabled && connector.status !== ChargePointStatus.AVAILABLE) && {backgroundColor: Utils.getCurrentCommonColor().warning} ]}
+                    icon={<Icon size={scale(20)} iconStyle={style.actionButtonIcon} type={'material'} name="lock-open" />}
+                    iconPosition={'left'}
                     onPress={() => this.unlockConnectorConfirm(connector.connectorId)}
                   />
                 </View>
@@ -282,11 +282,11 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                 disabled={chargingStationIsDisabled}
                 disabledStyle={formStyle.buttonDisabled}
                 disabledTitleStyle={formStyle.buttonTextDisabled}
-                buttonStyle={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
-                onPress={() => this.resetSoftConfirm()}
                 loading={spinnerResetSoft}
+                buttonStyle={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
                 icon={<Icon size={scale(20)} iconStyle={style.actionButtonIcon} type={'material'} name="layers-clear" />}
                 iconPosition={'left'}
+                onPress={() => this.resetSoftConfirm()}
               />
             </View>
             <View style={style.actionContainer}>
@@ -295,11 +295,11 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                 disabled={chargingStationIsDisabled}
                 disabledStyle={formStyle.buttonDisabled}
                 disabledTitleStyle={formStyle.buttonTextDisabled}
-                buttonStyle={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
-                onPress={() => this.clearCacheConfirm()}
                 loading={spinnerClearCache}
+                buttonStyle={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
                 icon={<Icon size={scale(20)} iconStyle={style.actionButtonIcon} type={'material'} name="refresh" />}
                 iconPosition={'left'}
+                onPress={() => this.clearCacheConfirm()}
               />
             </View>
           </View>

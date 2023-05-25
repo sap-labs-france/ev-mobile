@@ -12,9 +12,9 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationOcppParametersStyles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
 import {Button, Icon} from 'react-native-elements';
+import computeFormStyle from '../../../FormStyles';
 
 export interface Props extends BaseProps {}
 
@@ -155,6 +155,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
     const style = computeStyleSheet();
     const { loading, chargingStation, chargingStationConfigurationKeyValues } = this.state;
     const commonColors = Utils.getCurrentCommonColor();
+    const formStyle = computeFormStyle();
     return (
       <View style={style.container}>
         <HeaderComponent
@@ -164,12 +165,14 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           containerStyle={style.headerContainer}
         />
         <Button
-          disabled={chargingStation?.inactive ?? true}
           title={I18n.t('chargers.requestConfiguration')}
-          style={style.actionButton}
-          onPress={() => this.requestChargingStationOcppParametersConfirm()}
-          iconPosition={'left'}
+          disabled={chargingStation?.inactive ?? true}
+          disabledStyle={formStyle.buttonDisabled}
+          disabledTitleStyle={formStyle.buttonTextDisabled}
+          buttonStyle={style.actionButton}
           icon={<Icon name={'get-app'} type={'material'} iconStyle={style.actionButtonIcon} size={scale(20)} color={commonColors.textColor}/>}
+          iconPosition={'left'}
+          onPress={() => this.requestChargingStationOcppParametersConfirm()}
         />
         {loading ? (
           <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" />

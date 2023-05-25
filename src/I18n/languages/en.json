@@ -4,7 +4,7 @@
     "migrationError": "Error during migration of data",
     "cannotConnectBackend": "Connection has been lost",
     "unexpectedErrorBackend": "Unexpected backend error",
-    "unexpectedError": "Unexpected rror",
+    "unexpectedError": "Unexpected error",
     "sessionExpired": "Session has expired",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",

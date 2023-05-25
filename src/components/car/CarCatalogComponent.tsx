@@ -7,10 +7,7 @@ import Utils from '../../utils/Utils';
 import computeStyleSheet from './CarCatalogComponentStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import I18n from 'i18n-js';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Icon} from 'react-native-elements';
 
 interface State {

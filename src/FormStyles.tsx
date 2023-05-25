@@ -27,7 +27,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: scale(18)
     },
     buttonDisabled: {
-      backgroundColor: commonColor.disabledDark,
+      backgroundColor: commonColor.disabledDark
     },
     button: {
       alignSelf: 'center',

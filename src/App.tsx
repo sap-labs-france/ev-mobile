@@ -56,8 +56,6 @@ import ChargingStationQrCode from './screens/home/ChargingStationQrCode';
 import ThemeManager from './custom-theme/ThemeManager';
 import TenantQrCode from './screens/tenants/TenantQrCode';
 import computeStyleSheet from './AppStyles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Settings from './screens/settings/Settings';
 import {hide} from 'react-native-bootsplash';
 import {ThemeType} from './types/Theme';
