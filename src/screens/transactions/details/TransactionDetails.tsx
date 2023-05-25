@@ -277,21 +277,21 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       <>
         {!Utils.isNullOrUndefined(transaction?.carStateOfCharge) && (
           <View style={style.columnContainer}>
-            <Icon size={scale(25)} type={'material'} name="battery-charging-full" style={style.icon} />
+            <Icon size={scale(25)} type={'material'} name="battery-charging-full" iconStyle={style.icon} />
             <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.initialStateOfCharge')}</Text>
             <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{transaction.carStateOfCharge}%</Text>
           </View>
         )}
         {!!transaction?.targetStateOfCharge && (
           <View style={style.columnContainer}>
-            <Icon size={scale(25)} type={'material'} name="battery-charging-full" style={style.icon} />
+            <Icon size={scale(25)} type={'material'} name="battery-charging-full" iconStyle={style.icon} />
             <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.targetStateOfCharge')}</Text>
             <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{transaction.targetStateOfCharge}%</Text>
           </View>
         )}
         {!!transaction?.departureTime && (
           <View style={style.columnContainer}>
-            <Icon size={scale(25)} type={'material'} name="clock-end" style={style.icon} />
+            <Icon size={scale(25)} type={'material'} name="clock-end" iconStyle={style.icon} />
             <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.departureTime')}</Text>
             <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{departureTimeFormatted}</Text>
           </View>
