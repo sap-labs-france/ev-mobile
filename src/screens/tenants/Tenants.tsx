@@ -15,8 +15,6 @@ import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
 import TenantComponent from '../../components/tenant/TenantComponent';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
 import {Icon} from 'react-native-elements';
 
@@ -122,7 +120,7 @@ export default class Tenants extends BaseScreen<Props, State> {
         <View style={style.container}>
           <SafeAreaView style={fabStyles.fabContainer}>
             <TouchableOpacity delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={fabStyles.fab}>
-              <Icon color={commonColors.textColor} size={scale(18)} type={'material-community'} name={'plus'} style={fabStyles.fabIcon} />
+              <Icon color={commonColors.textColor} size={scale(18)} type={'material-community'} name={'plus'} iconStyle={fabStyles.fabIcon} />
             </TouchableOpacity>
           </SafeAreaView>
           {showAddTenantManuallyDialog && (
@@ -147,7 +145,7 @@ export default class Tenants extends BaseScreen<Props, State> {
             <View style={style.listContainer}>
               <FlatList
                 data={tenants}
-                refreshControl={<RefreshControl onRefresh={() => this.refreshTenants(true)} refreshing={refreshing} />}
+                refreshControl={<RefreshControl progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]} onRefresh={() => this.refreshTenants(true)} refreshing={refreshing} />}
                 keyExtractor={(item) => `${item.subdomain}${item.endpoint?.name}`}
                 renderItem={({ item, index }) => (
                   <Swipeable
@@ -191,7 +189,7 @@ export default class Tenants extends BaseScreen<Props, State> {
       <DialogModal
         animationIn={'fadeInLeft'}
         title={I18n.t('authentication.addTenantTitle')}
-        renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} style={iconStyle} type={'material'} name={'add-business'} />}
+        renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} iconStyle={iconStyle} type={'material'} name={'add-business'} />}
         description={I18n.t('authentication.addTenantText')}
         close={() => this.setState({ showAddTenantDialog: false })}
         withCancel={true}
