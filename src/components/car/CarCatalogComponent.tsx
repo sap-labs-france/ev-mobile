@@ -1,4 +1,3 @@
-import { Icon } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, Text, View, ViewStyle } from 'react-native';
 
@@ -12,6 +11,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Icon} from 'react-native-elements';
 
 interface State {
   noImage?: boolean;
@@ -54,7 +54,7 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
           <Image onError={() => this.setState({ noImage: true })} resizeMethod={'auto'} style={style.imageStyle as ImageStyle} source={image} />
         ) : (
           <View style={style.noImageContainer}>
-            <Icon size={scale(75)} style={style.carImagePlaceholder} as={Ionicons} name={'car-sport'} />
+            <Icon size={scale(75)} iconStyle={style.carImagePlaceholder} type={'ionicon'} name={'car-sport'} />
           </View>
         )}
         <View style={style.rightContainer}>
@@ -67,7 +67,7 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
             <View style={style.powerDetailsContainer}>
               <View style={style.columnContainer}>
                 <View style={style.iconContainer}>
-                  <Icon size={scale(20)} as={MaterialIcons} name="battery-full" style={style.icon} />
+                  <Icon size={scale(20)} type={'material'} name="battery-full" iconStyle={style.icon} />
                 </View>
                 <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
                   {carCatalog?.batteryCapacityFull} kW.h
@@ -75,7 +75,7 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
               </View>
               <View style={style.columnContainer}>
                 <View style={style.iconContainer}>
-                  <Icon size={scale(20)} as={MaterialCommunityIcons} name="road-variant" style={style.icon} />
+                  <Icon size={scale(20)} type={'material-community'} name="road-variant" iconStyle={style.icon} />
                 </View>
                 <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
                   {carCatalog?.rangeReal} km
@@ -83,7 +83,7 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
               </View>
               <View style={style.columnContainer}>
                 <View style={style.iconContainer}>
-                  <Icon size={scale(20)} style={style.icon} as={MaterialCommunityIcons} name="piston" />
+                  <Icon size={scale(20)} iconStyle={style.icon} type={'material-community'} name="piston" />
                 </View>
                 {carCatalog?.drivetrainPowerHP ? (
                   <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
@@ -95,8 +95,8 @@ export default class CarCatalogComponent extends React.Component<Props, State> {
               </View>
               <View style={style.columnContainer}>
                 <View style={style.iconContainer}>
-                  <Icon size={scale(20)} style={style.icon} as={MaterialIcons} name="bolt" />
-                  <Icon style={[style.icon, style.currentTypeIcon]} as={MaterialCommunityIcons} name="sine-wave" />
+                  <Icon size={scale(20)} iconStyle={style.icon} type={'material'} name="bolt" />
+                  <Icon iconStyle={{...style.icon, ...style.currentTypeIcon}} type={'material-community'} name="sine-wave" />
                 </View>
                 <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.powerDetailsText]}>
                   {carCatalog?.chargeStandardPower} kW

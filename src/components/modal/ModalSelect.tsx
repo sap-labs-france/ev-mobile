@@ -1,4 +1,3 @@
-import { Icon, Spinner} from 'native-base';
 import React from 'react';
 import Modal from 'react-native-modal';
 import BaseProps from '../../types/BaseProps';
@@ -8,11 +7,10 @@ import computeStyleSheet from './ModalSelectStyles';
 import I18n from 'i18n-js';
 import SelectableList from '../../screens/base-screen/SelectableList';
 import ListItem from '../../types/ListItem';
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import {ActivityIndicator, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import computeModalCommonStyle from './ModalCommonStyle';
-import { Button } from 'react-native-elements';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import {Button, Icon} from 'react-native-elements';
 import { scale } from 'react-native-size-matters';
 
 export interface Props<T> extends BaseProps {
@@ -107,7 +105,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
                 {subtitle && <Text numberOfLines={1} style={style.modalSubtitle}>{subtitle}</Text>}
               </View>
               <TouchableOpacity onPress={() => this.setState({ isVisible: false })}>
-                <Icon size={scale(30)} style={style.closeIcon} as={EvilIcons} name={'close'} />
+                <Icon size={scale(30)} iconStyle={style.closeIcon} type={'evilicon'} name={'close'} />
               </TouchableOpacity>
             </View>
             <View style={style.listContainer}>
@@ -186,7 +184,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
     if (defaultItemLoading) {
       return (
         <View style={[listItemCommonStyle.container, style.spinnerContainer]}>
-          <Spinner size={scale(20)} color={commonColors.textColor} style={style.spinner} />
+          <ActivityIndicator size={scale(20)} color={commonColors.textColor} style={style.spinner} />
         </View>
       );
     }
@@ -205,7 +203,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           </TouchableOpacity>
           {clearable && (
             <TouchableOpacity style={style.clearContainer} onPress={() => this.resetInput(true)}>
-              <Icon size={scale(25)} style={style.clearIcon} as={EvilIcons} name={'close'} />
+              <Icon size={scale(25)} iconStyle={style.clearIcon} type={'evilicon'} name={'close'} />
             </TouchableOpacity>
           )}
         </View>

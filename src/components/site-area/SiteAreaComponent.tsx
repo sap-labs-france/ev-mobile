@@ -1,5 +1,4 @@
 import I18n from 'i18n-js';
-import { Icon } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, ViewStyle, Text, View } from 'react-native';
 
@@ -11,9 +10,8 @@ import ConnectorStatusesContainerComponent from '../connector-status/ConnectorSt
 import computeStyleSheet from './SiteAreaComponentStyles';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import I18nManager from '../../I18n/I18nManager';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {
   siteArea: SiteArea;
@@ -70,16 +68,16 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
                 disabled={!validGPSCoordinates}
                 onPress={() => Utils.jumpToMapWithAddress(siteArea.name, siteArea.address)}>
                 {validGPSCoordinates ? (
-                  <Icon size={scale(30)} style={style.icon} as={MaterialIcons} name="place" />
+                  <Icon size={scale(30)} iconStyle={style.icon} type={'material'} name="place" />
                 ) : (
-                  <Icon size={scale(30)} style={style.icon} as={MaterialCommunityIcons} name="map-marker-off" />
+                  <Icon size={scale(30)} iconStyle={style.icon} type={'material-community'} name="map-marker-off" />
                 )}
               </TouchableOpacity>
               <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>
                 {siteArea.name}
               </Text>
             </View>
-            <Icon size={scale(18)} style={style.arrowIcon} as={MaterialCommunityIcons} name="arrow-right-circle-outline" />
+            <Icon size={scale(18)} iconStyle={style.arrowIcon} type={'material-community'} name="arrow-right-circle-outline" />
           </View>
           <View style={style.subTitleContainer}>
             <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={2}>

@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import {ActivityIndicator, Image, ImageStyle, SafeAreaView, TouchableOpacity, View} from 'react-native';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 
@@ -26,10 +25,8 @@ import satelliteLayout from '../../../assets/map/satellite.png';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
 import { ChargingStationsFiltersDef } from '../charging-stations/list/ChargingStationsFilters';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { scale } from 'react-native-size-matters';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -243,7 +240,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <SafeAreaView style={style.siteDetailsModalContainer}>
           <View style={style.siteDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ selectedSite: null })}>
-              <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
+              <Icon size={scale(37)} containerStyle={{margin: scale(8)}} style={style.closeIcon} type={'evilicon'} name={'close'} />
             </TouchableOpacity>
           </View>
           <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
@@ -286,7 +283,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           {selectedSite && this.buildModal(navigation, selectedSite, modalStyle)}
           {showMap ? this.renderMap() : (
             <View style={style.sitesContainer}>
-              {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+              {loading ? <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" /> : (
                 <ItemsList<Site>
                   skip={skip}
                   count={count}
@@ -312,6 +309,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const fabStyles = computeFabStyles();
     const { showMap, satelliteMap } = this.state;
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <SafeAreaView style={style.fabContainer}>
         {showMap && (
@@ -327,7 +325,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           style={[fabStyles.fab, style.fab]}
           onPress={() => this.setState({ showMap: !showMap, sites: []}, () => this.refresh(true)) }
         >
-          <Icon size={scale(18)} style={fabStyles.fabIcon} as={MaterialCommunityIcons} name={showMap ? 'format-list-bulleted' : 'map'} />
+          <Icon size={scale(18)} style={fabStyles.fabIcon} color={commonColors.textColor} type={'material-community'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -352,7 +350,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
               title={site.name}
               onPress={() => this.showMapSiteDetail(site)}
             >
-              <Icon size={scale(40)} as={MaterialIcons} name={'location-pin'} style={Utils.computeSiteMarkerStyle(site?.connectorStats)} />
+              <Icon size={scale(40)} type={'material'} name={'location-pin'} iconStyle={Utils.computeSiteMarkerStyle(site?.connectorStats)} />
             </Marker>
           )}
           initialRegion={this.currentRegion}
@@ -377,7 +375,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-            <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon size={scale(25)} color={commonColors.textColor} type={'material-community'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

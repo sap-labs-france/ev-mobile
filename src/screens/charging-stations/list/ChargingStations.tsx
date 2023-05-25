@@ -1,9 +1,7 @@
 import I18n from 'i18n-js';
-import { Icon, Spinner } from 'native-base';
 import React from 'react';
 import {
   ActivityIndicator,
-  Alert,
   BackHandler,
   Image,
   ImageStyle,
@@ -39,9 +37,7 @@ import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
 import computeActivityIndicatorCommonStyle from '../../../components/activity-indicator/ActivityIndicatorCommonStyle';
 import { scale } from 'react-native-size-matters';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import {Icon} from 'react-native-elements';
 
 
 export interface Props extends BaseProps {}
@@ -305,6 +301,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public buildModal(isAdmin: boolean, navigation: any, chargingStationSelected: ChargingStation, modalStyle: any) {
     // ChargeX setup have more than 4 connectors.
     const style = computeStyleSheet();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <Modal
         useNativeDriverForBackdrop={true}
@@ -322,7 +319,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <SafeAreaView style={style.chargingStationDetailsModalContainer}>
           <View style={style.chargingStationDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ visible: false })}>
-              <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
+              <Icon color={commonColors.textColor} size={scale(37)} style={style.closeIcon} type={'evilicon'} name={'close'} />
             </TouchableOpacity>
           </View>
           {this.state.loadingChargingStationDetails ? (
@@ -365,7 +362,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               onPress: () => navigation.navigate('QRCodeScanner'),
               renderAction: () => (
                 <View style={style.qrcodeButton}>
-                  <Icon as={MaterialIcons} name={'qr-code-scanner'} color={commonColors.light} size={scale(20)} />
+                  <Icon type={'material'} name={'qr-code-scanner'} color={commonColors.light} size={scale(20)} />
                 </View>
               )
             }
@@ -379,7 +376,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           {visible && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
           {showMap ? this.renderMap() : (
             <View style={style.chargingStationsContainer}>
-              {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+              {loading ? <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" /> : (
                 <ItemsList<ChargingStation>
                   skip={skip}
                   count={count}
@@ -430,7 +427,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               title={chargingStation.id}
               onPress={() => this.showMapChargingStationDetail(chargingStation.id)}
             >
-              <Icon as={MaterialCommunityIcons} name={'ev-station'} size={scale(40)} style={this.buildMarkerStyle(chargingStation?.connectors, chargingStation?.inactive)} />
+              <Icon type={'material-community'} name={'ev-station'} size={scale(40)} iconStyle={this.buildMarkerStyle(chargingStation?.connectors, chargingStation?.inactive)} />
             </Marker>
           )}
           initialRegion={this.currentRegion}
@@ -445,6 +442,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const fabStyles = computeFabStyles();
     const { showMap, satelliteMap } = this.state;
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <SafeAreaView style={fabStyles.fabContainer}>
         {showMap && (
@@ -460,7 +458,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           style={[fabStyles.fab, style.fab]}
           onPress={() => this.setState({ showMap: !showMap, chargingStations: [], count: 0}, () => this.refresh(true)) }
         >
-          <Icon size={scale(18)} style={fabStyles.fabIcon} as={MaterialCommunityIcons} name={showMap ? 'format-list-bulleted' : 'map'} />
+          <Icon color={commonColors.textColor} size={scale(18)} style={fabStyles.fabIcon} type={'material-community'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -510,7 +508,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <SimpleSearchComponent searchText={this.searchText} containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-            <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon size={scale(25)} color={commonColors.textColor} type={'material-community'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

@@ -1,4 +1,3 @@
-import { Icon } from 'native-base';
 import React from 'react';
 import { Text, View } from 'react-native';
 
@@ -7,8 +6,8 @@ import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './TransactionHeaderComponentStyles';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {
   transaction: Transaction;
@@ -43,7 +42,7 @@ export default class TransactionHeaderComponent extends React.Component<Props, S
       <View style={style.container}>
         <View style={style.firstLine}>
           <Text numberOfLines={1} style={style.transactionTimestamp}>{I18nManager.formatDateTime(transaction.timestamp, {dateStyle: 'medium', timeStyle: 'short'})}</Text>
-          <Icon size={scale(18)} style={style.arrowIcon} as={MaterialCommunityIcons} name="arrow-right-circle-outline" />
+          <Icon size={scale(18)} iconStyle={style.arrowIcon} type={'material-community'} name="arrow-right-circle-outline" />
         </View>
         <Text numberOfLines={1} style={[style.subHeaderName, style.chargingStationName]}>
           {transaction.chargeBoxID} - {Utils.getConnectorLetterFromConnectorID(transaction.connectorId)}

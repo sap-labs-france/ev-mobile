@@ -1,5 +1,4 @@
 import I18n from 'i18n-js';
-import { Icon, Spinner } from 'native-base';
 import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -16,9 +15,10 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from './TransactionsHistoryFilters';
-import { TouchableOpacity, View } from 'react-native';
+import {ActivityIndicator, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -174,7 +174,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   public async search (searchText: string) {
     this.searchText = searchText;
     this.refresh(true);
-  };
+  }
 
   private manualRefresh() {
     this.refresh(true);
@@ -197,7 +197,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           containerStyle={style.headerContainer}
         />
         {this.renderFilters()}
-        {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+        {loading ? <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<Transaction>
               skip={skip}
@@ -245,7 +245,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
-            <Icon color={commonColors.textColor} size={scale(25)} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon color={commonColors.textColor} size={scale(25)} type={'material-community'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

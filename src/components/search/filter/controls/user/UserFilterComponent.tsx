@@ -1,4 +1,3 @@
-import { Icon } from 'native-base';
 import React from 'react';
 
 import FilterControlComponent, {
@@ -15,11 +14,9 @@ import Users from '../../../../../screens/users/list/Users';
 import { TouchableOpacity, Text, View } from 'react-native';
 import I18n from 'i18n-js';
 import Utils from '../../../../../utils/Utils';
-import { withBadge } from 'react-native-elements';
+import {Icon, withBadge} from 'react-native-elements';
 import ListItem from '../../../../../types/ListItem';
 import { scale } from 'react-native-size-matters';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export interface Props extends FilterControlComponentProps<string> {}
 
@@ -72,11 +69,11 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
         </View>
         <View style={style.buttonsContainer}>
           <TouchableOpacity style={style.buttonContainer} onPress={() => this.userModalRef?.current?.resetInput()}>
-            <Icon size={scale(25)} style={style.buttonIcon} as={EvilIcons} name={'close'} />
+            <Icon size={scale(25)} iconStyle={style.buttonIcon} type={'evilicon'} name={'close'} />
           </TouchableOpacity>
           <View style={style.buttonsSeparator}></View>
           <TouchableOpacity style={style.buttonContainer} onPress={() => this.userModalRef?.current?.resetInput(false, this.currentUser ? [this.currentUser] : [])}>
-            <Icon size={scale(25)} style={style.buttonIcon} as={Ionicons} name={'person-circle'} />
+            <Icon size={scale(25)} iconStyle={style.buttonIcon} type={'ionicon'} name={'person-circle'} />
           </TouchableOpacity>
         </View>
       </View>
@@ -88,7 +85,7 @@ export default class UserFilterComponent extends FilterControlComponent<User[]> 
     const style = computeStyleSheet();
     return (
       <View style={[listItemCommonStyles.container, style.userFilterPlaceholder]}>
-        <Icon marginX={scale(7)} size={scale(40)} style={style.userFilterPlaceholderIcon} as={Ionicons} name={'people'} />
+        <Icon size={scale(40)} iconStyle={style.userFilterPlaceholderIcon} type={'ionicon'} name={'people'} />
         <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.userFilterPlaceholderText} >{I18n.t('users.selectOneOrSeveralUsers')}</Text>
       </View>
     )

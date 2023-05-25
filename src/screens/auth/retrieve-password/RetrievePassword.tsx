@@ -1,7 +1,6 @@
 import { CommonActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import {Icon, Spinner} from 'native-base';
 import React from 'react';
 
 import computeFormStyleSheet from '../../../FormStyles';
@@ -14,12 +13,12 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import { TenantConnection } from '../../../types/Tenant';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
-import {Button, Input} from 'react-native-elements';
+import {Button, Icon, Input} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {ActivityIndicator} from 'react-native';
 
 export interface Props extends BaseProps {}
 
@@ -178,7 +177,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { retrievingPassword, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, tenantLogo, email, performRetrievePassword } = this.state;
     return loading ? (
-      <Spinner style={formStyle.spinner} color="grey" />
+      <ActivityIndicator style={formStyle.spinner} color="grey" />
     ) : (
       <SafeAreaView edges={['bottom']} style={style.container}>
         <HeaderComponent
@@ -189,7 +188,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
         <AuthHeader containerStyle={{marginHorizontal: '5%', marginBottom: scale(10)}} navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
         <KeyboardAwareScrollView bounces={false} contentContainerStyle={style.scrollViewContentContainer} style={style.scrollView}>
           <Input
-            leftIcon={<Icon size={scale(20)} name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+            leftIcon={<Icon size={scale(20)} name="email" type={'material-community'} iconStyle={formStyle.inputIcon} />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={formStyle.inputTextContainer}

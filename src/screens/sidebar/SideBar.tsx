@@ -1,6 +1,5 @@
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { HStack, Icon, IIconProps } from 'native-base';
 import React from 'react';
 import {
   Image,
@@ -31,11 +30,11 @@ import {
   DrawerContentScrollView,
   DrawerItem,
 } from '@react-navigation/drawer';
-import Color from 'color';
+import {Icon, IconProps} from 'react-native-elements';
 
 export interface Props extends DrawerContentComponentProps {}
 
-function SidebarIcon(props: IIconProps): React.ReactElement {
+function SidebarIcon(props: IconProps): React.ReactElement {
   const commonColor = Utils.getCurrentCommonColor();
   return <Icon color={commonColor.textColor} size={scale(22)} {...props} />;
 }
@@ -135,7 +134,7 @@ export default class SideBar extends React.Component<Props, State> {
                 <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
               ) : (
                 <TouchableOpacity style={style.newVersionContainer}>
-                  <SidebarIcon style={style.newVersionIcon} as={MaterialIcons} name={'update'} />
+                  <SidebarIcon style={style.newVersionIcon} type={'material'} name={'update'} />
                   <Text style={style.newVersionText}>{I18n.t('appUpdate.appUpdateDialogTitle')}</Text>
                 </TouchableOpacity>
               )}
@@ -181,7 +180,7 @@ export default class SideBar extends React.Component<Props, State> {
                 <Text style={style.userName}>
                   {Utils.buildUserName(user)}
                 </Text>
-                <HStack style={{alignItems: 'center'}}>
+                <View style={{alignItems: 'center', flexDirection: 'row'}}>
                   <TouchableOpacity style={style.settingsContainer} onPress={() => this.navigateTo('SettingsNavigator', 'Settings')}>
                     <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.logoutText}>{I18n.t('sidebar.settings')}</Text>
                   </TouchableOpacity>
@@ -193,7 +192,7 @@ export default class SideBar extends React.Component<Props, State> {
                       </TouchableOpacity>
                     )}
                   </AuthContext.Consumer>
-                </HStack>
+                </View>
               </View>
             </View>
             <SafeAreaView />

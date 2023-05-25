@@ -1,6 +1,5 @@
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Icon } from 'native-base';
 import React from 'react';
 import { ScrollView, TouchableOpacity, Text, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -13,10 +12,8 @@ import ChargingStationConnectorComponent from './connector/ChargingStationConnec
 import DialogModal from '../modal/DialogModal';
 import computeModalCommonStyle from '../modal/ModalCommonStyle';
 import I18nManager from '../../I18n/I18nManager';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { scale } from 'react-native-size-matters';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {
   chargingStation: ChargingStation;
@@ -62,9 +59,9 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
               disabled={!validGPSCoordinates}
               onPress={() => Utils.jumpToMapWithCoordinates(chargingStation.id, chargingStation.coordinates)}>
               {validGPSCoordinates ? (
-                <Icon size={scale(30)} style={[style.icon, style.iconLeft]} as={MaterialCommunityIcons} name="directions" />
+                <Icon size={scale(30)} iconStyle={{...style.icon, ...style.iconLeft}} type={'material-community'} name="directions" />
               ) : (
-                <Icon size={scale(30)} style={[style.icon, style.iconLeft]} as={MaterialCommunityIcons} name="map-marker-off" />
+                <Icon size={scale(30)} iconStyle={{...style.icon, ...style.iconLeft}} type={'material-community'} name="map-marker-off" />
               )}
             </TouchableOpacity>
             <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>
@@ -85,7 +82,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                     key: `${Utils.randomNumber()}`
                   });
                 }}>
-                <Icon size={scale(30)} style={[style.icon, style.iconRight, style.settingsIcon]} as={MaterialIcons} name="tune" />
+                <Icon size={scale(30)} iconStyle={{...style.icon, ...style.iconRight, ...style.settingsIcon}} type={'material'} name="tune" />
               </TouchableOpacity>
             )}
             <TouchableOpacity
@@ -94,11 +91,11 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
               }}>
               {chargingStation.inactive ? (
                 <Animatable.Text animation="fadeIn" easing="ease-in-out" iterationCount="infinite" direction="alternate-reverse">
-                  <Icon size={scale(30)} style={style.deadHeartbeatIcon} as={FontAwesome} name="heartbeat" />
+                  <Icon size={scale(30)} iconStyle={style.deadHeartbeatIcon} type={'font-awesome'} name="heartbeat" />
                 </Animatable.Text>
               ) : (
                 <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>
-                  <Icon size={scale(30)} style={style.heartbeatIcon} as={FontAwesome} name="heartbeat" />
+                  <Icon size={scale(30)} iconStyle={style.heartbeatIcon} type={'font-awesome'} name="heartbeat" />
                 </Animatable.Text>
               )}
             </TouchableOpacity>

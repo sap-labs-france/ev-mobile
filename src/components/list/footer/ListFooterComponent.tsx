@@ -1,9 +1,8 @@
-import { Spinner } from 'native-base';
 import React from 'react';
 
 import BaseProps from '../../../types/BaseProps';
 import computeStyleSheet from './ListFooterComponentStyles';
-import { View } from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 export interface Props extends BaseProps {
   skip: number;
@@ -35,7 +34,7 @@ export default class ListFooterComponent extends React.Component<Props, State> {
     if (skip + limit < count || count === -1) {
       return (
         <View style={style.spinnerContainer}>
-          <Spinner color="grey" />
+          <ActivityIndicator color="grey" />
         </View>
       );
     }

@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Spinner } from 'native-base';
 import React from 'react';
-import {Dimensions, ScrollView, View} from 'react-native';
+import {ActivityIndicator, Dimensions, ScrollView, View} from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
@@ -69,12 +68,12 @@ export default class Eula extends BaseScreen<Props, State> {
           title={I18n.t('authentication.eula')}
         />
         {loading ? (
-          <Spinner size={scale(30)} style={style.spinner} color="grey" />
+          <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <ScrollView style={style.HTMLViewContainer}>
             <RenderHtml
-                contentWidth={Dimensions.get('window').width}
-                source={{html: eulaTextHtml}}
+              contentWidth={Dimensions.get('window').width}
+              source={{html: eulaTextHtml}}
             />
           </ScrollView>
         )}

@@ -1,4 +1,3 @@
-import { Icon } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, ViewStyle, Text, View } from 'react-native';
 
@@ -11,9 +10,8 @@ import computeStyleSheet from '../TransactionComponentCommonStyles';
 import computeListItemCommonStyle from '../../list/ListItemCommonStyle';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { scale } from 'react-native-size-matters';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {
   transaction: Transaction;
@@ -69,20 +67,20 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
           <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
           <View style={style.transactionDetailsContainer}>
             <View style={style.transactionDetailContainer}>
-              <Icon size={scale(25)} as={MaterialIcons} name="ev-station" style={[style.icon, style.info]} />
+              <Icon size={scale(25)} type={'material'} name="ev-station" iconStyle={{...style.icon, ...style.info}} />
               <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{consumption} kW.h</Text>
             </View>
             <View style={style.transactionDetailContainer}>
-              <Icon size={scale(25)} as={MaterialIcons} name="timer" style={[style.icon, style.info]} />
+              <Icon size={scale(25)} type={'material'} name="timer" iconStyle={{...style.icon, ...style.info}} />
               <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>{duration}</Text>
             </View>
             <View style={style.transactionDetailContainer}>
-              <Icon size={scale(25)} as={MaterialIcons} name="timer-off" style={[style.icon, inactivityStyle]} />
+              <Icon size={scale(25)} type={'material'} name="timer-off" iconStyle={{...style.icon, ...inactivityStyle}} />
               <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
             </View>
             {isPricingActive && (
               <View style={style.transactionDetailContainer}>
-                <Icon size={scale(25)} as={MaterialIcons} name="money" style={[style.icon, style.info]} />
+                <Icon size={scale(25)} type={'material'} name="money" iconStyle={{...style.icon, ...style.info}} />
                 <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.labelValue, style.info]}>
                   {price}
                 </Text>

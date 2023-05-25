@@ -1,5 +1,4 @@
 import I18n from 'i18n-js';
-import { Icon } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -11,8 +10,8 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';
 import computeStyleSheet from './ChargingStationConnectorComponentStyles';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {
   chargingStation: ChargingStation;
@@ -170,7 +169,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
             </View>
             {!chargingStation.inactive && listed && (
               <View style={style.iconContainer}>
-                <Icon size={scale(25)} style={style.arrowIcon} as={MaterialCommunityIcons} name="arrow-right-circle-outline" />
+                <Icon size={scale(25)} iconStyle={style.arrowIcon} type={'material-community'} name="arrow-right-circle-outline" />
               </View>
             )}
           </View>

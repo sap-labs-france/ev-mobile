@@ -56,7 +56,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '5@s'
     },
     userFilterPlaceholderIcon: {
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      marginHorizontal: '7@s'
     },
     userFilterPlaceholderText: {
       color: commonColor.textColor,

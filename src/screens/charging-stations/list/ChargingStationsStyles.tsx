@@ -125,7 +125,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '30@s'
     },
     closeIcon: {
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      margin: '8@s'
     },
     activityIndicator: {
       marginTop: '70@s',

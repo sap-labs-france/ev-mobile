@@ -9,7 +9,6 @@ import {
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import I18n from 'i18n-js';
-import {Icon, NativeBaseProvider} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Appearance, ColorSchemeName, NativeEventSubscription, StatusBar, Text} from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -58,7 +57,6 @@ import ThemeManager from './custom-theme/ThemeManager';
 import TenantQrCode from './screens/tenants/TenantQrCode';
 import computeStyleSheet from './AppStyles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Settings from './screens/settings/Settings';
 import {hide} from 'react-native-bootsplash';
@@ -70,6 +68,7 @@ import Loading from './screens/loading/Loading';
 import {Notification} from './types/UserNotifications';
 import Configuration from './config/Configuration';
 import {RootSiblingParent} from 'react-native-root-siblings';
+import {Icon} from 'react-native-elements';
 
 // Init i18n
 I18nManager.initialize();
@@ -106,11 +105,11 @@ const createTabBarIcon = (
   const commonColor = Utils.getCurrentCommonColor();
   return (
     <Icon
-      style={{
+      iconStyle={{
         color: props.focused ? commonColor.textColor : commonColor.disabledDark,
       }}
       size={scale(21)}
-      as={type}
+      type={type}
       name={name}
     />
   );
@@ -184,7 +183,7 @@ function ChargingStationDetailsTabsNavigator(props: BaseProps) {
         initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.actions')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'build')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'material', 'build')
         }}
       />
       <ChargingStationDetailsTabs.Screen
@@ -193,7 +192,7 @@ function ChargingStationDetailsTabsNavigator(props: BaseProps) {
         initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.ocpp')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'format-list-bulleted')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'material', 'format-list-bulleted')
         }}
       />
       <ChargingStationDetailsTabs.Screen
@@ -202,7 +201,7 @@ function ChargingStationDetailsTabsNavigator(props: BaseProps) {
         initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('chargers.properties')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialIcons, 'info')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'material', 'info')
         }}
       />
     </ChargingStationDetailsTabs.Navigator>
@@ -228,7 +227,7 @@ function ChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
         initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('sites.chargePoint')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, FontAwesome, 'bolt')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'font-awesome', 'bolt')
         }}
       />
       <ChargingStationConnectorDetailsTabs.Screen
@@ -237,7 +236,7 @@ function ChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
         initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('details.graph')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialCommunityIcons, 'chart-areaspline-variant')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'material-community', 'chart-areaspline-variant')
         }}
       />
     </ChargingStationConnectorDetailsTabs.Navigator>
@@ -263,7 +262,7 @@ function TransactionDetailsTabsNavigator(props: BaseProps) {
         initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('transactions.transaction')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, FontAwesome, 'bolt')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'font-awesome', 'bolt')
         }}
       />
       <TransactionDetailsTabs.Screen
@@ -272,7 +271,7 @@ function TransactionDetailsTabsNavigator(props: BaseProps) {
         initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
         options={{
           tabBarLabel: <Text style={style.bottomTabsIcon}>{I18n.t('details.graph')}</Text>,
-          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, MaterialCommunityIcons, 'chart-areaspline-variant')
+          tabBarIcon: (iconProps) => createTabBarIcon(iconProps, 'material-community', 'chart-areaspline-variant')
         }}
       />
     </TransactionDetailsTabs.Navigator>
@@ -532,7 +531,7 @@ function AppDrawerNavigator(props: BaseProps) {
           component={ChargingStationQrCode}
           options={{
             drawerLabel: I18n.t('sidebar.qrCodeScanner'),
-            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="qr-code-scanner" />
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="qr-code-scanner" />
 
           }}
           initialParams={{...(props?.route?.params?.params || {}), canOpenDrawer: false}}
@@ -544,7 +543,7 @@ function AppDrawerNavigator(props: BaseProps) {
           component={ChargingStationsNavigator}
           options={{
             drawerLabel: I18n.t('sidebar.chargers'),
-            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="ev-station" />
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="ev-station" />
           }}
           initialParams={props?.route?.params?.params}
         />
@@ -554,7 +553,7 @@ function AppDrawerNavigator(props: BaseProps) {
             component={SitesNavigator}
             options={{
               drawerLabel: I18n.t('sidebar.sites'),
-              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="store-mall-directory" />
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="store-mall-directory" />
             }}
             initialParams={props?.route?.params?.params}
           />
@@ -566,7 +565,7 @@ function AppDrawerNavigator(props: BaseProps) {
           component={TransactionHistoryNavigator}
           options={{
             drawerLabel: I18n.t('sidebar.transactionsHistory'),
-            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="history" />
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="history" />
           }}
           initialParams={props?.route?.params?.params}
         />
@@ -575,7 +574,7 @@ function AppDrawerNavigator(props: BaseProps) {
           component={TransactionInProgressNavigator}
           options={{
             drawerLabel: I18n.t('sidebar.transactionsInProgress'),
-            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="play-arrow" />
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="play-arrow" />
           }}
           initialParams={props?.route?.params?.params}
         />
@@ -584,7 +583,7 @@ function AppDrawerNavigator(props: BaseProps) {
           component={StatsNavigator}
           options={{
             drawerLabel: I18n.t('sidebar.statistics'),
-            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="bar-chart" />
+            drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="bar-chart" />
           }}
           initialParams={props?.route?.params?.params}
         />
@@ -596,7 +595,7 @@ function AppDrawerNavigator(props: BaseProps) {
             component={UsersNavigator}
             options={{
               drawerLabel: I18n.t('sidebar.users'),
-              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="people" />
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="people" />
             }}
             initialParams={props?.route?.params?.params}
           />
@@ -607,7 +606,7 @@ function AppDrawerNavigator(props: BaseProps) {
             component={TagsNavigator}
             options={{
               drawerLabel: I18n.t('sidebar.badges'),
-              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialCommunityIcons} name="credit-card-wireless-outline" />
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material-community'} name="credit-card-wireless-outline" />
             }}
             initialParams={props?.route?.params?.params}
           />
@@ -618,7 +617,7 @@ function AppDrawerNavigator(props: BaseProps) {
             component={CarsNavigator}
             options={{
               drawerLabel: I18n.t('sidebar.cars'),
-              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="directions-car" />
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="directions-car" />
             }}
             initialParams={props?.route?.params?.params}
           />
@@ -631,7 +630,7 @@ function AppDrawerNavigator(props: BaseProps) {
             component={PaymentMethodsNavigator}
             options={{
               drawerLabel: I18n.t('sidebar.paymentMethods'),
-              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialCommunityIcons} name="credit-card-outline" />
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material-community'} name="credit-card-outline" />
             }}
             initialParams={props?.route?.params?.params}
           />
@@ -643,7 +642,7 @@ function AppDrawerNavigator(props: BaseProps) {
             component={InvoicesNavigator}
             options={{
               drawerLabel: I18n.t('sidebar.invoices'),
-              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="receipt" />
+              drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="receipt" />
             }}
             initialParams={props?.route?.params?.params}
           />
@@ -654,7 +653,7 @@ function AppDrawerNavigator(props: BaseProps) {
         component={ReportErrorNavigator}
         options={{
           drawerLabel: I18n.t('sidebar.reportError'),
-          drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} as={MaterialIcons} name="error-outline" />
+          drawerIcon: () => <Icon color={commonColors.textColor} size={scale(22)} type={'material'} name="error-outline" />
         }}
         initialParams={props?.route?.params?.params}
       />
@@ -778,21 +777,19 @@ export default class App extends React.Component<Props, State> {
   public render() {
     const { showAppUpdateDialog, isSignedIn } = this.state;
     return (
-      <NativeBaseProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <RootSiblingParent>
-            {showAppUpdateDialog && (
-              <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />
-            )}
-            <StatusBar barStyle={ThemeManager.getInstance()?.isThemeTypeIsDark() ? 'light-content' : 'dark-content'} translucent backgroundColor="transparent" />
-            {isSignedIn == null ?
-              <Loading/>
-              :
-              this.createRootNavigator()
-            }
-          </RootSiblingParent>
-        </GestureHandlerRootView>
-      </NativeBaseProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <RootSiblingParent>
+          {showAppUpdateDialog && (
+            <AppUpdateDialog appVersion={this.appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />
+          )}
+          <StatusBar barStyle={ThemeManager.getInstance()?.isThemeTypeIsDark() ? 'light-content' : 'dark-content'} translucent backgroundColor="transparent" />
+          {isSignedIn == null ?
+            <Loading/>
+            :
+            this.createRootNavigator()
+          }
+        </RootSiblingParent>
+      </GestureHandlerRootView>
     );
   }
 

@@ -1,7 +1,6 @@
 import i18n, { default as I18n } from 'i18n-js';
-import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import {ActivityIndicator, TouchableOpacity, View} from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -15,8 +14,8 @@ import Utils from '../../utils/Utils';
 import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 import computeStyleSheet from './TagsStyles';
 import TagsFilters, { TagsFiltersDef } from './TagsFilters';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];
@@ -159,7 +158,7 @@ export default class Tags extends SelectableList<Tag> {
         )}
         {this.renderFilters()}
         {loading ? (
-          <Spinner size={scale(30)} style={style.spinner} color="grey" />
+          <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
             <ItemsList<Tag>
@@ -211,7 +210,7 @@ export default class Tags extends SelectableList<Tag> {
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {!isModal && this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
-            <Icon style={style.filterButtonIcon} size={scale(25)} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon iconStyle={style.filterButtonIcon} size={scale(25)} type={'material-community'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

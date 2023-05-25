@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Button, HStack, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Alert, FlatList, RefreshControl, ScrollView, Text, View } from 'react-native';
+import {ActivityIndicator, Alert, FlatList, RefreshControl, ScrollView, Text, View} from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
@@ -15,6 +14,7 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationOcppParametersStyles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
+import {Button, Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -154,6 +154,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
     const { navigation } = this.props;
     const style = computeStyleSheet();
     const { loading, chargingStation, chargingStationConfigurationKeyValues } = this.state;
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={style.container}>
         <HeaderComponent
@@ -163,18 +164,15 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           containerStyle={style.headerContainer}
         />
         <Button
-          disabled={chargingStation ? chargingStation.inactive : true}
+          disabled={chargingStation?.inactive ?? true}
+          title={I18n.t('chargers.requestConfiguration')}
           style={style.actionButton}
-          onPress={() => this.requestChargingStationOcppParametersConfirm()}>
-          <HStack alignItems={'center'}>
-            <Icon size={scale(20)}  style={style.actionButtonIcon} as={MaterialIcons} name="get-app" />
-            <Text style={style.actionButtonText}>
-              {I18n.t('chargers.requestConfiguration')}
-            </Text>
-          </HStack>
-        </Button>
+          onPress={() => this.requestChargingStationOcppParametersConfirm()}
+          iconPosition={'left'}
+          icon={<Icon name={'get-app'} type={'material'} style={style.actionButtonIcon} size={scale(20)} color={commonColors.textColor}/>}
+        />
         {loading ? (
-          <Spinner size={scale(30)} style={style.spinner} color="grey" />
+          <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <FlatList
             data={chargingStationConfigurationKeyValues}

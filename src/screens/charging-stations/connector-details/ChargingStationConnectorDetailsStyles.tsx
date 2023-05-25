@@ -439,7 +439,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       justifyContent: 'flex-end',
       borderRadius: scale(8),
-      paddingVertical: '13@s'
+      paddingVertical: '13@s',
+      flexDirection: 'row'
     },
     socInputContainerError: {
       borderColor: commonColor.danger,
