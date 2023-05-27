@@ -53,9 +53,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       height: 'auto',
       minHeight: '40@s',
-      marginHorizontal: 0,
       paddingHorizontal: 0,
-      backgroundColor: commonColor.containerBgColor,
+      borderRadius: '18@s',
+      backgroundColor: commonColor.listItemBackground,
     },
     selectFieldDisabled: {
       opacity: 0.4
@@ -70,7 +70,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.disabledDark
     },
     selectDropdown: {
-      backgroundColor: commonColor.selectDropdownBackgroundColor
+      backgroundColor: commonColor.listItemBackground
     },
     selectDropdownRow: {
       borderBottomWidth: 0
@@ -135,10 +135,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginLeft: 0
     },
     carTypeContainer: {
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      width: '95%',
-      marginTop: '15@s'
+      width: '100%',
+      marginVertical: '10@s'
     },
     radioButton: {
       marginRight: '15@s',
@@ -149,8 +147,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: 'red',
       transform: Platform.OS === PLATFORM.IOS ? [] : [{ scaleX:  moderateScale(1, 3.5) }, { scaleY: moderateScale(1, 3.5) }]
     },
-    itemComponentContainer: {
-      marginBottom: '5@s'
+    paddedInputTextContainer: {
     },
     dropdownIcon: {
       color: commonColor.textColor

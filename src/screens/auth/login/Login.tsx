@@ -339,8 +339,8 @@ export default class Login extends BaseScreen<Props, State> {
                   onChangeText={(newPassword: string) => this.setState({password: newPassword})}
                 />
                 <CheckBox
+                  containerStyle={[formStyle.checkboxContainer, style.checkboxContainer]}
                   testID={'LoginEULACheckbox'}
-                  containerStyle={formStyle.checkboxContainer}
                   textStyle={{backgroundColor: 'transparent'}}
                   checked={eula}
                   onPress={() => this.setState({ eula: !eula })}

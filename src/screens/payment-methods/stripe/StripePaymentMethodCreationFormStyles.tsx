@@ -17,7 +17,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     cardFieldContainer: {
       height: '50@s',
-      width: '100%',
+      width: '95%',
       color: commonColor.textColor,
       alignSelf: 'center'
     },
@@ -46,14 +46,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     eulaContainer: {
       marginTop: '10@s',
-      marginHorizontal: '10@s'
-    },
-    checkboxContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingLeft: '10@s',
-      paddingRight: '10@s'
+      width:'95%'
     },
     checkbox: {
       color: commonColor.textColor,
@@ -72,15 +65,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '7@s'
     },
     checkboxText: {
-      textAlign: 'justify',
+      textAlign: 'left',
       marginTop: '10@s',
-      paddingHorizontal: '10@s'
+      paddingHorizontal: '10@s',
+      fontSize: '12@s',
+      color: commonColor.textColor
     },
     buttonText: {
       color: commonColor.textColor,
       padding: '5@s',
       fontSize: '12@s',
       opacity: 1
+    },
+    checkboxContainer: {
+      marginBottom: '15@s'
     }
   });
   const portraitStyles = {};

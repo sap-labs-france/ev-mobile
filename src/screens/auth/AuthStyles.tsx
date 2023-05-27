@@ -49,9 +49,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '30@s'
     },
     forgotPasswordContainer: {
-      width: '90%',
       alignItems: 'flex-end',
-      marginTop: scale(5)
+      marginTop: scale(5),
+      height: '30@s',
+      marginRight: '5%',
+      alignSelf: 'flex-end'
     },
     forgotPasswordText: {
       fontSize: scale(12),
@@ -91,6 +93,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '13@s',
       color: commonColor.textColor,
       textDecorationLine: 'underline'
+    },
+    checkboxContainer: {
+      justifyContent: 'center',
+      marginBottom: '15@s'
     }
   });
   const portraitStyles = {};

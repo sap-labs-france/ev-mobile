@@ -273,7 +273,7 @@
     "addCarButton": "Fahrzeug hinzufügen",
     "evse_phase": "Phase",
     "evse_phases": "Phasen",
-    "invalidVIN": "Ungültige VIN",
+    "invalidVIN": "Must be 17 char. long including digits and capital letters",
     "invalidLicensePlate": "Ungültiges Kennzeichen",
     "licensePlate": "Kennzeichen",
     "converter": "Converter",
@@ -335,8 +335,9 @@
     "adviceMessage": "Stellen Sie sicher, dass das Kabel verbunden ist",
     "sessionAlreadyInProgressError": "An diesem Anschluss findet bereits ein Ladevorgang statt",
     "departureTime": "Departure time",
-    "departureStateOfCharge": "Departure state of charge",
+    "targetStateOfCharge": "Target state of charge",
     "currentStateOfCharge": "Current state of charge",
+    "initialStateOfCharge": "Initial state of charge",
     "stateOfCharge": "Ladezustand"
   },
   "home": {

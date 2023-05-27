@@ -12,14 +12,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    formContainer: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center'
+    scrollView: {
+      width: '100%',
+      flex: 1
+    },
+    scrollViewContentContainer: {
+      flexGrow: 1,
+      width: '100%',
+      alignItems: 'center',
+      paddingVertical: '5@s'
     },
     buttonContainer: {
-      width: '90%'
+      width: '95%',
+      borderRadius: scale(18)
     },
     buttonDisabled: {
       backgroundColor: commonColor.disabledDark
@@ -29,7 +34,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       backgroundColor: commonColor.primary,
       borderRadius: '18@s',
-      padding: '7@s',
+      paddingHorizontal: '7@s',
+      paddingVertical: '8@s',
       width: '100%'
     },
     secondaryButton: {
@@ -42,10 +48,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.light
     },
     buttonTextDisabled: {
-      opacity: 0.8
+      opacity: 0.9
     },
     inputContainer: {
-      width: '90%',
+      width: '95%',
       paddingHorizontal: 0,
       marginBottom: scale(20)
     },
@@ -54,10 +60,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: scale(13)
     },
     inputTextContainer: {
-      height: '45@s',
+      minHeight: '45@s',
       flexGrow: 1,
       maxHeight: '400@s',
       width: '100%',
+      paddingVertical: 0,
       paddingHorizontal: '10@s',
       backgroundColor: commonColor.listItemBackground,
       borderRadius: '18@s',
@@ -74,8 +81,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     inputIcon: {
       color: commonColor.textColor,
       alignSelf: 'center',
-      textAlign: 'center',
-      width: '25@s'
+      textAlign: 'center'
     },
     inputError: {
       color: commonColor.danger,
@@ -83,24 +89,24 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     checkboxContainer: {
       flexDirection: 'row',
-      justifyContent: 'center',
       alignItems: 'center',
       marginVertical: '10@s',
+      paddingVertical: 0,
       backgroundColor: 'transparent',
-      borderWidth: 0
+      paddingHorizontal: 0,
+      borderWidth: 0,
+      width: '95%'
     },
     checkbox: {
       borderColor: commonColor.textColor,
       backgroundColor: commonColor.containerBgColor,
-      height: '21@s',
-      width: '21@s',
-      alignItems: 'center',
-      marginRight: '10@s'
+      alignItems: 'center'
     },
     checkboxText: {
-      fontSize: '13@s',
+      fontSize: '12@s',
       color: commonColor.textColor,
-      paddingLeft: '10@s'
+      paddingLeft: '10@s',
+      fontWeight: 'normal'
     }
   });
   const portraitStyles = {};

@@ -17,6 +17,7 @@ import computeStyleSheet from './TransactionDetailsStyles';
 import DurationUnitFormat from 'intl-unofficial-duration-unit-format';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export interface Props extends BaseProps {}
 
@@ -256,21 +257,46 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
             )}
           </View>
         </View>
-        <ScrollView contentContainerStyle={style.scrollViewContainer}>
-          <View style={style.rowContainer}>
-            {this.renderUserInfo(style)}
-            {this.renderTotalConsumption(style)}
-          </View>
-          <View style={style.rowContainer}>
-            {this.renderElapsedTime(style)}
-            {this.renderInactivity(style)}
-          </View>
-          <View style={style.rowContainer}>
-            {this.renderBatteryLevel(style)}
-            {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-          </View>
+        <ScrollView style={style.scrollViewContainer} contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          {this.renderUserInfo(style)}
+          {this.renderTotalConsumption(style)}
+          {this.renderElapsedTime(style)}
+          {this.renderInactivity(style)}
+          {this.renderBatteryLevel(style)}
+          {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+          {this.renderSmartChargingParameters(style)}
         </ScrollView>
       </View>
+    );
+  }
+
+  private renderSmartChargingParameters(style: any) {
+    const { transaction } = this.state;
+    const departureTimeFormatted = I18nManager.formatDateTime(transaction?.departureTime, {dateStyle: 'short', timeStyle: 'short'});
+    return (
+      <>
+        {!Utils.isNullOrUndefined(transaction?.carStateOfCharge) && (
+          <View style={style.columnContainer}>
+            <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={style.icon} />
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.initialStateOfCharge')}</Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{transaction.carStateOfCharge}%</Text>
+          </View>
+        )}
+        {!!transaction?.targetStateOfCharge && (
+          <View style={style.columnContainer}>
+            <Icon size={scale(25)} as={MaterialIcons} name="battery-charging-full" style={style.icon} />
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.targetStateOfCharge')}</Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{transaction.targetStateOfCharge}%</Text>
+          </View>
+        )}
+        {!!transaction?.departureTime && (
+          <View style={style.columnContainer}>
+            <Icon size={scale(25)} as={MaterialCommunityIcons} name="clock-end" style={style.icon} />
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label]}>{I18n.t('transactions.departureTime')}</Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit={true} style={[style.label, style.labelValue]}>{departureTimeFormatted}</Text>
+          </View>
+        )}
+      </>
     );
   }
 }

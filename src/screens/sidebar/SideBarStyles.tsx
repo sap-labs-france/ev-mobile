@@ -59,7 +59,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-start'
     },
     scrollviewInnerContainer: {
-      width: '100%'
+      width: '100%',
+      paddingTop: 0
     },
     scrollview: {
       width: '100%',

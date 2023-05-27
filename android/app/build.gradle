@@ -6,7 +6,7 @@ if (file("../release.gradle").exists()) {
   apply from: file("../release-template.gradle")
 }
 
-import com.android.build.OutputFile
+import com.`android.build.OutputFile
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -146,7 +146,7 @@ android {
         applicationId "com.emobility"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 531
+        versionCode 536
         versionName "2.7.5"
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

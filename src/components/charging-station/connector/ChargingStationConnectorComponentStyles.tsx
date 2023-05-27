@@ -12,12 +12,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       justifyContent: 'center',
       alignItems: 'stretch',
-      borderStyle: 'solid',
-      borderBottomWidth: 1,
-      borderColor: commonColor.listBorderColor
+      borderStyle: 'solid'
     },
-    borderedTopContainer: {
-      borderTopColor: commonColor.listBorderColor
+    borderedBottomContainer: {
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.listBorderColor
     },
     connectorContainer: {
       flexDirection: 'row',

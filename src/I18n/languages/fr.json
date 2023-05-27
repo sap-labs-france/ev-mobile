@@ -273,7 +273,7 @@
     "addCarButton": "Ajouter",
     "evse_phase": "Phase",
     "evse_phases": "Phases",
-    "invalidVIN": "VIN invalide",
+    "invalidVIN": "Doit contenir 17 char. et uniquement des chiffres ou majuscules",
     "invalidLicensePlate": "Plaque d'immatriculation invalide",
     "licensePlate": "Plaque d'immatriculation",
     "converter": "Convertisseur",
@@ -335,8 +335,9 @@
     "adviceMessage": "Assurez-vous que le câble est branché",
     "sessionAlreadyInProgressError": "Une session est déjà en cours sur ce connecteur",
     "departureTime": "Heure de départ",
-    "departureStateOfCharge": "Niveau de batterie souhaité",
+    "targetStateOfCharge": "Niveau de batterie souhaité",
     "currentStateOfCharge": "Niveau de batterie actuel",
+    "initialStateOfCharge": "Niveau de batterie initial",
     "stateOfCharge": "Niv. batterie"
   },
   "home": {

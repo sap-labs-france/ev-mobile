@@ -95,5 +95,11 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  };
+  }
+
+  protected setDrawerStatus() {
+    if (!this.props.isModal) {
+      super.setDrawerStatus();
+    }
+  }
 }

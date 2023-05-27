@@ -11,6 +11,14 @@ import Message from '../utils/Message';
 import Utils from '../utils/Utils';
 
 export default class DeepLinkingManager {
+  public static readonly PATH_CHARGING_STATIONS = 'charging-stations';
+  public static readonly PATH_TRANSACTIONS = 'transactions';
+  public static readonly PATH_LOGIN = 'login';
+  public static readonly PATH_INVOICES = 'invoices';
+  public static readonly FRAGMENT_IN_ERROR = 'inerror';
+  public static readonly FRAGMENT_ALL = 'all';
+  public static readonly FRAGMENT_IN_PROGRESS = 'inprogress';
+  public static readonly FRAGMENT_HISTORY = 'history';
   private static instance: DeepLinkingManager;
   private navigator: NavigationContainerRef<ReactNavigation.RootParamList>;
   private centralServerProvider: CentralServerProvider;
