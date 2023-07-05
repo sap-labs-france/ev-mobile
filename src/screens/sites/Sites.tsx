@@ -52,6 +52,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   private currentRegion: Region;
   private mapLimit = 100;
   private listLimit = 25;
+  private mapViewRef: React.RefObject<any>;
 
   public constructor(props: Props) {
     super(props);
@@ -66,6 +67,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       satelliteMap: false,
       filters: {}
     };
+    this.mapViewRef = React.createRef();
   }
 
   public setState = (
@@ -121,21 +123,21 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     return null;
   };
 
-  public onBack () {
+  public onBack() {
     // Back mobile button: Force navigation
     if (this.state.showMap) {
-      this.setState({ showMap: false, sites: [] }, () => this.refresh(true));
+      this.setState({ showMap: false, sites: [] }, async () => this.refresh(true));
       return true;
     } else {
       this.props.navigation.goBack();
       return true;
     }
-  };
+  }
 
-  public async computeRegion(sites: Site[]): Promise<Region> {
+  public async computeRegion(sites: Site[], locateUser: boolean = false): Promise<Region> {
     // If currentLocation available, use it
     const currentLocation = await Utils.getUserCurrentLocation();
-    if ( currentLocation ) {
+    if (currentLocation || locateUser) {
       return {
         longitude: currentLocation.longitude,
         latitude: currentLocation.latitude,
@@ -146,7 +148,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     // Else, use coordinates of the first site
     if (!Utils.isEmptyArray(sites)) {
       let gpsCoordinates: number[];
-      if ( !Utils.isEmptyArray(sites) && Utils.containsGPSCoordinates(sites[0].address?.coordinates) ) {
+      if (!Utils.isEmptyArray(sites) && Utils.containsGPSCoordinates(sites[0].address?.coordinates)) {
         gpsCoordinates = sites[0].address?.coordinates;
       }
       return {
@@ -238,20 +240,19 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         style={modalStyle.modalBottomHalf}
         isVisible={true}
         propagateSwipe={true}
-        onBackButtonPress={() => this.setState({ selectedSite: null })}
-      >
+        onBackButtonPress={() => this.setState({ selectedSite: null })}>
         <SafeAreaView style={style.siteDetailsModalContainer}>
           <View style={style.siteDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ selectedSite: null })}>
               <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           </View>
-          <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
+          <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: 'auto' }}>
             <SiteComponent
               site={siteSelected}
               navigation={navigation}
               onNavigate={() => this.setState({ selectedSite: null })}
-              containerStyle={[{width: '95%'}]}
+              containerStyle={[{ width: '95%' }]}
             />
           </View>
         </SafeAreaView>
@@ -260,12 +261,14 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public onMapRegionChangeComplete = (region: Region) => {
-    if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
-      region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+    if (
+      region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+      region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)
+    ) {
       this.currentRegion = region;
       this.refresh();
     }
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -284,14 +287,20 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           {this.renderFilters()}
           {this.renderFabs()}
           {selectedSite && this.buildModal(navigation, selectedSite, modalStyle)}
-          {showMap ? this.renderMap() : (
+          {showMap ? (
+            this.renderMap()
+          ) : (
             <View style={style.sitesContainer}>
-              {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+              {loading ? (
+                <Spinner size={scale(30)} style={style.spinner} color="grey" />
+              ) : (
                 <ItemsList<Site>
                   skip={skip}
                   count={count}
                   onEndReached={this.onEndScroll}
-                  renderItem={(site: Site) => <SiteComponent containerStyle={[style.siteComponentContainer]} site={site} navigation={navigation}/>}
+                  renderItem={(site: Site) => (
+                    <SiteComponent containerStyle={[style.siteComponentContainer]} site={site} navigation={navigation} />
+                  )}
                   data={sites}
                   manualRefresh={this.manualRefresh}
                   refreshing={refreshing}
@@ -315,9 +324,16 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     return (
       <SafeAreaView style={style.fabContainer}>
         {showMap && (
-          <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
+          <TouchableOpacity
+            style={[fabStyles.fab]}
+            onPress={async () => this.mapViewRef.current?.animateToRegion(await this.computeRegion(true))}>
+            <Icon size={scale(18)} style={fabStyles.fabIcon} as={MaterialIcons} name={'my-location'} />
+          </TouchableOpacity>
+        )}
+        {showMap && (
+          <TouchableOpacity style={[fabStyles.fab, style.fab]} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
             <Image
-              source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
+              source={satelliteMap ? (isDarkModeEnabled ? standardDarkLayout : standardLightLayout) : satelliteLayout}
               style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
             />
           </TouchableOpacity>
@@ -325,8 +341,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <TouchableOpacity
           delayPressIn={0}
           style={[fabStyles.fab, style.fab]}
-          onPress={() => this.setState({ showMap: !showMap, sites: []}, () => this.refresh(true)) }
-        >
+          onPress={() => this.setState({ showMap: !showMap, sites: [] }, async () => this.refresh(true))}>
           <Icon size={scale(18)} style={fabStyles.fabIcon} as={MaterialCommunityIcons} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
@@ -336,12 +351,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   private renderMap() {
     const style = computeStyleSheet();
     const { sites, satelliteMap } = this.state;
-    const sitesWithGPSCoordinates = sites.filter((site) =>
-      Utils.containsGPSCoordinates(site.address.coordinates)
-    );
+    const sitesWithGPSCoordinates = sites.filter((site) => Utils.containsGPSCoordinates(site.address.coordinates));
     return (
       <View style={style.map}>
         <ClusterMap<Site>
+          ref={this.mapViewRef}
           items={sitesWithGPSCoordinates}
           satelliteMap={satelliteMap}
           renderMarker={(site, index) => (
@@ -350,8 +364,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
               tracksViewChanges={false}
               coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
               title={site.name}
-              onPress={() => this.showMapSiteDetail(site)}
-            >
+              onPress={() => this.showMapSiteDetail(site)}>
               <Icon size={scale(40)} as={MaterialIcons} name={'location-pin'} style={Utils.computeSiteMarkerStyle(site?.connectorStats)} />
             </Marker>
           )}
@@ -374,10 +387,21 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
           ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
         />
-        <SimpleSearchComponent containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        <SimpleSearchComponent
+          containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent}
+          onChange={async (searchText) => this.search(searchText)}
+          navigation={this.props.navigation}
+        />
         {this.screenFilters?.canFilter() && (
-          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-            <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          <TouchableOpacity
+            onPress={() => this.screenFilters?.openModal()}
+            style={showMap ? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
+            <Icon
+              size={scale(25)}
+              color={commonColors.textColor}
+              as={MaterialCommunityIcons}
+              name={areModalFiltersActive ? 'filter' : 'filter-outline'}
+            />
           </TouchableOpacity>
         )}
       </View>

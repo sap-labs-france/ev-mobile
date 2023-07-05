@@ -89,7 +89,8 @@
     "userOrTenantUpdated": "Sie wurden ausgeloggt, weil entweder Ihre Einstellungen oder die Ihrer Organisation aktualisiert wurden",
     "tenantRedirectionInvalidDomain": "Ungültige Tenant Redirection Domain",
     "from": "Von",
-    "to": "Bis"
+    "to": "Bis",
+    "notification": "Benachrichtigung"
   },
   "sidebar": {
     "home": "Home",
@@ -105,11 +106,12 @@
     "invoices": "Rechnungen",
     "paymentMethods": "Zahlungsmethoden",
     "qrCodeScanner": "QR-Code Scanner",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "reservations": "Reservierungen"
   },
   "authentication": {
-    "noTenantFoundTitle" : "Keine Organisation gefunden",
-    "noTenantFoundMessage" : "Möchten Sie einen neue Organisation mittels QR-Code registrieren?",
+    "noTenantFoundTitle": "Keine Organisation gefunden",
+    "noTenantFoundMessage": "Möchten Sie einen neue Organisation mittels QR-Code registrieren?",
     "tenantTitle": "Organisation",
     "mandatoryTenantSubDomain": "Die Subdomain der Organisation ist notwendig",
     "mandatoryTenantName": "Der Name der Organisation ist notwendig",
@@ -219,8 +221,8 @@
     "noUsers": "Keine Nutzer",
     "users": "Nutzer",
     "user": "Nutzer",
-    "selectUser" : "Nutzer auswählen",
-    "selectUsers" : "Nutzer auswählen",
+    "selectUser": "Nutzer auswählen",
+    "selectUsers": "Nutzer auswählen",
     "selectOneOrSeveralUsers": "Einen oder mehrere Nutzer auswählen"
   },
   "paymentMethods": {
@@ -229,7 +231,7 @@
     "paymentMethods": "Zahlungsmethoden",
     "paymentMethod": "Zahlungsmethode",
     "addPaymentMethodError": "Hinzufügen der Zahlungsmethode ist fehlgeschlagen",
-    "addPaymentMethodSuccess" : "Neue Zahlungsmethode erfolgreich hinzugefügt",
+    "addPaymentMethodSuccess": "Neue Zahlungsmethode erfolgreich hinzugefügt",
     "deletePaymentMethodSuccess": "Zahlungsmethode erfolgreich entfernt",
     "deletePaymentMethodTitle": "Zahlungsmethode löschen",
     "deletePaymentMethodSubtitle": "Möchten Sie wirklich die {{cardBrand}} Karte mit der Endung {{cardLast4}} entfernen",
@@ -263,7 +265,7 @@
   "cars": {
     "noCars": "Keine Fahrzeuge",
     "carUnexpectedError": "Ein Fehler ist aufgetreten",
-    "cars": "Fehrzeuge",
+    "cars": "Fahrzeuge",
     "car": "Fahrzeug",
     "selectCar": "Fahrzeug auswählen",
     "selectCars": "Fahrzeuge auswählen",
@@ -367,7 +369,7 @@
     "totalInactivityNote": "Gesamte Inkativitätsdauer",
     "totalPriceNote": "Gesamtkosten",
     "paymentMethods": "Zahlungsmethoden",
-    "paymentMethodsNote" : "Zahlungsmethoden durchsuchen und erstellen",
+    "paymentMethodsNote": "Zahlungsmethoden durchsuchen und erstellen",
     "invoices": "Rechunngen",
     "invoicesNote": "Rechnungen durchsuchen und herunterladen"
   },
@@ -392,6 +394,7 @@
     "title": "Ladestationen",
     "heartBeat": "Herzschlag",
     "chargers": "Ladestation(en)",
+    "charger": "Ladestation",
     "noOCPPParameters": "Kein OCPP Parameter",
     "noChargerParameters": "Kein Ladestationen Parameter",
     "chargerConfigurationUnexpectedError": "Einstellungen der Ladestation wurden nicht erkannt",
@@ -417,7 +420,10 @@
     "ocpp": "OCPP",
     "actions": "Aktionen",
     "noSession": "Kein Ladevorgang",
-    "noSessionMessage": "An diesem Ladepunkt wurde kein Ladevorgang durchgeführt"
+    "noSessionMessage": "An diesem Ladepunkt wurde kein Ladevorgang durchgeführt",
+    "noChargerMessageTitle": "Es wurde keine Ladestation ausgewählt",
+    "selectCharger": "Ladestation auswählen",
+    "selectChargers": "Ladestationen auswählen"
   },
   "connector": {
     "occupied": "Besetzt",
@@ -537,6 +543,41 @@
       "message": "Ein unbekannter Benutzer hat auf '{{chargeBoxID}}' gebadgt.",
       "subMessage": "Unbekannter Benutzer",
       "longMessage": "Ein unbekanner Benutzer hat auf '{{chargeBoxID}}' gebadgt."
+    },
+    "reservationCreatedNotification": {
+      "title": "Reservierung erstellt",
+      "body": "Ihre Reservierung für die Ladestation '{{chargingStationID}}' an Anschluss '{{connectorID}}' wurde erfolgreich erstellt."
+    },
+    "reservationCancelledNotification": {
+      "title": "Reservierung storniert",
+      "body": "Sie haben Ihre Reservierung für die Ladestation '{{chargingStationID}}' an Anschluss '{{connectorID}}' erfolgreich storniert."
+    },
+    "reservationUpcomingNotification": {
+      "title": "Anstehende Reservierung",
+      "body": "Ihre Reservierung der Ladestation '{{chargingStationID}}' an Anschliss '{{connectorID}}' steht unmittelbar bevor."
+    },
+    "reservationUpcomingWarning": {
+      "title": "Anstehende Reservierung",
+      "body": "An Ihrer derzeitigen Ladestation '{{chargingStationID}}' an Anschluss '{{connectorID}}' beginnt ab '{{fromDate}}' eine Reservierung für einen anderen Nutzer."
+    },
+    "reservedChargingStationBlockedNotification": {
+      "title": "Reservierte Ladestation blockiert",
+      "body": "An Ihrer derzeitig reservierten Ladestation '{{chargingStationID}}' an Anschluss '{{connectorID}}' wurde eine Ladevorgang gestartet."
+    },
+    "reservationStatusChangedNotification": {
+      "title": "Status der Reservierung geändert",
+      "body": "Der Status Ihrer Reservierung für die Ladestation '{{chargingStationID}}' an Anschluss '{{connectorID}}' hat sich geändert.",
+      "status": {
+        "reservation_done": "Reservierung abgeschlossen",
+        "reservation_scheduled": "Reservierung eingeplant",
+        "reservation_in_progress": "Reservierung laufend",
+        "reservation_cancelled": "Reservierung storniert",
+        "reservation_expired": "Reservierung abgelaufen"
+      }
+    },
+    "reservationUnmetNotification": {
+      "title": "Reservierung nicht wahrgenommen",
+      "body": "Die Reservierung an der Ladestation '{{chargingStationID}}' an Anschluss '{{connectorID}}' wurde aufgrund Nichterscheinens innerhalb von 15 Minuten nach Start der Reservierung abgebrochen."
     }
   },
   "appUpdate": {
@@ -551,12 +592,106 @@
     "sitesRoamingFilterLabel": "Roaming-Standorte zeigen",
     "siteAreasRoamingFilterLabel": "Roaming-Standortbereiche zeigen",
     "transactionsRoamingFilterLabel": "Roaming-Ladevorgänge zeigen",
-    "usersRoamingFilterLabel": "Roaming-Nutzer zeigen"
+    "usersRoamingFilterLabel": "Roaming-Nutzer zeigen",
+    "activeReservationsFilterLabel": "Aktive Reservierungen anzeigen"
   },
   "settingsDistanceUnit": {
     "distanceUnit": "Distance unit",
     "kilometers": "Kilometer",
     "miles": "Meilen",
     "automatic": "Automatik"
+  },
+  "reservations": {
+    "titles": "Reservierungen",
+    "description": "Das Reservierungs-Interface ermöglicht Erstellen und Bearbeiten von geplanten und unmittelbaren Reservierungen für den Ladestationbetreiber.",
+    "title": "Reservierung",
+    "id": "ID",
+    "chargingstationId": "Ladestation",
+    "connectorId": "Anschluss",
+    "connectorStatus": "Anschluss Verfügbarkeit",
+    "expiryDate": "Ablaufdatum",
+    "fromDate": "Von",
+    "toDate": "Bis",
+    "arrivalTime": "Ankunftszeit",
+    "departureTime": "Abfahrtszeit",
+    "tagId": "Tag ID",
+    "status": "Status",
+    "type": "Reservierungs-Typ",
+    "user": "Nutzer",
+    "car": "Fahrzeug",
+    "reservationsUnexpectedError": "Reservierungen können nicht gelesen werden",
+    "reservationDoesNotExist": "Reservierungen konnte nicht gefunden werden",
+    "noReservations": "Keine Reservierungen",
+    "invalidDate": "Ungültiges Datum",
+    "dateBeforeMinimum": "Ungültiges Datum. Wähle ein Datum in der Zukunft.",
+    "dateAfterMaximum": "Ungültiges Datum. Datum liegt außerhalb des zulässigen Bereichs von {{duration}} Stunden.",
+    "invalidDateRange": "Ungültige Zeitspanne",
+    "statuses": {
+      "reservation_done": "Abgeschlossen",
+      "reservation_scheduled": "Eingeplant",
+      "reservation_in_progress": "Laufend",
+      "reservation_cancelled": "Storniert",
+      "reservation_expired": "Abgelaufen",
+      "reservation_unmet": "Unerfüllt",
+      "unknown": "Unbekannt"
+    },
+    "types": {
+      "reserve_now": "Reserve Now",
+      "planned_reservation": "Geplant",
+      "unknown": "Unbekannt"
+    },
+    "reserve_now": {
+      "title": "Reservierung",
+      "tooltips": "Jetzt Reservieren",
+      "confirm": "Wollen Sie für den Nutzer '{{userName}}' an der Ladestation '{{chargingStationID}}' an Anschluss '{{connectorID}}' eine Reservierung tätigen?",
+      "details": "Anschluss '{{connectorID}}' an Ladestation '{{chargingStationID}}' reservieren",
+      "success": "Die Reservierung an Ladestation '{{chargingStationID}}' für Anschluss '{{connectorID}}' wurde erfolgreich durchgeführt",
+      "error": "Beim Versuch eine Reservierung zu tätigen ist ein Fehler aufgetreten"
+    },
+    "cancel_reservation": {
+      "title": "Reservierung stornieren",
+      "tooltips": "Reservierung stornieren",
+      "confirm": "Wollen Sie an der Ladestation '{{chargingStationID}}' die Reservierung stornieren?'",
+      "details": "",
+      "success": "Die Reservierung an der Ladestation '{{chargingStationID}}' wurde erfolgreich storniert",
+      "error": "Beim Versuch die Reservierung an der Ladestation '{{chargingStationID}}' zu stornieren ist ein Fehler aufgetreten"
+    },
+    "create": {
+      "title": "Reservierung erstellen",
+      "tooltips": "Reservierung erstellen",
+      "confirm": "",
+      "details": "",
+      "success": "Die Reservierung an Ladestation '{{chargingStationID}}' für Anschluss '{{connectorID}}' wurde erfolgreich erstellt",
+      "error": "Beim Erstellen der Reservierung ist ein Fehler aufgetreten"
+    },
+    "update": {
+      "title": "Reservierung aktualisieren",
+      "tooltips": "Reservierung aktualisieren",
+      "confirm": "",
+      "details": "",
+      "success": "Die Reservierung an Ladestation '{{chargingStationID}}' für Anschluss '{{connectorID}}' wurde erfolgreich aktualisiert",
+      "error": "Die Reservierung kann nicht verändert werden, siehe Log-Nachrichten für Details"
+    },
+    "delete": {
+      "title": "Reservierung löschen",
+      "tooltips": "Reservierung löschen",
+      "confirm": "Sind Sie sich sicher, dass Sie die Reservierung löschen wollen?",
+      "details": "",
+      "success": "Die Reservierung an Ladestation '{{chargingStationID}}' für Anschluss '{{connectorID}}' wurde erfolgreich gelöscht",
+      "error": "Beim Löschen der Reservierung ist ein Fehler aufgetreten"
+    },
+    "action_error": {
+      "general": {
+        "not_found": "Die Reservierung wurde nicht gefunden",
+        "already_exists": "Eine Reservierung mit der gleichen ID existiert bereits für einen anderen Nutzer",
+        "not_supported": "Das Feature 'Reservierungen' ist für diese Ladestation nicht aktiviert",
+        "rejected": "The reservation was rejected",
+        "collision": "Die Reservierung kollidiert mit anderen Reservierung(en) für den gewünschten Zeitraum. Wählen Sie ein anderes Zeitfenster aus",
+        "faulted": "Die gewünschte Ladesäule oder der gewünschte Anschluss änderten ihren Status in 'FEHLERHAFT' während der Reservierung",
+        "occupied": "Die gewünschte Ladesäule oder der gewünschte Anschluss änderten ihren Status in 'BESETZT' während der Reservierung",
+        "unavailable": "Die gewünschte Ladesäule oder der gewünschte Anschluss änderten ihren Status in 'NICHT VERFÜGBAR' während der Reservierung",
+        "multiple_reserve_now": "Es ist nur eine 'RESERVE NOW' Reservierung pro Nutzer zeitgleich möglich"
+      }
+    }
   }
 }

@@ -1,6 +1,8 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 import { KeyValue } from './Global';
 import ListItem from './ListItem';
+import Reservation from './Reservation';
+import Site from './Site';
 import SiteArea from './SiteArea';
 import { InactivityStatus } from './Transaction';
 import User from './User';
@@ -13,6 +15,7 @@ export enum Voltage {
 export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
   id: string;
   siteAreaID: string;
+  siteID: string;
   chargePointSerialNumber: string;
   chargePointModel: string;
   chargeBoxSerialNumber: string;
@@ -38,6 +41,7 @@ export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
   connectors: Connector[];
   currentIPAddress?: string;
   siteArea?: SiteArea;
+  site?: Site;
   capabilities?: ChargingStationCapabilities;
   ocppStandardParameters?: KeyValue[];
   ocppVendorParameters?: KeyValue[];
@@ -46,7 +50,7 @@ export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
 
 export enum OCPPGeneralResponse {
   ACCEPTED = 'Accepted',
-  REJECTED = 'Rejected',
+  REJECTED = 'Rejected'
 }
 
 export enum CurrentType {
@@ -99,6 +103,10 @@ export interface Connector {
   currentType?: CurrentType;
   chargePointID?: number;
   canReadTransaction?: boolean;
+  reservationID?: number;
+  reservation?: Reservation;
+  canReserveNow?: boolean;
+  canCancelReservation?: boolean;
 }
 
 export enum ChargePointStatus {

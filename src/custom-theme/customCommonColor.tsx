@@ -16,7 +16,8 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => ({
   primaryLight: currentTheme.primaryLight,
 
   yellow: '#FFBE59',
-  purple: 'purple',
+  purple: '#7B1FA2',
+  amber: '#FFA000',
 
   mapClusterBorder: currentTheme.mapClusterBorder,
 

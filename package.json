@@ -83,6 +83,7 @@
     "@formatjs/intl-numberformat": "^8.2.0",
     "@formatjs/intl-pluralrules": "^5.1.4",
     "@formatjs/intl-relativetimeformat": "^11.1.4",
+    "@notifee/react-native": "^7.8.0",
     "@ptomasroos/react-native-multi-slider": "github:0hio-creator/react-native-multi-slider",
     "@react-native-community/datetimepicker": "^6.7.0",
     "@react-native-firebase/app": "^16.4.5",

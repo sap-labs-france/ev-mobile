@@ -28,6 +28,7 @@ export enum Entity {
   NOTIFICATION = 'Notification',
   TAG = 'Tag',
   PAYMENT_METHOD = 'PaymentMethod',
+  RESERVATION = 'Reservation',
 }
 
 export enum Role {
@@ -66,5 +67,7 @@ export enum Action {
   READ_BILLING_TAXES = 'ReadBillingTaxes',
   POWER_LIMITATION = 'PowerLimitation',
   SET_CHARGING_PROFILE = 'SetChargingProfile',
-  EXPORT = 'Export'
+  EXPORT = 'Export',
+  RESERVE_NOW = 'ReserveNow',
+  CANCEL_RESERVATION = 'CancelReservation',
 }

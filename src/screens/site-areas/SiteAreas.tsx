@@ -1,13 +1,7 @@
 import I18n from 'i18n-js';
 import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import {
-  Image,
-  ImageStyle,
-  SafeAreaView,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { Image, ImageStyle, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import ClusterMap from '../../components/map/ClusterMap';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
@@ -61,6 +55,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private currentRegion: Region;
   private mapLimit = 200;
   private listLimit = 25;
+  private mapViewRef: React.RefObject<any>;
 
   public constructor(props: Props) {
     super(props);
@@ -75,6 +70,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       selectedSiteArea: null,
       satelliteMap: false
     };
+    this.mapViewRef = React.createRef();
   }
 
   public setState = (
@@ -99,7 +95,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public componentDidBlur() {
     super.componentDidBlur();
-    delete this.site
+    delete this.site;
   }
 
   public getSiteAreas = async (searchText: string = '', skip: number, limit: number): Promise<DataResult<SiteArea>> => {
@@ -133,35 +129,35 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         this.refresh.bind(this)
       );
     }
-  return null;
+    return null;
   };
 
-  public onBack () {
+  public onBack() {
     // Back mobile button: Force navigation
     if (this.state.showMap) {
-      this.setState({ showMap: false, siteAreas: [] }, () => this.refresh(true));
+      this.setState({ showMap: false, siteAreas: [] }, async () => this.refresh(true));
       return true;
     } else {
       this.props.navigation.goBack();
       return true;
     }
-  };
+  }
 
-  public async computeRegion(siteAreas: SiteArea[]): Promise<Region> {
+  public async computeRegion(siteAreas: SiteArea[], locateUser: boolean = false): Promise<Region> {
     // If currentLocation available, use it
     const currentLocation = await Utils.getUserCurrentLocation();
-/*    if ( currentLocation ) {
+    if (currentLocation || locateUser) {
       return {
         longitude: currentLocation.longitude,
         latitude: currentLocation.latitude,
         longitudeDelta: 0.01,
         latitudeDelta: 0.01
-      }
-    }*/
+      };
+    }
     // Else, use coordinates of the first site area
     if (!Utils.isEmptyArray(siteAreas)) {
       let gpsCoordinates: number[];
-      if ( !Utils.isEmptyArray(siteAreas) && Utils.containsGPSCoordinates(siteAreas[0].address?.coordinates) ) {
+      if (!Utils.isEmptyArray(siteAreas) && Utils.containsGPSCoordinates(siteAreas[0].address?.coordinates)) {
         gpsCoordinates = siteAreas[0].address?.coordinates;
       }
       return {
@@ -177,7 +173,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public async refresh(showSpinner = false) {
     // Component Mounted?
     if (this.isMounted()) {
-      const newState = showSpinner ?  (Utils.isEmptyArray(this.state.siteAreas) ?  { loading: true } :  { refreshing: true }) : this.state;
+      const newState = showSpinner ? (Utils.isEmptyArray(this.state.siteAreas) ? { loading: true } : { refreshing: true }) : this.state;
       this.setState(newState, async () => {
         const { skip, showMap } = this.state;
         // Refresh All
@@ -196,7 +192,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         });
       });
     }
-  };
+  }
 
   public manualRefresh = async () => {
     // Display spinner
@@ -256,27 +252,26 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         style={modalStyle.modalBottomHalf}
         isVisible={true}
         propagateSwipe={true}
-        onBackButtonPress={() => this.setState({ selectedSiteArea: null })}
-      >
+        onBackButtonPress={() => this.setState({ selectedSiteArea: null })}>
         <SafeAreaView style={style.siteAreaDetailsModalContainer}>
           <View style={style.siteAreaDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ selectedSiteArea: null })}>
               <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
             </TouchableOpacity>
           </View>
-          <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
+          <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: 'auto' }}>
             <SiteAreaComponent
               siteArea={siteAreaSelected}
               navigation={navigation}
               onNavigate={() => this.setState({ selectedSiteArea: null })}
-              containerStyle={[{width: '95%'}]}
+              containerStyle={[{ width: '95%' }]}
             />
           </View>
         </SafeAreaView>
       </Modal>
     );
 
-/*    if (Platform.OS === 'ios') {
+    /*    if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <Modalize alwaysOpen={175} modalStyle={modalStyle.modalContainer}>
@@ -307,20 +302,34 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         <HeaderComponent
           navigation={navigation}
           title={this.site?.name}
-          subTitle={count > 0 ? `(${I18nManager.formatNumber(count)} ${count > 1 ? I18n.t('siteAreas.siteAreas') : I18n.t('siteAreas.siteArea')})` : null}
+          subTitle={
+            count > 0
+              ? `(${I18nManager.formatNumber(count)} ${count > 1 ? I18n.t('siteAreas.siteAreas') : I18n.t('siteAreas.siteArea')})`
+              : null
+          }
         />
         <View style={style.content}>
           {this.renderFilters()}
           {this.renderFabs()}
           {selectedSiteArea && this.buildModal(navigation, selectedSiteArea, modalStyle)}
-          {showMap ? this.renderMap() : (
+          {showMap ? (
+            this.renderMap()
+          ) : (
             <View style={style.siteAreasContainer}>
-              {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+              {loading ? (
+                <Spinner size={scale(30)} style={style.spinner} color="grey" />
+              ) : (
                 <ItemsList<SiteArea>
                   skip={skip}
                   count={count}
                   onEndReached={this.onEndScroll}
-                  renderItem={(siteArea: SiteArea) => <SiteAreaComponent containerStyle={[style.siteAreaComponentContainer]} siteArea={siteArea} navigation={this.props.navigation} />}
+                  renderItem={(siteArea: SiteArea) => (
+                    <SiteAreaComponent
+                      containerStyle={[style.siteAreaComponentContainer]}
+                      siteArea={siteArea}
+                      navigation={this.props.navigation}
+                    />
+                  )}
                   data={siteAreas}
                   manualRefresh={this.manualRefresh}
                   refreshing={refreshing}
@@ -344,9 +353,16 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     return (
       <SafeAreaView style={style.fabContainer}>
         {showMap && (
-          <TouchableOpacity style={fabStyles.fab} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
+          <TouchableOpacity
+            style={[fabStyles.fab]}
+            onPress={async () => this.mapViewRef.current?.animateToRegion(await this.computeRegion(true))}>
+            <Icon size={scale(18)} style={fabStyles.fabIcon} as={MaterialIcons} name={'my-location'} />
+          </TouchableOpacity>
+        )}
+        {showMap && (
+          <TouchableOpacity style={[fabStyles.fab, style.fab]} onPress={() => this.setState({ satelliteMap: !satelliteMap })}>
             <Image
-              source={satelliteMap ? isDarkModeEnabled ? standardDarkLayout : standardLightLayout : satelliteLayout}
+              source={satelliteMap ? (isDarkModeEnabled ? standardDarkLayout : standardLightLayout) : satelliteLayout}
               style={[style.imageStyle, satelliteMap && style.outlinedImage] as ImageStyle}
             />
           </TouchableOpacity>
@@ -354,8 +370,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         <TouchableOpacity
           delayPressIn={0}
           style={[fabStyles.fab, style.fab]}
-          onPress={() => this.setState({ showMap: !showMap, siteAreas: []}, () => this.refresh(true)) }
-        >
+          onPress={() => this.setState({ showMap: !showMap, siteAreas: [] }, async () => this.refresh(true))}>
           <Icon style={fabStyles.fabIcon} size={scale(18)} as={MaterialCommunityIcons} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
@@ -365,12 +380,11 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private renderMap() {
     const style = computeStyleSheet();
     const { siteAreas, satelliteMap } = this.state;
-    const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) =>
-      Utils.containsGPSCoordinates(siteArea.address.coordinates)
-    );
+    const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) => Utils.containsGPSCoordinates(siteArea.address.coordinates));
     return (
       <View style={style.map}>
         <ClusterMap<SiteArea>
+          ref={this.mapViewRef}
           items={siteAreasWithGPSCoordinates}
           satelliteMap={satelliteMap}
           renderMarker={(siteArea, index) => (
@@ -379,16 +393,20 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
               tracksViewChanges={false}
               coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
               title={siteArea.name}
-              onPress={() => this.showMapSiteAreaDetail(siteArea)}
-            >
-              <Icon size={scale(40)} as={MaterialIcons} name={'location-pin'} style={Utils.computeSiteMarkerStyle(siteArea?.connectorStats)} />
+              onPress={() => this.showMapSiteAreaDetail(siteArea)}>
+              <Icon
+                size={scale(40)}
+                as={MaterialIcons}
+                name={'location-pin'}
+                style={Utils.computeSiteMarkerStyle(siteArea?.connectorStats)}
+              />
             </Marker>
           )}
           initialRegion={this.currentRegion}
           onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
         />
       </View>
-    )
+    );
   }
 
   private renderFilters() {
@@ -405,12 +423,19 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         />
         <SimpleSearchComponent
           containerStyle={showMap ? style.mapSearchBarComponent : style.listSearchBarComponent}
-          onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+          onChange={async (searchText) => this.search(searchText)}
+          navigation={this.props.navigation}
+        />
         {this.screenFilters?.canFilter() && (
           <TouchableOpacity
             onPress={() => this.screenFilters?.openModal()}
-            style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-            <Icon color={commonColors.textColor} size={scale(25)} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            style={showMap ? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
+            <Icon
+              color={commonColors.textColor}
+              size={scale(25)}
+              as={MaterialCommunityIcons}
+              name={areModalFiltersActive ? 'filter' : 'filter-outline'}
+            />
           </TouchableOpacity>
         )}
       </View>
@@ -418,11 +443,12 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   }
 
   private onMapRegionChangeComplete = (region: Region) => {
-    if(region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
-      region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)) {
+    if (
+      region.latitude.toFixed(6) !== this.currentRegion.latitude.toFixed(6) ||
+      region.longitude.toFixed(6) !== this.currentRegion.longitude.toFixed(6)
+    ) {
       this.currentRegion = region;
       this.refresh();
     }
   };
-
 }

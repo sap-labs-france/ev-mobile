@@ -168,7 +168,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginRight: '5@s'
     },
     currentSoCContainer: {
-      marginBottom: '13@s',
+      marginBottom: '13@s'
     },
     socInputsContainer: {
       width: '100%',
@@ -463,7 +463,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       shadowColor: '#000',
       shadowOffset: {
         width: 0,
-        height: 3,
+        height: 3
       },
       shadowOpacity: 0.27,
       shadowRadius: 4.65
@@ -485,8 +485,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     sliderRightTrack: {
       backgroundColor: commonColor.disabledDark,
       opacity: 0.2
+    },
+    fab: {
+      marginTop: '14@s'
     }
-
   });
   const portraitStyles = {};
   const landscapeStyles = {
