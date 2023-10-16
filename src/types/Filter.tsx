@@ -5,5 +5,9 @@ export enum GlobalFilters {
   ONLY_AVAILABLE_CHARGING_STATIONS = 'OnlyAvailableChargingStationsFilter',
   CONNECTOR_TYPES = 'ConnectorTypesFilter',
   LOCATION = 'LocationFilter',
-  ROAMING = 'Roaming'
+  ROAMING = 'Roaming',
+  RESERVATIONS_FROM_DATE_FILTER = 'ReservationsFromDateFilter',
+  RESERVATIONS_TO_DATE_FILTER = 'ReservationToDateFilter',
+  RESERVATIONS_EXPIRY_DATE_FILTER = 'ReservationExpiryDateFilter',
+  ONLY_ACTIVE_RESERVATIONS = 'OnlyActiveReservations'
 }

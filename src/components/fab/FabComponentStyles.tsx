@@ -5,7 +5,7 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
+export default function computeStyleSheet(color?: string): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     fab: {
@@ -18,7 +18,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       right: 0,
       zIndex: 1,
       elevation: 4,
-      backgroundColor: commonColor.primary,
+      backgroundColor: color ?? commonColor.primary,
       shadowOffset: {
         width: 0,
         height: 1

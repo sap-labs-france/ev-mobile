@@ -1,7 +1,9 @@
+import Reservation from '../types/Reservation';
 import { Action, Entity, Role } from '../types/Authorization';
 import SiteArea from '../types/SiteArea';
 import { TenantComponents } from '../types/Tenant';
 import UserToken from '../types/UserToken';
+import ChargingStation, { Connector } from 'types/ChargingStation';
 
 export default class SecurityProvider {
   private loggedUser: UserToken;
@@ -65,6 +67,14 @@ export default class SecurityProvider {
     return this.isComponentActive(TenantComponents.BILLING);
   }
 
+  public isComponentReservationActive(): boolean {
+    return this.isComponentActive(TenantComponents.RESERVATION);
+  }
+
+  public isComponentSmartCharging(): boolean {
+    return this.isComponentActive(TenantComponents.SMART_CHARGING);
+  }
+
   public isComponentActive(componentName: string): boolean {
     if (this.loggedUser && this.loggedUser.activeComponents) {
       return this.loggedUser.activeComponents.includes(componentName);
@@ -108,9 +118,13 @@ export default class SecurityProvider {
   }
 
   public canAccess(resource: string, action: string): boolean {
-    return this.loggedUser && this.loggedUser.scopes && (this.loggedUser.scopes.includes(`${resource}:${action}`)
-      //TODO remove the plural (s) when backend new authorization deployed
-      || this.loggedUser.scopes.includes(`${resource}s:${action}`));
+    return (
+      this.loggedUser &&
+      this.loggedUser.scopes &&
+      (this.loggedUser.scopes.includes(`${resource}:${action}`) ||
+        // TODO remove the plural (s) when backend new authorization deployed
+        this.loggedUser.scopes.includes(`${resource}s:${action}`))
+    );
   }
 
   public canListUsers(): boolean {
@@ -131,5 +145,45 @@ export default class SecurityProvider {
 
   public canListPaymentMethods(): boolean {
     return this.canAccess(Entity.PAYMENT_METHOD, Action.LIST);
+  }
+
+  public canListReservations(): boolean {
+    return this.canAccess(Entity.RESERVATION, Action.LIST);
+  }
+
+  public canReserveNow(connector: Connector, siteArea: SiteArea): boolean {
+    if (this.canAccess(Entity.CHARGING_STATION, Action.RESERVE_NOW)) {
+      if (this.isComponentActive(TenantComponents.ORGANIZATION)) {
+        if (!siteArea) {
+          return false;
+        }
+        return this.isSiteAdmin(siteArea.siteID) || this.loggedUser.sites.includes(siteArea.siteID) || connector.canReserveNow;
+      }
+      return this.isAdmin();
+    }
+    return false;
+  }
+
+  public canCancelReservation(connector: Connector, siteArea: SiteArea, reservation?: Reservation): boolean {
+    if (
+      this.canAccess(Entity.CHARGING_STATION, Action.CANCEL_RESERVATION) ||
+      this.canAccess(Entity.RESERVATION, Action.CANCEL_RESERVATION)
+    ) {
+      if (this.isComponentActive(TenantComponents.ORGANIZATION)) {
+        return this.isSiteAdmin(siteArea.siteID) || connector?.canCancelReservation || reservation?.canCancelReservation;
+      }
+      return this.isAdmin();
+    }
+    return false;
+  }
+
+  public canDeleteReservation(reservation: Reservation, siteArea: SiteArea): boolean {
+    if (this.canAccess(Entity.RESERVATION, Action.DELETE)) {
+      if (this.isComponentActive(TenantComponents.ORGANIZATION)) {
+        return this.isSiteAdmin(siteArea.siteID) || reservation.canDelete;
+      }
+      return this.isAdmin();
+    }
+    return false;
   }
 }

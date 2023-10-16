@@ -1,4 +1,4 @@
-import { Icon  } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -15,6 +15,7 @@ export interface Props extends FilterControlComponentProps<Date> {
   minimumDate: Date;
   maximumDate: Date;
   defaultValue: Date;
+  dateMode?: 'date' | 'time' | 'datetime';
 }
 
 interface State extends FilterControlComponentState<Date> {
@@ -30,14 +31,16 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public constructor(props: Props) {
     super(props);
+    const { dateMode } = this.props;
     this.state.openDatePicker = false;
+    this.props.dateMode = dateMode ?? 'date';
   }
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
     const { initialValue } = this.props;
     // If filter is not aware of initialValue change, put new initialValue to state
-    if ( (initialValue?.getTime() !== prevProps.initialValue?.getTime()) && (this.state.value?.getTime() !== initialValue?.getTime()) ) {
-      this.setState({value: initialValue });
+    if (initialValue?.getTime() !== prevProps.initialValue?.getTime() && this.state.value?.getTime() !== initialValue?.getTime()) {
+      this.setState({ value: initialValue });
     }
   }
 
@@ -45,7 +48,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     const { value } = this.state;
     const correctedDate = this.fitDateWithinMinAndMax(value);
     if (correctedDate?.getTime() !== value?.getTime()) {
-      this.setState({value: correctedDate});
+      this.setState({ value: correctedDate });
       this.props.onFilterChanged?.(this.getID(), correctedDate);
     }
   }
@@ -63,16 +66,18 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public render = () => {
     const internalStyle = computeStyleSheet();
-    const { label, minimumDate, maximumDate, locale, style, defaultValue } = this.props;
+    const { label, minimumDate, maximumDate, locale, style, defaultValue, dateMode } = this.props;
     let { value } = this.state;
-    value = value ?? defaultValue ;
+    value = value ?? defaultValue;
     return (
       <View style={[internalStyle.container, style]}>
         <Text style={internalStyle.label}>{label}</Text>
         {value ? (
           <View>
-            <TouchableOpacity style={internalStyle.inputContainer} onPress={() => this.setState({openDatePicker: true})}>
-              <Text numberOfLines={1} style={internalStyle.dateText}>{I18nManager.formatDateTime(value, {dateStyle: 'medium'})}</Text>
+            <TouchableOpacity style={internalStyle.inputContainer} onPress={() => this.setState({ openDatePicker: true })}>
+              <Text numberOfLines={1} style={internalStyle.dateText}>
+                {I18nManager.formatDateTime(value, { dateStyle: 'medium' })}
+              </Text>
               <Icon padding={0} size={scale(28)} style={internalStyle.dateIcon} as={Foundation} name={'calendar'} />
             </TouchableOpacity>
             <DateTimePickerModal
@@ -80,12 +85,12 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
               cancelTextIOS={I18n.t('general.cancel')}
               isVisible={this.state.openDatePicker}
               date={value}
-              mode={'date'}
+              mode={dateMode}
               maximumDate={maximumDate}
               minimumDate={minimumDate}
               locale={locale}
               onCancel={() => {
-                this.setState({openDatePicker: false});
+                this.setState({ openDatePicker: false });
               }}
               onConfirm={(date) => {
                 this.onConfirm(date);

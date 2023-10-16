@@ -115,3 +115,6 @@ assets/config.json
 coverage/
 __tests__/__snapshots__/
 test-results/
+
+# ESLint Cache
+.eslintcache

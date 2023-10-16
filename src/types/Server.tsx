@@ -1,4 +1,3 @@
-
 export enum ServerAction {
   UNKNOWN_ACTION = 'Unknown',
 
@@ -415,7 +414,7 @@ export enum ServerAction {
   USER_IMAGE = 'UserImage',
   TAGS = 'Tags',
   TAG = 'Tag',
-  TAG_BY_VISUAL_ID= 'TagByVisualID',
+  TAG_BY_VISUAL_ID = 'TagByVisualID',
   USER_DEFAULT_TAG_CAR = 'UserDefaultTagCar',
   TAG_CREATE = 'TagCreate',
   TAG_UPDATE = 'TagUpdate',
@@ -502,6 +501,7 @@ export enum RESTServerRoute {
   REST_CHARGING_STATIONS_CHANGE_AVAILABILITY = 'charging-stations/:id/availability/change',
   REST_CHARGING_STATIONS_RESERVE_NOW = 'charging-stations/:id/reserve/now',
   REST_CHARGING_STATIONS_CANCEL_RESERVATION = 'charging-stations/:id/reservation/cancel',
+  REST_CHARGING_STATIONS_RESERVATION_AVAILABILITY = 'charging-stations/reservation/availability',
 
   REST_CHARGING_STATIONS_DOWNLOAD_FIRMWARE = 'charging-stations/firmware/download',
   REST_CHARGING_STATIONS_QRCODE_GENERATE = 'charging-stations/:id/connectors/:connectorId/qrcode/generate',
@@ -600,7 +600,6 @@ export enum RESTServerRoute {
   REST_NOTIFICATIONS = 'notifications',
   REST_NOTIFICATIONS_END_USER_REPORT_ERROR = 'notifications/action/end-user/report-error',
 
-
   REST_OCPI_ENDPOINT_PING = 'ocpi/endpoints/:id/ping',
   REST_OCPI_ENDPOINT_CHECK_CDRS = 'ocpi/endpoints/:id/cdrs/check',
   REST_OCPI_ENDPOINT_CHECK_LOCATIONS = 'ocpi/endpoints/:id/locations/check',
@@ -692,6 +691,12 @@ export enum RESTServerRoute {
 
   // PRICING URLs for Non-CRUD operations
   REST_PRICING_MODEL_RESOLVE = 'pricing-model/resolve',
+
+  // RESERVATION URLs for CRUD operations
+  REST_RESERVATIONS = 'reservations',
+  REST_RESERVATION = 'reservations/:id',
+  REST_RESERVATIONS_EXPORT = 'reservations/action/export',
+  REST_RESERVATION_CANCEL = 'reservations/:id/cancel'
 }
 
 export enum OCPIServerRoute {
@@ -702,7 +707,7 @@ export enum OCPIServerRoute {
   OCPI_CDRS = 'cdrs',
   OCPI_COMMANDS = 'commands',
   OCPI_TARIFFS = 'tariffs',
-  OCPI_VERSIONS = 'versions',
+  OCPI_VERSIONS = 'versions'
 }
 
 export enum OCPIServerRouteVersions {
@@ -725,7 +730,7 @@ export enum ServerType {
   ODATA_SERVER = 'OData',
   BATCH_SERVER = 'Batch',
   MONITORING_SERVER = 'Monitoring',
-  CENTRAL_SERVER = 'CentralServer',
+  CENTRAL_SERVER = 'CentralServer'
 }
 
 export enum WSServerProtocol {

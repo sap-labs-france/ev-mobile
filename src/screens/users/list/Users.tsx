@@ -19,7 +19,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { scale } from 'react-native-size-matters';
 
 export interface Props extends SelectableProps<User> {
-  filters?: UsersFiltersDef
+  filters?: UsersFiltersDef;
 }
 
 export interface State extends SelectableState<User> {
@@ -110,7 +110,7 @@ export default class Users extends SelectableList<User> {
 
   public async refresh(showSpinner = false): Promise<void> {
     if (this.isMounted()) {
-      const newState = showSpinner ? {...(Utils.isEmptyArray(this.state.users) ? {loading: true} : {refreshing: true})} : this.state;
+      const newState = showSpinner ? { ...(Utils.isEmptyArray(this.state.users) ? { loading: true } : { refreshing: true }) } : this.state;
       this.setState(newState, async () => {
         const { skip, limit } = this.state;
         const { isModal, onContentUpdated } = this.props;
@@ -118,20 +118,23 @@ export default class Users extends SelectableList<User> {
         const users = await this.getUsers(this.searchText, 0, skip + limit);
         const usersResult = users ? users.result : [];
         // Set
-        this.setState({
-          loading: false,
-          refreshing: false,
-          users: usersResult,
-          count: users?.count ?? 0
-        }, isModal ? () => onContentUpdated() : () => null);
+        this.setState(
+          {
+            loading: false,
+            refreshing: false,
+            users: usersResult,
+            count: users?.count ?? 0
+          },
+          isModal ? () => onContentUpdated() : () => null
+        );
       });
     }
   }
 
-  public async search (searchText: string): Promise<void> {
+  public async search(searchText: string): Promise<void> {
     this.searchText = searchText;
     await this.refresh(true);
-  };
+  }
 
   public render(): React.ReactElement {
     const style = computeStyleSheet();
@@ -152,7 +155,9 @@ export default class Users extends SelectableList<User> {
           />
         )}
         {this.renderFilters()}
-        {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+        {loading ? (
+          <Spinner size={scale(30)} style={style.spinner} color="grey" />
+        ) : (
           <View style={style.content}>
             <ItemsList<User>
               ref={this.itemsListRef}
@@ -163,8 +168,14 @@ export default class Users extends SelectableList<User> {
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(item: User, selected: boolean) =>
-                <UserComponent containerStyle={[style.userComponentContainer, selected && listItemCommonStyles.outlinedSelected]} user={item} selected={selected} navigation={this.props.navigation} />}
+              renderItem={(item: User, selected: boolean) => (
+                <UserComponent
+                  containerStyle={[style.userComponentContainer, selected && listItemCommonStyles.outlinedSelected]}
+                  user={item}
+                  selected={selected}
+                  navigation={this.props.navigation}
+                />
+              )}
               refreshing={refreshing}
               manualRefresh={isModal ? null : this.manualRefresh.bind(this)}
               onEndReached={this.onEndScroll}
@@ -177,7 +188,7 @@ export default class Users extends SelectableList<User> {
   }
 
   private onFiltersChanged(newFilters: UsersFiltersDef): void {
-    this.setState({ filters: newFilters }, () => this.refresh(true));
+    this.setState({ filters: newFilters }, async () => this.refresh(true));
   }
 
   private renderFilters(): React.ReactElement {
@@ -193,10 +204,19 @@ export default class Users extends SelectableList<User> {
             ref={(usersFilters: UsersFilters) => this.setScreenFilters(usersFilters, false)}
           />
         )}
-        <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
+        <SimpleSearchComponent
+          containerStyle={style.searchBarComponent}
+          onChange={async (searchText) => this.search(searchText)}
+          navigation={this.props.navigation}
+        />
         {!isModal && this.screenFilters?.canFilter() && (
-          <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
-            <Icon size={scale(25)} color={commonColors.textColor} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+          <TouchableOpacity onPress={() => this.screenFilters?.openModal()} style={style.filterButton}>
+            <Icon
+              size={scale(25)}
+              color={commonColors.textColor}
+              as={MaterialCommunityIcons}
+              name={areModalFiltersActive ? 'filter' : 'filter-outline'}
+            />
           </TouchableOpacity>
         )}
       </View>

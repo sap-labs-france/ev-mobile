@@ -26,6 +26,11 @@ export default class Configuration {
       endpoint: 'http://10.0.2.2:8080'
     },
     {
+      id: '10.0.2.2:81',
+      name: 'android-local:81',
+      endpoint: 'http://10.0.2.2:81'
+    },
+    {
       id: 'kubernetes',
       name: 'QA',
       endpoint: Configuration.AWS_REST_ENDPOINT_QA

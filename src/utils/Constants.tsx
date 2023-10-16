@@ -49,4 +49,7 @@ export default class Constants {
 
   public static readonly VIN_FULL = 'Vehicle Identification Number';
   public static readonly VIN = 'VIN';
+
+  public static readonly EXPIRY_DATE_THRESHHOLD = 3; // hours
+  public static readonly TIME_RANGE_THRESHHOLD = 3; // hours
 }

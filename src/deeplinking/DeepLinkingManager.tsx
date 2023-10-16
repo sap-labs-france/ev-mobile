@@ -15,6 +15,7 @@ export default class DeepLinkingManager {
   public static readonly PATH_TRANSACTIONS = 'transactions';
   public static readonly PATH_LOGIN = 'login';
   public static readonly PATH_INVOICES = 'invoices';
+  public static readonly PATH_RESERVATIONS = 'reservations';
   public static readonly FRAGMENT_IN_ERROR = 'inerror';
   public static readonly FRAGMENT_ALL = 'all';
   public static readonly FRAGMENT_IN_PROGRESS = 'inprogress';

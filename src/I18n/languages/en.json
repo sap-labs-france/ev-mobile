@@ -89,7 +89,8 @@
     "userOrTenantUpdated": "You have been logged off because either your profile or your organization's settings have been updated",
     "tenantRedirectionInvalidDomain": "Invalid tenant redirection domain",
     "from": "From",
-    "to": "To"
+    "to": "To",
+    "notification": "Notification"
   },
   "sidebar": {
     "home": "Home",
@@ -105,7 +106,8 @@
     "invoices": "Invoices",
     "paymentMethods": "Payment methods",
     "qrCodeScanner": "QR-Code scanner",
-    "settings": "Settings"
+    "settings": "Settings",
+    "reservations": "Reservations"
   },
   "authentication": {
     "noTenantFoundTitle": "No organization found",
@@ -392,6 +394,7 @@
     "title": "Charging Stations",
     "heartBeat": "Heartbeat",
     "chargers": "Charging Station(s)",
+    "charger": "Charging Station",
     "noOCPPParameters": "No OCPP parameter",
     "noChargerParameters": "No Charging Station parameter",
     "chargerConfigurationUnexpectedError": "Cannot read the configuration of the charging station",
@@ -417,7 +420,10 @@
     "ocpp": "OCPP",
     "actions": "Actions",
     "noSession": "No Session",
-    "noSessionMessage": "No session has been done on that connector"
+    "noSessionMessage": "No session has been done on that connector",
+    "noChargerMessageTitle": "No Charging Station has been selected",
+    "selectCharger": "Select Charging Station",
+    "selectChargers": "Select Charging Station(s)"
   },
   "connector": {
     "occupied": "Occupied",
@@ -537,6 +543,42 @@
       "message": "An unknown user has just badged on '{{chargeBoxID}}'.",
       "subMessage": "Unknown User",
       "longMessage": "An unknown user has just badged on '{{chargeBoxID}}'."
+    },
+    "reservationCreatedNotification": {
+      "title": "Reservation Created",
+      "body": "Your reservation for charging station '{{chargingStationID}}' on connector '{{connectorID}}' has been created successfully."
+    },
+    "reservationCancelledNotification": {
+      "title": "Reservation Cancelled",
+      "body": "Your reservation for the charging station '{{chargingStationID}}' on connector '{{connectorID}}' has been cancelled successfully."
+    },
+    "reservationUpcomingNotification": {
+      "title": "Reservation Upcoming",
+      "body": "Your reservation on the charging station '{{chargingStationID}}' at connector '{{connectorID}}' is upcoming."
+    },
+    "reservationUpcomingWarning": {
+      "title": "Reservation Upcoming",
+      "body": "There is a reservation upcoming from '{{fromDate}}' to '{{toDate}}' on this charging station '{{chargingStationID}}' at connector '{{connectorID}}'."
+    },
+    "reservedChargingStationBlockedNotification": {
+      "title": "Reserved Charging Station Blocked",
+      "body": "At your currently reserved charging station '{{chargingStationID}}' on connector '{{connectorID}}' a charging session started."
+    },
+    "reservationStatusChangedNotification": {
+      "title": "Reservation Status Changed",
+      "body": "Your reservation for charging station '{{chargingStationID}}' on connector '{{connectorID}}' changed its status.",
+      "status": {
+        "reservation_done": "Reservation Done",
+        "reservation_scheduled": "Reservation Scheduled",
+        "reservation_in_progress": "Reservation In Progress",
+        "reservation_cancelled": "Reservation Cancelled",
+        "reservation_expired": "Reservation Expired",
+        "reservation_unmet": "Reservation Unmet"
+      }
+    },
+    "reservationUnmetNotification": {
+      "title": "Reservation Unmet",
+      "body": "The reservation for charging station '{{chargingStationID}}' on connector '{{connectorID}}' is cancelled after absence of 15 minutes after reservation start."
     }
   },
   "appUpdate": {
@@ -551,12 +593,106 @@
     "sitesRoamingFilterLabel": "Show roaming sites",
     "siteAreasRoamingFilterLabel": "Show roaming site areas",
     "transactionsRoamingFilterLabel": "Show roaming sessions",
-    "usersRoamingFilterLabel": "Show roaming users"
+    "usersRoamingFilterLabel": "Show roaming users",
+    "activeReservationsFilterLabel": "Show active reservations"
   },
   "settingsDistanceUnit": {
     "distanceUnit": "Distance unit",
     "kilometers": "Kilometers",
     "miles": "Miles",
     "automatic": "Automatic"
+  },
+  "reservations": {
+    "titles": "Reservations",
+    "description": "Manage reservations on charging stations and connectors",
+    "title": "Reservation",
+    "id": "ID",
+    "chargingstationId": "Charging Station",
+    "connectorId": "Connector",
+    "connectorStatus": "Connector Status",
+    "expiryDate": "Expiration Date",
+    "fromDate": "From",
+    "toDate": "To",
+    "arrivalTime": "Arrival Time",
+    "departureTime": "Departure Time",
+    "tagId": "Tag",
+    "status": "Status",
+    "type": "Reservation Type",
+    "user": "User",
+    "car": "Car",
+    "reservationsUnexpectedError": "Cannot read reservations",
+    "reservationDoesNotExist": "Reservation does not exist",
+    "noReservations": "No reservations found",
+    "invalidDate": "Invalid date.",
+    "dateBeforeMinimum": "Invalid date. Date must be in the future.",
+    "dateAfterMaximum": "Invalid date. Date exceeds maximum duration of {{duration}} hours.",
+    "invalidDateRange": "Invalid date range. End date is before start date",
+    "statuses": {
+      "reservation_done": "Done",
+      "reservation_scheduled": "Scheduled",
+      "reservation_in_progress": "In Progress",
+      "reservation_cancelled": "Cancelled",
+      "reservation_expired": "Expired",
+      "reservation_unmet": "Unmet",
+      "unknown": "Unknown"
+    },
+    "types": {
+      "reserve_now": "Reserve Now",
+      "planned_reservation": "Planned",
+      "unknown": "Unknown"
+    },
+    "reserve_now": {
+      "title": "Reserve Now",
+      "tooltips": "Reserve Now",
+      "confirm": "Do you really want to reserve the connector '{{connectorID}}' for user '{{userName}}' on the charging station '{{chargingStationID}}'?",
+      "details": "Reserve connector '{{connectorID}}' at chargepoint '{{chargingStationID}}'",
+      "success": "The reservation on the charging station '{{chargingStationID}}' at connector '{{connectorID}}' was successfully",
+      "error": "Error occurred while trying to create a reservation, check the logs"
+    },
+    "cancel_reservation": {
+      "title": "Cancel Reservation",
+      "tooltips": "Cancel Reservation",
+      "confirm": "Do you really want to cancel the reservation at charging station '{{chargingStationID}}'?",
+      "details": "",
+      "success": "The reservation at charging station '{{chargingStationID}}' is successfully canceled",
+      "error": "Error occured while trying to cancel the reservation at charging station '{{chargingStationID}}'"
+    },
+    "create": {
+      "title": "Create Reservation",
+      "tooltips": "Create Reservation",
+      "confirm": "",
+      "details": "",
+      "success": "Reservation on '{{chargingStationID}}' at connector '{{connectorID}}' has been created successfully",
+      "error": "Error occurred while adding the reservation, check the logs"
+    },
+    "update": {
+      "title": "Update Reservation",
+      "tooltips": "Update Reservation",
+      "confirm": "",
+      "details": "",
+      "success": "The reservation has been saved successfully",
+      "error": "Cannot change the reservation details, check the logs"
+    },
+    "delete": {
+      "title": "Delete Reservation",
+      "tooltips": "Delete Reservation",
+      "confirm": "Do you really want to delete the reservation?",
+      "details": "",
+      "success": "The reservation on '{{chargingStationID}}' at connector '{{connectorID}}' is successfully deleted",
+      "error": "An error occurred during the deletion of the reservation, check the logs"
+    },
+    "action_error": {
+      "general": {
+        "not_found": "The reservation has not been found",
+        "already_exists": "The reservation with the same ID already exists for another user",
+        "not_supported": "The feature 'Reservations' is not enabled for this charging station",
+        "rejected": "The reservation was rejected",
+        "collision": "This reservation collides with another reservation for this time slot. Choose another time",
+        "faulted": "The specified charging station or connector changed to 'FAULTED' state during reservation",
+        "occupied": "The specified charging station or connector changed to 'OCCUPIED' state during reservation",
+        "unavailable": "The specified charging station or connector changed to 'UNAVAILABLE' state during reservation",
+        "multiple_reserve_now": "Only one 'RESERVE NOW' reservation per user is possible"
+      }
+    }
   }
 }

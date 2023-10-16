@@ -3,6 +3,6 @@
   printWidth: 140,
   trailingComma: "none",
   jsxBracketSameLine: true,
-  requirePragma: false
+  requirePragma: false,
+  singleQuote: true
 }
-

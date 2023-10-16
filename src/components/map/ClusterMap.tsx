@@ -26,12 +26,18 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
   public props: Props<T>;
   public state: State;
   private darkMapTheme = require('../../utils/map/google-maps-night-style.json');
+  private mapRef: React.RefObject<any>;
 
   public constructor(props: Props<T>) {
     super(props);
     this.state = {
       satelliteMap: false
-    }
+    };
+    this.mapRef = React.createRef();
+  }
+
+  public animateToRegion(region: Region, duration?: number) {
+    this.mapRef.current?.animateToRegion(region, duration);
   }
 
   public render() {
@@ -44,6 +50,7 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
         <View style={style.mapOverlay} />
         {initialRegion && (
           <MapView
+            ref={this.mapRef}
             customMapStyle={isDarkModeEnabled ? this.darkMapTheme : null}
             style={style.map}
             showsCompass={false}
@@ -56,11 +63,9 @@ export default class ClusterMap<T extends Localizable> extends React.Component<P
             spiderLineColor={commonColors.textColor}
             mapType={satelliteMap ? 'satellite' : 'standard'}
             initialRegion={initialRegion}
-            onRegionChangeComplete={(region) => onMapRegionChangeComplete(region)}
-          >
-            {items.map((item, index) => (
-              renderMarker?.(item, index)
-            ))}
+            showsUserLocation={true}
+            onRegionChangeComplete={(region) => onMapRegionChangeComplete(region)}>
+            {items.map((item, index) => renderMarker?.(item, index))}
           </MapView>
         )}
       </View>

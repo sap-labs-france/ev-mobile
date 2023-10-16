@@ -24,8 +24,7 @@ import Constants from './Constants';
 import Message from './Message';
 import { Region } from 'react-native-maps';
 import LocationManager from '../location/LocationManager';
-import computeConnectorStatusStyles
-  from '../components/connector-status/ConnectorStatusComponentStyles';
+import computeConnectorStatusStyles from '../components/connector-status/ConnectorStatusComponentStyles';
 import Chademo from '../../assets/connectorType/chademo.svg';
 import Type2 from '../../assets/connectorType/type2.svg';
 import ComboCCS from '../../assets/connectorType/combo-ccs.svg';
@@ -41,11 +40,17 @@ import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
 import ProviderFactory from '../provider/ProviderFactory';
 import { Buffer } from 'buffer';
 import { AxiosError } from 'axios';
+import { ReservationStatus, ReservationType } from '../types/Reservation';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Icon } from 'native-base';
+import { HTTPError } from '../types/HTTPError';
+import { ActionResponse } from '../types/ActionResponse';
 
 export default class Utils {
   public static async getEndpointClouds(): Promise<EndpointCloud[]> {
-    const staticEndpoints =  Configuration.getEndpoints();
-    const userEndpoints = await SecuredStorage.getEndpoints() ?? [];
+    const staticEndpoints = Configuration.getEndpoints();
+    const userEndpoints = (await SecuredStorage.getEndpoints()) ?? [];
     return [...staticEndpoints, ...userEndpoints];
   }
 
@@ -360,12 +365,12 @@ export default class Utils {
   }
 
   public static getConnectorCurrentType(chargingStation: ChargingStation, connectorId: number): CurrentType {
-    const connectorChargePoint = chargingStation?.chargePoints?.find(chargePoint => chargePoint?.connectorIDs?.includes(connectorId));
+    const connectorChargePoint = chargingStation?.chargePoints?.find((chargePoint) => chargePoint?.connectorIDs?.includes(connectorId));
     const chargePointCurrentType = connectorChargePoint?.currentType;
     if (chargePointCurrentType) {
       return chargePointCurrentType;
     }
-    const connector = chargingStation?.connectors?.find(c => c?.connectorId === connectorId);
+    const connector = chargingStation?.connectors?.find((c) => c?.connectorId === connectorId);
     return connector?.currentType;
   }
 
@@ -544,7 +549,10 @@ export default class Utils {
   }
 
   public static getParamFromNavigation(
-    route: any, name: string, defaultValue: string | boolean | Record<any, any>, removeValue = false
+    route: any,
+    name: string,
+    defaultValue: string | boolean | Record<any, any>,
+    removeValue = false
   ): string | number | boolean | Record<string, unknown> | [] {
     const params: any = route?.params?.params ?? route?.params;
     // Has param object?
@@ -664,7 +672,9 @@ export default class Utils {
     let converterName = '';
     converterName += `${converter?.powerWatts ?? ''} kW`;
     if (converter?.numberOfPhases > 0) {
-      converterName += ` - ${converter?.numberOfPhases ?? ''} ${converter?.numberOfPhases > 1 ? I18n.t('cars.evse_phases') : I18n.t('cars.evse_phase')}`;
+      converterName += ` - ${converter?.numberOfPhases ?? ''} ${
+        converter?.numberOfPhases > 1 ? I18n.t('cars.evse_phases') : I18n.t('cars.evse_phase')
+      }`;
     }
     if (converter?.amperagePerPhase > 0) {
       converterName += ` - ${converter?.amperagePerPhase ?? ''} A`;
@@ -701,14 +711,14 @@ export default class Utils {
           break;
         case StatusCodes.MOVED_TEMPORARILY:
           try {
-            let errorDetailedMessage: {redirectDomain: string; subdomain: string};
+            let errorDetailedMessage: { redirectDomain: string; subdomain: string };
             if (error.request.responseType === 'arraybuffer') {
               const errorData = await (error?.response?.data as Promise<ArrayBuffer>);
               const decodedData = Buffer.from(errorData)?.toString();
-              const parsedData = JSON.parse(decodedData) as {errorDetailedMessage: {subdomain: string; redirectDomain: string}};
+              const parsedData = JSON.parse(decodedData) as { errorDetailedMessage: { subdomain: string; redirectDomain: string } };
               errorDetailedMessage = parsedData?.errorDetailedMessage;
             } else {
-              const data = error?.response?.data as {errorDetailedMessage: {redirectDomain: string; subdomain: string}};
+              const data = error?.response?.data as { errorDetailedMessage: { redirectDomain: string; subdomain: string } };
               errorDetailedMessage = data?.errorDetailedMessage;
             }
             const newURLDomain = errorDetailedMessage?.redirectDomain;
@@ -716,7 +726,7 @@ export default class Utils {
             const redirectTenant = await this.redirectTenant(newURLDomain, subdomain);
             try {
               redirectCallback?.(redirectTenant);
-            } catch ( error ) {
+            } catch (error) {
               Message.showWarning('This organisation has just been moved to a new server, please try again');
             }
             if (centralServerProvider.isUserConnected()) {
@@ -733,7 +743,7 @@ export default class Utils {
                 })
               );
             }
-          } catch ( redirectError ) {
+          } catch (redirectError) {
             Message.showError('Unexpected situation, tenant redirection failed ' + redirectError?.message);
             console.log(redirectError);
           }
@@ -749,7 +759,7 @@ export default class Utils {
     } else {
       // Error in code
       if (!__DEV__) {
-        centralServerProvider.sendErrorReport(null,  error.message, error.stack);
+        centralServerProvider.sendErrorReport(null, error.message, error.stack);
       }
       Message.showError(I18n.t('general.unexpectedError'));
     }
@@ -765,21 +775,20 @@ export default class Utils {
     // Do not redirect if redirect domain is undefined, null or empty string
     if (redirectDomain) {
       const tenants = await SecuredStorage.getTenants();
-      const redirectedTenant = tenantSubdomain ?
-        tenants?.find(tenant => tenant.subdomain === tenantSubdomain)
-        :
-        (centralServerProvider.getUserTenant() || {} as TenantConnection);
+      const redirectedTenant = tenantSubdomain
+        ? tenants?.find((tenant) => tenant.subdomain === tenantSubdomain)
+        : centralServerProvider.getUserTenant() || ({} as TenantConnection);
       if (redirectedTenant) {
         const currentTenantIndex = tenants.findIndex((tenant) => tenant.subdomain === tenantSubdomain);
         const endpoints = await this.getAllEndpoints();
         let newEndpoint = endpoints.find(
-          endpoint =>
-            (endpoint.endpoint === Configuration.URL_PREFIX + redirectDomain)
-            ||
-            (endpoint.endpoint === Configuration.SERVER_URL_PREFIX + redirectDomain));
+          (endpoint) =>
+            endpoint.endpoint === Configuration.URL_PREFIX + redirectDomain ||
+            endpoint.endpoint === Configuration.SERVER_URL_PREFIX + redirectDomain
+        );
         // If endpoint no yet created, create it
         if (!newEndpoint) {
-          newEndpoint = {name: redirectDomain, endpoint: Configuration.URL_PREFIX + redirectDomain};
+          newEndpoint = { name: redirectDomain, endpoint: Configuration.URL_PREFIX + redirectDomain };
           const userEndpoints = await SecuredStorage.getEndpoints();
           userEndpoints.push(newEndpoint);
           await SecuredStorage.saveEndpoints(userEndpoints);
@@ -838,7 +847,7 @@ export default class Utils {
           // Clear
           const clearError: any = {};
           clearError[key] = [];
-          screen.state =  {...screen.state , ...clearError};
+          screen.state = { ...screen.state, ...clearError };
         }
       }
     }
@@ -855,7 +864,7 @@ export default class Utils {
       formValid = false;
     }
     // Set
-    screen.state = {...screen.state,  ...errorState};
+    screen.state = { ...screen.state, ...errorState };
     // Return
     screen.setState(screen.state);
     return formValid;
@@ -953,6 +962,28 @@ export default class Utils {
     }
   };
 
+  public static buildConnectorTypeStyle(type: string) {
+    const commonColors = Utils.getCurrentCommonColor();
+    switch (type) {
+      case ConnectorType.TYPE_2:
+        return { backgroundColor: commonColors.primary };
+      case ConnectorType.COMBO_CCS:
+        return { backgroundColor: commonColors.yellow };
+      case ConnectorType.CHADEMO:
+        return { backgroundColor: commonColors.purple };
+      case ConnectorType.DOMESTIC:
+        return { backgroundColor: commonColors.amber };
+      case ConnectorType.TYPE_1_CCS:
+        return { backgroundColor: commonColors.info };
+      case ConnectorType.TYPE_1:
+        return { backgroundColor: commonColors.warning };
+      case ConnectorType.TYPE_3C:
+        return { backgroundColor: commonColors.brandSuccessLight };
+      default:
+        return { backgroundColor: commonColors.disabled };
+    }
+  }
+
   public static translateUserStatus(status: string): string {
     switch (status) {
       case UserStatus.ACTIVE:
@@ -1016,19 +1047,85 @@ export default class Utils {
     return args.join('');
   }
 
-  private static getDeviceLocale(): string {
-    return Platform.OS === 'ios' ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
+  public static buildReservationStatusIcon(reservationStatus: ReservationStatus, style?: any, color?: any, size: number = 25): Element {
+    const commonColor = Utils.getCurrentCommonColor();
+    switch (reservationStatus) {
+      case ReservationStatus.DONE:
+        return <Icon size={scale(size)} as={MaterialIcons} name="done" color={commonColor.success} />;
+      case ReservationStatus.CANCELLED:
+        return <Icon size={scale(size)} as={MaterialIcons} name="cancel" color={commonColor.danger} />;
+      case ReservationStatus.EXPIRED:
+        return <Icon size={scale(size)} as={MaterialIcons} name="hourglass-bottom" color={commonColor.danger} />;
+      case ReservationStatus.UNMET:
+        return <Icon size={scale(size)} as={MaterialIcons} name="hourglass-disabled" color={commonColor.disabledDark} />;
+      case ReservationStatus.IN_PROGRESS:
+        return <Icon size={scale(size)} as={MaterialIcons} name="sync" color={commonColor.primary} />;
+      case ReservationStatus.SCHEDULED:
+        return <Icon size={scale(size)} as={MaterialIcons} name="schedule" color={commonColor.info} />;
+    }
   }
 
-  private static getDeviceLanguage(): string {
-    return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
+  public static buildReservationTypeIcon(reservationType: ReservationType, style?: any, color?: any, size: number = 25): Element {
+    const commonColor = Utils.getCurrentCommonColor();
+    switch (reservationType) {
+      case ReservationType.RESERVE_NOW:
+        return <Icon size={scale(size)} as={MaterialCommunityIcons} name="key" color={commonColor.amber} />;
+      case ReservationType.PLANNED_RESERVATION:
+        return <Icon size={scale(size)} as={MaterialIcons} name="event" color={commonColor.purple} />;
+    }
+  }
+
+  public static translateReservationStatus(status: string): string {
+    switch (status) {
+      case ReservationStatus.DONE:
+        return I18n.t('reservations.statuses.reservation_done');
+      case ReservationStatus.EXPIRED:
+        return I18n.t('reservations.statuses.reservation_expired');
+      case ReservationStatus.CANCELLED:
+        return I18n.t('reservations.statuses.reservation_cancelled');
+      case ReservationStatus.SCHEDULED:
+        return I18n.t('reservations.statuses.reservation_scheduled');
+      case ReservationStatus.IN_PROGRESS:
+        return I18n.t('reservations.statuses.reservation_in_progress');
+      case ReservationStatus.UNMET:
+        return I18n.t('reservations.statuses.reservation_unmet');
+      default:
+        return I18n.t('reservations.statuses.unknown');
+    }
+  }
+
+  public static translateReservationType(type: string): string {
+    switch (type) {
+      case ReservationType.PLANNED_RESERVATION:
+        return I18n.t('reservations.types.planned_reservation');
+      case ReservationType.RESERVE_NOW:
+        return I18n.t('reservations.types.reserve_now');
+      default:
+        return I18n.t('reservations.types.unknown');
+    }
+  }
+
+  public static getReservationStatusStyle(reservationStatus: ReservationStatus, style: any): ViewStyle {
+    switch (reservationStatus) {
+      case ReservationStatus.DONE:
+        return style.reservationStatusDone;
+      case ReservationStatus.SCHEDULED:
+        return style.reservationStatusScheduled;
+      case ReservationStatus.IN_PROGRESS:
+        return style.reservationStatusInProgress;
+      case ReservationStatus.CANCELLED:
+      case ReservationStatus.EXPIRED:
+        return style.reservationStatusCancelled;
+      case ReservationStatus.UNMET:
+        return style.reservationStatusUnmet;
+    }
   }
 
   public static computeMaxBoundaryDistanceKm(region: Region) {
     if (region) {
       const height = region.latitudeDelta * 111;
-      const width = region.longitudeDelta * 40075 * Math.cos(region.latitude) / 360;
-      return Math.sqrt(height**2 + width**2)/2 * 1000;
+      const width = (region.longitudeDelta * 40075 * Math.cos(region.latitude)) / 360;
+      return (Math.sqrt(height ** 2 + width ** 2) / 2) * 1000;
     }
     return null;
   }
@@ -1043,31 +1140,19 @@ export default class Utils {
     color = color ?? commonColor.textColor;
     switch (connectorType) {
       case ConnectorType.CHADEMO:
-        return (
-          <Chademo width={scale(size)} height={scale(size)} stroke={color} strokeWidth="25%" />
-        );
+        return <Chademo width={scale(size)} height={scale(size)} stroke={color} strokeWidth="25%" />;
       case ConnectorType.TYPE_2:
-        return (
-          <Type2 width={scale(size)} height={scale(size)} stroke={color} strokeWidth="8%" />
-        );
+        return <Type2 width={scale(size)} height={scale(size)} stroke={color} strokeWidth="8%" />;
       case ConnectorType.COMBO_CCS:
-        return (
-          <ComboCCS width={scale(size)} height={scale(size)} stroke={color} strokeWidth="20%" />
-        );
+        return <ComboCCS width={scale(size)} height={scale(size)} stroke={color} strokeWidth="20%" />;
       case ConnectorType.DOMESTIC:
         return <Domestic width={scale(size)} height={scale(size)} fill={color} strokeWidth="2%" />;
       case ConnectorType.TYPE_1:
-        return (
-          <Type1 width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />
-        );
+        return <Type1 width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />;
       case ConnectorType.TYPE_1_CCS:
-        return (
-          <Type1CCS width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />
-        );
+        return <Type1CCS width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />;
       case ConnectorType.TYPE_3C:
-        return (
-          <Type3C width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />
-        );
+        return <Type3C width={scale(size)} height={scale(size)} stroke={color} strokeWidth="2.5%" />;
     }
     return <NoConnector width={scale(size)} height={scale(size)} fill={color} />;
   };
@@ -1075,7 +1160,7 @@ export default class Utils {
   public static async checkForUpdate(): Promise<CheckVersionResponse | null> {
     try {
       return await checkVersion();
-    } catch ( error ) {
+    } catch (error) {
       return null;
     }
   }
@@ -1084,5 +1169,61 @@ export default class Utils {
     const userEndpoints = (await SecuredStorage.getEndpoints()) || [];
     const staticEndpoints = Configuration.getEndpoints() || [];
     return [...userEndpoints, ...staticEndpoints];
+  }
+
+  public static handleReservationResponses(error: any) {
+    let handled = false;
+    switch (error?.response?.status) {
+      case HTTPError.RESERVATION_ALREADY_EXISTS_ERROR:
+        Message.showError(I18n.t('reservations.action_error.general.already_exists'));
+        handled = true;
+        break;
+      case HTTPError.RESERVATION_NOT_SUPPORTED_ERROR:
+        Message.showError(I18n.t('reservations.action_error.general.not_supported'));
+        handled = true;
+        break;
+      case HTTPError.RESERVATION_REJECTED_ERROR:
+        Message.showError(I18n.t('reservations.action_error.general.rejected'));
+        handled = true;
+        break;
+      case HTTPError.RESERVATION_COLLISION_ERROR:
+        Message.showError(I18n.t('reservations.action_error.general.collision'));
+        handled = true;
+        break;
+      case HTTPError.RESERVATION_FAULTED_ERROR:
+        Message.showError(I18n.t('reservations.action_error.general.faulted'));
+        handled = true;
+        break;
+      case HTTPError.RESERVATION_OCCUPIED_ERROR:
+        Message.showError(I18n.t('reservations.action_error.general.occupied'));
+        handled = true;
+        break;
+      case HTTPError.RESERVATION_UNAVAILABLE_ERROR:
+        Message.showError(I18n.t('reservations.action_error.general.unavailable'));
+        handled = true;
+        break;
+      case HTTPError.RESERVATION_MULTIPLE_RESERVE_NOW_ERROR:
+        Message.showError(I18n.t('reservations.action_error.general.multiple_reserve_now'));
+        handled = true;
+        break;
+      default:
+        return handled;
+    }
+    return handled;
+  }
+
+  public static buildDateTimeObject(date: Date, dateTime: Date, hours?: number, minutes?: number): Date {
+    const parsedDateTime = dateTime ? moment(dateTime) : moment({ hours, minutes });
+    return moment(date).hours(parsedDateTime.hours()).minutes(parsedDateTime.minutes()).toDate();
+  }
+
+  private static getDeviceLocale(): string {
+    return (
+      Platform.OS === 'ios' ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier
+    ) as string;
+  }
+
+  private static getDeviceLanguage(): string {
+    return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
   }
 }

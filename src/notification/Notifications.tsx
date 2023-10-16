@@ -1,14 +1,15 @@
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import notifee, { AuthorizationStatus, AndroidImportance } from '@notifee/react-native';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
-import {Notification} from '../types/UserNotifications';
-import {getApplicationName, getBundleId, getVersion} from 'react-native-device-info';
+import { Notification } from '../types/UserNotifications';
+import { getApplicationName, getBundleId, getVersion } from 'react-native-device-info';
 import Message from '../utils/Message';
 import I18n from 'i18n-js';
 import SecuredStorage from '../utils/SecuredStorage';
 import ProviderFactory from '../provider/ProviderFactory';
-import {requestNotifications} from 'react-native-permissions';
+import { requestNotifications } from 'react-native-permissions';
 
 export default class Notifications {
   private static centralServerProvider: CentralServerProvider;
@@ -18,14 +19,29 @@ export default class Notifications {
     // Setup central provider
     this.centralServerProvider = await ProviderFactory.getProvider();
     try {
+      if (Platform.OS === 'ios') {
+        // For iOS User
+        const settings = await notifee.requestPermission();
+        if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
+          console.log('Permission settings:', settings);
+        } else {
+          console.log('User declined permissions');
+        }
+      }
       const response = await requestNotifications(['alert', 'sound']);
-      if (response?.status === 'granted' ) {
+      if (response?.status === 'granted') {
         const fcmToken = await messaging().getToken();
         if (fcmToken) {
           this.token = fcmToken;
         }
       }
-    } catch ( error ) {
+      await notifee.createChannel({
+        id: 'fcm_notifications',
+        name: 'Push Notifications from FCM',
+        description: 'Push Notifications from FCM',
+        importance: AndroidImportance.HIGH
+      });
+    } catch (error) {
       console.error(error);
     }
   }
@@ -95,7 +111,7 @@ export default class Notifications {
     // Check tenant exist
     const tenant = await this.centralServerProvider.getTenant(tenantSubdomain);
     if (!tenant) {
-      Message.showError(I18n.t('general.tenantUnknown', {tenantSubdomain}));
+      Message.showError(I18n.t('general.tenantUnknown', { tenantSubdomain }));
       return false;
     }
     return true;

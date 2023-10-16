@@ -14,7 +14,12 @@ export enum UserNotificationType {
   OFFLINE_CHARGING_STATION = 'OfflineChargingStation',
   BILLING_USER_SYNCHRONIZATION_FAILED = 'BillingUserSynchronizationFailed',
   SESSION_NOT_STARTED_AFTER_AUTHORIZE = 'SessionNotStartedAfterAuthorize',
-  END_USER_ERROR = 'EndUserErrorNotification'
+  END_USER_ERROR = 'EndUserErrorNotification',
+  RESERVATION_STATUS_CHANGED_NOTIFICATION = 'ReservationStatusChangedNotification',
+  RESERVATION_CREATED_NOTIFICATION = 'ReservationCreatedNotification',
+  RESERVATION_UPCOMING_NOTIFICATION = 'ReservationUpcomingNotification',
+  RESERVATION_CHARGING_STATION_BLOCKED = 'ReservationChargingStationBlocked',
+  RESERVATION_CANCELLED_NOTIFICATION = 'ReservationCancelledNotification'
 }
 
 export interface NotificationData {
