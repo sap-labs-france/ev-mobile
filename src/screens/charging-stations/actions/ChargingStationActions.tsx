@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Button, HStack, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Alert, ScrollView, Text, View } from 'react-native';
+import {ActivityIndicator, Alert, ScrollView, View} from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
@@ -10,8 +9,9 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargingStationActionsStyles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
+import {Button, Icon} from 'react-native-elements';
+import computeFormStyle from '../../../FormStyles';
 
 export interface Props extends BaseProps {}
 
@@ -229,13 +229,14 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
 
   public render() {
     const style = computeStyleSheet();
+    const formStyle = computeFormStyle();
     const { loading, chargingStation, spinnerResetHard, spinnerResetSoft, spinnerConnectors, spinnerClearCache, connectorsInactive } =
       this.state;
     const chargingStationIsDisabled = chargingStation
       ? chargingStation.inactive || spinnerResetHard || spinnerResetSoft || spinnerClearCache || connectorsInactive
       : false;
     return loading ? (
-      <Spinner size={scale(30)} style={style.spinner} color="grey" />
+      <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" />
     ) : (
       <View style={style.container}>
         <HeaderComponent
@@ -248,67 +249,58 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
           <View style={style.viewContainer}>
             <View style={style.actionContainer}>
               <Button
-                isDisabled={chargingStationIsDisabled}
-                style={[style.actionButton, chargingStationIsDisabled ? null : style.resetButton]}
-                onPress={() => this.resetHardConfirm()}>
-                <HStack alignItems={'center'}>
-                  {spinnerResetHard ? <Spinner color="grey" /> : <Icon size={scale(20)} style={style.actionButtonIcon} as={MaterialIcons} name="repeat" />}
-                  <Text style={style.actionButtonText}>
-                    {I18n.t('chargers.resetHard')}
-                  </Text>
-                </HStack>
-              </Button>
+                title={I18n.t('chargers.resetHard')}
+                disabled={chargingStationIsDisabled}
+                disabledStyle={formStyle.buttonDisabled}
+                disabledTitleStyle={formStyle.buttonTextDisabled}
+                loading={spinnerResetHard}
+                buttonStyle={[style.actionButton, chargingStationIsDisabled ? null : style.resetButton]}
+                icon={<Icon size={scale(20)} iconStyle={style.actionButtonIcon} type={'material'} name="repeat" />}
+                iconPosition={'left'}
+                onPress={() => this.resetHardConfirm()}
+              />
             </View>
             {chargingStation &&
               chargingStation.connectors.map((connector) => (
                 <View key={connector.connectorId} style={style.actionContainer}>
                   <Button
-                    isDisabled={chargingStationIsDisabled || connector.status === ChargePointStatus.AVAILABLE}
-                    warning={!chargingStationIsDisabled && connector.status !== ChargePointStatus.AVAILABLE}
-                    style={style.actionButton}
-                    onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
-                    <HStack alignItems={'center'}>
-                      {spinnerConnectors.get(connector.connectorId) ? (
-                        <Spinner color="grey" />
-                      ) : (
-                        <Icon size={scale(20)} style={style.actionButtonIcon} as={MaterialIcons} name="lock-open" />
-                      )}
-                      <Text style={style.actionButtonText}>
-                        {I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connector.connectorId) })}
-                      </Text>
-                    </HStack>
-                  </Button>
+                    title={I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connector.connectorId) })}
+                    disabled={chargingStationIsDisabled || connector.status === ChargePointStatus.AVAILABLE}
+                    disabledStyle={formStyle.buttonDisabled}
+                    disabledTitleStyle={formStyle.buttonTextDisabled}
+                    loading={spinnerConnectors.get(connector.connectorId)}
+                    buttonStyle={[style.actionButton, (!chargingStationIsDisabled && connector.status !== ChargePointStatus.AVAILABLE) && {backgroundColor: Utils.getCurrentCommonColor().warning} ]}
+                    icon={<Icon size={scale(20)} iconStyle={style.actionButtonIcon} type={'material'} name="lock-open" />}
+                    iconPosition={'left'}
+                    onPress={() => this.unlockConnectorConfirm(connector.connectorId)}
+                  />
                 </View>
               ))}
             <View style={style.actionContainer}>
               <Button
-                isDisabled={chargingStationIsDisabled}
-                style={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
-                onPress={() => this.resetSoftConfirm()}>
-                <HStack alignItems={'center'}>
-                  {spinnerResetSoft ? (
-                    <Spinner color="grey" />
-                  ) : (
-                    <Icon size={scale(20)} style={style.actionButtonIcon} as={MaterialIcons} name="layers-clear" />
-                  )}
-                  <Text style={style.actionButtonText}>
-                    {I18n.t('chargers.resetSoft')}
-                  </Text>
-                </HStack>
-              </Button>
+                title={I18n.t('chargers.resetSoft')}
+                disabled={chargingStationIsDisabled}
+                disabledStyle={formStyle.buttonDisabled}
+                disabledTitleStyle={formStyle.buttonTextDisabled}
+                loading={spinnerResetSoft}
+                buttonStyle={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
+                icon={<Icon size={scale(20)} iconStyle={style.actionButtonIcon} type={'material'} name="layers-clear" />}
+                iconPosition={'left'}
+                onPress={() => this.resetSoftConfirm()}
+              />
             </View>
             <View style={style.actionContainer}>
               <Button
-                isDisabled={chargingStationIsDisabled}
-                style={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
-                onPress={() => this.clearCacheConfirm()}>
-                <HStack alignItems={'center'}>
-                  {spinnerClearCache ? <Spinner color="grey" /> : <Icon size={scale(20)} style={style.actionButtonIcon} as={MaterialIcons} name="refresh" />}
-                  <Text style={style.actionButtonText}>
-                    {I18n.t('chargers.clearCache')}
-                  </Text>
-                </HStack>
-              </Button>
+                title={I18n.t('chargers.clearCache')}
+                disabled={chargingStationIsDisabled}
+                disabledStyle={formStyle.buttonDisabled}
+                disabledTitleStyle={formStyle.buttonTextDisabled}
+                loading={spinnerClearCache}
+                buttonStyle={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
+                icon={<Icon size={scale(20)} iconStyle={style.actionButtonIcon} type={'material'} name="refresh" />}
+                iconPosition={'left'}
+                onPress={() => this.clearCacheConfirm()}
+              />
             </View>
           </View>
         </ScrollView>

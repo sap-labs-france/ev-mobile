@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Spinner } from 'native-base';
 import React from 'react';
-import { FlatList, RefreshControl, ScrollView, Text, View } from 'react-native';
+import {ActivityIndicator, FlatList, RefreshControl, ScrollView, Text, View} from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
@@ -166,7 +165,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           containerStyle={style.headerContainer}
         />
         {loading ? (
-          <Spinner size={scale(30)} style={style.spinner} color="grey" />
+          <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <FlatList
             data={this.displayedProperties}

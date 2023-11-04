@@ -1,4 +1,3 @@
-import { Icon  } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -8,8 +7,8 @@ import FilterControlComponent, { FilterControlComponentProps, FilterControlCompo
 import computeStyleSheet from './DateFilterControlComponentStyles';
 import I18nManager from '../../../../../I18n/I18nManager';
 import { scale } from 'react-native-size-matters';
-import Foundation from 'react-native-vector-icons/Foundation';
 import I18n from 'i18n-js';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends FilterControlComponentProps<Date> {
   minimumDate: Date;
@@ -73,7 +72,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
           <View>
             <TouchableOpacity style={internalStyle.inputContainer} onPress={() => this.setState({openDatePicker: true})}>
               <Text numberOfLines={1} style={internalStyle.dateText}>{I18nManager.formatDateTime(value, {dateStyle: 'medium'})}</Text>
-              <Icon padding={0} size={scale(28)} style={internalStyle.dateIcon} as={Foundation} name={'calendar'} />
+              <Icon size={scale(28)} iconStyle={internalStyle.dateIcon} type={'foundation'} name={'calendar'} />
             </TouchableOpacity>
             <DateTimePickerModal
               confirmTextIOS={I18n.t('general.ok')}

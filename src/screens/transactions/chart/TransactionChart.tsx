@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Spinner } from 'native-base';
 import React from 'react';
-import { View, processColor, Text } from 'react-native';
+import {View, processColor, Text, ActivityIndicator} from 'react-native';
 import { LineChart, LineChartProps, LineValue } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
 
@@ -210,7 +209,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       'stateOfCharge',
       null,
       (markerValue) => `${I18nManager.formatNumber(markerValue)} %`
-      );
+    );
     if (transaction?.stateOfCharge > 0 || transaction?.stop?.stateOfCharge > 0) {
       chartDefinition.data.dataSets.push({
         values: stateOfChargeValues,
@@ -237,7 +236,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         'limitWatts',
         (y) => y / 1000,
         (markerValue) => `${I18nManager.formatNumber(markerValue)} kW`
-        );
+      );
       // Check grid limitation
       if (!Utils.isEmptyArray(gridLimitationValues)) {
         chartDefinition.data.dataSets.push({
@@ -265,7 +264,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         'cumulatedConsumptionWh',
         (y) => y / 1000,
         (markerValue) => `${I18nManager.formatNumber(markerValue)} kW.h`
-        );
+      );
       chartDefinition.data.dataSets.push({
         values: cumulatedConsumptionValues,
         label: I18n.t('details.cumulatedConsumptionLabel'),
@@ -291,7 +290,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       'cumulatedAmount',
       null,
       (markerValue) => `${I18nManager.formatCurrency(markerValue, priceCurrency)}`
-      );
+    );
     if (!Utils.isEmptyArray(priceValues) && this.securityProvider?.isComponentPricingActive()) {
       chartDefinition.data.dataSets.push({
         values: priceValues,
@@ -387,7 +386,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           subTitle={chargingStation ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
           containerStyle={style.headerContainer}
         />
-        {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+        {loading ? <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={{flex: 1}}>
             {showTransactionDetails && transaction && (
               <TransactionHeaderComponent

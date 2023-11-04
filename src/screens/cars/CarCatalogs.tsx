@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Spinner } from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -146,7 +145,7 @@ export default class CarCatalogs extends SelectableList<Car> {
           <SimpleSearchComponent containerStyle={carsStyles.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         </View>
         {loading ? (
-          <Spinner size={scale(30)} style={transactionStyles.spinner} color="grey" />
+          <ActivityIndicator size={scale(30)} style={transactionStyles.spinner} color="grey" />
         ) : (
           <View style={carsStyles.content}>
             <ItemsList<CarCatalog>

@@ -1,8 +1,7 @@
 import { CommonActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Icon, IIconProps, Spinner } from 'native-base';
 import React from 'react';
-import {Keyboard, Text, TextInput} from 'react-native';
+import {ActivityIndicator, Keyboard, Text, TextInput} from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
@@ -15,11 +14,9 @@ import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import { StatusCodes } from 'http-status-codes';
 import { TenantConnection } from '../../../types/Tenant';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Button, Input, CheckBox} from 'react-native-elements';
+import {Button, Input, CheckBox, Icon, IconProps} from 'react-native-elements';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -217,16 +214,16 @@ export default class SignUp extends BaseScreen<Props, State> {
       password,
       repeatPassword,
       performSignUp } = this.state;
-    const InputIcon = (props: IIconProps) => <Icon size={scale(20)} style={formStyle.inputIcon} {...props} />;
+    const InputIcon = (props: IconProps) => <Icon size={scale(20)} iconStyle={formStyle.inputIcon} {...props} />;
     return loading ? (
-      <Spinner style={formStyle.spinner} color="grey" />
+      <ActivityIndicator style={formStyle.spinner} color="grey" />
     ) : (
       <SafeAreaView edges={['bottom']} style={style.container}>
         <HeaderComponent containerStyle={style.headerContainer} navigation={this.props.navigation} title={I18n.t('authentication.signUp')} />
         <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} containerStyle={{marginHorizontal: '5%', marginBottom: scale(10)}} />
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'always'} bounces={false} persistentScrollbar={true} contentContainerStyle={style.scrollViewContentContainer} style={style.scrollView}>
           <Input
-            leftIcon={<InputIcon as={MaterialIcons} name="person" />}
+            leftIcon={<InputIcon type={'material'} name="person" />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={formStyle.inputTextContainer}
@@ -245,7 +242,7 @@ export default class SignUp extends BaseScreen<Props, State> {
           />
           <Input
             ref={(ref: TextInput) => (this.firstNameInput = ref)}
-            leftIcon={<InputIcon as={MaterialIcons} name="person" />}
+            leftIcon={<InputIcon type={'material'} name="person" />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={formStyle.inputTextContainer}
@@ -264,7 +261,7 @@ export default class SignUp extends BaseScreen<Props, State> {
           />
           <Input
             ref={(ref: TextInput) => (this.emailInput = ref)}
-            leftIcon={<InputIcon  name="email" as={MaterialCommunityIcons} />}
+            leftIcon={<InputIcon  name="email" type={'material-community'} />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
             inputContainerStyle={formStyle.inputTextContainer}
@@ -283,10 +280,10 @@ export default class SignUp extends BaseScreen<Props, State> {
           />
           <Input
             ref={(ref: TextInput) => (this.passwordInput = ref)}
-            leftIcon={<InputIcon name="lock" as={MaterialCommunityIcons} />}
+            leftIcon={<InputIcon name="lock" type={'material-community'} />}
             rightIcon={<InputIcon
               name={hidePassword ? 'eye' : 'eye-off'}
-              as={MaterialCommunityIcons}
+              type={'material-community'}
               onPress={() => this.setState({ hidePassword: !hidePassword })}
             />}
             containerStyle={formStyle.inputContainer}
@@ -309,10 +306,10 @@ export default class SignUp extends BaseScreen<Props, State> {
           />
           <Input
             ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-            leftIcon={<InputIcon name="lock" as={MaterialCommunityIcons} />}
+            leftIcon={<InputIcon name="lock" type={'material-community'} />}
             rightIcon={<InputIcon
               name={hideRepeatPassword ? 'eye' : 'eye-off'}
-              as={MaterialCommunityIcons}
+              type={'material-community'}
               onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
             />}
             containerStyle={formStyle.inputContainer}
@@ -345,8 +342,8 @@ export default class SignUp extends BaseScreen<Props, State> {
                 </Text>
               </Text>
             }
-            uncheckedIcon={<InputIcon size={scale(25)} name="checkbox-blank-outline" as={MaterialCommunityIcons} />}
-            checkedIcon={<InputIcon size={scale(25)} name="checkbox-outline" as={MaterialCommunityIcons} />}
+            uncheckedIcon={<InputIcon size={scale(25)} name="checkbox-blank-outline" type={'material-community'} />}
+            checkedIcon={<InputIcon size={scale(25)} name="checkbox-outline" type={'material-community'} />}
           />
           <Button
             title={I18n.t('authentication.createAccount')}

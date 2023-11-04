@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Spinner } from 'native-base';
 import React from 'react';
-import {Keyboard, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Keyboard, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import ChargingStation, { Connector } from '../../types/ChargingStation';
 
 import HeaderComponent from './../../components/header/HeaderComponent';
@@ -96,7 +95,7 @@ export default class ReportError extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const { reportingError, phoneNumber, title, description, descriptionInputHeight, loading } = this.state;
     return loading ? (
-      <Spinner style={formStyle.spinner} color="grey" />
+      <ActivityIndicator style={formStyle.spinner} color="grey" />
     ) : (
       <SafeAreaView edges={['bottom']} style={style.container}>
         <HeaderComponent

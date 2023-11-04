@@ -1,14 +1,13 @@
 import I18n from 'i18n-js';
-import { Icon } from 'native-base';
 import React from 'react';
 import {TextInput, TouchableOpacity, View, ViewStyle} from 'react-native';
 
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './SimpleSearchComponentStyles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Icon} from 'react-native-elements';
 
 const DEBOUNCE_TIME_MILLIS = 400;
 
@@ -71,7 +70,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
     const { searchText } = this.state;
     return (
       <View style={[style.container, containerStyle]}>
-        <Icon marginX={scale(5)} size={scale((22))} as={MaterialIcons} name="search" style={style.icon} />
+        <Icon size={scale((22))} type={'material'} name="search" iconStyle={style.icon} />
         <TextInput
           ref={(ref) => {
             this.textInput = ref;
@@ -88,7 +87,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
         />
         {searchText && (
           <TouchableOpacity onPress={() => this.clearSearch()}>
-            <Icon marginX={scale(5)} size={scale(20)} as={MaterialCommunityIcons} name="close-circle" style={[style.icon, style.clearIcon]} />
+            <Icon size={scale(20)} type={'material-community'} name="close-circle" iconStyle={{...style.icon, ...style.clearIcon}} />
           </TouchableOpacity>
         )}
       </View>

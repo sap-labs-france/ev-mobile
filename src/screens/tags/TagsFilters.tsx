@@ -7,7 +7,7 @@ import User from '../../types/User';
 import { View } from 'react-native';
 
 export interface TagsFiltersDef {
-  users: User[]
+  users: User[];
 }
 
 export default class TagsFilters extends ScreenFilters<TagsFiltersDef> {

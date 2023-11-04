@@ -1,9 +1,8 @@
 import { CommonActions } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import {Icon, Spinner} from 'native-base';
 import React from 'react';
-import {Keyboard, TextInput} from 'react-native';
+import {ActivityIndicator, Keyboard, TextInput} from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
@@ -13,11 +12,10 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import { TenantConnection } from '../../../types/Tenant';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Button, Input} from 'react-native-elements';
+import {Button, Icon, Input} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -164,19 +162,19 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { tenantName, resettingPassword, loading, hidePassword, hideRepeatPassword, tenantLogo, password, repeatPassword } = this.state;
     return loading ? (
-      <Spinner style={formStyle.spinner} color="grey" />
+      <ActivityIndicator style={formStyle.spinner} color="grey" />
     ) : (
       <SafeAreaView edges={['bottom', 'top']} style={style.container}>
         <AuthHeader containerStyle={{marginHorizontal: '5%', marginVertical: scale(10)}} navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo}/>
         <KeyboardAwareScrollView bounces={false} persistentScrollbar={true} contentContainerStyle={style.scrollViewContentContainer} style={style.scrollView}>
           <Input
-            leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon}/>}
+            leftIcon={<Icon size={scale(20)} name="lock" type={'material-community'} iconStyle={formStyle.inputIcon}/>}
             rightIcon={<Icon
               name={hidePassword ? 'eye' : 'eye-off'}
               size={scale(20)}
-              as={MaterialCommunityIcons}
+              type={'material-community'}
               onPress={() => this.setState({hidePassword: !hidePassword})}
-              style={formStyle.inputIcon}
+              iconStyle={formStyle.inputIcon}
             />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
@@ -197,13 +195,13 @@ export default class ResetPassword extends BaseScreen<Props, State> {
           />
           <Input
             ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-            leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon}/>}
+            leftIcon={<Icon size={scale(20)} name="lock" type={'material-community'} iconStyle={formStyle.inputIcon}/>}
             rightIcon={<Icon
-              as={MaterialCommunityIcons}
+              type={'material-community'}
               size={scale(20)}
               name={hideRepeatPassword ? 'eye' : 'eye-off'}
               onPress={() => this.setState({hideRepeatPassword: !hideRepeatPassword})}
-              style={formStyle.inputIcon}
+              iconStyle={formStyle.inputIcon}
             />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}

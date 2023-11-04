@@ -1,10 +1,10 @@
-import { Switch } from 'native-base';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 import Utils from '../../../../../utils/Utils';
+import {Switch} from 'react-native-elements';
 
 export interface Props<T> extends FilterControlComponentProps<T> {
   enabledValue?: T;
@@ -38,7 +38,7 @@ export default class SwitchFilterComponent<T> extends FilterControlComponent<T> 
           thumbColor={commonColors.disabled}
           style={internalStyle.switchFilter}
           value={!!value}
-          onToggle={(newValue) => this.onValueChanged(newValue)} />
+          onChange={(event) => this.onValueChanged(event?.nativeEvent?.value)} />
       </View>
     );
   };

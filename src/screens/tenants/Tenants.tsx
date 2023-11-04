@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { FlatList, RefreshControl, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import {ActivityIndicator, FlatList, RefreshControl, SafeAreaView, TouchableOpacity, View} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 
@@ -16,9 +15,8 @@ import computeTenantStyleSheet from './TenantsStyle';
 import DialogModal from '../../components/modal/DialogModal';
 import TenantComponent from '../../components/tenant/TenantComponent';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -122,7 +120,7 @@ export default class Tenants extends BaseScreen<Props, State> {
         <View style={style.container}>
           <SafeAreaView style={fabStyles.fabContainer}>
             <TouchableOpacity delayPressIn={0} onPress={() => this.setState({ showAddTenantDialog: true })} style={fabStyles.fab}>
-              <Icon size={scale(18)} as={MaterialCommunityIcons} name={'plus'} style={fabStyles.fabIcon} />
+              <Icon color={commonColors.textColor} size={scale(18)} type={'material-community'} name={'plus'} iconStyle={fabStyles.fabIcon} />
             </TouchableOpacity>
           </SafeAreaView>
           {showAddTenantManuallyDialog && (
@@ -143,11 +141,11 @@ export default class Tenants extends BaseScreen<Props, State> {
             sideBar={false}
             containerStyle={style.headerContainer}
           />
-          {loading ? <Spinner style={style.spinner} color={commonColors.disabledDark} /> : (
+          {loading ? <ActivityIndicator style={style.spinner} color={commonColors.disabledDark} /> : (
             <View style={style.listContainer}>
               <FlatList
                 data={tenants}
-                refreshControl={<RefreshControl onRefresh={() => this.refreshTenants(true)} refreshing={refreshing} />}
+                refreshControl={<RefreshControl progressBackgroundColor={commonColors.containerBgColor} colors={[commonColors.textColor, commonColors.textColor]} onRefresh={() => this.refreshTenants(true)} refreshing={refreshing} />}
                 keyExtractor={(item) => `${item.subdomain}${item.endpoint?.name}`}
                 renderItem={({ item, index }) => (
                   <Swipeable
@@ -168,6 +166,7 @@ export default class Tenants extends BaseScreen<Props, State> {
   }
 
   private renderTenantRightActions(index: number, tenant: TenantConnection, style: any) {
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={style.rightActionsContainer}>
         <TouchableOpacity
@@ -175,21 +174,22 @@ export default class Tenants extends BaseScreen<Props, State> {
           onPress={() => {
             this.deleteTenant(index, tenant.subdomain);
           }}>
-          <Icon size={scale(20)} as={MaterialCommunityIcons} style={style.actionIcon} name="trash-can" />
+          <Icon color={commonColors.textColor} size={scale(20)} type={'material-community'} iconStyle={style.actionIcon} name="trash-can" />
         </TouchableOpacity>
         <TouchableOpacity style={style.editIconButton} onPress={() => this.setState({ tenantToBeEditedIndex: index })}>
-          <Icon size={scale(20)} style={style.actionIcon} name="edit" as={MaterialIcons} />
+          <Icon color={commonColors.textColor} size={scale(20)} iconStyle={style.actionIcon} name="edit" type={'material'}/>
         </TouchableOpacity>
       </View>
     );
   }
 
   private renderAddTenantDialog(style: any) {
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <DialogModal
         animationIn={'fadeInLeft'}
         title={I18n.t('authentication.addTenantTitle')}
-        renderIcon={(iconStyle) => <Icon size={scale(iconStyle.fontSize)} style={iconStyle} as={MaterialIcons} name={'add-business'} />}
+        renderIcon={(iconStyle) => <Icon color={commonColors.textColor} size={scale(iconStyle.fontSize)} iconStyle={iconStyle} type={'material'} name={'add-business'} />}
         description={I18n.t('authentication.addTenantText')}
         close={() => this.setState({ showAddTenantDialog: false })}
         withCancel={true}

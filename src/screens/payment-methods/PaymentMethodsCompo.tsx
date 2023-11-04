@@ -1,13 +1,8 @@
-import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner } from 'native-base';
 import React, { createRef } from 'react';
-import { ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
+import {ActivityIndicator, Alert, TouchableOpacity, View} from 'react-native';
 
-import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList from '../../components/list/ItemsList';
 import PaymentMethodComponent from '../../components/payment-method/PaymentMethodComponent';
-import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
 import { BillingPaymentMethod } from '../../types/Billing';
 import { DataResult } from '../../types/DataResult';
@@ -20,7 +15,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Message from '../../utils/Message';
 import { scale } from 'react-native-size-matters';
 import ItemsCompo from '../../components/list/testCompo/ItemsCompo';
-import SelectableList from '../base-screen/SelectableList';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -83,10 +78,10 @@ export default class PaymentMethodsCompo extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     return (
-      <Container style={style.container}>
+      <View style={style.container}>
         <BaseAutoRefreshScreen navigation={navigation} refresh={this.itemsRef.current.manualRefresh} />
         <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm')} style={style.addPMContainer}>
-          <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
+          <Icon type={'MaterialIcons'} name={'add'} iconStyle={style.icon} />
         </TouchableOpacity>
         <ItemsCompo<BillingPaymentMethod>
           ref={this.itemsRef}
@@ -97,7 +92,7 @@ export default class PaymentMethodsCompo extends React.Component<Props, State> {
           navigation={this.props.navigation}
           emptyTitle={I18n.t('paymentMethods.noPaymentMethod')}
         />
-      </Container>
+      </View>
     );
   };
 

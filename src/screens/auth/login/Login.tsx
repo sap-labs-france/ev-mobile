@@ -1,13 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import {Icon, Spinner} from 'native-base';
 import React from 'react';
 import {
   BackHandler,
   Keyboard,
   TouchableOpacity,
   Text,
-  View, TextInput,
+  View, TextInput, ActivityIndicator,
 } from 'react-native';
 
 import DialogModal from '../../../components/modal/DialogModal';
@@ -21,13 +20,10 @@ import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from '../AuthStyles';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { scale } from 'react-native-size-matters';
 import {AuthContext, AuthService} from '../../../context/AuthContext';
-import {Button, CheckBox, Input} from 'react-native-elements';
+import {Button, CheckBox, Icon, Input} from 'react-native-elements';
 import {getVersion} from 'react-native-device-info';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AuthHeader from '../AuthHeader';
@@ -276,7 +272,7 @@ export default class Login extends BaseScreen<Props, State> {
     const {tenantLogo, eula, loggingIn, loading, hidePassword, showNoTenantFoundDialog, tenantName, password, email, tenantSubDomain } = this.state;
     // Render
     return loading ? (
-      <Spinner style={formStyle.spinner} color="grey" />
+      <ActivityIndicator style={formStyle.spinner} color="grey" />
     ) : (
       <AuthContext.Consumer>
         {authService => {
@@ -286,11 +282,11 @@ export default class Login extends BaseScreen<Props, State> {
               {showNoTenantFoundDialog && this.renderNoTenantFoundDialog()}
               <TouchableOpacity onPress={() => this.goToTenants()} style={style.tenantSelectionContainer}>
                 <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
-                <Icon style={style.dropdownIcon} size={scale(25)} as={MaterialIcons} name={'arrow-drop-down'} />
+                <Icon iconStyle={style.dropdownIcon} size={scale(25)} type={'material'} name={'arrow-drop-down'} />
               </TouchableOpacity>
               <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} bounces={false} persistentScrollbar={true} style={style.scrollView} contentContainerStyle={style.scrollViewContentContainer}>
                 <Input
-                  leftIcon={<Icon size={scale(20)} name="email" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+                  leftIcon={<Icon size={scale(20)} name="email" type={'material-community'} iconStyle={formStyle.inputIcon} />}
                   containerStyle={formStyle.inputContainer}
                   inputStyle={formStyle.inputText}
                   inputContainerStyle={formStyle.inputTextContainer}
@@ -308,13 +304,13 @@ export default class Login extends BaseScreen<Props, State> {
                 />
                 <Input
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
-                  leftIcon={<Icon size={scale(20)} name="lock" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+                  leftIcon={<Icon size={scale(20)} name="lock" type={'material-community'} iconStyle={formStyle.inputIcon} />}
                   rightIcon={<Icon
                     name={hidePassword ? 'eye' : 'eye-off'}
                     size={scale(20)}
-                    as={Ionicons}
+                    type={'ionicon'}
                     onPress={() => this.setState({ hidePassword: !hidePassword })}
-                    style={formStyle.inputIcon}
+                    iconStyle={formStyle.inputIcon}
                   />}
                   containerStyle={formStyle.inputContainer}
                   inputStyle={formStyle.inputText}
@@ -345,8 +341,8 @@ export default class Login extends BaseScreen<Props, State> {
                       </Text>
                     </Text>
                   }
-                  uncheckedIcon={<Icon size={scale(25)} name="checkbox-blank-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
-                  checkedIcon={<Icon size={scale(25)} name="checkbox-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+                  uncheckedIcon={<Icon size={scale(25)} name="checkbox-blank-outline" type={'material-community'} iconStyle={formStyle.inputIcon} />}
+                  checkedIcon={<Icon size={scale(25)} name="checkbox-outline" type={'material-community'} iconStyle={formStyle.inputIcon} />}
                 />
                 <Button
                   title={I18n.t('authentication.signIn')}

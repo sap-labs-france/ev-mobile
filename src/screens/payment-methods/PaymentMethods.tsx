@@ -1,5 +1,4 @@
 import I18n from 'i18n-js';
-import { Icon, Spinner } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -21,7 +20,7 @@ import DialogModal from '../../components/modal/DialogModal';
 import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -140,12 +139,13 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     const { paymentMethods, count, skip, limit, refreshing, loading, billingSettings, paymentMethodToBeDeleted } = this.state;
     const { navigation } = this.props;
     const fabStyles = computeFabStyles();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <View style={style.container}>
         {billingSettings?.stripe?.publicKey && (
           <SafeAreaView style={fabStyles.fabContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })} style={fabStyles.fab}>
-              <Icon as={MaterialCommunityIcons} size={scale(18)} name={'plus'} style={fabStyles.fabIcon} />
+              <Icon color={commonColors.textColor} type={'material-community'} size={scale(18)} name={'plus'} iconStyle={fabStyles.fabIcon} />
             </TouchableOpacity>
           </SafeAreaView>
         )}
@@ -158,7 +158,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
         />
         {paymentMethodToBeDeleted && this.renderDeletePaymentMethodDialog(paymentMethodToBeDeleted)}
         {loading ? (
-          <Spinner size={scale(30)} style={style.spinner} color="grey" />
+          <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
             <ItemsList<BillingPaymentMethod>
@@ -202,7 +202,7 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
           {deleteInProgress ? (
             <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
           ) : (
-            <Icon size={scale(23)} as={MaterialCommunityIcons} style={style.trashIcon} name="trash-can" />
+            <Icon color={commonColors.textColor} size={scale(23)} type={'material-community'} iconStyle={style.trashIcon} name="trash-can" />
           )}
         </TouchableOpacity>
       )

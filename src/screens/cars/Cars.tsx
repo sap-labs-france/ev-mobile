@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Icon, Spinner } from 'native-base';
 import React from 'react';
-import { SafeAreaView, TouchableOpacity, View } from 'react-native';
+import {ActivityIndicator, SafeAreaView, TouchableOpacity, View} from 'react-native';
 
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -21,6 +20,7 @@ import computeFabStyles from '../../components/fab/FabComponentStyles';
 import CarsFilters, { CarsFiltersDef } from './CarsFilters';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
+import {Icon} from 'react-native-elements';
 
 interface State extends SelectableState<Car> {
   cars?: Car[];
@@ -144,7 +144,7 @@ export default class Cars extends SelectableList<Car> {
   public async search(searchText: string): Promise<void> {
     this.searchText = searchText;
     this.refresh(true);
-  };
+  }
 
   public render() {
     const transactionStyles = computeTransactionStyles();
@@ -158,7 +158,7 @@ export default class Cars extends SelectableList<Car> {
           <SafeAreaView style={fabStyles.fabContainer}>
             <TouchableOpacity
               onPress={() => navigation.navigate('CarsNavigator', { screen: 'AddCar' })} style={fabStyles.fab}>
-              <Icon style={fabStyles.fabIcon} size={scale((18))} as={MaterialCommunityIcons} name={'plus'} />
+              <Icon iconStyle={fabStyles.fabIcon} size={scale((18))} type={'material-community'} name={'plus'} />
             </TouchableOpacity>
           </SafeAreaView>
         )}
@@ -173,7 +173,7 @@ export default class Cars extends SelectableList<Car> {
           />
         )}
         {this.renderFilters()}
-        {loading ? <Spinner size={scale(30)} style={transactionStyles.spinner} color="grey" /> : (
+        {loading ? <ActivityIndicator size={scale(30)} style={transactionStyles.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<Car>
               data={cars}
@@ -222,7 +222,7 @@ export default class Cars extends SelectableList<Car> {
         <SimpleSearchComponent containerStyle={style.searchBarComponent} onChange={async (searchText) => this.search(searchText)} navigation={this.props.navigation} />
         {!isModal && this.screenFilters?.canFilter() && (
           <TouchableOpacity onPress={() => this.screenFilters?.openModal()}  style={style.filterButton}>
-            <Icon size={scale(25)} style={style.filterButtonIcon} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon size={scale(25)} iconStyle={style.filterButtonIcon} type={'material-community'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

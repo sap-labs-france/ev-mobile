@@ -121,7 +121,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-end'
     },
     closeIcon: {
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      margin: '8@s'
     }
   });
   const portraitStyles = {};

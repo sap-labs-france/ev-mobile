@@ -8,8 +8,7 @@ import computeFormStyleSheet from '../../FormStyles';
 import ModalSelect from '../../components/modal/ModalSelect';
 import Car, {CarCatalog, CarConverter, CarConverterType, CarType} from '../../types/Car';
 import {ItemSelectionMode} from '../../components/list/ItemsList';
-import {Icon} from 'native-base';
-import {Button, CheckBox, Input, Switch} from 'react-native-elements';
+import {Button, CheckBox, Icon, Input, Switch} from 'react-native-elements';
 import Utils from '../../utils/Utils';
 import SelectDropdown from 'react-native-select-dropdown';
 import CarCatalogComponent from '../../components/car/CarCatalogComponent';
@@ -23,11 +22,9 @@ import {HTTPError} from '../../types/HTTPError';
 import I18n from 'i18n-js';
 import Constants from '../../utils/Constants';
 import {RestResponse} from '../../types/ActionResponse';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {scale} from 'react-native-size-matters';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface State {
   selectedCarCatalog: CarCatalog;
@@ -151,7 +148,7 @@ export default class AddCar extends BaseScreen<Props, State> {
                 dropdownStyle={style.selectDropdown}
                 rowStyle={style.selectDropdownRow}
                 rowTextStyle={style.selectDropdownRowText}
-                renderDropdownIcon={() => <Icon size={scale(25)} style={style.dropdownIcon} as={MaterialIcons} name={'arrow-drop-down'} />}
+                renderDropdownIcon={() => <Icon size={scale(25)} iconStyle={style.dropdownIcon} type={'material'} name={'arrow-drop-down'} />}
                 onSelect={(carConverter: CarConverter) => this.setState({ selectedConverter: carConverter })}
               />
             )}
@@ -225,8 +222,8 @@ export default class AddCar extends BaseScreen<Props, State> {
               containerStyle={formStyle.checkboxContainer}
               textStyle={formStyle.checkboxText}
               checked={type === CarType.COMPANY}
-              checkedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-marked" as={MaterialCommunityIcons}/>}
-              uncheckedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-blank" as={MaterialCommunityIcons} />}
+              checkedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-marked" type={'material-community'}/>}
+              uncheckedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-blank" type={'material-community'} />}
               onPress={() => this.setState({ type: CarType.COMPANY })}
               title={I18n.t('carTypes.companyCar')}
             />
@@ -234,8 +231,8 @@ export default class AddCar extends BaseScreen<Props, State> {
               containerStyle={formStyle.checkboxContainer}
               textStyle={formStyle.checkboxText}
               checked={type === CarType.POOL_CAR}
-              checkedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-marked" as={MaterialCommunityIcons}/>}
-              uncheckedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-blank" as={MaterialCommunityIcons} />}
+              checkedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-marked" type={'material-community'}/>}
+              uncheckedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-blank" type={'material-community'} />}
               onPress={() => this.setState({ type: CarType.POOL_CAR })}
               title={I18n.t('carTypes.poolCar')}
             />
@@ -243,8 +240,8 @@ export default class AddCar extends BaseScreen<Props, State> {
               containerStyle={formStyle.checkboxContainer}
               textStyle={formStyle.checkboxText}
               checked={type === CarType.PRIVATE}
-              checkedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-marked" as={MaterialCommunityIcons}/>}
-              uncheckedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-blank" as={MaterialCommunityIcons} />}
+              checkedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-marked" type={'material-community'}/>}
+              uncheckedIcon={<Icon size={scale(25)} color={commonColors.textColor} name="radiobox-blank" type={'material-community'} />}
               onPress={() => this.setState({ type: CarType.PRIVATE })}
               title={I18n.t('carTypes.privateCar')}
             />
@@ -338,7 +335,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         defaultValue={null}
         buttonStyle={style.selectField}
         buttonTextStyle={{...style.selectFieldText, ...(!this.state.selectedCarCatalog ? style.selectFieldTextPlaceholder : {})}}
-        renderDropdownIcon={() => <Icon style={style.dropdownIcon} size={scale(25)} as={MaterialIcons} name={'arrow-drop-down'} />}
+        renderDropdownIcon={() => <Icon iconStyle={style.dropdownIcon} size={scale(25)} type={'material'} name={'arrow-drop-down'} />}
       />
     );
   }
@@ -353,7 +350,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         renderCustomizedButtonChild={() => <CarCatalogComponent  carCatalog={carCatalog} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
-        renderDropdownIcon={() => <Icon style={style.dropdownIcon} size={scale(25)} as={MaterialIcons} name={'arrow-drop-down'} />}
+        renderDropdownIcon={() => <Icon iconStyle={style.dropdownIcon} size={scale(25)} type={'material'} name={'arrow-drop-down'} />}
       />
     );
   }
@@ -367,7 +364,7 @@ export default class AddCar extends BaseScreen<Props, State> {
         renderCustomizedButtonChild={() => <UserComponent user={user} navigation={null} />}
         buttonStyle={style.selectField}
         buttonTextStyle={style.selectFieldText}
-        renderDropdownIcon={() => <Icon size={scale(25)} as={MaterialIcons} style={style.dropdownIcon} name={'arrow-drop-down'} />}
+        renderDropdownIcon={() => <Icon size={scale(25)} type={'material'} iconStyle={style.dropdownIcon} name={'arrow-drop-down'} />}
       />
     );
   }

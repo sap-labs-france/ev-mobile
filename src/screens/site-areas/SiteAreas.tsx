@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Icon, Spinner } from 'native-base';
 import React from 'react';
 import {
+  ActivityIndicator,
   Image,
   ImageStyle,
   SafeAreaView,
@@ -33,10 +33,8 @@ import satelliteLayout from '../../../assets/map/satellite.png';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import ThemeManager from '../../custom-theme/ThemeManager';
 import { SitesFiltersDef } from '../sites/SitesFilters';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { scale } from 'react-native-size-matters';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {}
 
@@ -243,6 +241,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public buildModal(navigation: any, siteAreaSelected: SiteArea, modalStyle: any) {
+    const commonColors = Utils.getCurrentCommonColor();
     const style = computeStyleSheet();
     return (
       <Modal
@@ -261,7 +260,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         <SafeAreaView style={style.siteAreaDetailsModalContainer}>
           <View style={style.siteAreaDetailsModalHeader}>
             <TouchableOpacity onPress={() => this.setState({ selectedSiteArea: null })}>
-              <Icon size={scale(37)} margin={scale(8)} style={style.closeIcon} as={EvilIcons} name={'close'} />
+              <Icon color={commonColors.textColor} size={scale(37)} iconStyle={style.closeIcon} type={'evilicon'} name={'close'} />
             </TouchableOpacity>
           </View>
           <View style={{flexGrow: 1, flexShrink: 1, flexBasis: 'auto'}}>
@@ -275,26 +274,6 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         </SafeAreaView>
       </Modal>
     );
-
-/*    if (Platform.OS === 'ios') {
-      return (
-        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <Modalize alwaysOpen={175} modalStyle={modalStyle.modalContainer}>
-            <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
-          </Modalize>
-        </Modal>
-      );
-    } else {
-      return (
-        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <View style={modalStyle.modalContainer}>
-            <ScrollView>
-              <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
-            </ScrollView>
-          </View>
-        </Modal>
-      );
-    }*/
   }
 
   public render() {
@@ -315,7 +294,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           {selectedSiteArea && this.buildModal(navigation, selectedSiteArea, modalStyle)}
           {showMap ? this.renderMap() : (
             <View style={style.siteAreasContainer}>
-              {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+              {loading ? <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" /> : (
                 <ItemsList<SiteArea>
                   skip={skip}
                   count={count}
@@ -341,6 +320,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const fabStyles = computeFabStyles();
     const { showMap, satelliteMap } = this.state;
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <SafeAreaView style={style.fabContainer}>
         {showMap && (
@@ -356,7 +336,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           style={[fabStyles.fab, style.fab]}
           onPress={() => this.setState({ showMap: !showMap, siteAreas: []}, () => this.refresh(true)) }
         >
-          <Icon style={fabStyles.fabIcon} size={scale(18)} as={MaterialCommunityIcons} name={showMap ? 'format-list-bulleted' : 'map'} />
+          <Icon color={commonColors.textColor} iconStyle={fabStyles.fabIcon} size={scale(18)} type={'material-community'} name={showMap ? 'format-list-bulleted' : 'map'} />
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -365,6 +345,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private renderMap() {
     const style = computeStyleSheet();
     const { siteAreas, satelliteMap } = this.state;
+    const commonColors = Utils.getCurrentCommonColor();
     const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) =>
       Utils.containsGPSCoordinates(siteArea.address.coordinates)
     );
@@ -381,14 +362,14 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
               title={siteArea.name}
               onPress={() => this.showMapSiteAreaDetail(siteArea)}
             >
-              <Icon size={scale(40)} as={MaterialIcons} name={'location-pin'} style={Utils.computeSiteMarkerStyle(siteArea?.connectorStats)} />
+              <Icon color={commonColors.textColor} size={scale(40)} type={'material'} name={'location-pin'} iconStyle={Utils.computeSiteMarkerStyle(siteArea?.connectorStats)} />
             </Marker>
           )}
           initialRegion={this.currentRegion}
           onMapRegionChangeComplete={(region) => this.onMapRegionChangeComplete(region)}
         />
       </View>
-    )
+    );
   }
 
   private renderFilters() {
@@ -410,7 +391,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           <TouchableOpacity
             onPress={() => this.screenFilters?.openModal()}
             style={showMap? [fabStyles.fab, style.mapFilterButton] : style.listFilterButton}>
-            <Icon color={commonColors.textColor} size={scale(25)} as={MaterialCommunityIcons} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
+            <Icon color={commonColors.textColor} size={scale(25)} type={'material-community'} name={areModalFiltersActive ? 'filter' : 'filter-outline'} />
           </TouchableOpacity>
         )}
       </View>

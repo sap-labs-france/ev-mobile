@@ -1,12 +1,11 @@
 import React from 'react';
 import { Linking } from 'react-native';
 import I18n from 'i18n-js';
-import { Icon } from 'native-base';
 import DialogModal, { DialogCommonProps } from '../DialogModal';
 import { CheckVersionResponse } from 'react-native-check-version';
 import computeStyleSheet from '../ModalCommonStyle';
 import { scale } from 'react-native-size-matters';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends DialogCommonProps {
   appVersion?: CheckVersionResponse;
@@ -27,7 +26,7 @@ export default class AppUpdateDialog extends React.Component<Props, State> {
         close={() => close?.()}
         withCloseButton={true}
         description={I18n.t('appUpdate.appUpdateDialogDescription')}
-        renderIcon={(iconStyle) => <Icon size={scale(iconStyle.fontSize)} style={iconStyle} name={'update'} as={MaterialIcons} />}
+        renderIcon={(iconStyle) => <Icon size={scale(iconStyle.fontSize)} iconStyle={iconStyle} name={'update'} type={'material'} />}
         withCancel={true}
         title={I18n.t('appUpdate.appUpdateDialogTitle')}
         buttons={[

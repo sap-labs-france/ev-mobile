@@ -1,6 +1,5 @@
 import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
-import {Icon} from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -16,7 +15,7 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './StripePaymentMethodCreationFormStyles';
 import computeFormStyles from '../../../FormStyles';
-import {Button, CheckBox} from 'react-native-elements';
+import {Button, CheckBox, Icon} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -172,8 +171,8 @@ export default function StripePaymentMethodCreationForm(props: Props) {
           onPress={() => setEulaChecked(!eulaChecked)}
           title={I18n.t('paymentMethods.paymentMethodsCreationCheckboxText')}
           textStyle={formStyle.checkboxText}
-          uncheckedIcon={<Icon size={scale(25)} name="checkbox-blank-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
-          checkedIcon={<Icon size={scale(25)} name="checkbox-outline" as={MaterialCommunityIcons} style={formStyle.inputIcon} />}
+          uncheckedIcon={<Icon color={commonColors.textColor} size={scale(25)} name="checkbox-blank-outline" type={'material-community'} iconStyle={formStyle.inputIcon} />}
+          checkedIcon={<Icon color={commonColors.textColor} size={scale(25)} name="checkbox-outline" type={'material-community'} iconStyle={formStyle.inputIcon} />}
         />
       </View>
       <Button

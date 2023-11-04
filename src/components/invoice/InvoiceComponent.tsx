@@ -1,5 +1,4 @@
 import I18n from 'i18n-js';
-import { Icon } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -18,6 +17,7 @@ import DialogModal from '../modal/DialogModal';
 import computeModalCommonStyle from '../modal/ModalCommonStyle';
 import computeListItemCommonStyle from '../list/ListItemCommonStyle';
 import Feather from 'react-native-vector-icons/Feather';
+import {Icon} from 'react-native-elements';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;
@@ -106,7 +106,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                 {downloading ? (
                   <ActivityIndicator size={scale(26)} color={commonColor.textColor} />
                 ) : (
-                  <Icon size={scale(26)} style={style.downloadIcon} as={Feather} name={'download'} />
+                  <Icon size={scale(26)} iconStyle={style.downloadIcon} type={'feather'} name={'download'} />
                 )}
               </TouchableOpacity>
             )}

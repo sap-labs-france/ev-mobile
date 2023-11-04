@@ -28,10 +28,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     icon: {
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      marginHorizontal: '5@s'
     },
     clearIcon: {
-      color: commonColor.disabledDark
+      color: commonColor.disabledDark,
+      marginHorizontal: '5@s'
     }
   });
   const portraitStyles = {};

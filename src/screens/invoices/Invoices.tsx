@@ -1,6 +1,6 @@
 import i18n from 'i18n-js';
 import React from 'react';
-import { View } from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import InvoiceComponent from '../../components/invoice/InvoiceComponent';
@@ -15,7 +15,6 @@ import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './InvoicesStyles';
 import InvoicesFilters, { InvoicesFiltersDef } from './InvoicesFilters';
-import { Spinner } from 'native-base';
 import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
@@ -149,7 +148,7 @@ export default class Invoices extends BaseScreen<Props, State> {
           onFilterChanged={(newFilters) => this.onFilterChanged(newFilters)}
           ref={(invoicesFilters: InvoicesFilters) => this.setScreenFilters(invoicesFilters, true)}
         />
-          {loading ? <Spinner size={scale(30)} style={style.spinner} color="grey" /> : (
+          {loading ? <ActivityIndicator size={scale(30)} style={style.spinner} color="grey" /> : (
           <View style={style.content}>
             <ItemsList<BillingInvoice>
               data={invoices}
